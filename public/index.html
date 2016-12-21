@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Starter Template</title>
+    <link rel="stylesheet" href="./dist/styles.css" media="screen" title="no title">
+</head>
+
+<body ng-controller="ctrl">
+
+
+
+<header>
+  <nav>
+    <div class="hamburger-icon-container">
+      <div class="nbar1"></div>
+      <div class="nbar2"></div>
+      <div class="nbar3"></div>
+    </div>
+    <ul>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Shop</a></li>
+    </ul>
+  </nav>
+
+</header>
+
+<main>
+  <div class="productHome">
+    
+  </div>
+</main>
+
+
+
+
+
+    <h2>HEY MAN</h2>
+
+    <div class="name">
+      asdgasdgasdgsda
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+    <script src="./dist/js/bundle.js"></script>
+
+    <script>
+      $(document).ready(function(){
+        $(".hamburger-icon-container").click( function(){
+          $("ul").slideToggle("slow", function(){
+            $(this).addClass("open");
+          });
+          $(this).toggleClass("change");
+
+        })
+      })
+
+    </script>
+
+</body>
+
+
+</html>

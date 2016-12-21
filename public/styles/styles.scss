@@ -1,0 +1,108 @@
+
+$primary-color: purple;
+$secondary-color: red;
+$accent-color: ;
+
+
+.name {
+  font-size: 22px;
+  color: $primary-color; }
+
+.genus {
+  color: $secondary-color; }
+
+  h2 {
+    font-size: 100px;
+    color: $secondary-color;
+  }
+
+
+nav {
+  background: yellow;
+  /* ===============================
+            HAMBURGER MENU
+  =============================== */
+
+  .hamburger-icon-container {
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 20px;
+      // position: absolute;
+      // right: 20px;
+
+    .nbar1, .nbar2, .nbar3 {
+        width: 35px;
+        height: 5px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: 0.4s;
+        border-radius: 5px;
+    }
+  }
+
+
+  .change .nbar1 {
+      -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+      transform: rotate(-45deg) translate(-9px, 6px) ;
+  }
+
+  .change .nbar2 {
+    opacity: 0;
+  }
+
+  .change .nbar3 {
+      -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+      transform: rotate(45deg) translate(-8px, -8px) ;
+  }
+
+  ul {
+    width: 100%;
+    background-color: red;
+    overflow: hidden;
+    height: 0;
+  }
+
+    ul.open {
+      height: auto;
+    }
+
+    ul li {
+      float: none;
+      text-align: center;
+      width: 100%;
+      margin: 0;
+    }
+
+    ul li a {
+      color: yellow;
+      padding: 10px;
+      border-bottom: 1px solid black;
+      display: block;
+      margin: 0;
+    }
+} /*end nav*/
+
+
+
+
+
+.productHome {
+  width: 95%;
+  height: 400px;
+  background: violet;
+  margin: auto;
+}
+
+
+
+
+
+
+@media only screen and (min-width: 768px) {
+
+  h2 {
+    color: blue;
+  }
+}
+
+/*# sourceMappingURL=maps/styles.css.map */
