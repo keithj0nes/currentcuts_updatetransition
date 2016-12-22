@@ -8,11 +8,11 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/home.html",
       controller: "mainController"
     })
-    // .state("stats",{
-    //   url: "/stats",
-    //   templateUrl: "views/stats.html",
-    //   controller: "statsController"
-    // })
+    .state("products",{
+      url: "/products/:id",
+      templateUrl: "views/productSingle.html",
+      controller: "productController"
+    })
 
     $urlRouterProvider
   .otherwise("/");

@@ -1,17 +1,13 @@
 <main>
 
-  <div class="product-main" ng-repeat="product in products">  <!--this will be the ng-repeat="product in products"-->
+  <div class="product-main" ng-repeat="product in products">
     <div class="product-img">
-        <!-- <p>IMAGE GOES HERE</p> -->
-        <img class="crop" ng-src="{{product.img1}}" alt="">
+      <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">
     </div>
     <div class="product-info">
-
-        <h2 class="desc">{{product.name}}</h2>
-        <p class="price">From <span class="red">${{product.price}}.00</span></p>
-
-
-      <button class="btn atc-home" name="button">View Product</button>
+      <h2 class="desc">{{product.name}}</h2>
+      <p class="price">From <span class="red">${{product.price}}.00</span></p>
+      <button class="btn atc-home" name="button" ui-sref="products({id:product.id})">View Product</button>
     </div>
   </div>
 

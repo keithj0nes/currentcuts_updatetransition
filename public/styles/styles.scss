@@ -112,8 +112,9 @@ nav {
 } /*end nav*/
 
 
-
-
+/* ============================================
+                  HOME PAGE
+============================================ */
 
 .product-main {
   width: 90%;
@@ -144,7 +145,8 @@ nav {
       margin: 0 auto;
       width: 100%;
       height: auto;
-      margin: -16% auto;             //crops image to make narrow
+      margin: -16% auto;        //'crops' image to make narrow
+      cursor: pointer;
     }
 
 
@@ -179,7 +181,44 @@ nav {
 }
 
 
+/* ============================================
+                PRODUCT PAGE
+============================================ */
 
+.product-single {
+
+
+  img {
+    width: 100%;
+  }
+
+  .details {
+    // background: red;
+    // height: 20px;
+    // width: 100%;
+    padding: 20px;
+
+    h2.desc {
+      font-size: 16px;
+      color: #000;
+      font-weight: normal;
+      margin-bottom: 5px;
+      // overflow: hidden;
+    }
+
+    p.productPrice {
+      font-size: 14px;
+      color: rgb(54, 54, 54);
+    }
+  }
+
+  h3 {
+    padding: 10px;
+    font-size: 24px;
+  }
+
+
+}
 
 
 

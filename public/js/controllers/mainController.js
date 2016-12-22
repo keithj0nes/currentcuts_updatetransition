@@ -10,6 +10,5 @@ angular.module("ccvApp").controller("mainController", function($scope, mainServi
   }
 
   getAllProducts();
-  // console.log(mainService.getAllProducts());
 
 })

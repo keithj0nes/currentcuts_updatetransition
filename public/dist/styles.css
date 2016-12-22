@@ -488,6 +488,9 @@ nav {
         margin: 0; }
 
 /*end nav*/
+/* ============================================
+                  HOME PAGE
+============================================ */
 .product-main {
   width: 90%;
   background: #fff;
@@ -502,7 +505,8 @@ nav {
       margin: 0 auto;
       width: 100%;
       height: auto;
-      margin: -16% auto; }
+      margin: -16% auto;
+      cursor: pointer; }
   .product-main .product-info {
     padding: 15px 20px;
     position: relative; }
@@ -518,6 +522,27 @@ nav {
       position: absolute;
       right: 20px;
       top: 20px; }
+
+/* ============================================
+                PRODUCT PAGE
+============================================ */
+.product-single img {
+  width: 100%; }
+
+.product-single .details {
+  padding: 20px; }
+  .product-single .details h2.desc {
+    font-size: 16px;
+    color: #000;
+    font-weight: normal;
+    margin-bottom: 5px; }
+  .product-single .details p.productPrice {
+    font-size: 14px;
+    color: #363636; }
+
+.product-single h3 {
+  padding: 10px;
+  font-size: 24px; }
 
 @media only screen and (min-width: 768px) {
   h2 {
