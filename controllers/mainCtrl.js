@@ -1,22 +1,44 @@
+var app = require("../server.js");
+var db = app.get('db');
+
+
 module.exports = {
 
+//get
   getAllProducts: function(req, res, next){
-    // db.get_all([], function(err, response){
-    //
-    // })
-    console.log("products shown");
-    res.send("All of the products")
+    db.get_all_products([], function(err, products){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      console.log("products shown");
+      return res.send(products)
+    })
   },
 
-  getProductById: function(req, res, send){
-    console.log("Specific item");
+  getProductById: function(req, res, next){
+    db.get_product_by_id([req.params.id], function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      console.log("Specific item");
+      return res.send(product)
+
+    })
+
   },
 
-  addPost: function(req, res, next){
-    console.log("post is wanted lol");
-    res.send("HERE IS TEXT")
+//post
+  addProductsInCart: function(req, res, next){
+    console.log("addProductsInCart");
+    res.send("addProductsInCart");
   },
 
+  addOrder: function(req, res, next){
+    console.log("addOrder");
+    res.send("addOrder");
+  }
 
 
 

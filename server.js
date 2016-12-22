@@ -6,7 +6,16 @@ const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
 
-const app = express();
+const app = module.exports = express();
+
+//sync to database
+var conn = massive.connectSync({
+  connectionString : "postgres://postgres:@localhost/ccv"
+});
+// add your connection to express
+app.set('db', conn);
+// declare a db object for requests
+var db = app.get('db');
 
 const mainCtrl = require("./controllers/mainCtrl.js")
 
@@ -24,27 +33,14 @@ app.use(express.static(__dirname + "/public"));    //current file directory + /p
 
 
 
-//sync to database
-var conn = massive.connectSync({
-  connectionString : "postgres://postgres:@localhost/ccv"
-});
-// add your connection to express
-app.set('db', conn);
-// declare a db object for requests
-var db = app.get('db');
-
 
 
 // MVP
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
-// app.get("/api/cart", mainCtrl.getProductsInCart);
-// app.get("/api/order", mainCtrl.addOrder);
+app.post("/api/cart", mainCtrl.addProductsInCart);
+app.post("/api/order", mainCtrl.addOrder);
 // app.get("/auth/paypal", passport.authenticate)
-
-
-//test POST
-app.post("/", mainCtrl.addPost);
 
 
 // NOT MVP

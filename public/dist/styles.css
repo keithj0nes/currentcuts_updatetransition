@@ -415,6 +415,9 @@ template {
 [hidden] {
   display: none; }
 
+body {
+  background-color: #efefef; }
+
 .name {
   font-size: 22px;
   color: purple; }
@@ -423,19 +426,34 @@ template {
   color: red; }
 
 h2 {
-  font-size: 100px;
+  font-size: 90px;
   color: red; }
 
+.red {
+  color: red;
+  font-weight: bold; }
+
+.btn {
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 3px; }
+
+.btn:hover {
+  background-color: #f5f5f5;
+  cursor: pointer; }
+
 nav {
-  background: yellow;
+  background: #fff;
   /* ===============================
             HAMBURGER MENU
   =============================== */ }
-  nav .hamburger-icon-container {
+  nav .hamburger-icon {
     display: inline-block;
     cursor: pointer;
-    padding-left: 20px; }
-    nav .hamburger-icon-container .nbar1, nav .hamburger-icon-container .nbar2, nav .hamburger-icon-container .nbar3 {
+    padding-left: 20px;
+    padding-top: 2px; }
+    nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
       width: 35px;
       height: 5px;
       background-color: #333;
@@ -450,31 +468,56 @@ nav {
   nav .change .nbar3 {
     -webkit-transform: rotate(45deg) translate(-8px, -8px);
     transform: rotate(45deg) translate(-8px, -8px); }
-  nav ul {
+  nav ul.open {
+    height: auto; }
+  nav .main-nav {
     width: 100%;
     background-color: red;
     overflow: hidden;
     height: 0; }
-  nav ul.open {
-    height: auto; }
-  nav ul li {
-    float: none;
-    text-align: center;
-    width: 100%;
-    margin: 0; }
-  nav ul li a {
-    color: yellow;
-    padding: 10px;
-    border-bottom: 1px solid black;
-    display: block;
-    margin: 0; }
+    nav .main-nav li {
+      float: none;
+      text-align: center;
+      width: 100%;
+      margin: 0; }
+      nav .main-nav li a {
+        color: yellow;
+        padding: 10px;
+        border-bottom: 1px solid black;
+        display: block;
+        margin: 0; }
 
 /*end nav*/
-.productHome {
-  width: 95%;
-  height: 400px;
-  background: violet;
-  margin: auto; }
+.product-main {
+  width: 90%;
+  background: #fff;
+  margin: 5% auto; }
+  .product-main .product-img {
+    width: 100%;
+    background: lime;
+    position: relative;
+    overflow: hidden; }
+    .product-main .product-img img {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      height: auto;
+      margin: -16% auto; }
+  .product-main .product-info {
+    padding: 15px 20px;
+    position: relative; }
+    .product-main .product-info h2.desc {
+      font-size: 16px;
+      color: #000;
+      font-weight: normal;
+      margin-bottom: 5px; }
+    .product-main .product-info p.price {
+      font-size: 14px;
+      color: #c3c3c3; }
+    .product-main .product-info .atc-home {
+      position: absolute;
+      right: 20px;
+      top: 20px; }
 
 @media only screen and (min-width: 768px) {
   h2 {

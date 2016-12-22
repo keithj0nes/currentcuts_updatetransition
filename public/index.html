@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="ccvApp">
 
 <head>
     <meta charset="UTF-8">
@@ -7,18 +7,16 @@
     <link rel="stylesheet" href="./dist/styles.css" media="screen" title="no title">
 </head>
 
-<body ng-controller="ctrl">
-
-
+<body>
 
 <header>
-  <nav>
-    <div class="hamburger-icon-container">
+  <nav >
+    <div class="hamburger-icon">
       <div class="nbar1"></div>
       <div class="nbar2"></div>
       <div class="nbar3"></div>
     </div>
-    <ul>
+    <ul class="main-nav">
       <li><a href="#">Shop</a></li>
       <li><a href="#">Shop</a></li>
       <li><a href="#">Shop</a></li>
@@ -29,15 +27,8 @@
 
 </header>
 
-<main>
-  <div class="productHome">
-    
-  </div>
-</main>
 
-
-
-
+<ui-view></ui-view>
 
     <h2>HEY MAN</h2>
 
@@ -47,16 +38,16 @@
 
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
     <script src="./dist/js/bundle.js"></script>
 
     <script>
       $(document).ready(function(){
-        $(".hamburger-icon-container").click( function(){
-          $("ul").slideToggle("slow", function(){
-            $(this).addClass("open");
-          });
+        $(".hamburger-icon").click( function(){
           $(this).toggleClass("change");
-
+          // $(".main-nav").slideToggle("slow", function(){
+            $(".main-nav").toggleClass("open");
+          // });
         })
       })
 
