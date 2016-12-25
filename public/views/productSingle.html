@@ -5,42 +5,47 @@
     <h2 class="desc">{{product.name}}</h2>
     <p class="productPrice">${{product.price}}.00</p>
 
-  <select options="">
-    <option value="" >Size</option>
-    <option value="4">4"H x 10"W</option>
-    <option value="6">5"H x 13"W</option>
-    <option value="8">6"H x 16"W</option>
-  </select>
+    <select options="" class="select-size">
+      <option value="" >Size</option>
+      <option value="4">4"H x 10"W</option>
+      <option value="6">5"H x 13"W</option>
+      <option value="8">6"H x 16"W</option>
+    </select>
 
-  <select options="">
-    <option value="">Color</option>
-    <option value="black">Black</option>
-    <option value="white">White</option>
-    <option value="darkgray">Dark Gray</option>
-    <option value="lightgray">Light Gray</option>
-    <option value="crimsonred">Crimson Red</option>
-    <option value="cardinalred">Cardinal Red</option>
-    <option value="tomatored">Tomato Red</option>
-    <option value="brightorange">Bright Orange</option>
-    <option value="sunfloweryellow">Sunflower Yellow</option>
-    <option value="applegreen">Apple Green</option>
-    <option value="brightgreen">Bright Green</option>
-    <option value="olympicblue">Olympic Blue</option>
-    <option value="sapphireblue">Sapphire Blue</option>
-    <option value="darknavy">Dark Navy</option>
-    <option value="royalpurple">Royal Purple</option>
-    <option value="rosepink">Rose Pink</option>
-    <option value="chocolatebrown">Chocolate Brown</option>
+    <select options="">
+      <option value="">Color </option>
+      <option value="black">Black</option>
+      <option value="white">White</option>
+      <option value="darkgray">Dark Gray</option>
+      <option value="lightgray">Light Gray</option>
+      <option value="crimsonred">Crimson Red</option>
+      <option value="cardinalred">Cardinal Red</option>
+      <option value="tomatored">Tomato Red</option>
+      <option value="brightorange">Bright Orange</option>
+      <option value="sunfloweryellow">Sunflower Yellow</option>
+      <option value="applegreen">Apple Green</option>
+      <option value="brightgreen">Bright Green</option>
+      <option value="olympicblue">Olympic Blue</option>
+      <option value="sapphireblue">Sapphire Blue</option>
+      <option value="darknavy">Dark Navy</option>
+      <option value="royalpurple">Royal Purple</option>
+      <option value="rosepink">Rose Pink</option>
+      <option value="chocolatebrown">Chocolate Brown</option>
 
-  </select>
+    </select>
 
-  <input type="text" name="" value="1" style="width:30px;text-align:center">
+    <input type="text" name="" value="1">
 
-  <button class="btn" name="button">Add To Cart</button>
+    <button class="btn" name="button">Add To Cart</button>
 
-  <hr>
 
-  <h3>Product Description</h3>
-  <p>{{product.description}}. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-</div>
+  </div> <!--end details div-->
+
+  <div class="description">
+    <hr>
+
+    <h3>Product Description</h3>
+    <p>{{product.description}}. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  </div>
+
 </main>

@@ -5,7 +5,6 @@ angular.module("ccvApp").controller("mainController", function($scope, mainServi
   var getAllProducts = function(){
     mainService.getAllProducts().then(function(response){
       $scope.products = response;
-
     })
   }
 

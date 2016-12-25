@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Starter Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./dist/styles.css" media="screen" title="no title">
 </head>
 
@@ -16,6 +17,21 @@
       <div class="nbar2"></div>
       <div class="nbar3"></div>
     </div>
+
+    <i class="material-icons search-icon">search</i>
+    <div class="search-box-container" ng-controller="searchController">
+      <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
+        <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
+        <button class="btn" type="button" name="button" ui-sref="search({search:searchTerm})" ng-click="searchProduct(searchTerm)">Search</button>
+
+      <!-- </form> -->
+    </div>
+    <div class="logo">
+      <img src="img/logo.png" alt="currentcuts.com" ui-sref="home">
+
+    </div>
+
+
     <ul class="main-nav">
       <li><a href="#">Shop</a></li>
       <li><a href="#">Shop</a></li>
@@ -48,6 +64,10 @@
           // $(".main-nav").slideToggle("slow", function(){
             $(".main-nav").toggleClass("open");
           // });
+        })
+
+        $(".search-icon").click( function(){
+          $(".search-box-container").toggleClass("open");
         })
       })
 

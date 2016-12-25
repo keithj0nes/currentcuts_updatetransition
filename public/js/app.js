@@ -13,6 +13,16 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/productSingle.html",
       controller: "productController"
     })
+    .state("cart",{
+      url: "/cart",
+      templateUrl: "views/cart.html",
+      controller: "cartController"
+    })
+    .state("search",{
+      url: "/search/:search",
+      templateUrl: "views/search.html",
+      controller: "searchController"
+    })
 
     $urlRouterProvider
   .otherwise("/");

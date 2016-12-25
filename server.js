@@ -38,6 +38,8 @@ app.use(express.static(__dirname + "/public"));    //current file directory + /p
 // MVP
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
+app.get("/api/search/:name", mainCtrl.getProductByName);
+
 app.post("/api/cart", mainCtrl.addProductsInCart);
 app.post("/api/order", mainCtrl.addOrder);
 // app.get("/auth/paypal", passport.authenticate)

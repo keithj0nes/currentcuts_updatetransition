@@ -10,10 +10,21 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     url: "/products/:id",
     templateUrl: "views/productSingle.html",
     controller: "productController"
+  }).state("cart", {
+    url: "/cart",
+    templateUrl: "views/cart.html",
+    controller: "cartController"
+  }).state("search", {
+    url: "/search/:search",
+    templateUrl: "views/search.html",
+    controller: "searchController"
   });
 
   $urlRouterProvider.otherwise("/");
 });
+"use strict";
+
+angular.module("ccvApp").controller("cartController", function ($scope) {});
 "use strict";
 
 angular.module("ccvApp").controller("mainController", function ($scope, mainService) {
@@ -42,19 +53,43 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     });
   };
 
+  // var addToCart
+
+
   getProductById();
 });
+"use strict";
+
+angular.module("ccvApp").controller("searchController", function ($scope, $stateParams, mainService) {
+
+  console.log($stateParams, "state params search");
+  console.log($stateParams.search);
+  var searchTerm = $stateParams.search;
+
+  $scope.searchProduct = function (searchTerm) {
+    mainService.getProductByName(searchTerm).then(function (response) {
+      $scope.searchProducts = response;
+      console.log(response, "controller");
+      // var arr = []
+      for (var i = 0; i < response.length; i++) {
+        console.log(response[i].name);
+      }
+      console.log($scope.searchProducts);
+    });
+  };
+});
+
+//add $stateParams.id because sid told me to
 "use strict";
 
 angular.module("ccvApp").service("mainService", function ($http) {
 
   this.getAllProducts = function () {
-
     return $http({
       method: "GET",
       url: "/api/products"
     }).then(function (response) {
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     });
   };
@@ -65,6 +100,17 @@ angular.module("ccvApp").service("mainService", function ($http) {
       url: "/api/products/" + id
     }).then(function (response) {
       console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductByName = function (name) {
+    console.log(name, "searched letters in service");
+    return $http({
+      method: "GET",
+      url: "/api/search/" + name
+    }).then(function (response) {
+      console.log(response.data, "search by name");
       return response.data;
     });
   };

@@ -43,8 +43,15 @@ h2 {
   cursor: pointer;
 }
 
+.btn:active {
+  background-color: #d9d9d9;
+
+}
+
 nav {
   background: #fff;
+  // display: flex;
+  position: relative;
   /* ===============================
             HAMBURGER MENU
   =============================== */
@@ -88,7 +95,7 @@ nav {
 
   .main-nav {
     width: 100%;
-    background-color: red;
+    // background-color: red;
     overflow: hidden;
     height: 0;
 
@@ -99,16 +106,76 @@ nav {
       margin: 0;
 
       a {
-        color: yellow;
+        color: black;
         padding: 10px;
         border-bottom: 1px solid black;
         display: block;
         margin: 0;
       }
+
+      a:hover {
+        background-color: #f5f5f5;
+      }
     }
   }
 
+  .search-icon {
+    font-size: 36px;
+    padding-left: 10px;
+    cursor: pointer;
+  }
 
+  .search-box-container.open {
+    display:flex;
+    // display: block;
+    // align-content: center;j
+    justify-content: space-around;
+    margin: 15px auto;
+    // padding: 0 20px 0;
+    padding: 0 20px;
+    // background: red;
+  }
+
+  .search-box-container {
+    display: none;
+
+    .search-box {
+      // display: inline-block;
+      width: 70%;
+      // margin: 15px auto;
+      padding: 7px 15px;
+      font-size: 20px;
+      // float: left;
+    }
+
+    button.btn {
+      // width: 10%;
+      // float: right;
+      // margin-left: 20px;
+      font-size: 20px;
+    }
+  }
+
+  .logo {
+    // height: 30px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translate(-50%);
+    // display: inline-block;
+    cursor: pointer;
+    // padding: 20px;
+    // background-color: red;
+    // text-align: center;
+    // text-align: center;
+    // float: right;
+    img {
+      height: 30px;
+      // margin: 0 auto;
+      // text-align: center;
+    }
+  }
+  // width="40%" style="text-align:center"
 } /*end nav*/
 
 
@@ -167,7 +234,7 @@ nav {
 
     p.price {
       font-size: 14px;
-      color: rgb(195, 195, 195);
+      color: #888888;
     }
 
 
@@ -187,6 +254,8 @@ nav {
 
 .product-single {
 
+  width: 100%;
+  background-color: #fff;
 
   img {
     width: 100%;
@@ -199,7 +268,7 @@ nav {
     padding: 20px;
 
     h2.desc {
-      font-size: 16px;
+      font-size: 20px;
       color: #000;
       font-weight: normal;
       margin-bottom: 5px;
@@ -207,15 +276,61 @@ nav {
     }
 
     p.productPrice {
-      font-size: 14px;
+      font-size: 16px;
       color: rgb(54, 54, 54);
     }
+
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      display: block;
+      width: 100%;
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 10px 0;
+      border-radius: 0;
+      border: 1px solid gray;
+      background-color: white;
+    }
+
+    input {
+      width: 31%;
+      font-size: 20px;
+      padding: 10px;
+      text-align: center;
+      margin: 0 10px 10px 0;
+      border: 1px solid gray;
+    }
+
+    .btn {
+      font-size: 20px;
+      width: 65%;
+      padding: 10px;
+      border: 1px solid gray;
+      float: right;
+      // background-color: rgb(171, 227, 255);
+    }
+
   }
 
   h3 {
     padding: 10px;
     font-size: 24px;
   }
+
+  .description {
+    padding: 20px;
+
+    hr {
+      margin: 20px 0;
+      // padding: 20px;
+      border: 0px;
+      border-bottom: 1px solid black;
+    }
+
+  }
+
 
 
 }
@@ -224,9 +339,338 @@ nav {
 
 @media only screen and (min-width: 768px) {
 
-  h2 {
-    color: blue;
+
+
+nav {
+//hide hamburger bar
+  .hamburger-icon {
+    // display: none;
+    .nbar1, .nbar2, .nbar3 {
+      display: none;
+    }
+  }
+
+
+  .main-nav {
+    width: 100%;
+    // background-color: red;
+    // overflow: hidden;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    // margin-bottom: 1px;
+    margin: 0 auto;
+
+
+    li {
+      // text-align: center;
+      // width: 50%;
+      margin: 0 auto;
+
+
+      a {
+        color: black;
+        padding: 10px;
+        border-bottom: none;
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        border-bottom: 1px solid transparent;
+      }
+
+      a:hover {
+        background-color: white;
+        border-bottom: 1px solid black;
+      }
+    }
+  }
+
+  .search-icon {
+    font-size: 36px;
+    padding: 15px;
+    cursor: pointer;
+  }
+
+  .search-box-container {
+    .search-box {
+      width: 85%;
+    }
+  }
+
+  .logo {
+    // display: block;
+    // height: 30px;
+    // position: absolute;
+    // position: relative;
+    // margin: 0 auto;
+    top: 13px;
+    // left: auto;
+    // transform: translate(-50%);
+    // display: inline-block;
+    cursor: pointer;
+    padding: 0px;
+    // background-color: red;
+    // text-align: center;
+    // text-align: center;
+    // float: right;
+    img {
+      height: 40px;
+      // margin: 0 auto;
+      // text-align: center;
+    }
   }
 }
+  /* ============================================
+                    HOME PAGE
+  ============================================ */
 
-/*# sourceMappingURL=maps/styles.css.map */
+  .home-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .product-main {
+      width: 46%;
+      // height: 600px;
+      background: #fff;
+      // margin: 0;
+      margin: 2.8% auto 0;
+
+
+
+      // .product-img {
+      //   width: 100%;
+      //   background: lime;
+      //   position: relative;
+      //   overflow: hidden;
+
+
+        // img {
+        //   display: block;
+        //   margin: 0 auto;
+        //   width: 100%;
+        //   height: auto;
+        //   margin: -16% auto;        //'crops' image to make narrow
+        //   cursor: pointer;
+        // }
+
+
+      // }
+      //
+      // .product-info {
+      //
+      //   padding: 15px 20px;
+      //   position: relative;
+      //
+      //   h2.desc {
+      //     font-size: 16px;
+      //     color: #000;
+      //     font-weight: normal;
+      //     margin-bottom: 5px;
+      //     // overflow: hidden;
+      //   }
+      //
+      //   p.price {
+      //     font-size: 14px;
+      //     color: #888888;
+      //   }
+      //
+      //
+      //   .atc-home {
+      //     position: absolute;
+      //     right: 20px;
+      //     top: 20px;
+        // }
+
+      // }
+    }
+
+
+
+
+  }
+
+
+  /* ============================================
+                  PRODUCT PAGE
+  ============================================ */
+
+  .product-single {
+
+    width: 768px;
+    margin: 20px auto 0;
+    // background: red;
+
+    img {
+      padding: 40px;
+    }
+  }
+
+} //end min-width: 768px
+
+
+
+@media only screen and (min-width: 1100px) {
+
+
+
+
+  nav {
+    .search-box-container {
+      .search-box {
+        width: 90%;
+      }
+    }
+  }
+
+
+  .home-main {
+    // display: flex;
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+    // align-content: flex-end;
+
+      .product-main {
+        width: 30%;
+        // height: 600px;
+        background: #fff;
+        // margin: auto;
+        // margin: 20px auto 0;
+
+
+        // .product-img {
+        //   width: 100%;
+        //   background: lime;
+        //   position: relative;
+        //   overflow: hidden;
+
+
+          // img {
+          //   display: block;
+          //   margin: 0 auto;
+          //   width: 100%;
+          //   height: auto;
+          //   margin: -16% auto;        //'crops' image to make narrow
+          //   cursor: pointer;
+          // }
+
+
+        // }
+        //
+        // .product-info {
+        //
+        //   padding: 15px 20px;
+        //   position: relative;
+        //
+        //   h2.desc {
+        //     font-size: 16px;
+        //     color: #000;
+        //     font-weight: normal;
+        //     margin-bottom: 5px;
+        //     // overflow: hidden;
+        //   }
+        //
+        //   p.price {
+        //     font-size: 14px;
+        //     color: #888888;
+        //   }
+        //
+        //
+        //   .atc-home {
+        //     position: absolute;
+        //     right: 20px;
+        //     top: 20px;
+          // }
+
+        // }
+      }
+
+    }
+
+    /* ============================================
+                    PRODUCT PAGE
+    ============================================ */
+
+    .product-single {
+      width: 960px;
+      padding: 40px;
+
+      img {
+        width: 60%;
+        padding: 20px;
+        float: left;
+      }
+
+      .details {
+        // background: red;
+        // height: 20px;
+        width: 40%;
+        float: right;
+
+        h2.desc {
+          font-size: 30px;
+          color: #000;
+          font-weight: normal;
+          margin-bottom: 15px;
+          // overflow: hidden;
+        }
+
+        p.productPrice {
+          font-size: 18px;
+          color: rgb(54, 54, 54);
+          padding-bottom: 20px;
+        }
+
+        select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          display: block;
+          width: 100%;
+          font-size: 20px;
+          padding: 10px 20px;
+          margin: 10px 0;
+          border-radius: 0;
+          border: 1px solid gray;
+          background-color: white;
+        }
+
+        input {
+          width: 31%;
+          font-size: 20px;
+          padding: 10px;
+          text-align: center;
+          margin: 0 10px 10px 0;
+          border: 1px solid gray;
+        }
+
+        .btn {
+          font-size: 20px;
+          width: 65%;
+          padding: 10px;
+          border: 1px solid gray;
+          float: right;
+          // background-color: rgb(171, 227, 255);
+        }
+
+      }
+
+      .description {
+        clear: both;
+        // padding: 20px;
+
+        h3 {
+          padding: 10px;
+          font-size: 24px;
+        }
+      }
+
+
+
+    }
+} //end min-width: 1100px
+
+
+
+
+//can use 24 or 36

@@ -1,5 +1,5 @@
-var app = require("../server.js");
-var db = app.get('db');
+const app = require("../server.js");
+const db = app.get('db');
 
 
 module.exports = {
@@ -23,6 +23,22 @@ module.exports = {
         return res.status(500).send(err)
       }
       console.log("Specific item");
+      return res.send(product)
+
+    })
+
+  },
+
+  //simple search
+  getProductByName: function(req, res, next){
+    var searchTerm = "%" + req.params.name + "%";
+    console.log(searchTerm);
+    db.get_product_by_name([searchTerm], function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      console.log("Searched item");
       return res.send(product)
 
     })

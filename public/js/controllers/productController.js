@@ -14,5 +14,9 @@ angular.module("ccvApp").controller("productController", function($scope, $state
     })
   }
 
+  // var addToCart
+
+
+
     getProductById();
 })
