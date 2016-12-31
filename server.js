@@ -47,9 +47,11 @@ app.post("/api/order", mainCtrl.addOrder);
 
 // NOT MVP
 app.post("/api/products", mainCtrl.addProductToDB);
+app.put("/api/products/:id", mainCtrl.updateProductById);
 
-// app.put("/api/products/:id");
-// app.delete("/api/products/:id");
+
+
+app.delete("/api/products/:id", mainCtrl.deleteProductById);
 //
 // app.post("/api/users/:id");
 // app.put("/api/users/:id");

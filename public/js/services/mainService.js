@@ -32,7 +32,6 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.addProduct = function(name, description, price, img1, img2){
-
     const productObj = {
       name: name,
       description: description,
@@ -40,7 +39,6 @@ angular.module("ccvApp").service("mainService", function($http){
       img1: img1,
       img2: img2
     }
-    console.log(productObj, "addProduct service");
     return $http({
       method: "POST",
       url: "/api/products",
@@ -48,6 +46,19 @@ angular.module("ccvApp").service("mainService", function($http){
     }).success(function(){
       alert: "SUCCESS!";
     })
+  }
+
+  this.deleteProduct = function(product){
+    const productId = product.id;
+    return $http({
+      method: "DELETE",
+      url: "/api/products/" + productId
+    })
+
+
+
+
+
   }
 
 

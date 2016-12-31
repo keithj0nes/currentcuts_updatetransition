@@ -47,9 +47,7 @@ module.exports = {
 
 //post
   addProductToDB: function(req, res, next){
-    console.log(req.body, "anything");
     const newProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2];
-    console.log(newProduct);
     db.add_product(newProduct, function(err, product){
       if(err){
         console.log(err);
@@ -67,8 +65,29 @@ module.exports = {
   addOrder: function(req, res, next){
     console.log("addOrder");
     res.send("addOrder");
-  }
+  },
 
+
+
+  updateProductById: function(req, res, next){
+    console.log("update function fired!");
+  },
+
+
+  //delete
+
+  deleteProductById: function(req, res, next){
+    console.log("deleted function fired");
+    console.log(req.params.id);
+    const deletedProduct = [req.params.id];
+    db.delete_product(deletedProduct, function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      return res.status(200).send(product)
+    })
+  }
 
 
 
