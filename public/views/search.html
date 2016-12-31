@@ -1,8 +1,9 @@
-  <div class="class" ng-repeat="a in searchProduct">
+<main class="search-div">
+  <div ng-repeat="a in searchProducts">
     {{a.name}}
-{{a.description}}
-{{a.age}}
-<img ng-src="{{a.img1}}" alt="">
-    here is some text
+    {{a.description}}
+    {{a.price}}
+    <img ng-src="{{a.img1}}">
+
   </div>
-  here is some text again
+</main>

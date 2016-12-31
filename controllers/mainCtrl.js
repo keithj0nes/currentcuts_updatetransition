@@ -31,14 +31,14 @@ module.exports = {
 
   //simple search
   getProductByName: function(req, res, next){
-    var searchTerm = "%" + req.params.name + "%";
+    const searchTerm = "%" + req.params.name + "%";
     console.log(searchTerm);
     db.get_product_by_name([searchTerm], function(err, product){
       if(err){
         console.log(err);
         return res.status(500).send(err)
       }
-      console.log("Searched item");
+      console.log("Searched item", req.params.name);
       return res.send(product)
 
     })
@@ -46,6 +46,19 @@ module.exports = {
   },
 
 //post
+  addProductToDB: function(req, res, next){
+    console.log(req.body, "anything");
+    const newProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2];
+    console.log(newProduct);
+    db.add_product(newProduct, function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      return res.status(200).send(product)
+    })
+  },
+
   addProductsInCart: function(req, res, next){
     console.log("addProductsInCart");
     res.send("addProductsInCart");
@@ -55,6 +68,7 @@ module.exports = {
     console.log("addOrder");
     res.send("addOrder");
   }
+
 
 
 

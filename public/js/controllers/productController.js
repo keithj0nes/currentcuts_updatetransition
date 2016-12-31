@@ -14,6 +14,8 @@ angular.module("ccvApp").controller("productController", function($scope, $state
     })
   }
 
+  // $scope.timezzz = moment().format('MMM do YYYY, h:mm:ss a');
+// $scope.timmy = moment().format('MMMM Do YYYY, h:mm:ss a'); // December 27th 2016, 6:53:45 pm
   // var addToCart
 
 

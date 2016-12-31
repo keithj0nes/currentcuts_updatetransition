@@ -26,9 +26,29 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/search/" + name
     }).then(function(response){
-      console.log(response.data, "search by name");
+      console.log(response.data, "search by name in service");
       return response.data;
     })
-
   }
+
+  this.addProduct = function(name, description, price, img1, img2){
+
+    const productObj = {
+      name: name,
+      description: description,
+      price: price,
+      img1: img1,
+      img2: img2
+    }
+    console.log(productObj, "addProduct service");
+    return $http({
+      method: "POST",
+      url: "/api/products",
+      data: productObj
+    }).success(function(){
+      alert: "SUCCESS!";
+    })
+  }
+
+
 })

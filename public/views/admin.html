@@ -1,0 +1,40 @@
+<main class="admin-main">
+  <h1>Admin - (Username)</h1>
+
+  <div class="admin-items">
+    <div class="admin-products" ng-repeat="product in products">
+      <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
+      {{product.name}}
+      <div class="edit-buttons">
+        <button class="btn" ng-click="editProducts(product)" name="button">Edit</button>
+        <button class="btn" ng-click="deleteProduct()" name="button">Delete</button>
+      </div>
+
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="admin-edit">
+    <h3>Name</h3>
+    <input type="text" name="" placeholder="Name" ng-model="productName">
+
+    <h3>Description</h3>
+    <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
+
+    <h3>Price</h3>
+    <input type="text" name="" placeholder="Price" ng-model="productPrice">
+
+    <h3>Image 1</h3>
+    <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
+
+    <h3>Image 2</h3>
+    <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
+      <br><br>
+    <button class="btn" name="button">Update</button>
+    <button class="btn" name="button" ng-click="add(productName, productDescription, productPrice, productImgOne, productImgTwo)">Add New</button>
+    <button class="btn" name="button" ng-click="clearForm()">Clear</button>
+
+  </div>
+
+</main>

@@ -46,7 +46,8 @@ app.post("/api/order", mainCtrl.addOrder);
 
 
 // NOT MVP
-// app.post("/api/products/:id");
+app.post("/api/products", mainCtrl.addProductToDB);
+
 // app.put("/api/products/:id");
 // app.delete("/api/products/:id");
 //
@@ -59,3 +60,15 @@ app.post("/api/order", mainCtrl.addOrder);
 app.listen(config.port, function(){
   console.log("listening on port", config.port);
 })
+
+
+
+
+
+  // {
+  //   "name": "Hey man",
+  //   "description": "Wanddfasdgas decal",
+  //   "price": 4,
+  //   "img1": "linktoimageone",
+  //   "img2": "linktoimage2"
+  // },

@@ -38,22 +38,23 @@ CREATE TABLE orderline (
 );
 
 
-INSERT INTO products (name, description, price, img)
+INSERT INTO products (name, description, price, img1, img2)
 VALUES ('Take A Hike', 'Take A Hike vinyl decal', 4, 'https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg', 'https://img0.etsystatic.com/132/0/9461344/il_570xN.895019502_41yc.jpg');
 
-INSERT INTO products (name, description, price, img)
+INSERT INTO products (name, description, price, img1, img2)
 VALUES ('Wanderlust', 'Wanderlust vinyl decal', 4, 'https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg', 'https://img0.etsystatic.com/122/0/9461344/il_570xN.895023562_a9ks.jpg');
 
-INSERT INTO products (name, description, price, img)
+INSERT INTO products (name, description, price, img1, img2)
 VALUES ('I Hike Washington', 'I Hike Washington vinyl decal', 4, 'https://img1.etsystatic.com/138/0/9461344/il_570xN.890339355_7dv9.jpg', 'https://img1.etsystatic.com/119/0/9461344/il_570xN.890339397_e5qn.jpg');
 
-INSERT INTO products (name, description, price, img)
+INSERT INTO products (name, description, price, img1, img2)
 VALUES ('Deathly Hallows', 'Deathly Hallows vinyl decal', 4, 'https://img1.etsystatic.com/033/0/9461344/il_570xN.626310097_fxdm.jpg', 'https://img1.etsystatic.com/035/0/9461344/il_570xN.626310141_t5gw.jpg');
 
-INSERT INTO products (name, description, price, img)
+INSERT INTO products (name, description, price, img1, img2)
 VALUES ('Seattle Skyline Heartbeat', 'Seattle Skyline Heartbeat vinyl decal', 4, 'https://img0.etsystatic.com/049/0/9461344/il_570xN.662988360_42e1.jpg', 'https://img0.etsystatic.com/049/0/9461344/il_570xN.662988360_42e1.jpg');
 
-
+INSERT INTO products (name, description, price, img1, img2)
+VALUES ('Snowboard Chair Lift Dual', 'Snowboard Chair Lift Dual vinyl decal', 4, 'https://img0.etsystatic.com/106/0/9461344/il_570xN.909377050_e19d.jpg', 'https://img1.etsystatic.com/135/0/9461344/il_570xN.909131109_py9k.jpg');
 
 
 

@@ -23,6 +23,11 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/search.html",
       controller: "searchController"
     })
+    .state("admin",{
+      url: "/admin",
+      templateUrl: "views/admin.html",
+      controller: "adminController"
+    })
 
     $urlRouterProvider
   .otherwise("/");

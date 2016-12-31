@@ -416,7 +416,11 @@ template {
   display: none; }
 
 body {
-  background-color: #efefef; }
+  background-color: #f3f3f3; }
+
+.search-div {
+  height: 1000px;
+  background: red; }
 
 .name {
   font-size: 22px;
@@ -440,11 +444,17 @@ h2 {
   border-radius: 3px; }
 
 .btn:hover {
-  background-color: #f5f5f5;
+  background-color: #f3f3f3;
   cursor: pointer; }
 
 .btn:active {
   background-color: #d9d9d9; }
+
+.flleft {
+  float: left; }
+
+.flright {
+  float: right; }
 
 nav {
   background: #fff;
@@ -606,6 +616,33 @@ nav {
       border: 0px;
       border-bottom: 1px solid black; }
 
+/* ============================================
+                  ADMIN PAGE
+============================================ */
+.admin-main {
+  padding: 10px; }
+  .admin-main h1 {
+    text-align: center; }
+  .admin-main .admin-items .admin-products {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 10px 0; }
+    .admin-main .admin-items .admin-products .edit-buttons {
+      position: absolute;
+      right: 0;
+      bottom: 50%;
+      transform: translate(0, 50%); }
+  .admin-main .admin-items .admin-products:hover {
+    background-color: #d9d9d9; }
+  .admin-main .admin-edit input, .admin-main .admin-edit textarea {
+    width: 100%;
+    padding: 7px; }
+  .admin-main .admin-edit h3 {
+    padding: 10px 0; }
+  .admin-main hr {
+    margin: 20px 0; }
+
 @media only screen and (min-width: 768px) {
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
     display: none; }
@@ -658,7 +695,18 @@ nav {
     width: 768px;
     margin: 20px auto 0; }
     .product-single img {
-      padding: 40px; } }
+      padding: 40px; }
+  /* ============================================
+                    ADMIN PAGE
+  ============================================ */
+  .admin-items {
+    float: left;
+    width: 49%; }
+  hr {
+    display: none; }
+  .admin-edit {
+    float: right;
+    width: 49.5%; } }
 
 @media only screen and (min-width: 1100px) {
   nav .search-box-container .search-box {
@@ -717,6 +765,15 @@ nav {
       clear: both; }
       .product-single .description h3 {
         padding: 10px;
-        font-size: 24px; } }
+        font-size: 24px; }
+  /* ============================================
+                    ADMIN PAGE
+  ============================================ */
+  .admin-main {
+    padding: 20px; }
+    .admin-main .admin-edit {
+      position: fixed;
+      right: 0;
+      padding-right: 20px; } }
 
 /*# sourceMappingURL=maps/styles.css.map */
