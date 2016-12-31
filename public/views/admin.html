@@ -2,7 +2,7 @@
   <h1>Admin - (Username)</h1>
 
   <div class="admin-items">
-    <div class="admin-products" ng-repeat="product in products">
+    <div class="admin-products" ng-repeat="product in products | orderBy: 'id'">
       <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
       {{product.name}}
       <div class="edit-buttons">
@@ -30,8 +30,8 @@
 
     <h3>Image 2</h3>
     <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
-      <br><br>
-    <button class="btn" name="button">Update</button>
+      <br><br><span class="flright" ng-model="productId">Product ID: {{productId}}</span>
+    <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productPrice, productImgOne, productImgTwo)">Update</button>
     <button class="btn" name="button" ng-click="add(productName, productDescription, productPrice, productImgOne, productImgTwo)">Add New</button>
     <button class="btn" name="button" ng-click="clearForm()">Clear</button>
 

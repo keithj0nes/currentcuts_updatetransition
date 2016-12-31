@@ -4289,11 +4289,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   $scope.products = [];
   $scope.selectedProductToEdit;
-  console.log($scope.products);
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
       $scope.products = response;
-      console.log($scope.products);
     });
   };
 
@@ -4301,6 +4299,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function (product) {
+    $scope.productId = product.id;
     $scope.productName = product.name;
     $scope.productDescription = product.description;
     $scope.productPrice = product.price;
@@ -4309,6 +4308,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
   };
 
   $scope.clearForm = function () {
+    $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
     $scope.productPrice = "";
@@ -4318,11 +4318,17 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   $scope.add = function (name, description, price, img1, img2) {
     mainService.addProduct(name, description, price, img1, img2);
+    $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
+    getAllProducts();
+  };
+
+  $scope.update = function (id, name, description, price, img1, img2) {
+    mainService.updateProduct(id, name, description, price, img1, img2);
     getAllProducts();
   };
 
@@ -4342,11 +4348,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
         }
       }
       mainService.deleteProduct(product);
-      // swal(
-      //   'Deleted!',
-      //   'Your file has been deleted.',
-      //   'success'
-      // )
     });
   };
 });
@@ -4478,6 +4479,23 @@ angular.module("ccvApp").service("mainService", function ($http) {
     return $http({
       method: "POST",
       url: "/api/products",
+      data: productObj
+    }).success(function () {
+      alert: "SUCCESS!";
+    });
+  };
+
+  this.updateProduct = function (id, name, description, price, img1, img2) {
+    var productObj = {
+      name: name,
+      description: description,
+      price: price,
+      img1: img1,
+      img2: img2
+    };
+    return $http({
+      method: "PUT",
+      url: "/api/products/" + id,
       data: productObj
     }).success(function () {
       alert: "SUCCESS!";

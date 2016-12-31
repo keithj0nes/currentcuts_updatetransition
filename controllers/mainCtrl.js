@@ -70,7 +70,16 @@ module.exports = {
 
 
   updateProductById: function(req, res, next){
+    const updateProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2, req.params.id];
+    console.log(updateProduct);
     console.log("update function fired!");
+    db.update_product(updateProduct, function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      return res.status(200).send(product)
+    })
   },
 
 

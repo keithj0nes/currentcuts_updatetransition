@@ -2,11 +2,9 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.products = [];
   $scope.selectedProductToEdit;
-  console.log($scope.products);
   var getAllProducts = function(){
     mainService.getAllProducts().then(function(response){
       $scope.products = response;
-      console.log($scope.products);
     })
   }
 
@@ -14,6 +12,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
 //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function(product){
+    $scope.productId = product.id;
     $scope.productName = product.name;
     $scope.productDescription = product.description;
     $scope.productPrice = product.price;
@@ -22,6 +21,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   }
 
   $scope.clearForm = function(){
+    $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
     $scope.productPrice = "";
@@ -32,12 +32,19 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.add = function(name, description, price, img1, img2){
     mainService.addProduct(name, description, price, img1, img2);
+    $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
     getAllProducts()
+  }
+
+  $scope.update = function(id, name, description, price, img1, img2){
+    mainService.updateProduct(id, name, description, price, img1, img2);
+    getAllProducts()
+
   }
 
   $scope.delete = function(product){
@@ -56,11 +63,6 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
             }
           }
           mainService.deleteProduct(product);
-      // swal(
-      //   'Deleted!',
-      //   'Your file has been deleted.',
-      //   'success'
-      // )
     })
   }
 
