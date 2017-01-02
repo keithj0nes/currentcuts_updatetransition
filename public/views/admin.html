@@ -2,7 +2,10 @@
   <h1>Admin - (Username)</h1>
 
   <div class="admin-items">
-    <div class="admin-products" ng-repeat="product in products | orderBy: 'id'">
+    <div class="admin-filter">
+      <input type="text" placeholder="Search" ng-model="searchDB.name">
+    </div>
+    <div class="admin-products" ng-repeat="product in products | orderBy: 'id' | filter: searchDB">
       <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
       {{product.name}}
       <div class="edit-buttons">

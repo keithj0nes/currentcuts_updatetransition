@@ -429,10 +429,6 @@ body {
 .genus {
   color: red; }
 
-h2 {
-  font-size: 90px;
-  color: red; }
-
 .red {
   color: red;
   font-weight: bold; }
@@ -455,6 +451,12 @@ h2 {
 
 .flright {
   float: right; }
+
+.hideMobile {
+  display: none; }
+
+hr {
+  border-color: #f3f3f3; }
 
 nav {
   background: #fff;
@@ -612,9 +614,42 @@ nav {
   .product-single .description {
     padding: 20px; }
     .product-single .description hr {
-      margin: 20px 0;
-      border: 0px;
-      border-bottom: 1px solid black; }
+      margin: 20px 0; }
+
+/* ============================================
+                  CART PAGE
+============================================ */
+.pad {
+  padding: 15px 5px; }
+
+.cart-main {
+  padding: 10px; }
+  .cart-main .cart-user {
+    padding: 10px;
+    background: #fff; }
+    .cart-main .cart-user h2 {
+      font-weight: normal; }
+    .cart-main .cart-user .cart-product-info {
+      display: flex;
+      align-items: center; }
+      .cart-main .cart-user .cart-product-info .cart-product-info-container {
+        display: flex;
+        align-items: center; }
+        .cart-main .cart-user .cart-product-info .cart-product-info-container img {
+          height: 50px;
+          padding-right: 10px; }
+    .cart-main .cart-user .cart-product-qty {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+      .cart-main .cart-user .cart-product-qty div input {
+        padding: 7px;
+        width: 35px;
+        text-align: center; }
+    .cart-main .cart-user .cart-product-itemtotal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
 
 /* ============================================
                   ADMIN PAGE
@@ -623,6 +658,9 @@ nav {
   padding: 10px; }
   .admin-main h1 {
     text-align: center; }
+  .admin-main .admin-items .admin-filter input {
+    width: 100%;
+    padding: 7px; }
   .admin-main .admin-items .admin-products {
     position: relative;
     display: flex;
@@ -644,6 +682,8 @@ nav {
     margin: 20px 0; }
 
 @media only screen and (min-width: 768px) {
+  .hideMobile {
+    display: block; }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
     display: none; }
   nav .main-nav {
@@ -697,14 +737,35 @@ nav {
     .product-single img {
       padding: 40px; }
   /* ============================================
+                    CART PAGE
+  ============================================ */
+  .cart-main {
+    background: red; }
+    .cart-main .hideDesktop {
+      display: none; }
+    .cart-main hr {
+      border-color: purple; }
+    .cart-main .cart-user {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background: pink; }
+      .cart-main .cart-user .cart-product-info, .cart-main .cart-user .cart-product-qty, .cart-main .cart-user .cart-product-itemtotal {
+        display: flex;
+        flex-direction: column;
+        padding: 20px; }
+  /* ============================================
                     ADMIN PAGE
   ============================================ */
-  .admin-items {
+  .admin-main .admin-items {
     float: left;
     width: 49%; }
-  hr {
+    .admin-main .admin-items .admin-filter {
+      width: 50%;
+      margin: 0 auto; }
+  .admin-main hr {
     display: none; }
-  .admin-edit {
+  .admin-main .admin-edit {
     float: right;
     width: 49.5%; } }
 
@@ -766,6 +827,9 @@ nav {
       .product-single .description h3 {
         padding: 10px;
         font-size: 24px; }
+  /* ============================================
+                    CART PAGE
+  ============================================ */
   /* ============================================
                     ADMIN PAGE
   ============================================ */

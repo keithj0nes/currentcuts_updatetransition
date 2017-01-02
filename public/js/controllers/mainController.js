@@ -7,6 +7,10 @@ angular.module("ccvApp").controller("mainController", function($scope, mainServi
       $scope.products = response;
     })
   }
+//   $scope.random = function(){
+//    1 - Math.random();
+// };
+//   console.log($scope.random);
 
   getAllProducts();
 

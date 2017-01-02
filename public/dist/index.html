@@ -6,7 +6,7 @@
     <title>Starter Template</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
-    <link rel="stylesheet" href="./dist/styles.9ddb5ca8.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.9400e104.css" media="screen" title="no title">
 </head>
 
 <body>
@@ -23,7 +23,7 @@
     <div class="search-box-container">
       <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
         <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
-        <button class="btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
+        <button class="btn search-btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
 
       <!-- </form> -->
     </div>
@@ -67,8 +67,12 @@
             $(".main-nav").toggleClass("open");
           // });
         })
-
+      //opens search box on searchicon click
         $(".search-icon").click( function(){
+          $(".search-box-container").toggleClass("open");
+        })
+      //closes search box on searchbutton click
+        $(".search-btn").click(function(){
           $(".search-box-container").toggleClass("open");
         })
       })

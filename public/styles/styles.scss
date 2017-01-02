@@ -20,11 +20,6 @@ body {
 .genus {
   color: $secondary-color; }
 
-h2 {
-  font-size: 90px;
-  color: $secondary-color;
-}
-
 .red {
   color: red;
   font-weight: bold;
@@ -52,6 +47,14 @@ h2 {
 
 .flright {
   float: right;
+}
+
+.hideMobile {
+  display: none;
+}
+
+hr {
+  border-color: $light-gray;
 }
 
 nav {
@@ -281,10 +284,71 @@ nav {
 
     hr {
       margin: 20px 0;
-      border: 0px;
-      border-bottom: 1px solid black;
     }
   }
+}
+
+
+/* ============================================
+                  CART PAGE
+============================================ */
+.pad {
+  padding: 15px 5px;
+}
+.cart-main {
+  padding: 10px;
+
+  .cart-user {
+    padding: 10px;
+    background: #fff;
+
+    h2 {
+      font-weight: normal;
+    }
+
+    .cart-product-info {
+      display: flex;
+      align-items: center;
+      // background: red;
+
+      .cart-product-info-container {
+        display: flex;
+        align-items: center;
+
+        img {
+          height: 50px;
+          padding-right: 10px;
+        }
+      }
+    }
+
+    .cart-product-qty {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      // background: blue;
+
+
+      div input {
+        padding: 7px;
+        width: 35px;
+        text-align: center;
+      }
+    }
+    .cart-product-itemtotal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      // background: yellow;
+      // padding-left: 5px;
+
+    }
+  }
+
+
+
+
+
 }
 
 /* ============================================
@@ -299,6 +363,13 @@ nav {
   }
 
   .admin-items {
+
+    .admin-filter {
+      input {
+        width: 100%;
+        padding: 7px;
+      }
+    }
 
     .admin-products {
       position: relative;
@@ -317,7 +388,6 @@ nav {
     .admin-products:hover {
       background-color: #d9d9d9;
     }
-
   }
 
   .admin-edit {
@@ -343,6 +413,9 @@ nav {
 
 @media only screen and (min-width: 768px) {
 
+.hideMobile {
+  display: block;
+}
   nav {
   //hide hamburger bar
     .hamburger-icon {
@@ -429,13 +502,57 @@ nav {
       padding: 40px;
     }
   }
+
+  /* ============================================
+                    CART PAGE
+  ============================================ */
+
+
+  .cart-main {
+    background: red;
+
+    .hideDesktop {
+      display: none;
+    }
+    hr {
+      border-color: purple;
+    }
+
+    .cart-user {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background: pink;
+
+
+      .cart-product-info, .cart-product-qty, .cart-product-itemtotal {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+
+        // div {padding:20px;}
+      }
+
+
+    }
+  }
+
+
+
   /* ============================================
                     ADMIN PAGE
   ============================================ */
 
+.admin-main {
+
   .admin-items {
     float:left;
     width: 49%;
+
+    .admin-filter {
+      width: 50%;
+      margin: 0 auto;
+    }
   }
 
   hr {
@@ -446,6 +563,9 @@ nav {
     float:right;
     width: 49.5%;
   }
+}
+
+
 
 
 
@@ -543,6 +663,14 @@ nav {
       }
     }
   }
+
+
+  /* ============================================
+                    CART PAGE
+  ============================================ */
+
+
+
 
   /* ============================================
                     ADMIN PAGE

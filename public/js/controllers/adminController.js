@@ -38,12 +38,12 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
-    getAllProducts()
+    getAllProducts();
   }
 
   $scope.update = function(id, name, description, price, img1, img2){
     mainService.updateProduct(id, name, description, price, img1, img2);
-    getAllProducts()
+    getAllProducts();
 
   }
 
@@ -57,12 +57,12 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then(function () {
-          for (var i = $scope.products.length-1; i >= 0; i--) {
-            if($scope.products[i].id === product.id){
-              $scope.products.splice(i, 1);
-            }
+        for (var i = $scope.products.length-1; i >= 0; i--) {
+          if($scope.products[i].id === product.id){
+            $scope.products.splice(i, 1);
           }
-          mainService.deleteProduct(product);
+        }
+      mainService.deleteProduct(product);
     })
   }
 

@@ -4363,6 +4363,10 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
       $scope.products = response;
     });
   };
+  //   $scope.random = function(){
+  //    1 - Math.random();
+  // };
+  //   console.log($scope.random);
 
   getAllProducts();
 });
@@ -4398,28 +4402,6 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
   var searchTerm = $stateParams.search;
 
   $scope.test = "HEY";
-  // $scope.searchProducts = [
-  //   {
-  //     name: "hello",
-  //     price: 555
-  //   }
-  // ];
-  // $scope.searchProduct = function(searchTerm){
-  //   mainService.getProductByName(searchTerm).then(function(response){
-  //   // $scope.$apply(function() {
-  //
-  //     $scope.searchProducts = response;
-  //   // })
-  //   // $scope.searchProducts = response;
-  //     console.log(response, "response in controller");
-  //     // var arr = []
-  //     // for(var i = 0; i < response.length; i++) {
-  //     //   console.log(response[i].name);
-  //     // }
-  //     // console.log($scope.searchProducts, "should be same as line controller line 12");
-  //
-  //   })
-  // }
 
   console.log(searchTerm, "searchTerm");
 

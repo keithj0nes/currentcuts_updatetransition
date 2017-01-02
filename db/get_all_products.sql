@@ -1,2 +1,3 @@
 SELECT * FROM products
-order by id asc;
+-- ORDER BY random()
+-- LIMIT 3;
