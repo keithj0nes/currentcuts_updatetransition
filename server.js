@@ -5,8 +5,11 @@ const cors = require("cors");
 const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
+const FacebookStrategy = require("passport-facebook").Strategy;
 
 const app = module.exports = express();
+
+// var userSchema
 
 //sync to database
 var conn = massive.connectSync({
@@ -30,6 +33,64 @@ app.use(session({
 }));
 app.use(cors());
 app.use(express.static(__dirname + "/public"));    //current file directory + /public folder
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+passport.use(new FacebookStrategy({
+    clientID: config.facebookAuth.clientID,
+    clientSecret: config.facebookAuth.clientSecret,
+    callbackURL: config.facebookAuth.callbackURL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    var user = {
+      profile: profile,
+      token: accessToken
+    }
+    // console.log(profile.email, "show email");
+    done(null, user)
+  }
+));
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
+var requireAuth = function(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return res.status(403).end();
+    }
+    return next();
+};
+
+
+
+// var userSchema = {
+//     local            : {
+//         email        : '',
+//         password     : '',
+//     },
+//     facebook         : {
+//         id           : '',
+//         token        : '',
+//         email        : '',
+//         name         : ''
+//       }
+// }
+
+app.get("/auth/facebook", passport.authenticate('facebook', {scope: 'email'}));
+app.get("/auth/facebook/callback", passport.authenticate("facebook", {
+failureRedirect: '/#/', successRedirect:'/#/cart'
+}))
+
+
+
+
 
 
 
@@ -62,15 +123,3 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 app.listen(config.port, function(){
   console.log("listening on port", config.port);
 })
-
-
-
-
-
-  // {
-  //   "name": "Hey man",
-  //   "description": "Wanddfasdgas decal",
-  //   "price": 4,
-  //   "img1": "linktoimageone",
-  //   "img2": "linktoimage2"
-  // },

@@ -456,80 +456,116 @@ body {
   display: none; }
 
 hr {
-  border-color: #f3f3f3; }
+  border-color: #f3f3f3;
+  border-top: none;
+  border-left: none; }
 
+.w25 {
+  width: 25%; }
+
+.w50 {
+  width: 50%; }
+
+/* ============================================
+                  INDEX PAGE
+============================================ */
 nav {
   background: #fff;
   position: relative;
-  /* ===============================
-            HAMBURGER MENU
-  =============================== */ }
-  nav .hamburger-icon {
-    display: inline-block;
-    cursor: pointer;
-    padding-left: 20px;
-    padding-top: 2px; }
-    nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
-      width: 35px;
-      height: 5px;
-      background-color: #333;
-      margin: 6px 0;
-      transition: 0.4s;
-      border-radius: 5px; }
-  nav .change .nbar1 {
-    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-    transform: rotate(-45deg) translate(-9px, 6px); }
-  nav .change .nbar2 {
-    opacity: 0; }
-  nav .change .nbar3 {
-    -webkit-transform: rotate(45deg) translate(-8px, -8px);
-    transform: rotate(45deg) translate(-8px, -8px); }
-  nav ul.open {
-    height: auto; }
-  nav .main-nav {
-    width: 100%;
-    overflow: hidden;
-    height: 0; }
-    nav .main-nav li {
-      float: none;
-      text-align: center;
-      width: 100%;
-      margin: 0; }
-      nav .main-nav li a {
-        color: black;
-        padding: 10px;
-        border-bottom: 1px solid black;
-        display: block;
-        margin: 0; }
-      nav .main-nav li a:hover {
-        background-color: #f5f5f5; }
-  nav .search-icon {
-    font-size: 36px;
-    padding-left: 10px;
-    cursor: pointer; }
-  nav .search-box-container.open {
-    display: flex;
-    justify-content: space-around;
-    margin: 15px auto;
-    padding: 0 20px; }
-  nav .search-box-container {
-    display: none; }
-    nav .search-box-container .search-box {
-      width: 70%;
-      padding: 7px 15px;
-      font-size: 20px; }
-    nav .search-box-container button.btn {
-      font-size: 20px; }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f3f3f3;
+  /* =================== HAMBURGER MENU ================= */ }
+  nav .ham-search-container {
+    padding-left: 20px; }
+    nav .ham-search-container .hamburger-icon {
+      display: inline-block;
+      cursor: pointer;
+      margin-right: 4px; }
+      nav .ham-search-container .hamburger-icon .nbar1, nav .ham-search-container .hamburger-icon .nbar2, nav .ham-search-container .hamburger-icon .nbar3 {
+        width: 35px;
+        height: 5px;
+        background-color: #333;
+        margin: 6px 0;
+        transition: 0.4s;
+        border-radius: 5px; }
+    nav .ham-search-container .change .nbar1 {
+      -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+      transform: rotate(-45deg) translate(-9px, 6px); }
+    nav .ham-search-container .change .nbar2 {
+      opacity: 0; }
+    nav .ham-search-container .change .nbar3 {
+      -webkit-transform: rotate(45deg) translate(-8px, -8px);
+      transform: rotate(45deg) translate(-8px, -8px); }
+    nav .ham-search-container .search-icon {
+      font-size: 36px;
+      cursor: pointer; }
   nav .logo {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translate(-50%);
-    cursor: pointer; }
+    text-align: center;
+    padding: 20px 0; }
     nav .logo img {
-      height: 30px; }
+      height: 30px;
+      cursor: pointer; }
+  nav .login-cart-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px; }
+    nav .login-cart-container a:first-child {
+      visibility: hidden; }
+    nav .login-cart-container a {
+      color: black;
+      padding: 10px;
+      margin: 0 20px;
+      border-bottom: 1px solid transparent; }
+    nav .login-cart-container a:hover {
+      border-bottom: 1px solid black; }
+    nav .login-cart-container i {
+      font-size: 36px;
+      cursor: pointer; }
 
 /*end nav*/
+.search-box-container.open {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 15px 20px;
+  background: white;
+  border-bottom: 1px solid #f3f3f3; }
+
+.search-box-container {
+  display: none; }
+  .search-box-container .search-box {
+    width: 70%;
+    padding: 7px 15px;
+    font-size: 20px; }
+  .search-box-container button.btn {
+    font-size: 20px;
+    min-width: 20%; }
+
+ul.open {
+  height: auto; }
+
+.main-nav {
+  width: 100%;
+  overflow: hidden;
+  height: 0;
+  background: white; }
+  .main-nav li {
+    float: none;
+    text-align: center;
+    width: 100%;
+    margin: 0; }
+    .main-nav li a {
+      color: black;
+      padding: 10px;
+      border-bottom: 1px solid black;
+      display: block;
+      margin: 0; }
+    .main-nav li a:hover {
+      background-color: #f5f5f5; }
+
 /* ============================================
                   HOME PAGE
 ============================================ */
@@ -624,32 +660,35 @@ nav {
 
 .cart-main {
   padding: 10px; }
-  .cart-main .cart-user {
+  .cart-main .cart-user-m {
     padding: 10px;
     background: #fff; }
-    .cart-main .cart-user h2 {
+    .cart-main .cart-user-m h2 {
       font-weight: normal; }
-    .cart-main .cart-user .cart-product-info {
+    .cart-main .cart-user-m .cart-product-info-m {
       display: flex;
       align-items: center; }
-      .cart-main .cart-user .cart-product-info .cart-product-info-container {
+      .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m {
         display: flex;
         align-items: center; }
-        .cart-main .cart-user .cart-product-info .cart-product-info-container img {
+        .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m img {
           height: 50px;
           padding-right: 10px; }
-    .cart-main .cart-user .cart-product-qty {
+    .cart-main .cart-user-m .cart-product-qty-m {
       display: flex;
       justify-content: space-between;
       align-items: center; }
-      .cart-main .cart-user .cart-product-qty div input {
+      .cart-main .cart-user-m .cart-product-qty-m div input {
         padding: 7px;
         width: 35px;
         text-align: center; }
-    .cart-main .cart-user .cart-product-itemtotal {
+    .cart-main .cart-user-m .cart-product-itemtotal-m {
       display: flex;
       justify-content: space-between;
       align-items: center; }
+    .cart-main .cart-user-m hr.lastItem {
+      border-width: 5px;
+      border-color: #a1a1a1; }
 
 /* ============================================
                   ADMIN PAGE
@@ -686,15 +725,28 @@ nav {
     display: block; }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
     display: none; }
-  nav .main-nav {
+  nav .search-icon {
+    font-size: 36px;
+    cursor: pointer; }
+  nav .search-box-container .search-box {
+    width: 85%; }
+  nav .logo img {
+    height: 40px;
+    cursor: pointer; }
+  nav .login-cart-container {
+    visibility: visible;
+    text-align: right; }
+    nav .login-cart-container a:first-child {
+      visibility: visible; }
+  .main-nav {
     width: 100%;
     height: auto;
     display: flex;
     justify-content: space-around;
     margin: 0 auto; }
-    nav .main-nav li {
+    .main-nav li {
       margin: 0 auto; }
-      nav .main-nav li a {
+      .main-nav li a {
         color: black;
         padding: 10px;
         border-bottom: none;
@@ -702,21 +754,9 @@ nav {
         width: 80%;
         margin: 0 auto;
         border-bottom: 1px solid transparent; }
-      nav .main-nav li a:hover {
+      .main-nav li a:hover {
         background-color: white;
         border-bottom: 1px solid black; }
-  nav .search-icon {
-    font-size: 36px;
-    padding: 15px;
-    cursor: pointer; }
-  nav .search-box-container .search-box {
-    width: 85%; }
-  nav .logo {
-    top: 13px;
-    cursor: pointer;
-    padding: 0px; }
-    nav .logo img {
-      height: 40px; }
   /* ============================================
                     HOME PAGE
   ============================================ */
@@ -739,21 +779,47 @@ nav {
   /* ============================================
                     CART PAGE
   ============================================ */
+  .w50 {
+    width: 50%; }
+  .w25 {
+    width: 25%; }
+  .center {
+    text-align: center; }
   .cart-main {
-    background: red; }
+    background: #fff;
+    max-width: 800px;
+    margin: 20px auto 0; }
+    .cart-main .cart-user-d h2 {
+      font-weight: normal; }
+    .cart-main .cart-user-d .cart-product-info-d,
+    .cart-main .cart-user-d .cart-product-qty-d,
+    .cart-main .cart-user-d .cart-product-itemtotal-d {
+      display: flex;
+      justify-content: space-between; }
+    .cart-main .cart-user-d .cart-product-info-container-d {
+      display: flex;
+      justify-content: space-between; }
+      .cart-main .cart-user-d .cart-product-info-container-d .d {
+        display: inline-flex;
+        align-items: center; }
+        .cart-main .cart-user-d .cart-product-info-container-d .d img {
+          height: 50px;
+          padding-right: 10px; }
+      .cart-main .cart-user-d .cart-product-info-container-d .cart-product-qty-d input {
+        padding: 7px;
+        width: 35px;
+        margin: 0 auto;
+        text-align: center; }
+      .cart-main .cart-user-d .cart-product-info-container-d .cart-product-itemtotal-d {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+    .cart-main .cart-user-d hr.lastItem {
+      border-width: 5px;
+      border-color: #a1a1a1; }
     .cart-main .hideDesktop {
       display: none; }
-    .cart-main hr {
-      border-color: purple; }
-    .cart-main .cart-user {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      background: pink; }
-      .cart-main .cart-user .cart-product-info, .cart-main .cart-user .cart-product-qty, .cart-main .cart-user .cart-product-itemtotal {
-        display: flex;
-        flex-direction: column;
-        padding: 20px; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */
@@ -830,14 +896,16 @@ nav {
   /* ============================================
                     CART PAGE
   ============================================ */
+  .cart-main {
+    max-width: 960px;
+    margin: 40px auto 0; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */
   .admin-main {
     padding: 20px; }
     .admin-main .admin-edit {
-      position: fixed;
-      right: 0;
-      padding-right: 20px; } }
+      padding-right: 20px;
+      padding-bottom: 100px; } }
 
 /*# sourceMappingURL=maps/styles.css.map */

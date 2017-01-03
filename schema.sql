@@ -14,6 +14,7 @@ CREATE TABLE users (
   email TEXT,
   password TEXT,
   paypalId TEXT,
+  -- facebookId TEXT,
   registered TIMESTAMP
 );
 

@@ -6,33 +6,46 @@
     <title>Starter Template</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
-    <link rel="stylesheet" href="./dist/styles.9400e104.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.fbefce48.css" media="screen" title="no title">
 </head>
 
 <body>
 
 <header>
-  <nav >
-    <div class="hamburger-icon">
-      <div class="nbar1"></div>
-      <div class="nbar2"></div>
-      <div class="nbar3"></div>
-    </div>
+  <nav>
+    <div class="ham-search-container w25">
+      <div class="hamburger-icon">
+        <div class="nbar1"></div>
+        <div class="nbar2"></div>
+        <div class="nbar3"></div>
+      </div>
 
-    <i class="material-icons search-icon">search</i>
-    <div class="search-box-container">
-      <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
-        <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
-        <button class="btn search-btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
+      <i class="material-icons search-icon">search</i>
 
-      <!-- </form> -->
     </div>
-    <div class="logo">
+    <div class="logo w50">
       <img src="img/logo.png" alt="currentcuts.com" ui-sref="home">
 
     </div>
 
+    <div class="login-cart-container w25">
+      <!-- <form method="get" action="/auth/facebook">
+        <button class="btn" type="submit">Login with Facebook</button>
+      </form> -->
+      <a ui-sref="home" class="login">Login</a>
 
+      <i class="material-icons" ui-sref="home">shopping_cart</i>
+
+    </div>
+
+  </nav>
+  <div class="search-box-container">
+    <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
+      <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
+      <button class="btn search-btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
+
+    <!-- </form> -->
+  </div>
     <ul class="main-nav">
       <li><a href="#">Shop</a></li>
       <li><a href="#">Shop</a></li>
@@ -40,7 +53,6 @@
       <li><a href="#">Shop</a></li>
       <li><a href="#">Shop</a></li>
     </ul>
-  </nav>
 
 </header>
 

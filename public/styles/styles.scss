@@ -3,6 +3,7 @@ $primary-color: purple;
 $secondary-color: red;
 $accent-color: ;
 $light-gray: #f3f3f3;
+$charcoal: #a1a1a1;
 
 body {
   // overflow: hidden; //stops scroll from moving above page in chrome/safari
@@ -30,6 +31,7 @@ body {
   background-color: #fff;
   border: 1px solid #000;
   border-radius: 3px;
+  // box-shadow: 0px 0px 10px 1px;
 }
 
 .btn:hover {
@@ -55,113 +57,175 @@ body {
 
 hr {
   border-color: $light-gray;
+  border-top: none;
+  border-left: none;
 }
+
+.w25 {
+  width: 25%;
+  // background-color: red;
+}
+
+.w50 {
+  width: 50%;
+  // background: blue;
+}
+
+/* ============================================
+                  INDEX PAGE
+============================================ */
 
 nav {
   background: #fff;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $light-gray;
 
-  /* ===============================
-            HAMBURGER MENU
-  =============================== */
-
-  .hamburger-icon {
-    display: inline-block;
-    cursor: pointer;
+/* =================== HAMBURGER MENU ================= */
+  .ham-search-container {
     padding-left: 20px;
-    padding-top: 2px;
 
-    .nbar1, .nbar2, .nbar3 {
-        width: 35px;
-        height: 5px;
-        background-color: #333;
-        margin: 6px 0;
-        transition: 0.4s;
-        border-radius: 5px;
-    }
-  }
+    .hamburger-icon {
+      display: inline-block;
+      cursor: pointer;
+      margin-right: 4px;
+      // padding-top: 2px;
 
-  .change .nbar1 {
-      -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
-      transform: rotate(-45deg) translate(-9px, 6px) ;
-  }
-
-  .change .nbar2 {
-    opacity: 0;
-  }
-
-  .change .nbar3 {
-      -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
-      transform: rotate(45deg) translate(-8px, -8px) ;
-  }
-
-  ul.open {
-    height: auto;
-  }
-
-  .main-nav {
-    width: 100%;
-    overflow: hidden;
-    height: 0;
-
-    li {
-      float: none;
-      text-align: center;
-      width: 100%;
-      margin: 0;
-
-      a {
-        color: black;
-        padding: 10px;
-        border-bottom: 1px solid black;
-        display: block;
-        margin: 0;
-      }
-
-      a:hover {
-        background-color: #f5f5f5;
+      .nbar1, .nbar2, .nbar3 {
+          width: 35px;
+          height: 5px;
+          background-color: #333;
+          margin: 6px 0;
+          transition: 0.4s;
+          border-radius: 5px;
       }
     }
-  }
 
-  .search-icon {
-    font-size: 36px;
-    padding-left: 10px;
-    cursor: pointer;
-  }
-
-  .search-box-container.open {
-    display:flex;
-    justify-content: space-around;
-    margin: 15px auto;
-    padding: 0 20px;
-  }
-
-  .search-box-container {
-    display: none;
-
-    .search-box {
-      width: 70%;
-      padding: 7px 15px;
-      font-size: 20px;
+    .change .nbar1 {
+        -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+        transform: rotate(-45deg) translate(-9px, 6px) ;
     }
 
-    button.btn {
-      font-size: 20px;
+    .change .nbar2 {
+      opacity: 0;
+    }
+
+    .change .nbar3 {
+        -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+        transform: rotate(45deg) translate(-8px, -8px) ;
+    }
+
+    .search-icon {
+      font-size: 36px;
+      // padding-left: 10px;
+      cursor: pointer;
     }
   }
+
 
   .logo {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translate(-50%);
-    cursor: pointer;
+    text-align: center;
+    padding: 20px 0;
+
     img {
       height: 30px;
+      cursor: pointer;
+
     }
   }
+
+  .login-cart-container {
+    // visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+
+
+    a:first-child {
+      visibility: hidden;
+    }
+
+    a {
+      color: black;
+      padding: 10px;
+      // display: inline-block;
+      // width: 80%;
+      margin: 0 20px;
+      border-bottom: 1px solid transparent;
+    }
+
+    a:hover {
+      // background-color: white;
+      border-bottom: 1px solid black;
+    }
+
+    i {
+      font-size: 36px;
+      cursor: pointer;
+    }
+
+
+  }
+
+
 } /*end nav*/
+
+.search-box-container.open {
+  display:flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 15px 20px;
+  background: white;
+  border-bottom: 1px solid $light-gray;
+}
+
+.search-box-container {
+  display: none;
+
+  .search-box {
+    width: 70%;
+    padding: 7px 15px;
+    font-size: 20px;
+  }
+
+  button.btn {
+    font-size: 20px;
+    min-width: 20%;
+  }
+}
+
+ul.open {
+  height: auto;
+}
+
+.main-nav {
+  width: 100%;
+  overflow: hidden;
+  height: 0;
+  background: white;
+
+  li {
+    float: none;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+
+    a {
+      color: black;
+      padding: 10px;
+      border-bottom: 1px solid black;
+      display: block;
+      margin: 0;
+    }
+
+    a:hover {
+      background-color: #f5f5f5;
+    }
+  }
+}
 
 
 /* ============================================
@@ -298,7 +362,7 @@ nav {
 .cart-main {
   padding: 10px;
 
-  .cart-user {
+  .cart-user-m {
     padding: 10px;
     background: #fff;
 
@@ -306,12 +370,12 @@ nav {
       font-weight: normal;
     }
 
-    .cart-product-info {
+    .cart-product-info-m {
       display: flex;
       align-items: center;
       // background: red;
 
-      .cart-product-info-container {
+      .cart-product-info-container-m {
         display: flex;
         align-items: center;
 
@@ -322,12 +386,11 @@ nav {
       }
     }
 
-    .cart-product-qty {
+    .cart-product-qty-m {
       display: flex;
       justify-content: space-between;
       align-items: center;
       // background: blue;
-
 
       div input {
         padding: 7px;
@@ -335,13 +398,19 @@ nav {
         text-align: center;
       }
     }
-    .cart-product-itemtotal {
+
+    .cart-product-itemtotal-m {
       display: flex;
       justify-content: space-between;
       align-items: center;
       // background: yellow;
       // padding-left: 5px;
 
+    }
+
+    hr.lastItem {
+      border-width: 5px;
+      border-color: $charcoal;
     }
   }
 
@@ -413,9 +482,10 @@ nav {
 
 @media only screen and (min-width: 768px) {
 
-.hideMobile {
-  display: block;
-}
+  .hideMobile {
+    display: block;
+  }
+
   nav {
   //hide hamburger bar
     .hamburger-icon {
@@ -424,36 +494,9 @@ nav {
       }
     }
 
-    .main-nav {
-      width: 100%;
-      height: auto;
-      display: flex;
-      justify-content: space-around;
-      margin: 0 auto;
-
-      li {
-        margin: 0 auto;
-
-        a {
-          color: black;
-          padding: 10px;
-          border-bottom: none;
-          display: block;
-          width: 80%;
-          margin: 0 auto;
-          border-bottom: 1px solid transparent;
-        }
-
-        a:hover {
-          background-color: white;
-          border-bottom: 1px solid black;
-        }
-      }
-    }
-
     .search-icon {
       font-size: 36px;
-      padding: 15px;
+      // margin: 0 20px;
       cursor: pointer;
     }
 
@@ -464,16 +507,47 @@ nav {
     }
 
     .logo {
-      top: 13px;
-      cursor: pointer;
-      padding: 0px;
-
       img {
         height: 40px;
+        cursor: pointer;
+      }
+    }
+
+    .login-cart-container {
+      visibility: visible;
+      text-align: right;
+
+      a:first-child {
+        visibility: visible;
       }
     }
   }
+  .main-nav {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
 
+    li {
+      margin: 0 auto;
+
+      a {
+        color: black;
+        padding: 10px;
+        border-bottom: none;
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        border-bottom: 1px solid transparent;
+      }
+
+      a:hover {
+        background-color: white;
+        border-bottom: 1px solid black;
+      }
+    }
+  }
   /* ============================================
                     HOME PAGE
   ============================================ */
@@ -506,34 +580,80 @@ nav {
   /* ============================================
                     CART PAGE
   ============================================ */
+  .pad {
 
+  }
+
+  .w50 {
+    width: 50%;
+  }
+
+  .w25 {
+    width: 25%;
+  }
+
+  .center {
+    text-align: center;
+  }
 
   .cart-main {
-    background: red;
+    background: #fff;
+    max-width: 800px;
+    margin: 20px auto 0;
 
-    .hideDesktop {
-      display: none;
-    }
-    hr {
-      border-color: purple;
-    }
+    .cart-user-d {
 
-    .cart-user {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      background: pink;
-
-
-      .cart-product-info, .cart-product-qty, .cart-product-itemtotal {
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-
-        // div {padding:20px;}
+      h2 {
+        font-weight: normal;
       }
 
+        .cart-product-info-d,
+        .cart-product-qty-d,
+        .cart-product-itemtotal-d {
+          display: flex;
+          justify-content: space-between;
+        }
 
+        .cart-product-info-container-d {
+          display: flex;
+          justify-content: space-between;
+
+          .d {
+            display: inline-flex;
+            align-items: center;
+
+            img {
+              height: 50px;
+              padding-right: 10px;
+            }
+          }
+
+          .cart-product-qty-d {
+
+            input {
+              padding: 7px;
+              width: 35px;
+              margin: 0 auto;
+              text-align: center;
+            }
+           }
+
+           .cart-product-itemtotal-d {
+             text-align: center;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+           }
+         }
+
+      hr.lastItem {
+        // border: 5px dashed;
+        border-width: 5px;
+        border-color: $charcoal;
+      }
+    }
+    .hideDesktop {
+      display: none;
     }
   }
 
@@ -669,7 +789,10 @@ nav {
                     CART PAGE
   ============================================ */
 
-
+  .cart-main {
+    max-width: 960px;
+    margin: 40px auto 0;
+  }
 
 
   /* ============================================
@@ -680,11 +803,14 @@ nav {
     padding: 20px;
 
     .admin-edit {
-      position: fixed;
-      right: 0;
+      // position: fixed;
+      // right: 0;
       padding-right: 20px;
+      padding-bottom: 100px;
     }
   }
+
+
 } //end min-width: 1100px
 
 
