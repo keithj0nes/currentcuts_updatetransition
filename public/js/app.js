@@ -23,6 +23,16 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/search.html",
       controller: "searchController"
     })
+    .state("login",{
+      url: "/login",
+      templateUrl: "views/login.html",
+      // controller: "adminController"
+    })
+    .state("login",{
+      url: "/adventure",
+      templateUrl: "views/categories/adventure.html",
+      // controller: "adminController"
+    })
     .state("admin",{
       url: "/admin",
       templateUrl: "views/admin.html",

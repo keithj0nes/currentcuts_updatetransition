@@ -18,6 +18,12 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     url: "/search/:search",
     templateUrl: "views/search.html",
     controller: "searchController"
+  }).state("login", {
+    url: "/login",
+    templateUrl: "views/login.html"
+  }).state("login", {
+    url: "/adventure",
+    templateUrl: "views/categories/adventure.html"
   }).state("admin", {
     url: "/admin",
     templateUrl: "views/admin.html",
