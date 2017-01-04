@@ -10,6 +10,9 @@ body {
   background-color: $light-gray;
 }
 
+h1,h2,h3,h4 {
+  font-weight: normal;
+}
 .name {
   font-size: 22px;
   color: $primary-color; }
@@ -28,6 +31,16 @@ body {
   border: 1px solid #000;
   border-radius: 3px;
   // box-shadow: 0px 0px 10px 1px;
+}
+
+.btn-facebook {
+  background-color: #4f6eae;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 15px;
+  width: 100%;
+  cursor: pointer;
 }
 
 .btn:hover {
@@ -55,6 +68,12 @@ hr {
   border-color: $light-gray;
   border-top: none;
   border-left: none;
+  margin: 15px 0;
+}
+
+hr.lastItem {
+  border-width: 5px;
+  border-color: $light-gray;
 }
 
 .w25 {
@@ -65,6 +84,10 @@ hr {
 .w50 {
   width: 50%;
   // background: blue;
+}
+
+.w75 {
+  width: 75%;
 }
 
 /* ============================================
@@ -272,7 +295,6 @@ ul.open {
     h2.desc {
       font-size: 16px;
       color: #000;
-      font-weight: normal;
       margin-bottom: 5px;
     }
 
@@ -298,7 +320,6 @@ ul.open {
   h1 {
     font-size: 50px;
     text-align: center;
-    font-weight: normal;
   }
 }
 
@@ -322,7 +343,6 @@ ul.open {
     h2.desc {
       font-size: 20px;
       color: #000;
-      font-weight: normal;
       margin-bottom: 5px;
     }
 
@@ -370,10 +390,6 @@ ul.open {
 
   .description {
     padding: 20px;
-
-    hr {
-      margin: 20px 0;
-    }
   }
 }
 
@@ -382,18 +398,14 @@ ul.open {
                   CART PAGE
 ============================================ */
 .pad {
-  padding: 15px 5px;
+  padding: 0px 10px;
 }
 .cart-main {
+  background-color: #fff;
   padding: 10px;
+  margin: 10px;
 
   .cart-user-m {
-    padding: 10px;
-    background: #fff;
-
-    h2 {
-      font-weight: normal;
-    }
 
     .cart-product-info-m {
       display: flex;
@@ -430,19 +442,29 @@ ul.open {
       align-items: center;
       // background: yellow;
       // padding-left: 5px;
-
     }
 
-    hr.lastItem {
-      border-width: 5px;
-      border-color: $charcoal;
-    }
+
   }
 
+  .total-disc-ship {
 
+    .d {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
 
+      div {
+        // display: flex;
+        // justify-content: flex-end;
+        text-align: right;
+      }
 
-
+      .aleft {
+        text-align: left;
+      }
+    }
+  }
 }
 
 /* ============================================
@@ -494,13 +516,6 @@ ul.open {
       padding: 10px 0;
     }
   }
-
-
-
-  hr {
-    margin: 20px 0;
-  }
-
 }
 
 
@@ -522,6 +537,16 @@ ul.open {
 }
 
 @media only screen and (min-width: 768px) {
+
+  .btn-facebook {
+    width: 50%;
+  }
+
+  form {
+    text-align: center;
+  }
+
+
 
   .hideMobile {
     display: block;
@@ -643,28 +668,23 @@ ul.open {
 
   }
 
-  .w50 {
-    width: 50%;
-  }
-
-  .w25 {
-    width: 25%;
-  }
+  // .w50 {
+  //   width: 50%;
+  // }
+  //
+  // .w25 {
+  //   width: 25%;
+  // }
 
   .center {
     text-align: center;
   }
 
   .cart-main {
-    background: #fff;
     max-width: 800px;
-    margin: 20px auto 0;
+    margin: 20px auto;
 
     .cart-user-d {
-
-      h2 {
-        font-weight: normal;
-      }
 
         .cart-product-info-d,
         .cart-product-qty-d,
@@ -705,14 +725,25 @@ ul.open {
            }
          }
 
-      hr.lastItem {
-        // border: 5px dashed;
-        border-width: 5px;
-        border-color: $charcoal;
-      }
     }
+
     .hideDesktop {
       display: none;
+    }
+
+    .total-disc-ship {
+
+      .d {
+
+        div {
+          text-align: center;
+        }
+
+        .aleft {
+          text-align: right;
+          padding-right: 80px;
+        }
+      }
     }
   }
 
@@ -801,7 +832,6 @@ ul.open {
       h2.desc {
         font-size: 30px;
         color: #000;
-        font-weight: normal;
         margin-bottom: 15px;
       }
 
@@ -874,7 +904,7 @@ ul.open {
     .admin-edit {
       // position: fixed;
       // right: 0;
-      padding-right: 20px;
+
       padding-bottom: 100px;
     }
   }

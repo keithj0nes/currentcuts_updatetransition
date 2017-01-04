@@ -45,6 +45,18 @@ module.exports = {
 
   },
 
+  getProductByCategory: function(req, res, next){
+    console.log(req.params.id);
+    db.get_product_by_cat([req.params.id], function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      console.log("Specific item");
+      return res.send(product)
+    })
+  },
+
 //post
   addProductToDB: function(req, res, next){
     const newProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2];

@@ -2,6 +2,24 @@ angular.module("ccvApp", ["ui.router"])
 
 .config(function($stateProvider, $urlRouterProvider){
 
+
+
+  var adminResolve = {
+    security: (mainService, $state) => {
+      return mainService.getAuth()
+        .catch((err) => {
+          console.log(err);
+          if(err.status === 401){
+            $state.go("login");
+          } else if (err.status === 403){
+            $state.go("home");
+          }
+        })
+    }
+  }
+
+
+
   $stateProvider
     .state("home",{
       url: "/",
@@ -28,7 +46,12 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/login.html",
       // controller: "adminController"
     })
-    .state("login",{
+    .state("loginsuccess",{
+      url: "/login-success",
+      templateUrl: "views/login-success.html",
+      // controller: "adminController"
+    })
+    .state("adventure",{
       url: "/adventure",
       templateUrl: "views/categories/adventure.html",
       // controller: "adminController"
@@ -36,7 +59,8 @@ angular.module("ccvApp", ["ui.router"])
     .state("admin",{
       url: "/admin",
       templateUrl: "views/admin.html",
-      controller: "adminController"
+      controller: "adminController",
+      resolve: adminResolve
     })
 
     $urlRouterProvider

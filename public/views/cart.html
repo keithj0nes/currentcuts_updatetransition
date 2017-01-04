@@ -12,7 +12,8 @@
 
       <div class="cart-product-info-container-m">
         <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal</p>
+        <p>$4.00 | Take A Hike vinyl Decal<br>
+        <span style="font-size: 13px;"><strong>color:</strong> red | <strong>size:</strong> 4"H x 10"W</span></p>
       </div>
     </div>
 
@@ -38,17 +39,47 @@
       </div>
     </div>
 
-    <hr class="lastItem">
+    <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
 
-    <!-- END SINGLE ITEM IN CART -->
+    <div class="cart-product-info-m pad"> <!-- ng-repeat items in cart -->
+
+
+      <div class="cart-product-info-container-m">
+        <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
+        <p>$4.00 | Take A Hike vinyl Decal<br>
+        <span style="font-size: 13px;"><strong>color:</strong> blue | <strong>size:</strong> 4"H x 10"W</span></p>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="cart-product-qty-m pad">
+      <div>
+        <h4>QTY</h4>
+      </div>
+      <div>
+        <input type="text" name="" value="3">
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="cart-product-itemtotal-m pad">
+      <div>
+        <h4>Item Total</h4>
+      </div>
+      <div>
+        $12.00
+      </div>
+    </div>
+
+    <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
+
   </div>
 
 
 
-
-
-
-
+<!-- desktop view -->
 
 
 
@@ -62,6 +93,7 @@
       <div class="description w50">
         <h4>Description</h4>
       </div>
+
       <div class="qty w25 center">
         <h4>QTY</h4>
       </div>
@@ -76,7 +108,9 @@
     <div class="cart-product-info-container-d pad">
       <div class="d w50">
         <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal</p>
+        <p>$4.00 | Take A Hike vinyl Decal <br>
+        <span style="font-size: 13px;"><strong>color:</strong> red | <strong>size:</strong> 4"H x 10"W</span></p>
+
       </div>
 
       <div class="cart-product-qty-d pad w25">
@@ -86,7 +120,6 @@
       <div class="cart-product-itemtotal-d pad w25 center">
           $8.00
       </div>
-
     </div>
 
     <hr class="lastItem">
@@ -111,7 +144,9 @@
     <div class="cart-product-info-container-d pad">
       <div class="d w50">
         <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal</p>
+        <p>$4.00 | Take A Hike vinyl Decal <br>
+        <span style="font-size: 13px;"><strong>color:</strong> blue | <strong>size:</strong> 4"H x 10"W</span></p>
+
       </div>
 
       <div class="cart-product-qty-d pad w25">
@@ -121,11 +156,70 @@
       <div class="cart-product-itemtotal-d pad w25 center">
           $12.00
       </div>
-
     </div>
 
     <hr class="lastItem">
   </div>
 
 
+
+
+
+  <!---------------  START CART TOTAL -------------->
+
+  <div class="total-disc-ship pad">
+
+    <div class="d">
+      <div class="w75 aleft">
+        Total
+      </div>
+      <div class="w25">
+        $20.00
+      </div>
+    </div>
+
+    <!-- <div class="d">
+      <div class="w75 aleft">
+        Discount
+      </div>
+      <div class="w25">
+        $0.00
+      </div>
+    </div> -->
+
+    <div class="d">
+      <div class="w75 aleft">
+        Shipping
+      </div>
+      <div class="w25">
+        $2.00
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="order-total">
+      <div class="d">
+        <div class="w75 aleft">
+          <strong>Order Total</strong>
+        </div>
+        <div class="w25">
+          <strong>$22.00</strong>
+        </div>
+      </div>
+
+    </div>
+
+
+    <hr class="lastItem">
+
+    <form method="get" action="/auth/facebook">
+      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+    </form>
+
+
+
+
+
+  </div>
 </main>

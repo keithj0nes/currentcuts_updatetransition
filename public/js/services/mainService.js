@@ -63,7 +63,6 @@ angular.module("ccvApp").service("mainService", function($http){
     }).success(function(){
       alert: "SUCCESS!";
     })
-
   }
 
 
@@ -73,11 +72,26 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "DELETE",
       url: "/api/products/" + productId
     })
+  }
 
 
+  this.getAuth = ()=> {
+    console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/api/checkauth"
+    }).then((response) => {
+      return response;
+    })
+  }
 
-
-
+  this.getUsername = ()=> {
+    return $http({
+      method: "GET",
+      url: "/api/currentuser"
+    }).then((response) => {
+      return response.data.firstname;
+    })
   }
 
 

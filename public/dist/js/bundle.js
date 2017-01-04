@@ -2,6 +2,19 @@
 
 angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRouterProvider) {
 
+  var adminResolve = {
+    security: function security(mainService, $state) {
+      return mainService.getAuth().catch(function (err) {
+        console.log(err);
+        if (err.status === 401) {
+          $state.go("login");
+        } else if (err.status === 403) {
+          $state.go("home");
+        }
+      });
+    }
+  };
+
   $stateProvider.state("home", {
     url: "/",
     templateUrl: "views/home.html",
@@ -21,13 +34,17 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
   }).state("login", {
     url: "/login",
     templateUrl: "views/login.html"
-  }).state("login", {
+  }).state("loginsuccess", {
+    url: "/login-success",
+    templateUrl: "views/login-success.html"
+  }).state("adventure", {
     url: "/adventure",
     templateUrl: "views/categories/adventure.html"
   }).state("admin", {
     url: "/admin",
     templateUrl: "views/admin.html",
-    controller: "adminController"
+    controller: "adminController",
+    resolve: adminResolve
   });
 
   $urlRouterProvider.otherwise("/");
@@ -4303,6 +4320,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   getAllProducts();
 
+  $scope.decalType = [{ category: 'Adventure' }, { category: 'Sports' }, { category: 'Schools' }, { category: 'Games' }, { category: 'Characters' }, { category: 'Animals' }];
+
   //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function (product) {
     $scope.productId = product.id;
@@ -4356,6 +4375,14 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
       mainService.deleteProduct(product);
     });
   };
+
+  var getUsername = function getUsername() {
+    mainService.getUsername().then(function (response) {
+      $scope.username = response;
+    });
+  };
+
+  getUsername();
 });
 "use strict";
 
@@ -4495,6 +4522,25 @@ angular.module("ccvApp").service("mainService", function ($http) {
     return $http({
       method: "DELETE",
       url: "/api/products/" + productId
+    });
+  };
+
+  this.getAuth = function () {
+    console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/api/checkauth"
+    }).then(function (response) {
+      return response;
+    });
+  };
+
+  this.getUsername = function () {
+    return $http({
+      method: "GET",
+      url: "/api/currentuser"
+    }).then(function (response) {
+      return response.data.firstname;
     });
   };
 });

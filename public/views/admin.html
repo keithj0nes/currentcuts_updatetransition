@@ -1,5 +1,5 @@
 <main class="admin-main">
-  <h1>Admin - (Username)</h1>
+  <h1>Admin - {{username}}</h1>
 
   <div class="admin-items">
     <div class="admin-filter">
@@ -33,7 +33,25 @@
 
     <h3>Image 2</h3>
     <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
-      <br><br><span class="flright" ng-model="productId">Product ID: {{productId}}</span>
+      <br><br>
+
+      <select ng-model="cat1" ng-options="type.category for type in decalType">
+        <option value="null">Category 1</option>
+      </select>
+
+      <select ng-model="cat2" ng-options="type.category for type in decalType">
+        <option value="null">Category 2</option>
+      </select>
+
+      <select ng-model="cat3" ng-options="type.category for type in decalType">
+        <option value="null">Category 3</option>
+      </select>
+
+
+
+      <span class="flright" ng-model="productId">Product ID: {{productId}}</span>
+
+      <br><br>
     <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productPrice, productImgOne, productImgTwo)">Update</button>
     <button class="btn" name="button" ng-click="add(productName, productDescription, productPrice, productImgOne, productImgTwo)">Add New</button>
     <button class="btn" name="button" ng-click="clearForm()">Clear</button>

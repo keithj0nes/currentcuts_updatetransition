@@ -418,6 +418,9 @@ template {
 body {
   background-color: #f3f3f3; }
 
+h1, h2, h3, h4 {
+  font-weight: normal; }
+
 .name {
   font-size: 22px;
   color: purple; }
@@ -434,6 +437,15 @@ body {
   background-color: #fff;
   border: 1px solid #000;
   border-radius: 3px; }
+
+.btn-facebook {
+  background-color: #4f6eae;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 15px;
+  width: 100%;
+  cursor: pointer; }
 
 .btn:hover {
   background-color: #f3f3f3;
@@ -454,13 +466,21 @@ body {
 hr {
   border-color: #f3f3f3;
   border-top: none;
-  border-left: none; }
+  border-left: none;
+  margin: 15px 0; }
+
+hr.lastItem {
+  border-width: 5px;
+  border-color: #f3f3f3; }
 
 .w25 {
   width: 25%; }
 
 .w50 {
   width: 50%; }
+
+.w75 {
+  width: 75%; }
 
 /* ============================================
                   INDEX PAGE
@@ -601,7 +621,6 @@ ul.open {
     .product-main .product-info h2.desc {
       font-size: 16px;
       color: #000;
-      font-weight: normal;
       margin-bottom: 5px; }
     .product-main .product-info p.price {
       font-size: 14px;
@@ -616,8 +635,7 @@ ul.open {
 ============================================ */
 .search-main h1 {
   font-size: 50px;
-  text-align: center;
-  font-weight: normal; }
+  text-align: center; }
 
 /* ============================================
                 PRODUCT PAGE
@@ -632,7 +650,6 @@ ul.open {
     .product-single .details h2.desc {
       font-size: 20px;
       color: #000;
-      font-weight: normal;
       margin-bottom: 5px; }
     .product-single .details p.productPrice {
       font-size: 16px;
@@ -667,46 +684,46 @@ ul.open {
     font-size: 24px; }
   .product-single .description {
     padding: 20px; }
-    .product-single .description hr {
-      margin: 20px 0; }
 
 /* ============================================
                   CART PAGE
 ============================================ */
 .pad {
-  padding: 15px 5px; }
+  padding: 0px 10px; }
 
 .cart-main {
-  padding: 10px; }
-  .cart-main .cart-user-m {
-    padding: 10px;
-    background: #fff; }
-    .cart-main .cart-user-m h2 {
-      font-weight: normal; }
-    .cart-main .cart-user-m .cart-product-info-m {
+  background-color: #fff;
+  padding: 10px;
+  margin: 10px; }
+  .cart-main .cart-user-m .cart-product-info-m {
+    display: flex;
+    align-items: center; }
+    .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m {
       display: flex;
       align-items: center; }
-      .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m {
-        display: flex;
-        align-items: center; }
-        .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m img {
-          height: 50px;
-          padding-right: 10px; }
-    .cart-main .cart-user-m .cart-product-qty-m {
-      display: flex;
-      justify-content: space-between;
-      align-items: center; }
-      .cart-main .cart-user-m .cart-product-qty-m div input {
-        padding: 7px;
-        width: 35px;
-        text-align: center; }
-    .cart-main .cart-user-m .cart-product-itemtotal-m {
-      display: flex;
-      justify-content: space-between;
-      align-items: center; }
-    .cart-main .cart-user-m hr.lastItem {
-      border-width: 5px;
-      border-color: #a1a1a1; }
+      .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m img {
+        height: 50px;
+        padding-right: 10px; }
+  .cart-main .cart-user-m .cart-product-qty-m {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    .cart-main .cart-user-m .cart-product-qty-m div input {
+      padding: 7px;
+      width: 35px;
+      text-align: center; }
+  .cart-main .cart-user-m .cart-product-itemtotal-m {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+  .cart-main .total-disc-ship .d {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0; }
+    .cart-main .total-disc-ship .d div {
+      text-align: right; }
+    .cart-main .total-disc-ship .d .aleft {
+      text-align: left; }
 
 /* ============================================
                   ADMIN PAGE
@@ -735,8 +752,6 @@ ul.open {
     padding: 7px; }
   .admin-main .admin-edit h3 {
     padding: 10px 0; }
-  .admin-main hr {
-    margin: 20px 0; }
 
 .login-main {
   width: 500px;
@@ -751,6 +766,10 @@ ul.open {
     width: 350px; }
 
 @media only screen and (min-width: 768px) {
+  .btn-facebook {
+    width: 50%; }
+  form {
+    text-align: center; }
   .hideMobile {
     display: block; }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
@@ -820,18 +839,11 @@ ul.open {
   /* ============================================
                     CART PAGE
   ============================================ */
-  .w50 {
-    width: 50%; }
-  .w25 {
-    width: 25%; }
   .center {
     text-align: center; }
   .cart-main {
-    background: #fff;
     max-width: 800px;
-    margin: 20px auto 0; }
-    .cart-main .cart-user-d h2 {
-      font-weight: normal; }
+    margin: 20px auto; }
     .cart-main .cart-user-d .cart-product-info-d,
     .cart-main .cart-user-d .cart-product-qty-d,
     .cart-main .cart-user-d .cart-product-itemtotal-d {
@@ -856,11 +868,13 @@ ul.open {
         display: flex;
         align-items: center;
         justify-content: center; }
-    .cart-main .cart-user-d hr.lastItem {
-      border-width: 5px;
-      border-color: #a1a1a1; }
     .cart-main .hideDesktop {
       display: none; }
+    .cart-main .total-disc-ship .d div {
+      text-align: center; }
+    .cart-main .total-disc-ship .d .aleft {
+      text-align: right;
+      padding-right: 80px; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */
@@ -904,7 +918,6 @@ ul.open {
       .product-single .details h2.desc {
         font-size: 30px;
         color: #000;
-        font-weight: normal;
         margin-bottom: 15px; }
       .product-single .details p.productPrice {
         font-size: 18px;
@@ -952,7 +965,6 @@ ul.open {
   .admin-main {
     padding: 20px; }
     .admin-main .admin-edit {
-      padding-right: 20px;
       padding-bottom: 100px; } }
 
 /*# sourceMappingURL=maps/styles.css.map */

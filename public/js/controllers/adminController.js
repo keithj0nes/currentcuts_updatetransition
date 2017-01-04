@@ -10,6 +10,21 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   getAllProducts();
 
+
+
+  $scope.decalType = [
+      {category:'Adventure'},
+      {category:'Sports'},
+      {category:'Schools'},
+      {category:'Games'},
+      {category:'Characters'},
+      {category:'Animals'},
+    ];
+
+
+
+
+
 //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function(product){
     $scope.productId = product.id;
@@ -66,5 +81,12 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
+  var getUsername = function() {
+    mainService.getUsername().then(function(response){
+      $scope.username = response;
+    })
+  }
+
+  getUsername();
 
 })
