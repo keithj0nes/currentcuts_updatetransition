@@ -4386,10 +4386,114 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 });
 "use strict";
 
-angular.module("ccvApp").controller("cartController", function ($scope) {});
+angular.module("ccvApp").controller("cartController", function ($scope, mainService) {
+
+  $scope.test = "SUP DEVEN";
+  $scope.cartTotal = 0;
+  $scope.shippingCost = 0;
+  $scope.orderTotal = 0;
+
+  $scope.cartDelete = function (item) {
+
+    console.log(item, "kjasldkgjal;skdgjal;sd");
+
+    mainService.deleteProductsInCart(item).then(function (response) {
+      $scope.cart = response.data;
+      var costs = calculate($scope.cart);
+
+      $scope.cartTotal = costs.total;
+      $scope.shippingCost = costs.shipping;
+      $scope.orderTotal = costs.total + costs.shipping;
+    });
+  };
+
+  function calculate(items) {
+    var total = 0;
+    var shipping = 0;
+
+    for (var i = 0; i < items.length; i++) {
+      total += parseInt(items[i].productPrice) * parseInt(items[i].productQuantity);
+    }
+
+    console.log(total);
+
+    if (items >= 1 && items <= 9) {
+      shipping = 2;
+    } else if (items >= 10) {
+      shipping = 3;
+    }
+
+    return {
+      total: total, //whatever the cost is,
+      shipping: shipping //whatever shipping is
+    };
+  }
+
+  mainService.getProductsInCart().then(function (response) {
+
+    $scope.cart = response;
+
+    var costs = calculate($scope.cart);
+
+    $scope.cartTotal = costs.total;
+    $scope.shippingCost = costs.shipping;
+    $scope.orderTotal = costs.total + costs.shipping;
+  });
+
+  // var getProductsInCart = function(){
+  //   mainService.getProductsInCart().then(function(response){
+  //     console.log(response, "in controller");
+  //     $scope.cart = response;
+  //     $scope.cartTotal = 0;
+  //     console.log($scope.cart.length, "hajksdhgjlka;sdjgl;asd");
+  //
+  //     var calculate = function(){
+  //       for (var i = 0; i < $scope.cart.length; i++) {
+  //         $scope.cartTotal += (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
+  //         console.log($scope.cart[i].productQuantity);
+  //         console.log($scope.cart[i].productPrice);
+  //         //discount if 5 or more items
+  //         // if ($scope.cart[i].productQuantity >= 5){
+  //         //   $scope.cart[i].productPrice *= .95
+  //         // }
+  //       }
+  //       console.log($scope.cartTotal);
+  //
+  //       $scope.shippingCost = 0;
+  //       if ($scope.cartTotal >= 1 && $scope.cartTotal <= 9 ){
+  //         $scope.shippingCost = 2;
+  //       } else if ($scope.cartTotal >= 10){
+  //         $scope.shippingCost = 3;
+  //       }
+  //
+  //       $scope.orderTotal = $scope.cartTotal + $scope.shippingCost;
+  //
+  //       $scope.cartDelete = function(item){
+  //         for(var i = $scope.cart.length-1; i>=0; i--){
+  //           if($scope.cart[i].productName === item.productName){
+  //             $scope.cart.splice(i, 1);
+  //             $scope.cartTotal -= (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
+  //           }
+  //         }
+  //         calculate();
+  //       }
+  //     }
+  //     calculate();
+  //
+  //
+  //
+  //   })
+  // }
+
+  // getProductsInCart();
+
+  // $scope.itemTotal =
+});
 "use strict";
 
 angular.module("ccvApp").controller("mainController", function ($scope, mainService) {
+
+  $scope.userLoggedIn = false;
 
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
@@ -4402,6 +4506,22 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
   //   console.log($scope.random);
 
   getAllProducts();
+
+  $scope.customer = {
+    name: 'Naomi',
+    address: '1600 Amphitheatre'
+  };
+
+  //   var getUsername = function() {
+  //     mainService.getUsername().then(function(response){
+  //       $scope.username = response;
+  //       $scope.userLoggedIn = true;
+  // console.log($scope.userLoggedIn, "inside function");
+  //     })
+  //   }
+  //   console.log($scope.userLoggedIn);
+  //   getUsername();
+
 });
 "use strict";
 
@@ -4423,6 +4543,27 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
   // $scope.timmy = moment().format('MMMM Do YYYY, h:mm:ss a'); // December 27th 2016, 6:53:45 pm
   // var addToCart
 
+  // if()
+
+  // console.log($scope.productSize.val(), "value");
+
+  $scope.productQuantity = 1;
+  $scope.addToCart = function (productSize, productColor, productQuantity) {
+
+    var productName = $scope.product.name;
+    var productPrice = $scope.product.price;
+    var productImage = $scope.product.img1;
+    // if($scope.productSize === undefined){
+    //   swal("Please enter a size")
+    // } else if($scope.productColor === undefined){
+    //   swal("Please enter a color")
+    // } else {
+    //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
+    //   swal("Item added to cart!")
+    // }
+    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage);
+    swal("Item added to cart!");
+  };
 
   getProductById();
 });
@@ -4447,6 +4588,34 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
   setTimeout(function () {
     console.log($scope.searchProducts);
   }, 4000);
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkLoggedIn", function (mainService) {
+
+  return {
+    restrict: "AE",
+    // templateUrl: './views/checkloggedindirective.html',
+    // controller: "cartController",
+    link: function link(scope, elem, attr) {
+      // scope.test = "hello"
+      console.log("HELLO");
+      scope.userLoggedIn = false;
+      var getUsername = function getUsername() {
+        mainService.getUsername().then(function (response) {
+          scope.username = response;
+          console.log(scope.username, "inside directive");
+          // scope.userLoggedIn = true;
+          // console.log(scope.userLoggedIn, "inside directive");
+        });
+      };
+      // setTimeout(function () {
+      console.log(scope.userLoggedIn, "outside function");
+
+      // }, 1000);
+      getUsername();
+    }
+  };
 });
 "use strict";
 
@@ -4541,6 +4710,46 @@ angular.module("ccvApp").service("mainService", function ($http) {
       url: "/api/currentuser"
     }).then(function (response) {
       return response.data.firstname;
+    });
+  };
+
+  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage) {
+    var cartData = {
+      productSize: productSize,
+      productColor: productColor,
+      productQuantity: productQuantity,
+      productName: productName,
+      productPrice: productPrice,
+      productImage: productImage
+    };
+    console.log(cartData);
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function () {
+      console.log("SUCCESS");
+    });
+  };
+
+  this.getProductsInCart = function () {
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.deleteProductsInCart = function (item) {
+
+    console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function (response) {
+      return response;
     });
   };
 });

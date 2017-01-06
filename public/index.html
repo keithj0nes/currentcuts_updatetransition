@@ -32,11 +32,14 @@
       <!-- <form method="get" action="/auth/facebook">
         <button class="btn" type="submit">Login with Facebook</button>
       </form> -->
-      <a ui-sref="login" class="login">Login</a>
+      <check-logged-in>
+      <a ng-if="!username" ui-sref="login" class="login">Login</a>
+      <a ng-if="username" ui-sref="login" class="login">{{username}}</a>
 
+    </check-logged-in>
       <i class="material-icons" ui-sref="cart">shopping_cart</i>
       <div class="cart-amount" ui-sref="cart">
-        2
+      <check-cart-total>{{cartItemTotal}}</check-cart-total>
       </div>
 
     </div>

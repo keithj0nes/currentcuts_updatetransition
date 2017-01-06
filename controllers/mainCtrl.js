@@ -69,14 +69,24 @@ module.exports = {
     })
   },
 
-  addProductsInCart: function(req, res, next){
-    console.log("addProductsInCart");
+  addProductsToCart: function(req, res, next){
+
+    if(!req.session.cart){
+      req.session.cart = [];
+    }
+
+    req.session.cart.push(req.body);
+    console.log(req.session.cart, "after pusshinggg");
     res.send("addProductsInCart");
   },
 
-  addOrder: function(req, res, next){
-    console.log("addOrder");
-    res.send("addOrder");
+  getProductsInCart: function(req, res, next){
+    res.send(req.session.cart);
+  },
+
+  deleteProductsInCart: function(req, res, next){
+    req.session.cart.splice(req.params.id, 1);
+    res.send(req.session.cart);
   },
 
 

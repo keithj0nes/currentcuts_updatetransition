@@ -43,6 +43,11 @@ h1,h2,h3,h4 {
   cursor: pointer;
 }
 
+.btn-stripe {
+@extend .btn-facebook;
+background-color: rgb(69, 69, 69);
+}
+
 .btn:hover {
   background-color: $light-gray;
   cursor: pointer;
@@ -88,6 +93,7 @@ hr.lastItem {
 
 .w75 {
   width: 75%;
+  // background: purple;
 }
 
 /* ============================================
@@ -402,7 +408,7 @@ ul.open {
 }
 .cart-main {
   background-color: #fff;
-  padding: 10px;
+  padding: 20px 10px;
   margin: 10px;
 
   .cart-user-m {
@@ -464,6 +470,10 @@ ul.open {
         text-align: left;
       }
     }
+  }
+
+  .checkout {
+    // background: red;
   }
 }
 
@@ -542,9 +552,15 @@ ul.open {
     width: 50%;
   }
 
+  .btn-stripe {
+    width: 50%;
+  }
+
   form {
     text-align: center;
   }
+
+
 
 
 
@@ -745,6 +761,12 @@ ul.open {
         }
       }
     }
+    .checkout {
+      div {
+        text-align: center;
+      }
+    }
+
   }
 
 
@@ -891,6 +913,14 @@ ul.open {
   .cart-main {
     max-width: 960px;
     margin: 40px auto 0;
+
+    .total-disc-ship {
+      .d {
+        .aleft {
+          padding-right: 100px;
+        }
+      }
+    }
   }
 
 

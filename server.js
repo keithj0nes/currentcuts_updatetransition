@@ -38,7 +38,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
 passport.use(new FacebookStrategy({
     clientID: config.facebookAuth.clientID,
     clientSecret: config.facebookAuth.clientSecret,
@@ -100,16 +99,10 @@ failureRedirect: '/#/', successRedirect:'/#/login-success'
 app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/currentuser", usersCtrl.getCurrentUser)
 
-
-
-
 //CART
-app.post("/api/cart", mainCtrl.addProductsInCart);
-app.post("/api/order", mainCtrl.addOrder);
-
-
-
-
+app.post("/api/cart", mainCtrl.addProductsToCart);
+app.get("/api/cart", mainCtrl.getProductsInCart);
+app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
 
 //PRODUCTS
 app.get("/api/products", mainCtrl.getAllProducts);

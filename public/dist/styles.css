@@ -438,7 +438,7 @@ h1, h2, h3, h4 {
   border: 1px solid #000;
   border-radius: 3px; }
 
-.btn-facebook {
+.btn-facebook, .btn-stripe {
   background-color: #4f6eae;
   color: white;
   border: none;
@@ -446,6 +446,9 @@ h1, h2, h3, h4 {
   padding: 15px;
   width: 100%;
   cursor: pointer; }
+
+.btn-stripe {
+  background-color: #454545; }
 
 .btn:hover {
   background-color: #f3f3f3;
@@ -693,7 +696,7 @@ ul.open {
 
 .cart-main {
   background-color: #fff;
-  padding: 10px;
+  padding: 20px 10px;
   margin: 10px; }
   .cart-main .cart-user-m .cart-product-info-m {
     display: flex;
@@ -766,7 +769,9 @@ ul.open {
     width: 350px; }
 
 @media only screen and (min-width: 768px) {
-  .btn-facebook {
+  .btn-facebook, .btn-stripe {
+    width: 50%; }
+  .btn-stripe {
     width: 50%; }
   form {
     text-align: center; }
@@ -875,6 +880,8 @@ ul.open {
     .cart-main .total-disc-ship .d .aleft {
       text-align: right;
       padding-right: 80px; }
+    .cart-main .checkout div {
+      text-align: center; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */
@@ -959,6 +966,8 @@ ul.open {
   .cart-main {
     max-width: 960px;
     margin: 40px auto 0; }
+    .cart-main .total-disc-ship .d .aleft {
+      padding-right: 100px; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */

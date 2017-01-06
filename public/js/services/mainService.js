@@ -95,4 +95,45 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
 
+
+  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage){
+    const cartData = {
+      productSize: productSize,
+      productColor: productColor,
+      productQuantity: productQuantity,
+      productName: productName,
+      productPrice: productPrice,
+      productImage: productImage
+    }
+    console.log(cartData);
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function(){
+      console.log("SUCCESS");
+    })
+  }
+
+  this.getProductsInCart = function(){
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function(response){
+      // console.log(response.data, "in service");
+      return response.data;
+    })
+  }
+
+  this.deleteProductsInCart = function(item){
+
+    console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function(response){
+      return response;
+    })
+  }
+
 })

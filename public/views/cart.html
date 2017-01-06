@@ -6,74 +6,43 @@
     <h2 class="pad">Your Cart</h2>
 
     <hr>
-    <!-- START SINGLE ITEM IN CART -->
-    <div class="cart-product-info-m pad"> <!-- ng-repeat items in cart -->
 
+    <div class="" ng-repeat="items in cart">    <!-- START SINGLE ITEM IN CART -->
 
-      <div class="cart-product-info-container-m">
-        <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal<br>
-        <span style="font-size: 13px;"><strong>color:</strong> red | <strong>size:</strong> 4"H x 10"W</span></p>
+      <div class="cart-product-info-m pad">
+
+        <div class="cart-product-info-container-m">
+          <img ng-src="{{items.productImage}}" alt="">
+          <p>${{items.productPrice}}.00 |  {{items.productName}}<br>
+          <span style="font-size: 13px;"><strong>color:</strong> {{items.productColor}} | <strong>size:</strong> {{items.productSize}}</span></p>
+        </div>
       </div>
+
+      <hr>
+
+      <div class="cart-product-qty-m pad">
+        <div>
+          <h4>QTY</h4>
+        </div>
+        <div>
+          <!-- <input type="text" name="" value="{{items.productQuantity}}"> -->
+          {{items.productQuantity}}
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="cart-product-itemtotal-m pad">
+        <div>
+          <h4>Item Total</h4>
+        </div>
+        <div>
+          $12.00
+        </div>
+      </div>
+
+      <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
     </div>
-
-    <hr>
-
-    <div class="cart-product-qty-m pad">
-      <div>
-        <h4>QTY</h4>
-      </div>
-      <div>
-        <input type="text" name="" value="2">
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="cart-product-itemtotal-m pad">
-      <div>
-        <h4>Item Total</h4>
-      </div>
-      <div>
-        $8.00
-      </div>
-    </div>
-
-    <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
-
-    <div class="cart-product-info-m pad"> <!-- ng-repeat items in cart -->
-
-
-      <div class="cart-product-info-container-m">
-        <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal<br>
-        <span style="font-size: 13px;"><strong>color:</strong> blue | <strong>size:</strong> 4"H x 10"W</span></p>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="cart-product-qty-m pad">
-      <div>
-        <h4>QTY</h4>
-      </div>
-      <div>
-        <input type="text" name="" value="3">
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="cart-product-itemtotal-m pad">
-      <div>
-        <h4>Item Total</h4>
-      </div>
-      <div>
-        $12.00
-      </div>
-    </div>
-
-    <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
 
   </div>
 
@@ -88,78 +57,69 @@
     <h2 class="pad">Your Cart</h2>
 
     <hr>
-    <!-- START SINGLE ITEM IN CART -->
-    <div class="cart-product-info-d pad"> <!-- ng-repeat items in cart -->
-      <div class="description w50">
-        <h4>Description</h4>
+
+    <div class="" ng-repeat="item in cart">
+
+
+      <div class="cart-product-info-d pad" > <!-- ng-repeat items in cart -->
+        <div class="description w50">
+          <h4>Description</h4>
+        </div>
+        <div class="qty w25 center">
+          <h4>QTY</h4>
+        </div>
+
+        <div class="itemtotal w25 center">
+          <h4>Item Total</h4>
+        </div>
       </div>
 
-      <div class="qty w25 center">
-        <h4>QTY</h4>
-      </div>
+      <hr>
 
-      <div class="itemtotal w25 center">
-        <h4>Item Total</h4>
+      <div class="cart-product-info-container-d pad" >
+        <div class="d w50">
+          <img ng-src="{{item.productImage}}" alt="">
+          <p>${{item.productPrice}}.00 |  {{item.productName}}<br>
+          <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{item.productSize}}</span></p>
+
+        </div>
+
+        <div class="cart-product-qty-d pad w25">
+            <input type="text" name="" value="{{item.productQuantity}}">
+        </div>
+
+        <div class="cart-product-itemtotal-d pad w25 center">
+            ${{item.productPrice * item.productQuantity}}.00
+
+            <button class="btn" ng-click="cartDelete($index)" name="button">Delete</button>
+
+        </div>
       </div>
+      <hr class="lastItem">
+
     </div>
 
-    <hr>
 
-    <div class="cart-product-info-container-d pad">
-      <div class="d w50">
-        <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal <br>
-        <span style="font-size: 13px;"><strong>color:</strong> red | <strong>size:</strong> 4"H x 10"W</span></p>
 
-      </div>
 
-      <div class="cart-product-qty-d pad w25">
-          <input type="text" name="" value="2">
-      </div>
+  </div> <!-- END DESKTOP VIEW -->
 
-      <div class="cart-product-itemtotal-d pad w25 center">
-          $8.00
-      </div>
-    </div>
 
-    <hr class="lastItem">
 
-    <!-- END SINGLE ITEM IN CART -->
 
-    <div class="cart-product-info-d pad"> <!-- ng-repeat items in cart -->
-      <div class="description w50">
-        <h4>Description</h4>
-      </div>
-      <div class="qty w25 center">
-        <h4>QTY</h4>
-      </div>
 
-      <div class="itemtotal w25 center">
-        <h4>Item Total</h4>
-      </div>
-    </div>
 
-    <hr>
 
-    <div class="cart-product-info-container-d pad">
-      <div class="d w50">
-        <img ng-src="https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg" alt="">
-        <p>$4.00 | Take A Hike vinyl Decal <br>
-        <span style="font-size: 13px;"><strong>color:</strong> blue | <strong>size:</strong> 4"H x 10"W</span></p>
 
-      </div>
 
-      <div class="cart-product-qty-d pad w25">
-          <input type="text" name="" value="3">
-      </div>
 
-      <div class="cart-product-itemtotal-d pad w25 center">
-          $12.00
-      </div>
-    </div>
 
-    <hr class="lastItem">
-  </div>
+
+
+
+
+
+
 
 
 
@@ -174,7 +134,7 @@
         Total
       </div>
       <div class="w25">
-        $20.00
+        ${{cartTotal}}.00
       </div>
     </div>
 
@@ -192,7 +152,7 @@
         Shipping
       </div>
       <div class="w25">
-        $2.00
+        ${{shippingCost}}.00
       </div>
     </div>
 
@@ -204,18 +164,41 @@
           <strong>Order Total</strong>
         </div>
         <div class="w25">
-          <strong>$22.00</strong>
+          <strong>${{orderTotal}}.00</strong>
         </div>
       </div>
 
     </div>
 
-
     <hr class="lastItem">
 
-    <form method="get" action="/auth/facebook">
-      <button type="submit" class="btn-facebook">Log In with Facebook</button>
-    </form>
+
+
+
+      <div class="" ng-if="!username" check-logged-in>  <!--ng show and hide-->
+        <form method="get" action="/auth/facebook">
+          <button type="submit" class="btn-facebook">Log In with Facebook to Checkout</button>
+        </form>
+
+        <hr>
+      </div>
+
+
+
+
+
+      <div class="checkout" ng-if="username" check-logged-in>
+        <h2 class="pad">Payment Method</h2>
+        <hr>
+        <div class="">
+          <button type="button" class="btn-stripe">Checkout with Stripe</button>
+          <hr>
+        </div>
+
+      </div>
+
+
+
 
 
 
