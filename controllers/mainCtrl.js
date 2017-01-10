@@ -76,7 +76,7 @@ module.exports = {
     }
 
     req.session.cart.push(req.body);
-    console.log(req.session.cart, "after pusshinggg");
+    // console.log(req.session.cart, "after pusshinggg");
     res.send("addProductsInCart");
   },
 
@@ -102,6 +102,49 @@ module.exports = {
       }
       return res.status(200).send(product)
     })
+  },
+
+  addOrder: function(req, res, charge){
+    var timeNow = new Date();
+
+    db.orders.insert({
+      userid: req.user.id,
+      datesold: timeNow
+    }, function(err, order){
+      if(err){
+        console.log("OMG AN AERRYOR", err);
+        res.status(500).send(err)
+      } else {
+        console.log("this should be good");
+        for(var i = 0; i < req.session.cart.length; i++){
+          console.log(order.id, "HERE IS ORDER.ID");
+          console.log(req.session.cart[i].productQuantity, 'PRODUCT QUANTITY');
+          db.orderline.insert({
+            orderid: order.id,
+            productid: req.session.cart[i].productId,
+            quantsold: req.session.cart[i].productQuantity
+          }, function(err, orderline){
+            if(err){
+              console.log("ANOTHER ERRORRR", err);
+
+              res.status(500).send(err);
+            }
+          })
+        }
+        req.session.cart = [];
+        console.log(req.session.cart, "req.session.cart");
+        res.status(200).send(charge);
+        console.log(charge, "charge sent");
+
+      }
+    })
+
+
+    // id SERIAL PRIMARY KEY,
+    // orderId INTEGER REFERENCES orders(id),
+    // productId INTEGER REFERENCES products(id),
+    // quantSold INT
+
   },
 
 

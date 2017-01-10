@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Starter Template</title>
+    <title>Current Cuts Vinyl</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
-    <link rel="stylesheet" href="./dist/styles.59054a71.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.e0e9e32c.css" media="screen" title="no title">
 </head>
 
 <body>
@@ -29,17 +29,15 @@
     </div>
 
     <div class="login-cart-container w25">
-      <!-- <form method="get" action="/auth/facebook">
-        <button class="btn" type="submit">Login with Facebook</button>
-      </form> -->
       <check-logged-in>
-      <a ng-if="!username" ui-sref="login" class="login">Login</a>
-      <a ng-if="username" ui-sref="login" class="login">{{username}}</a>
-
-    </check-logged-in>
+        <a ng-if="!username" ui-sref="login" class="login">Login</a>
+        <a ng-if="username" ui-sref="login" class="login">{{username}}</a>
+      </check-logged-in>
       <i class="material-icons" ui-sref="cart">shopping_cart</i>
-      <div class="cart-amount" ui-sref="cart">
-      <check-cart-total>{{cartItemTotal}}</check-cart-total>
+      <checkitemsincart>
+        <div ng-if="anyItemsInCart" class="cart-amount" ui-sref="cart">
+        {{itemsIncart}}
+      </checkitemsincart>
       </div>
 
     </div>
@@ -53,26 +51,39 @@
     <!-- </form> -->
   </div>
     <ul class="main-nav">
-      <li><a href="#">Shop</a></li>
-      <li><a href="#">Shop</a></li>
-      <li><a href="#">Shop</a></li>
-      <li><a href="#">Shop</a></li>
-      <li></li>
-      <li><a href="#">Shop</a></li>
-      <li><a href="#">Shop</a></li>
-      <li><a href="#">Shop</a></li>
+      <li><a href="#">Adventure</a></li>
+      <li><a href="#">Sports</a></li>
+      <li><a href="#">Schools</a></li>
+      <!-- <li><a href="#">Shop</a></li> -->
+      <!-- <li></li> -->
+      <!-- <li><a href="#">Shop</a></li> -->
+      <!-- <li><a href="#">Shop</a></li> -->
       <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
     </ul>
 </header>
 
 
 <ui-view></ui-view>
 
+<footer>
+  <div class="footer-container">
+    <ul>
+      <li><a ui-sref="home">Home</a></li>
+      <li><a ui-sref="login">Login</a></li>
+      <li><a ui-sref="cart">Cart</a></li>
+      <li><a ui-sref="admin">Admin</a></li>
+
+    </ul>
+  </div>
+</footer>
+
 
     <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
     <script src="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.js"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
     <script src="./dist/js/bundle.js"></script>
 
     <script>

@@ -438,14 +438,16 @@ h1, h2, h3, h4 {
   border: 1px solid #000;
   border-radius: 3px; }
 
-.btn-facebook, .btn-stripe {
-  background-color: #4f6eae;
-  color: white;
-  border: none;
-  border-radius: 3px;
+.big-btn, .btn-facebook, .btn-stripe {
   padding: 15px;
   width: 100%;
+  border: none;
+  border-radius: 3px;
   cursor: pointer; }
+
+.btn-facebook, .btn-stripe {
+  background-color: #4f6eae;
+  color: white; }
 
 .btn-stripe {
   background-color: #454545; }
@@ -456,6 +458,11 @@ h1, h2, h3, h4 {
 
 .btn:active {
   background-color: #d9d9d9; }
+
+.btn-delete {
+  border: 1px solid #000;
+  padding: 1px 2px;
+  background-color: white; }
 
 .flleft {
   float: left; }
@@ -599,6 +606,21 @@ ul.open {
     .main-nav li a:hover {
       background-color: #f5f5f5; }
 
+footer {
+  clear: both;
+  margin-top: 30px;
+  padding: 30px;
+  background-color: white; }
+  footer .footer-container {
+    width: 200px;
+    margin: 0 auto; }
+    footer .footer-container ul {
+      display: flex;
+      justify-content: space-around; }
+      footer .footer-container ul li a {
+        color: black;
+        padding: 10px; }
+
 /* ============================================
                   HOME PAGE
 ============================================ */
@@ -608,7 +630,6 @@ ul.open {
   margin: 5% auto; }
   .product-main .product-img {
     width: 100%;
-    background: lime;
     position: relative;
     overflow: hidden; }
     .product-main .product-img img {
@@ -700,13 +721,17 @@ ul.open {
   margin: 10px; }
   .cart-main .cart-user-m .cart-product-info-m {
     display: flex;
-    align-items: center; }
+    align-items: center;
+    position: relative; }
     .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m {
       display: flex;
       align-items: center; }
       .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m img {
         height: 50px;
         padding-right: 10px; }
+    .cart-main .cart-user-m .cart-product-info-m .btn-delete {
+      position: absolute;
+      right: 30px; }
   .cart-main .cart-user-m .cart-product-qty-m {
     display: flex;
     justify-content: space-between;
@@ -756,25 +781,46 @@ ul.open {
   .admin-main .admin-edit h3 {
     padding: 10px 0; }
 
-.login-main {
-  width: 500px;
-  height: 300px;
-  background: #fff;
-  margin: 5% auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around; }
-  .login-main img {
+/* ============================================
+                  LOGIN PAGE
+============================================ */
+.login-main, .loginsuccess-main {
+  padding: 20px 10px; }
+  .login-main .login-container, .login-main .loginsuccess-container, .loginsuccess-main .login-container, .loginsuccess-main .loginsuccess-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 10px 20px 20px 20px; }
+    .login-main .login-container h4, .login-main .loginsuccess-container h4, .loginsuccess-main .login-container h4, .loginsuccess-main .loginsuccess-container h4 {
+      margin-bottom: 20px; }
+  .login-main img, .loginsuccess-main img {
     width: 350px; }
 
+/* ============================================
+                  HISTORY PAGE
+============================================ */
+.historyEven {
+  background: #fafafa; }
+
+.orderhistory-main {
+  padding: 20px; }
+  .orderhistory-main .orderhistory-container {
+    background: #fff; }
+    .orderhistory-main .orderhistory-container .orderhistory-repeat {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px; }
+      .orderhistory-main .orderhistory-container .orderhistory-repeat img {
+        height: 75px; }
+      .orderhistory-main .orderhistory-container .orderhistory-repeat div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; }
+        .orderhistory-main .orderhistory-container .orderhistory-repeat div h4 {
+          padding: 5px;
+          font-weight: bold; }
+
 @media only screen and (min-width: 768px) {
-  .btn-facebook, .btn-stripe {
-    width: 50%; }
-  .btn-stripe {
-    width: 50%; }
-  form {
-    text-align: center; }
   .hideMobile {
     display: block; }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
@@ -872,7 +918,12 @@ ul.open {
         text-align: center;
         display: flex;
         align-items: center;
-        justify-content: center; }
+        justify-content: center;
+        position: relative; }
+        .cart-main .cart-user-d .cart-product-info-container-d .cart-product-itemtotal-d .btn-delete {
+          position: absolute;
+          top: 12px;
+          right: 40px; }
     .cart-main .hideDesktop {
       display: none; }
     .cart-main .total-disc-ship .d div {
@@ -880,6 +931,10 @@ ul.open {
     .cart-main .total-disc-ship .d .aleft {
       text-align: right;
       padding-right: 80px; }
+    .cart-main .total-disc-ship .btn-facebook, .cart-main .total-disc-ship .btn-stripe {
+      width: 50%; }
+    .cart-main .total-disc-ship form {
+      text-align: center; }
     .cart-main .checkout div {
       text-align: center; }
   /* ============================================
@@ -895,7 +950,16 @@ ul.open {
     display: none; }
   .admin-main .admin-edit {
     float: right;
-    width: 49.5%; } }
+    width: 49.5%; }
+  /* ============================================
+                    LOGIN PAGE
+  ============================================ */
+  .login-main .login-container, .login-main .loginsuccess-container, .loginsuccess-main .login-container, .loginsuccess-main .loginsuccess-container {
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+    background-color: #fff;
+    padding: 10px 20px 20px 20px; } }
 
 @media only screen and (min-width: 1100px) {
   nav .search-box-container .search-box {

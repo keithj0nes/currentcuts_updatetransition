@@ -33,14 +33,23 @@ h1,h2,h3,h4 {
   // box-shadow: 0px 0px 10px 1px;
 }
 
-.btn-facebook {
-  background-color: #4f6eae;
-  color: white;
-  border: none;
-  border-radius: 3px;
+.big-btn {
   padding: 15px;
   width: 100%;
+  border: none;
+  border-radius: 3px;
   cursor: pointer;
+}
+
+.btn-facebook {
+  @extend .big-btn;
+  background-color: #4f6eae;
+  color: white;
+  // border: none;
+  // border-radius: 3px;
+  // padding: 15px;
+  // width: 100%;
+  // cursor: pointer;
 }
 
 .btn-stripe {
@@ -55,6 +64,13 @@ background-color: rgb(69, 69, 69);
 
 .btn:active {
   background-color: #d9d9d9;
+}
+
+.btn-delete {
+  border: 1px solid #000;
+  padding: 1px 2px;
+  background-color: white;
+
 }
 
 .flleft {
@@ -268,6 +284,33 @@ ul.open {
   }
 }
 
+footer {
+  clear: both;
+  margin-top: 30px;
+  padding: 30px;
+  background-color: white;
+
+  .footer-container {
+    width: 200px;
+    margin: 0 auto;
+
+    ul {
+      display: flex;
+      justify-content: space-around;
+
+      li {
+        // display: inline-block;
+        // background: red;
+
+        a {
+          color: black;
+          padding: 10px;
+        }
+      }
+    }
+  }
+}
+
 
 /* ============================================
                   HOME PAGE
@@ -280,7 +323,7 @@ ul.open {
 
   .product-img {
     width: 100%;
-    background: lime;
+    // background: lime;
     position: relative;
     overflow: hidden;
 
@@ -417,6 +460,7 @@ ul.open {
       display: flex;
       align-items: center;
       // background: red;
+      position: relative;
 
       .cart-product-info-container-m {
         display: flex;
@@ -426,6 +470,10 @@ ul.open {
           height: 50px;
           padding-right: 10px;
         }
+      }
+      .btn-delete {
+        position: absolute;
+        right: 30px;
       }
     }
 
@@ -529,36 +577,89 @@ ul.open {
 }
 
 
+/* ============================================
+                  LOGIN PAGE
+============================================ */
 
-.login-main {
-  width: 500px;
-  height: 300px;
-  background: #fff;
-  margin: 5% auto;
-  // text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+.login-main, .loginsuccess-main {
+  // max-width: 380px;
+  // // padding: 10px;
+  // height: 300px;
+  // background: #fff;
+  // margin: 5% auto;
+  // background: red;
+  // // text-align: center;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // justify-content: space-around;
+  padding: 20px 10px;
+
+  .login-container, .loginsuccess-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 10px 20px 20px 20px;
+
+    h4 {
+      margin-bottom: 20px;
+    }
+  }
 
   img {
     width: 350px;
   }
 }
 
+
+/* ============================================
+                  HISTORY PAGE
+============================================ */
+.historyEven {
+  background: rgb(250, 250, 250);
+}
+.orderhistory-main {
+  padding: 20px;
+
+  .orderhistory-container {
+    background: #fff;
+
+    .orderhistory-repeat {
+
+      display: flex;
+      justify-content: space-between;
+      // background: red;
+      margin: 20px;
+
+      img {
+        height: 75px;
+      }
+      // .order-content {
+        // display: flex;
+        // justify-content: space-between;
+
+        div {
+          // background: blue;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          h4 {
+            padding: 5px;
+            font-weight: bold;
+          }
+        }
+      // }
+    }
+  }
+}
+
+
+
+
+
 @media only screen and (min-width: 768px) {
 
-  .btn-facebook {
-    width: 50%;
-  }
-
-  .btn-stripe {
-    width: 50%;
-  }
-
-  form {
-    text-align: center;
-  }
 
 
 
@@ -738,6 +839,13 @@ ul.open {
              display: flex;
              align-items: center;
              justify-content: center;
+             position: relative;
+
+             .btn-delete {
+               position: absolute;
+               top: 12px;
+               right: 40px;
+             }
            }
          }
 
@@ -760,10 +868,24 @@ ul.open {
           padding-right: 80px;
         }
       }
+      .btn-facebook {
+        width: 50%;
+      }
+
+
+
+      form {
+        text-align: center;
+      }
+
     }
     .checkout {
       div {
         text-align: center;
+
+        }
+        .btn-stripe {
+          // width: 50%;
       }
     }
 
@@ -794,6 +916,21 @@ ul.open {
     .admin-edit {
       float:right;
       width: 49.5%;
+    }
+  }
+
+  /* ============================================
+                    LOGIN PAGE
+  ============================================ */
+
+  .login-main, .loginsuccess-main {
+
+    .login-container, .loginsuccess-container  {
+      margin: 0 auto;
+      width: 50%;
+      text-align: center;
+      background-color: #fff;
+      padding: 10px 20px 20px 20px;
     }
   }
 

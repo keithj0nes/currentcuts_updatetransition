@@ -6,6 +6,8 @@ const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook").Strategy;
+var stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
+
 
 const app = module.exports = express();
 
@@ -15,13 +17,14 @@ const app = module.exports = express();
 var conn = massive.connectSync({
   connectionString : "postgres://postgres:@localhost/ccv"
 });
-// add your connection to express
-app.set('db', conn);
-// declare a db object for requests
-var db = app.get('db');
+
+app.set('db', conn); // add your connection to express
+var db = app.get('db'); // declare a db object for requests
 
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
+
+
 
 
 //middleware
@@ -49,7 +52,6 @@ passport.use(new FacebookStrategy({
       profile: profile,
       token: accessToken
     }
-    // console.log(profile.emails[0].value);
 
     db.get_user_by_fbid([profile.id], function(err, user) {
       if (err) {
@@ -98,6 +100,21 @@ failureRedirect: '/#/', successRedirect:'/#/login-success'
 //USERS
 app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/currentuser", usersCtrl.getCurrentUser)
+app.get('/logout', function(req, res){
+  console.log(req.user, "user in serverjs");
+  req.logout();
+  res.redirect('/');
+  console.log(req.user, "user in serverjs after logged out");
+});
+app.get("/api/orderhistory", function(req,res,next){
+  db.orderhistory([], function(err, history){
+    if(err){
+      console.log(err);
+      return res.status(500).send(err)
+    }
+    return res.status(200).send(history)
+  })
+})
 
 //CART
 app.post("/api/cart", mainCtrl.addProductsToCart);
@@ -117,6 +134,38 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.post("/api/users/:id");
 // app.put("/api/users/:id");
 // app.delete("/api/users/:d");
+
+
+
+app.post("/api/charge", function(req, res, next){
+
+  // Get the credit card details submitted by the form
+  var token = req.body.stripeToken; // Using Express
+
+  // Create a charge: this will charge the user's card
+  var charge = stripe.charges.create({
+    amount: req.body.price, // Amount in cents
+    currency: "usd",
+    source: token,
+    description: "Hello",
+
+  }, function(err, charge) {
+    console.log(req.body.price, "req.body.price");
+    if (err && err.type === 'StripeCardError') {
+      // The card has been declined
+      console.log("Your card was declined");
+    } else {
+      console.log("Your payment was successful");
+      mainCtrl.addOrder(req,res,charge);
+      console.log("sending charge");
+      // res.status(200).send(charge);
+
+    }
+  });
+
+})
+
+
 
 
 //listening

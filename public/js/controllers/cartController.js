@@ -1,6 +1,5 @@
 angular.module("ccvApp").controller("cartController", function($scope, mainService){
 
-  $scope.test = "SUP DEVEN"
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
@@ -19,23 +18,19 @@ angular.module("ccvApp").controller("cartController", function($scope, mainServi
     });
   }
 
-  function calculate(items) {
+  function calculate(cart) {
     var total = 0;
     var shipping = 0;
 
-    for (var i = 0; i < items.length; i++) {
-      total += (parseInt(items[i].productPrice) * parseInt(items[i].productQuantity));
+    for (var i = 0; i < cart.length; i++) {
+      total += (parseInt(cart[i].productPrice) * parseInt(cart[i].productQuantity));
     }
-
-    console.log(total);
-
-         if (items >= 1 && items <= 9 ){
+    console.log(total, "calculate total");
+         if (total >= 1 && total <= 9 ){
            shipping = 2;
-         } else if (items >= 10){
+         } else if (total >= 10){
            shipping = 3;
          }
-
-
     return {
       total: total, //whatever the cost is,
       shipping: shipping //whatever shipping is
@@ -52,6 +47,13 @@ angular.module("ccvApp").controller("cartController", function($scope, mainServi
     $scope.shippingCost = costs.shipping;
     $scope.orderTotal = costs.total + costs.shipping;
 
+
+    console.log($scope.cart, "in controller");
+    $scope.cartQuant = 0;
+    for (var i = 0; i < $scope.cart.length; i++) {
+      $scope.cartQuant += (parseInt($scope.cart[i].productQuantity));
+      console.log($scope.cartQuant, "cartQuant");
+    }
   });
 
   // var getProductsInCart = function(){

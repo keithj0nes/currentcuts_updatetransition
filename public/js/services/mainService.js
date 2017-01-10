@@ -96,14 +96,15 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
 
-  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage){
+  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId){
     const cartData = {
       productSize: productSize,
       productColor: productColor,
       productQuantity: productQuantity,
       productName: productName,
       productPrice: productPrice,
-      productImage: productImage
+      productImage: productImage,
+      productId: productId
     }
     console.log(cartData);
     return $http({
@@ -111,7 +112,7 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/cart",
       data: cartData
     }).success(function(){
-      console.log("SUCCESS");
+      console.log("Item Added!");
     })
   }
 
@@ -135,5 +136,25 @@ angular.module("ccvApp").service("mainService", function($http){
       return response;
     })
   }
+
+  this.logout = function(){
+    return ({
+      method: "GET",
+      url: "/logout"
+    }).success(function(){
+    })
+  }
+
+  this.getOrderHistory = function(){
+    return $http({
+      method: "GET",
+      url: "/api/orderhistory"
+    }).then(function(response){
+      console.log(response, "reponse in srvice");
+      return response.data;
+    })
+  }
+
+
 
 })

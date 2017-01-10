@@ -34,7 +34,7 @@
     <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
       <br><br>
 
-      <select ng-model="cat1" ng-options="type.category for type in decalType">
+      <!-- <select ng-model="cat1" ng-options="type.category for type in decalType">
         <option value="null">Category 1</option>
       </select>
 
@@ -44,16 +44,20 @@
 
       <select ng-model="cat3" ng-options="type.category for type in decalType">
         <option value="null">Category 3</option>
-      </select>
+      </select> -->
 
 
 
       <span class="flright" ng-model="productId">Product ID: {{productId}}</span>
 
-      <br><br>
-    <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productPrice, productImgOne, productImgTwo)">Update</button>
-    <button class="btn" name="button" ng-click="add(productName, productDescription, productPrice, productImgOne, productImgTwo)">Add New</button>
-    <button class="btn" name="button" ng-click="clearForm()">Clear</button>
+      <!-- <br><br> -->
+
+      <div class="" style="text-align: center;">
+        <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productPrice, productImgOne, productImgTwo)">Update</button>
+        <button class="btn" name="button" ng-click="add(productName, productDescription, productPrice, productImgOne, productImgTwo)">Add New</button>
+        <button class="btn" name="button" ng-click="clearForm()">Clear</button>
+
+      </div>
 
   </div>
 

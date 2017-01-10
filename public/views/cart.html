@@ -7,15 +7,18 @@
 
     <hr>
 
-    <div class="" ng-repeat="items in cart">    <!-- START SINGLE ITEM IN CART -->
+    <div class="" ng-repeat="item in cart">    <!-- START SINGLE ITEM IN CART -->
 
       <div class="cart-product-info-m pad">
 
         <div class="cart-product-info-container-m">
-          <img ng-src="{{items.productImage}}" alt="">
-          <p>${{items.productPrice}}.00 |  {{items.productName}}<br>
-          <span style="font-size: 13px;"><strong>color:</strong> {{items.productColor}} | <strong>size:</strong> {{items.productSize}}</span></p>
+          <img ng-src="{{item.productImage}}" alt="">
+          <p>${{item.productPrice}}.00 |  {{item.productName}}<br>
+          <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{items.productSize}}</span></p>
         </div>
+
+        <button class="btn-delete" ng-click="cartDelete($index)" name="button">X</button>
+
       </div>
 
       <hr>
@@ -26,7 +29,7 @@
         </div>
         <div>
           <!-- <input type="text" name="" value="{{items.productQuantity}}"> -->
-          {{items.productQuantity}}
+          {{item.productQuantity}}
         </div>
       </div>
 
@@ -37,7 +40,7 @@
           <h4>Item Total</h4>
         </div>
         <div>
-          $12.00
+          ${{item.productPrice * item.productQuantity}}.00
         </div>
       </div>
 
@@ -91,7 +94,8 @@
         <div class="cart-product-itemtotal-d pad w25 center">
             ${{item.productPrice * item.productQuantity}}.00
 
-            <button class="btn" ng-click="cartDelete($index)" name="button">Delete</button>
+            <!-- <button class="btn" ng-click="cartDelete($index)" name="button">Delete</button> -->
+            <button class="btn-delete" ng-click="cartDelete($index)" name="button">X</button>
 
         </div>
       </div>
@@ -191,8 +195,12 @@
         <h2 class="pad">Payment Method</h2>
         <hr>
         <div class="">
-          <button type="button" class="btn-stripe">Checkout with Stripe</button>
-          <hr>
+          <!-- <button type="button" class="btn-stripe">Checkout with Stripe</button> -->
+          <stripe-directive total-price="orderTotal"></stripe-directive>
+
+          <hr class='lastItem'>
+
+
         </div>
 
       </div>

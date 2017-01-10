@@ -53,12 +53,17 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
-    getAllProducts();
+    setTimeout(function () {
+      getAllProducts();
+    }, 100);
+
   }
 
   $scope.update = function(id, name, description, price, img1, img2){
     mainService.updateProduct(id, name, description, price, img1, img2);
-    getAllProducts();
+    setTimeout(function () {
+      getAllProducts();
+    }, 100);
 
   }
 

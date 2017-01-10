@@ -27,6 +27,7 @@ angular.module("ccvApp").controller("productController", function($scope, $state
     var productName = $scope.product.name;
     var productPrice = $scope.product.price;
     var productImage = $scope.product.img1;
+    var productId = $scope.product.id
       // if($scope.productSize === undefined){
       //   swal("Please enter a size")
       // } else if($scope.productColor === undefined){
@@ -35,7 +36,7 @@ angular.module("ccvApp").controller("productController", function($scope, $state
       //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
       //   swal("Item added to cart!")
       // }
-        mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage);
+        mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
           swal("Item added to cart!")
 
   }

@@ -1,13 +1,43 @@
 <main class="login-main">
 
-  <img src="img/logo.png" alt="currentcuts.com" ui-sref="home">
-  <form method="get" action="/auth/facebook">
-    <input type="image" ng-src="img/loginwithfacebook.png" type="submit" alt="Log in with Facebook">
-  </form>
 
-  <form method="get" action="/auth/facebook">
-    <button type="submit" class="btn-facebook">Log In with Facebook</button>
-  </form>
+  <div class="login-container" ng-if="!username" check-logged-in>
+    <!-- <img src="img/logo.png" alt="currentcuts.com" ui-sref="home"> -->
+    <h1>Please Login</h1>
+
+    <form method="get" action="/auth/facebook">
+      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+    </form>
+
+<br><br>
+    <h1>New user?</h1>
+    <!-- <h4>Sign up with Facebook</h4> -->
+
+    <form method="get" action="/auth/facebook">
+      <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
+    </form>
+  </div>
+
+  <div class="login-container" ng-if="username" check-logged-in>
+    <h1>Hi {{username}}</h1>
+
+    <button type="button" class="btn" name="button" disabled>Account Settings</button>
+
+    <br><br>
+
+    <button type="button" class="btn" name="button" ui-sref="orderhistory">Order History</button>
+
+    <br><br>
+
+    <form  action="/logout" method="get">
+      <button type="submit" class="btn" name="button">Log Out</button>
+    </form>
+
+  </div>
+
+
+
+
 
 
 </main>

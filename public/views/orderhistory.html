@@ -1,0 +1,37 @@
+
+<main class="orderhistory-main">
+
+  <div class="orderhistory-container">
+
+    <div class="orderhistory-repeat" ng-class-even="'historyEven'" ng-repeat="orders in history">
+      <!-- {{orders.datesold}} -->
+      <img ng-src="{{orders.img1}}" alt="{{orders.name}} image">
+
+      <!-- <div class="order-content"> -->
+        <div class="">
+          <h4>Name</h4>
+          {{orders.name}}
+        </div>
+        <div class="">
+          <h4>Price</h4>
+          {{orders.price}}
+        </div>
+        <div class="">
+          <h4>Quantity</h4>
+          {{orders.quantsold}}
+        </div>
+        <div class="">
+          <h4>Order ID</h4>
+          {{orders.orderid}}
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+  </div>
+
+</main>

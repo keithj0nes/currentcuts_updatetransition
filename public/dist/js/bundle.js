@@ -45,6 +45,10 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     templateUrl: "views/admin.html",
     controller: "adminController",
     resolve: adminResolve
+  }).state("orderhistory", {
+    url: "/orderhistory",
+    templateUrl: "views/orderhistory.html",
+    controller: "userController"
   });
 
   $urlRouterProvider.otherwise("/");
@@ -4349,12 +4353,16 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
-    getAllProducts();
+    setTimeout(function () {
+      getAllProducts();
+    }, 100);
   };
 
   $scope.update = function (id, name, description, price, img1, img2) {
     mainService.updateProduct(id, name, description, price, img1, img2);
-    getAllProducts();
+    setTimeout(function () {
+      getAllProducts();
+    }, 100);
   };
 
   $scope.delete = function (product) {
@@ -4388,7 +4396,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
 angular.module("ccvApp").controller("cartController", function ($scope, mainService) {
 
-  $scope.test = "SUP DEVEN";
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
@@ -4407,22 +4414,19 @@ angular.module("ccvApp").controller("cartController", function ($scope, mainServ
     });
   };
 
-  function calculate(items) {
+  function calculate(cart) {
     var total = 0;
     var shipping = 0;
 
-    for (var i = 0; i < items.length; i++) {
-      total += parseInt(items[i].productPrice) * parseInt(items[i].productQuantity);
+    for (var i = 0; i < cart.length; i++) {
+      total += parseInt(cart[i].productPrice) * parseInt(cart[i].productQuantity);
     }
-
-    console.log(total);
-
-    if (items >= 1 && items <= 9) {
+    console.log(total, "calculate total");
+    if (total >= 1 && total <= 9) {
       shipping = 2;
-    } else if (items >= 10) {
+    } else if (total >= 10) {
       shipping = 3;
     }
-
     return {
       total: total, //whatever the cost is,
       shipping: shipping //whatever shipping is
@@ -4438,6 +4442,13 @@ angular.module("ccvApp").controller("cartController", function ($scope, mainServ
     $scope.cartTotal = costs.total;
     $scope.shippingCost = costs.shipping;
     $scope.orderTotal = costs.total + costs.shipping;
+
+    console.log($scope.cart, "in controller");
+    $scope.cartQuant = 0;
+    for (var i = 0; i < $scope.cart.length; i++) {
+      $scope.cartQuant += parseInt($scope.cart[i].productQuantity);
+      console.log($scope.cartQuant, "cartQuant");
+    }
   });
 
   // var getProductsInCart = function(){
@@ -4553,6 +4564,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     var productName = $scope.product.name;
     var productPrice = $scope.product.price;
     var productImage = $scope.product.img1;
+    var productId = $scope.product.id;
     // if($scope.productSize === undefined){
     //   swal("Please enter a size")
     // } else if($scope.productColor === undefined){
@@ -4561,7 +4573,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
     //   swal("Item added to cart!")
     // }
-    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage);
+    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage, productId);
     swal("Item added to cart!");
   };
 
@@ -4591,31 +4603,17 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
 });
 "use strict";
 
-angular.module("ccvApp").directive("checkLoggedIn", function (mainService) {
+angular.module("ccvApp").controller("userController", function ($scope, mainService) {
 
-  return {
-    restrict: "AE",
-    // templateUrl: './views/checkloggedindirective.html',
-    // controller: "cartController",
-    link: function link(scope, elem, attr) {
-      // scope.test = "hello"
-      console.log("HELLO");
-      scope.userLoggedIn = false;
-      var getUsername = function getUsername() {
-        mainService.getUsername().then(function (response) {
-          scope.username = response;
-          console.log(scope.username, "inside directive");
-          // scope.userLoggedIn = true;
-          // console.log(scope.userLoggedIn, "inside directive");
-        });
-      };
-      // setTimeout(function () {
-      console.log(scope.userLoggedIn, "outside function");
+  var getOrderHistory = function getOrderHistory() {
+    mainService.getOrderHistory().then(function (response) {
+      $scope.history = response;
 
-      // }, 1000);
-      getUsername();
-    }
+      console.log($scope.history, "scope.history");
+    });
   };
+
+  getOrderHistory();
 });
 "use strict";
 
@@ -4713,14 +4711,15 @@ angular.module("ccvApp").service("mainService", function ($http) {
     });
   };
 
-  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage) {
+  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId) {
     var cartData = {
       productSize: productSize,
       productColor: productColor,
       productQuantity: productQuantity,
       productName: productName,
       productPrice: productPrice,
-      productImage: productImage
+      productImage: productImage,
+      productId: productId
     };
     console.log(cartData);
     return $http({
@@ -4728,7 +4727,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
       url: "/api/cart",
       data: cartData
     }).success(function () {
-      console.log("SUCCESS");
+      console.log("Item Added!");
     });
   };
 
@@ -4752,8 +4751,170 @@ angular.module("ccvApp").service("mainService", function ($http) {
       return response;
     });
   };
+
+  this.logout = function () {
+    return {
+      method: "GET",
+      url: "/logout"
+    }.success(function () {});
+  };
+
+  this.getOrderHistory = function () {
+    return $http({
+      method: "GET",
+      url: "/api/orderhistory"
+    }).then(function (response) {
+      console.log(response, "reponse in srvice");
+      return response.data;
+    });
+  };
 });
 "use strict";
 
 angular.module("ccvApp").service("productService", function ($http) {});
+"use strict";
+
+angular.module("ccvApp").directive("checkitemsincart", function () {
+
+  return {
+    restrict: "AE",
+    controller: "cartController",
+    link: function link(scope, elem, attr) {
+      scope.itemsIncart = 1;
+      scope.$watch(console.log(scope.cart, "total"));
+      scope.$watch(console.log(scope.cartQuant, "inside directive"));
+
+      if (scope.itemsIncart === 0) {
+        scope.anyItemsInCart = false;
+      }
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkLoggedIn", function (mainService) {
+
+  return {
+    restrict: "AE",
+    // templateUrl: './views/checkloggedindirective.html',
+    // controller: "cartController",
+    link: function link(scope, elem, attr) {
+      var getUsername = function getUsername() {
+        mainService.getUsername().then(function (response) {
+          scope.username = response;
+          // console.log(scope.username, "inside directive");
+          // console.log(scope.userLoggedIn, "inside directive");
+        });
+      };
+      // setTimeout(function () {
+
+      // }, 1000);
+      getUsername();
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope) {
+
+  return {
+    restrict: "AE",
+    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
+    scope: {
+      totalPrice: '='
+    },
+    link: function link(scope, elem, attr) {
+
+      var totalOrderPrice = scope.totalPrice;
+      console.log(scope.totalPrice, "TOTAL PRICE");
+      var handler = StripeCheckout.configure({
+        key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function token(_token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+          console.log(totalOrderPrice, "LOL");
+
+          $http.post('/api/charge', {
+            stripeToken: _token.id,
+            price: totalOrderPrice,
+            email: _token.email,
+            stripeTokenCard: _token.card
+          }).then(function (response) {
+            $rootScope.cart = [];
+            $state.go('home');
+          });
+        }
+      });
+
+      $('.btn-stripe').on('click', function (e) {
+        // Open Checkout with further options:
+        var stripeTotal = scope.totalPrice * 100;
+
+        handler.open({
+          name: 'Current Cuts Vinyl',
+          description: 'Decal purchase',
+          amount: stripeTotal
+        });
+        e.preventDefault();
+      });
+
+      // Close Checkout on page navigation:
+      //       // $(window).on('popstate', function() {
+      //       //   handler.close();
+      //       //   $state.go('mainProducts');
+      //       // });
+    }
+  };
+});
+
+// angular.module('capriccio')
+//   .directive('stripeButton', function ($http, $state, $rootScope) {
+//     return {
+//       restrict: 'E',
+//       template: '<button id="stripePayButton">Pay Now</button>',
+//       scope: {
+//         totalPrice: '='
+//       },
+//       link: function (scope, element, attrs) {
+//         var totalOrderPrice = scope.totalPrice;
+//         var handler = StripeCheckout.configure({
+//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
+//           image: 'assetts/img/thumb-100.png',
+//           locale: 'auto',
+//           token: function(token) {
+//           // You can access the token ID with `token.id`.
+//           // Get the token ID to your server-side code for use.
+//             $http.post('/api/charge', {
+//               stripeToken: token.id,
+//               price: totalOrderPrice,
+//               email: token.email,
+//               stripeTokenCard: token.card
+//             }).then(function (response) {
+//               $rootScope.userCart = [];
+//               $state.go('mainProducts');
+//             })
+//           }
+//         })
+//         $('#stripePayButton').on('click', function(e) {
+//           // Open Checkout with further options:
+//           var stripeTotal = scope.totalPrice * 100;
+//
+//           handler.open({
+//             name: 'Capriccio',
+//             description: 'Music purchase',
+//             amount: stripeTotal
+//           });
+//           e.preventDefault();
+//         });
+//
+//       // Close Checkout on page navigation:
+//       // $(window).on('popstate', function() {
+//       //   handler.close();
+//       //   $state.go('mainProducts');
+//       // });
+//       }
+//     }
+//   });
 //# sourceMappingURL=bundle.js.map
