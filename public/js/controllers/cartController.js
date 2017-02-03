@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("cartController", function($scope, mainService){
+angular.module("ccvApp").controller("cartController", function($scope, $rootScope, mainService){
 
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
@@ -49,10 +49,10 @@ angular.module("ccvApp").controller("cartController", function($scope, mainServi
 
 
     console.log($scope.cart, "in controller");
-    $scope.cartQuant = 0;
+    $rootScope.cartQuant = 0;
     for (var i = 0; i < $scope.cart.length; i++) {
-      $scope.cartQuant += (parseInt($scope.cart[i].productQuantity));
-      console.log($scope.cartQuant, "cartQuant");
+      $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
+      console.log($rootScope.cartQuant, "cartQuant");
     }
   });
 

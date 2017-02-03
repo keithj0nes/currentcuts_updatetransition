@@ -15,7 +15,8 @@ const app = module.exports = express();
 
 //sync to database
 var conn = massive.connectSync({
-  connectionString : "postgres://postgres:@localhost/ccv"
+  // connectionString : "postgres://postgres:@localhost/ccv"
+  connectionString: config.psqlConnString
 });
 
 app.set('db', conn); // add your connection to express
@@ -141,6 +142,7 @@ app.post("/api/charge", function(req, res, next){
 
   // Get the credit card details submitted by the form
   var token = req.body.stripeToken; // Using Express
+  console.log(req.body, "req.body.price 1");
 
   // Create a charge: this will charge the user's card
   var charge = stripe.charges.create({
@@ -150,7 +152,7 @@ app.post("/api/charge", function(req, res, next){
     description: "Hello",
 
   }, function(err, charge) {
-    console.log(req.body.price, "req.body.price");
+    console.log(req.body.price, "req.body.price 2");
     if (err && err.type === 'StripeCardError') {
       // The card has been declined
       console.log("Your card was declined");
@@ -158,6 +160,7 @@ app.post("/api/charge", function(req, res, next){
       console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
+      console.log(charge, "CHARGE in SERVER");
       // res.status(200).send(charge);
 
     }

@@ -2834,7 +2834,7 @@
 //         if (isDuration(input) && hasOwnProp(input, '_locale')) {
 //             ret._locale = input._locale;
 //         }
-// 
+//
 //         return ret;
 //     }
 //

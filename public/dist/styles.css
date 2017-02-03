@@ -460,9 +460,13 @@ h1, h2, h3, h4 {
   background-color: #d9d9d9; }
 
 .btn-delete {
-  border: 1px solid #000;
+  border: none;
   padding: 1px 2px;
-  background-color: white; }
+  background-color: white;
+  cursor: pointer; }
+
+.btn-delete:hover {
+  color: gray; }
 
 .flleft {
   float: left; }
@@ -491,6 +495,19 @@ hr.lastItem {
 
 .w75 {
   width: 75%; }
+
+.ship-truck {
+  padding-left: 7px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH"; }
+
+.shipping-date {
+  display: flex;
+  align-items: center; }
 
 /* ============================================
                   INDEX PAGE

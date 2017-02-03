@@ -67,10 +67,15 @@ background-color: rgb(69, 69, 69);
 }
 
 .btn-delete {
-  border: 1px solid #000;
+  // border: 1px solid #000;
+  border: none;
   padding: 1px 2px;
   background-color: white;
+  cursor: pointer;
+}
 
+.btn-delete:hover {
+  color: gray;
 }
 
 .flleft {
@@ -112,6 +117,22 @@ hr.lastItem {
   // background: purple;
 }
 
+.ship-truck {
+  // background: red;
+  padding-left: 7px;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+.shipping-date {
+  // background: blue;
+  display: flex;
+  align-items: center;
+}
 /* ============================================
                   INDEX PAGE
 ============================================ */

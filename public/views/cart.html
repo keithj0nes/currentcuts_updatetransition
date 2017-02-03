@@ -13,7 +13,7 @@
 
         <div class="cart-product-info-container-m">
           <img ng-src="{{item.productImage}}" alt="">
-          <p>${{item.productPrice}}.00 |  {{item.productName}}<br>
+          <p>{{item.productPrice | currency}}|  {{item.productName}}<br>
           <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{items.productSize}}</span></p>
         </div>
 
@@ -40,7 +40,7 @@
           <h4>Item Total</h4>
         </div>
         <div>
-          ${{item.productPrice * item.productQuantity}}.00
+          {{item.productPrice * item.productQuantity | currency}}
         </div>
       </div>
 
@@ -82,7 +82,7 @@
       <div class="cart-product-info-container-d pad" >
         <div class="d w50">
           <img ng-src="{{item.productImage}}" alt="">
-          <p>${{item.productPrice}}.00 |  {{item.productName}}<br>
+          <p>{{item.productPrice | currency}} |  {{item.productName}}<br>
           <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{item.productSize}}</span></p>
 
         </div>
@@ -92,10 +92,10 @@
         </div>
 
         <div class="cart-product-itemtotal-d pad w25 center">
-            ${{item.productPrice * item.productQuantity}}.00
+            {{item.productPrice * item.productQuantity | currency}}
 
             <!-- <button class="btn" ng-click="cartDelete($index)" name="button">Delete</button> -->
-            <button class="btn-delete" ng-click="cartDelete($index)" name="button">X</button>
+            <button class="btn-delete" ng-click="cartDelete($index)" name="button">x</button>
 
         </div>
       </div>
@@ -138,7 +138,7 @@
         Total
       </div>
       <div class="w25">
-        ${{cartTotal}}.00
+        {{cartTotal | currency}}
       </div>
     </div>
 
@@ -156,7 +156,7 @@
         Shipping
       </div>
       <div class="w25">
-        ${{shippingCost}}.00
+        {{shippingCost | currency}}
       </div>
     </div>
 
@@ -168,12 +168,16 @@
           <strong>Order Total</strong>
         </div>
         <div class="w25">
-          <strong>${{orderTotal}}.00</strong>
+          <strong>{{orderTotal | currency}}</strong>
         </div>
       </div>
 
     </div>
 
+    <hr class="lastItem">
+    <div class="">
+      <ship-date></ship-date>
+    </div>
     <hr class="lastItem">
 
 

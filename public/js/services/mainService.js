@@ -106,7 +106,7 @@ angular.module("ccvApp").service("mainService", function($http){
       productImage: productImage,
       productId: productId
     }
-    console.log(cartData);
+    // console.log(cartData);
     return $http({
       method: "POST",
       url: "/api/cart",

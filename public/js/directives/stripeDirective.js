@@ -8,41 +8,36 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
           },
     link: function(scope, elem, attr){
 
-      var totalOrderPrice = scope.totalPrice;
-      console.log(scope.totalPrice, "TOTAL PRICE");
-      var handler = StripeCheckout.configure({
-        key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        token: function(token) {
-      // You can access the token ID with `token.id`.
-      // Get the token ID to your server-side code for use.
-      console.log(totalOrderPrice, "LOL");
-
-          $http.post('/api/charge', {
-            stripeToken: token.id,
-            price: totalOrderPrice,
-            email: token.email,
-            stripeTokenCard: token.card
-          }).then(function (response) {
-            $rootScope.cart = [];
-            $state.go('home');
-
-          })
-        }
-      })
-
       $('.btn-stripe').on('click', function(e) {
     // Open Checkout with further options:
-        var stripeTotal = scope.totalPrice * 100;
+        var handler = StripeCheckout.configure({
+          key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+          locale: 'auto',
+          token: function(token) {
+        // You can access the token ID with `token.id`.
+        // Get the token ID to your server-side code for use.
 
-        handler.open({
-          name: 'Current Cuts Vinyl',
-          description: 'Decal purchase',
-          amount: stripeTotal
-        });
-        e.preventDefault();
-      });
+            $http.post('/api/charge', {
+              stripeToken: token.id,
+              price: stripeTotal,
+              email: token.email,
+              stripeTokenCard: token.card
+            }).then(function (response) {
+              $rootScope.cart = [];
+              $state.go('home');
+            })
+          }
+        })
+            var stripeTotal = scope.totalPrice * 100;
+
+            handler.open({
+              name: 'Current Cuts Vinyl',
+              description: 'Decal purchase',
+              amount: stripeTotal
+            });
+            e.preventDefault();
+          });
 
       // Close Checkout on page navigation:
       //       // $(window).on('popstate', function() {

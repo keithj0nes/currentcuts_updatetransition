@@ -3,7 +3,7 @@
 
   <div class="details">
     <h2 class="desc">{{product.name}}</h2>
-    <p class="productPrice">${{product.price}}.00</p>
+    <p class="productPrice">{{product.price | currency}}</p>
 
   <form ng-submit="addToCart(productSize, productColor, productQuantity)">
     <select options="" class="select-size" required ng-model="productSize">
@@ -39,6 +39,10 @@
     <button type="submit" class="btn" name="button" value="Add to Cart">Add to Cart</button>
 
   </form>
+
+  <br><br>
+  <ship-date></ship-date>
+
 
 
   </div> <!--end details div-->
