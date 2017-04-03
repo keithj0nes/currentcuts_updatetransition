@@ -3,15 +3,34 @@
 
   <div class="details">
     <h2 class="desc">{{product.name}}</h2>
-    <p class="productPrice">{{product.price | currency}}</p>
+    <!-- <p class="productPrice" ng-model="productSize">{{product2[0].price | currency}}</p> -->
+    <p class="productPrice" ng-model="pppprice">&nbsp;{{productPrice | currency}}</p>
 
-  <form ng-submit="addToCart(productSize, productColor, productQuantity)">
-    <select options="" class="select-size" required ng-model="productSize">
+  <form ng-submit="addToCart(productSize, productColor, productQuantity, productPrice)">
+    <!-- <select options="" class="select-size" required ng-model="productSize">
       <option value="" >Size</option>
       <option value='4"H x 10"W'>4"H x 10"W</option>
       <option value='5"H x 12"W'>5"H x 13"W</option>
       <option value='6"H x 16"W'>6"H x 16"W</option>
-    </select>
+
+      <option value='{{sizes.height}}"H x {{sizes.width}}"W' ng-repeat="sizes in product2">{{sizes.height}}"H x {{sizes.width}}"W - ${{sizes.price}}</option>
+      <option value='{{sizes.height}}"H x {{sizes.width}}"W' ng-repeat="sizes in product2">{{sizes.height}}"H x {{sizes.width}}"W - ${{sizes.price}}</option>
+
+    </select> -->
+
+    <!-- <select ng-model="filterCondition.operator" ng-options="operator.value as operator.displayName for operator in operators">
+</select> -->
+
+<!-- <select ng-model="pprice" required ng-options="details.price as details.height for details in product2">
+  <option value="">SEZE</option>
+</select> -->
+<!-- <select ng-model="pprice" ng-init="product2[0].width" required ng-options='details.price as (details.height + "\"H x " + details.width + "\"W" + " [$" + details.price + ".00]") for details in product2'>
+  <option value="">Size</option>
+</select> -->
+
+<select ng-model="productPrice" ng-init="product2[0].width" required ng-options='details.price as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + ".00]") for details in product2'>
+  <option value="">Size</option>
+</select>
 
     <select options="" required ng-model="productColor">
       <option value="">Color </option>

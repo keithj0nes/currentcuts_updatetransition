@@ -29,6 +29,17 @@ module.exports = {
 
   },
 
+  getProductById2: function(req, res, next){
+    db.get_product_by_id_details([req.params.id], function(err, product){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      console.log("getProductById2");
+      return res.send(product)
+    })
+  },
+
   //simple search
   getProductByName: function(req, res, next){
     const searchTerm = "%" + req.params.name + "%";

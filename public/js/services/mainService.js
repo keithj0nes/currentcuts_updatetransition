@@ -20,6 +20,16 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.getProductById2 = function(id){
+    return $http({
+      method: "GET",
+      url: "/api/products2/" + id
+    }).then(function(response){
+      console.log(response.data, "in service");
+      return response.data;
+    })
+  }
+
   this.getProductByName = function(name){
     console.log(name, "searched letters in service");
     return $http({

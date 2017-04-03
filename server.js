@@ -15,8 +15,8 @@ const app = module.exports = express();
 
 //sync to database
 var conn = massive.connectSync({
-  // connectionString : "postgres://postgres:@localhost/ccv"
-  connectionString: config.psqlConnString
+  connectionString : "postgres://postgres:@localhost/ccv"
+  // connectionString: config.psqlConnString
 });
 
 app.set('db', conn); // add your connection to express
@@ -125,6 +125,7 @@ app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
 //PRODUCTS
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
+app.get("/api/products2/:id", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);
 app.get("/api/cat/:id", mainCtrl.getProductByCategory); //////////// not working
 app.post("/api/products", mainCtrl.addProductToDB);

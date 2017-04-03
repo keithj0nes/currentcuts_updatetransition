@@ -6,10 +6,19 @@ angular.module("ccvApp").controller("productController", function($scope, $state
 
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
+      // console.log(response, "HDLKKJDLGJALG");
       $scope.product = response[0];
       //response[0] gives us description,id,image,name and price
+      // console.log($stateParams);
+      // console.log(response);
+    })
+    mainService.getProductById2($stateParams.id).then(function(response) {
+      console.log(response, "HDLKKJDLGJALG");
+      $scope.product2 = response;
+      //response[0] gives us description,id,image,name and price
       console.log($stateParams);
-      console.log(response);
+      console.log($scope.product2);
+      // console.log(response);
     })
   }
 
@@ -22,10 +31,11 @@ angular.module("ccvApp").controller("productController", function($scope, $state
   // console.log($scope.productSize.val(), "value");
 
   $scope.productQuantity = 1;
-  $scope.addToCart = function(productSize,productColor,productQuantity){
+  $scope.addToCart = function(productSize,productColor,productQuantity, rice){
 
     var productName = $scope.product.name;
-    var productPrice = $scope.product.price;
+    // var productPrice = $scope.product.price;
+    console.log(rice, "HERE IS THE RICE LOL");
     var productImage = $scope.product.img1;
     var productId = $scope.product.id
       // if($scope.productSize === undefined){
@@ -36,7 +46,7 @@ angular.module("ccvApp").controller("productController", function($scope, $state
       //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
       //   swal("Item added to cart!")
       // }
-        mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
+        mainService.addProductsToCart(productSize,productColor,productQuantity,productName,rice,productImage,productId);
           swal("Item added to cart!")
 
   }

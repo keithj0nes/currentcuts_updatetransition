@@ -4508,7 +4508,13 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
+
+      for (var i = 0; i < response.length; i++) {
+        console.log(response[i]);
+      }
+
       $scope.products = response;
+      console.log($scope.products, "cntlrlsl;g");
     });
   };
   //   $scope.random = function(){
@@ -4543,10 +4549,19 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
 
   var getProductById = function getProductById() {
     mainService.getProductById($stateParams.id).then(function (response) {
+      // console.log(response, "HDLKKJDLGJALG");
       $scope.product = response[0];
       //response[0] gives us description,id,image,name and price
+      // console.log($stateParams);
+      // console.log(response);
+    });
+    mainService.getProductById2($stateParams.id).then(function (response) {
+      console.log(response, "HDLKKJDLGJALG");
+      $scope.product2 = response;
+      //response[0] gives us description,id,image,name and price
       console.log($stateParams);
-      console.log(response);
+      console.log($scope.product2);
+      // console.log(response);
     });
   };
 
@@ -4559,10 +4574,11 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
   // console.log($scope.productSize.val(), "value");
 
   $scope.productQuantity = 1;
-  $scope.addToCart = function (productSize, productColor, productQuantity) {
+  $scope.addToCart = function (productSize, productColor, productQuantity, rice) {
 
     var productName = $scope.product.name;
-    var productPrice = $scope.product.price;
+    // var productPrice = $scope.product.price;
+    console.log(rice, "HERE IS THE RICE LOL");
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
     // if($scope.productSize === undefined){
@@ -4573,7 +4589,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
     //   swal("Item added to cart!")
     // }
-    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage, productId);
+    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, rice, productImage, productId);
     swal("Item added to cart!");
   };
 
@@ -4621,18 +4637,35 @@ angular.module("ccvApp").directive("checkitemsincart", function ($rootScope) {
 
   return {
     restrict: "AE",
+    // template: "({{totalItems}})",
+
     controller: "cartController",
     link: function link(scope, elem, attr) {
       // scope.itemsIncart = 1;
-      $rootScope.cartQuant = 20;
+      // $rootScope.totalItems = 20;
       console.log($rootScope.cartQuant, 'hello');
-      if ($rootScope.cartQuant === 0) {
-        scope.anyItemsInCart = false;
-      } else {
-        scope.itemsIncart = $rootScope.cartQuant;
-        console.log($rootScope.cartQuant, "roosope in directive");
-      }
+      // if($rootScope.cartQuant === 0){
+      //   scope.anyItemsInCart = false;
+      // } else {
+      //   // scope.itemsIncart = $rootScope.cartQuant;
+      //   scope.totalItems = $rootScope.cartQuant
+      //   console.log($rootScope.cartQuant, "roosope in directive");
+      // }
+
+      $rootScope.$watch("cartQuant", function () {
+        console.log("it changed again");
+      });
     }
+
+    // template: "({{totalItems}})",
+    // scope: {},
+    // controller: ($scope, mainService, $rootScope, $state) => {
+    //   $rootScope.$watch('cartTotal', function(){
+    //     console.log('it changed');
+    //     console.log($rootScope.cartQuant);
+    //     $scope.totalItems = $rootScope.cartQuant
+    //   })
+    // }
   };
 });
 "use strict";
@@ -4788,6 +4821,16 @@ angular.module("ccvApp").service("mainService", function ($http) {
     return $http({
       method: "GET",
       url: "/api/products/" + id
+    }).then(function (response) {
+      console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductById2 = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products2/" + id
     }).then(function (response) {
       console.log(response.data, "in service");
       return response.data;
