@@ -4436,6 +4436,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
   mainService.getProductsInCart().then(function (response) {
 
     $scope.cart = response;
+    console.log($scope.cart, "SCOPE DOT CART");
 
     var costs = calculate($scope.cart);
 
@@ -4574,13 +4575,15 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
   // console.log($scope.productSize.val(), "value");
 
   $scope.productQuantity = 1;
-  $scope.addToCart = function (productSize, productColor, productQuantity, rice) {
+  $scope.addToCart = function (productColor, productQuantity, productObject) {
 
     var productName = $scope.product.name;
-    // var productPrice = $scope.product.price;
-    console.log(rice, "HERE IS THE RICE LOL");
+    var productPrice = productObject.price;
+    console.log(productObject, "HERE IS THE RICE LOL");
+    var productSize = productObject.height + "H x " + productObject.width + "W";
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
+    console.log(productSize, "psize");
     // if($scope.productSize === undefined){
     //   swal("Please enter a size")
     // } else if($scope.productColor === undefined){
@@ -4589,7 +4592,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
     //   swal("Item added to cart!")
     // }
-    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, rice, productImage, productId);
+    mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage, productId);
     swal("Item added to cart!");
   };
 
@@ -4812,7 +4815,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "GET",
       url: "/api/products"
     }).then(function (response) {
-      // console.log(response.data);
+      console.log(response.data, "getAllProducts");
       return response.data;
     });
   };

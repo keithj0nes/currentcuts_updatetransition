@@ -5,7 +5,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/products"
     }).then(function(response){
-      // console.log(response.data);
+      console.log(response.data, "getAllProducts");
       return response.data
     })
   }

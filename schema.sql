@@ -68,10 +68,16 @@ VALUES ('Snowboard Chair Lift Dual', 'Snowboard Chair Lift Dual vinyl decal', 'h
 INSERT INTO prices (price) VALUES (4);
 INSERT INTO prices (price) VALUES (6);
 INSERT INTO prices (price) VALUES (8);
+INSERT INTO prices (price) VALUES (16);
+INSERT INTO prices (price) VALUES (20);
+INSERT INTO prices (price) VALUES (2);
+
 
 INSERT INTO sizes (height, width, garmentSize) VALUES (3, 3, null);
 INSERT INTO sizes (height, width, garmentSize) VALUES (4, 5, null);
 INSERT INTO sizes (height, width, garmentSize) VALUES (7, 2, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (10, 10, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (15, 20, null);
 
 
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 1, 1);
@@ -80,6 +86,13 @@ INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 3, 3);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 2, 3);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 2, 2);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 1, 3);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 4, 4);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 5, 5);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 6, 1);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (3, 2, 3);
+
+
+
 
 
 

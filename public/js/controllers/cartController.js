@@ -40,6 +40,7 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
   mainService.getProductsInCart().then(function(response){
 
     $scope.cart = response;
+    console.log($scope.cart, "SCOPE DOT CART");
 
     var costs = calculate($scope.cart);
 
