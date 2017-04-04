@@ -8,6 +8,8 @@
 
 * Email alerts (to me and purchaser) once order is placed (nodemailer?)
 
+* Allow for message note to be sent in checkout (textarea)
+
 * Make sure stripe payment is working
 
 * Once using Passport LocalAuth, confirm hash and salting of passwords

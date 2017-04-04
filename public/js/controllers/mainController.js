@@ -6,9 +6,7 @@ angular.module("ccvApp").controller("mainController", function($scope, mainServi
   var getAllProducts = function(){
     mainService.getAllProducts().then(function(response){
 
-      for(var i = 0; i < response.length; i++){
-        console.log(response[i]);
-      }
+      
 
       $scope.products = response;
       console.log($scope.products, "cntlrlsl;g");

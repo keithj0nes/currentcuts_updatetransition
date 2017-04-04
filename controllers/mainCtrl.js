@@ -1,5 +1,7 @@
 const app = require("../server.js");
 const db = app.get('db');
+const nodemailer = require("nodemailer");
+const config = require("../config.js");
 
 
 module.exports = {
@@ -172,6 +174,43 @@ module.exports = {
       }
       return res.status(200).send(product)
     })
+  },
+
+
+
+
+
+  mail: (req, res, next) => {
+    console.log(req.body);
+
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      secure: true,
+      auth: {
+          user: config.nodemailerAuth.username, // Your email id
+          pass: config.nodemailerAuth.pass // Your password
+      }
+    });
+    let emailItemTotal = req.body.pPrice * req.body.pQuantity;
+    let text = "Hi " + req.body.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> $" + req.body.pPrice + ".00 | " + req.body.pName + "<br> <b>color:</b> " + req.body.pColor + " | <b>size:</b> " + req.body.pHeight + "H x " +req.body.pWidth + "W inches <br> <b>quantity:</b> " + req.body.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00";
+
+    var mailOptions = {
+      from: 'currentcutstest@gmail.com', // sender address
+      to: 'currentcutstest@gmail.com', // list of receivers
+      subject: 'Email Example', // Subject line
+      // text: text //, // plaintext body
+      html: text
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+          console.log(error);
+          res.json({yo: 'error'});
+      }else{
+          console.log('Message sent: ' + info.response);
+          res.json({yo: info.response});
+      };
+    });
   }
 
 

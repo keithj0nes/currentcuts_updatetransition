@@ -3,13 +3,14 @@ angular.module("ccvApp").controller("productController", function($scope, $state
   console.log("$stateParams", $stateParams);
   console.log("$stateParams.id", $stateParams.id);
 
+  // $scope.productPrice = {
+  //   price: "22222"
+  // };
+
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
-      // console.log(response, "HDLKKJDLGJALG");
       $scope.product = response[0];
       //response[0] gives us description,id,image,name and price
-      // console.log($stateParams);
-      // console.log(response);
     })
     mainService.getProductById2($stateParams.id).then(function(response) {
       console.log(response, "HDLKKJDLGJALG");

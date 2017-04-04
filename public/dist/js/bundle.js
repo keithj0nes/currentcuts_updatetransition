@@ -4510,10 +4510,6 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
 
-      for (var i = 0; i < response.length; i++) {
-        console.log(response[i]);
-      }
-
       $scope.products = response;
       console.log($scope.products, "cntlrlsl;g");
     });
@@ -4548,13 +4544,14 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
   console.log("$stateParams", $stateParams);
   console.log("$stateParams.id", $stateParams.id);
 
+  // $scope.productPrice = {
+  //   price: "22222"
+  // };
+
   var getProductById = function getProductById() {
     mainService.getProductById($stateParams.id).then(function (response) {
-      // console.log(response, "HDLKKJDLGJALG");
       $scope.product = response[0];
       //response[0] gives us description,id,image,name and price
-      // console.log($stateParams);
-      // console.log(response);
     });
     mainService.getProductById2($stateParams.id).then(function (response) {
       console.log(response, "HDLKKJDLGJALG");

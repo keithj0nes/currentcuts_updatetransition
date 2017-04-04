@@ -5,6 +5,7 @@ const cors = require("cors");
 const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
+const nodemailer = require("nodemailer");
 const FacebookStrategy = require("passport-facebook").Strategy;
 var stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
 
@@ -137,6 +138,7 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.put("/api/users/:id");
 // app.delete("/api/users/:d");
 
+app.post("/api/email", mainCtrl.mail);
 
 
 app.post("/api/charge", function(req, res, next){
