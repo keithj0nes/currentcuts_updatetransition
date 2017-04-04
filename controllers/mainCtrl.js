@@ -13,7 +13,7 @@ module.exports = {
         console.log(err);
         return res.status(500).send(err)
       }
-      console.log("products shown", products);
+      console.log("products shown");
       return res.send(products)
     })
   },
@@ -182,6 +182,7 @@ module.exports = {
 
   mail: (req, res, next) => {
     console.log(req.body);
+    let b = req.body;
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -191,13 +192,16 @@ module.exports = {
           pass: config.nodemailerAuth.pass // Your password
       }
     });
-    let emailItemTotal = req.body.pPrice * req.body.pQuantity;
-    let text = "Hi " + req.body.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> $" + req.body.pPrice + ".00 | " + req.body.pName + "<br> <b>color:</b> " + req.body.pColor + " | <b>size:</b> " + req.body.pHeight + "H x " +req.body.pWidth + "W inches <br> <b>quantity:</b> " + req.body.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00";
+    let emailItemTotal = b.product.pPrice * b.product.pQuantity;
+    // let text = "Hi " + req.body.userName + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> $" + req.body.pPrice + ".00 | " + req.body.pName + "<br> <b>color:</b> " + req.body.pColor + " | <b>size:</b> " + req.body.pHeight + "H x " +req.body.pWidth + "W inches <br> <b>quantity:</b> " + req.body.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00";
+
+    let text = "Hi " + b.user.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.user.note;
 
     var mailOptions = {
       from: 'currentcutstest@gmail.com', // sender address
-      to: 'currentcutstest@gmail.com', // list of receivers
-      subject: 'Email Example', // Subject line
+      to: b.user.email,                  // list of receivers
+      bcc: 'currentcutstest@gmail.com', 
+      subject: 'Order Confirmation - ' + b.order, // Subject line
       // text: text //, // plaintext body
       html: text
     };

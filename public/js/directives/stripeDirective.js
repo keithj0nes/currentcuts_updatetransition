@@ -8,8 +8,28 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
           },
     link: function(scope, elem, attr){
 
-      $('.btn-stripe').on('click', function(e) {
+      let orderData = {
+        order: 1,
+        user: {
+          email: "martin@currentcuts.com",
+          name: "Martin",
+          address: "1234 s 10th st.",
+          zip: "91482",
+          note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: {
+          pName: "Wanderlust",
+          pColor: "Red",
+          pHeight: 6,
+          pWidth: 12,
+          pPrice: 15,
+          pQuantity: 3
+        }
+      }
+
+      $('.btn-stripe').on('click', orderData, function(e) {
     // Open Checkout with further options:
+    console.log(e.data, "USER DATA STRIPE CLICK");
         var handler = StripeCheckout.configure({
           key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
           image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
@@ -26,6 +46,7 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
             }).then(function (response) {
               $rootScope.cart = [];
               $state.go('home');
+              return $http.post('/api/email', orderData);
             })
           }
         })
