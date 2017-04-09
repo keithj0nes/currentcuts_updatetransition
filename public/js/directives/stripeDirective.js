@@ -1,4 +1,4 @@
-angular.module("ccvApp").directive("stripeDirective", function($http, $state, $rootScope){
+angular.module("ccvApp").directive("stripeDirective", function($http, $state, $rootScope, mainService){
 
   return {
     restrict: "AE",
@@ -8,28 +8,64 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
           },
     link: function(scope, elem, attr){
 
+
+
       let orderData = {
-        order: 1,
-        user: {
-          email: "martin@currentcuts.com",
-          name: "Martin",
-          address: "1234 s 10th st.",
-          zip: "91482",
-          note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        order: {
+          number: 5624,
+          note: "here is a note from the buyer"
         },
-        product: {
-          pName: "Wanderlust",
-          pColor: "Red",
-          pHeight: 6,
-          pWidth: 12,
-          pPrice: 15,
-          pQuantity: 3
-        }
+        email: "currentcutstest@gmail.com",
+        user: {
+        //   name: "Martin",
+        //   address: "1234 s 10th st.",
+        //   zip: "91482",
+        //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: []//{
+        //   pName: "Wanderlust",
+        //   pColor: "Red",
+        //   pHeight: 6,
+        //   pWidth: 12,
+        //   pPrice: 15,
+        //   pQuantity: 2
+        // }
       }
 
+      // setTimeout(function () {
+      //   var hello = mainService.addShippingInfo()
+      //   console.log(hello);
+      //
+      // }, 2000);
+
+      // setTimeout(function () {
+        // scope.value = $rootScope.$on.details
+        // console.log(scope.value, "scopedotvalue");
+      // }, 2000);
+
+
       $('.btn-stripe').on('click', orderData, function(e) {
+
+        scope.value = $rootScope.details
+        console.log(scope.value, "scopedotvalue");
+
+        orderData.user = scope.value;
+        orderData.product = [];
+
+        mainService.getProductsInCart().then(function(response){
+          console.log(response);
+          response.forEach(function(item, i){
+            console.log(item, "item being logged");
+            orderData.product.push(item)
+          })
+
+        });
+        console.log(orderData, "orderdata logged");
     // Open Checkout with further options:
-    console.log(e.data, "USER DATA STRIPE CLICK");
+    // console.log(e.data, "USER DATA STRIPE CLICK");
+    if (!scope.value){
+      alert("please enter shipping info")
+    } else{
         var handler = StripeCheckout.configure({
           key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
           image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
@@ -58,6 +94,7 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
               amount: stripeTotal
             });
             e.preventDefault();
+          }
           });
 
       // Close Checkout on page navigation:

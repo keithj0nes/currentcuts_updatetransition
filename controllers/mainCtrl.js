@@ -181,8 +181,20 @@ module.exports = {
 
 
   mail: (req, res, next) => {
-    console.log(req.body);
+    // console.log(req.body);
     let b = req.body;
+
+    let text2 = [];
+
+    let itt = 0;
+
+    b.product.forEach(function(item, i){
+      console.log(item, "item in product");
+      // text2.push( "$" + item.productPrice + ", item color: " + item.productColor);
+      let iTotal = item.productQuantity * item.productPrice;
+      itt += iTotal;
+      text2.push("<br><br> $" + item.productPrice + ".00 | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + iTotal + ".00")
+    })
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -195,13 +207,26 @@ module.exports = {
     let emailItemTotal = b.product.pPrice * b.product.pQuantity;
     // let text = "Hi " + req.body.userName + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> $" + req.body.pPrice + ".00 | " + req.body.pName + "<br> <b>color:</b> " + req.body.pColor + " | <b>size:</b> " + req.body.pHeight + "H x " +req.body.pWidth + "W inches <br> <b>quantity:</b> " + req.body.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00";
 
-    let text = "Hi " + b.user.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.user.note;
+    // let text = "Hi " + b.user.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.order.note;
 
+    //  let text = "Hi " + b.user.recNameFirst + " " + b.user.recNameLast + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.order.note;
+
+     let text = "Hi " + b.user.recNameFirst + " " + b.user.recNameLast + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
+
+    text2.forEach(function(it){
+      text += it;
+    });
+
+    text += "<br><hr> Order Total: $" + itt + ".00 <br><br><br> Note from Buyer: " + b.order.note;
+
+    console.log(itt);
+
+    // console.log(text);
     var mailOptions = {
       from: 'currentcutstest@gmail.com', // sender address
-      to: b.user.email,                  // list of receivers
-      bcc: 'currentcutstest@gmail.com', 
-      subject: 'Order Confirmation - ' + b.order, // Subject line
+      to: b.email,                  // list of receivers
+      bcc: 'currentcutstest@gmail.com',
+      subject: 'Order Confirmation - ' + b.order.number, // Subject line
       // text: text //, // plaintext body
       html: text
     };
@@ -278,4 +303,54 @@ module.exports = {
 //       });
 //     }
 //   }
+// }
+
+
+
+
+
+// { "order": {
+// 	"number": 5624,
+// 	"note": "here is a note from the buyer"
+// 	},
+//
+//   "email": "currentcutstest@gmail.com",
+//   "user": {
+//   	"recNameFirst": "Keith",
+//     "recNameLast": "THEbest",
+//     "address1": "123 4th st.",
+//     "address2": "apt 255",
+//     "city": "Seattle",
+//     "state": "WA",
+//     "zip": "99999"
+//   },
+//   "product": [
+//   	{
+//   	   "productSize": "3H x 3W",
+//        "productColor": "Black",
+//        "productQuantity": 1,
+//        "productName": "Wanderlust",
+//        "productPrice": 2,
+//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
+//        "productId": 2
+//   	},
+//     {
+//        "productSize": "3H x 3W",
+//        "productColor": "White",
+//        "productQuantity": 1,
+//        "productName": "Wanderlust",
+//        "productPrice": 2,
+//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
+//        "productId": 2
+//     },
+//     {
+//        "productSize": "3H x 3W",
+//        "productColor": "Dark Gray",
+//        "productQuantity": 1,
+//        "productName": "Wanderlust",
+//        "productPrice": 2,
+//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
+//        "productId": 2
+//     }
+//   ]
 // }

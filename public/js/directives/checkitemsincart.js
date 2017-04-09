@@ -1,26 +1,61 @@
-angular.module("ccvApp").directive("checkitemsincart",function($rootScope){
+angular.module("ccvApp").directive("checkitemsincart",function(){
 
   return {
     restrict: "AE",
-    // template: "({{totalItems}})",
+    // template: "{{totalItems}}",
+    // scope: {},
 
-    controller: "cartController",
-    link: function(scope, elem, attr){
-      // scope.itemsIncart = 1;
-// $rootScope.totalItems = 20;
-      console.log($rootScope.cartQuant, 'hello');
-      // if($rootScope.cartQuant === 0){
-      //   scope.anyItemsInCart = false;
-      // } else {
-      //   // scope.itemsIncart = $rootScope.cartQuant;
-      //   scope.totalItems = $rootScope.cartQuant
-      //   console.log($rootScope.cartQuant, "roosope in directive");
-      // }
+    controller: ($scope, mainService, $rootScope) => {
 
       $rootScope.$watch("cartQuant", function(){
-        console.log("it changed again");
+      console.log($rootScope.cartQuant, "it changed again");
+
+        if($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined"){
+          $scope.anyItemsInCart = false;
+          console.log($scope.anyItemsInCart, "logging");
+        } else {
+          // scope.itemsIncart = $rootScope.cartQuant;
+          // scope.anyItemsInCart = true;
+          $scope.anyItemsInCart = true;
+          $scope.itemsInCart = $rootScope.cartQuant
+          console.log($scope.itemsInCart);
+          console.log($scope.anyItemsInCart, "logging again");
+
+
+          // console.log($rootScope.cartQuant, "roosope in directive");
+        }
       })
-    }
+
+
+}
+
+
+
+    // controller: "cartController",
+    // link: function(scope, elem, attr){
+    //
+    //   $rootScope.$watch("cartQuant", function(){
+    //   console.log($rootScope.cartQuant, "it changed again");
+    //
+    //     if($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined"){
+    //       scope.anyItemsInCart = false;
+    //       console.log(scope.anyItemsInCart, "logging");
+    //     } else {
+    //       // scope.itemsIncart = $rootScope.cartQuant;
+    //       // scope.anyItemsInCart = true;
+    //       scope.anyItemsInCart = true;
+    //       scope.itemsInCart = $rootScope.cartQuant
+    //       console.log(scope.anyItemsInCart, "logging again");
+    //
+    //
+    //       // console.log($rootScope.cartQuant, "roosope in directive");
+    //     }
+    //   })
+    //
+    //
+    //
+    // }
+
 
 
 // template: "({{totalItems}})",

@@ -4399,11 +4399,36 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
+  // $rootScope.cartQuant = 0;
+
+  // setTimeout(function () {
+  //   $rootScope.cartQuant = 20;
+  //
+  // }, 2000);
+  //
+  // setTimeout(function () {
+  //   $rootScope.cartQuant = 0;
+  //
+  // }, 5000);
+
+
+  $scope.addShippingInfo = function () {
+    $rootScope.details = {
+      recNameFirst: "Keith",
+      recNameLast: "THEbest",
+      address1: "123 4th st.",
+      address2: "apt 255",
+      city: "Seattle",
+      state: "WA",
+      zip: "99999"
+    };
+
+    console.log($rootScope.details);
+
+    // mainService.addShippingInfo($rootScope.details);
+  };
 
   $scope.cartDelete = function (item) {
-
-    console.log(item, "kjasldkgjal;skdgjal;sd");
-
     mainService.deleteProductsInCart(item).then(function (response) {
       $scope.cart = response.data;
       var costs = calculate($scope.cart);
@@ -4433,6 +4458,16 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
     };
   }
 
+  var findTotalItems = function findTotalItems() {
+    $scope.cartTotalItems = 0;
+    for (var i = 0; i < $scope.cart.length; i++) {
+      $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
+    }
+    console.log($scope.cartTotalItems, "total items function here");
+    return $scope.cartTotalItems;
+  };
+
+  // findTotalItem();
   mainService.getProductsInCart().then(function (response) {
 
     $scope.cart = response;
@@ -4445,11 +4480,13 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
     $scope.orderTotal = costs.total + costs.shipping;
 
     console.log($scope.cart, "in controller");
-    $rootScope.cartQuant = 0;
-    for (var i = 0; i < $scope.cart.length; i++) {
-      $rootScope.cartQuant += parseInt($scope.cart[i].productQuantity);
-      console.log($rootScope.cartQuant, "cartQuant");
-    }
+    // $rootScope.cartQuant = 0;
+    // for (var i = 0; i < $scope.cart.length; i++) {
+    //   $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
+    //   console.log($rootScope.cartQuant, "cartQuant");
+    // }
+
+    $rootScope.cartQuant = findTotalItems();
   });
 
   // var getProductsInCart = function(){
@@ -4633,29 +4670,59 @@ angular.module("ccvApp").controller("userController", function ($scope, mainServ
 });
 "use strict";
 
-angular.module("ccvApp").directive("checkitemsincart", function ($rootScope) {
+angular.module("ccvApp").directive("checkitemsincart", function () {
 
   return {
     restrict: "AE",
-    // template: "({{totalItems}})",
+    // template: "{{totalItems}}",
+    // scope: {},
 
-    controller: "cartController",
-    link: function link(scope, elem, attr) {
-      // scope.itemsIncart = 1;
-      // $rootScope.totalItems = 20;
-      console.log($rootScope.cartQuant, 'hello');
-      // if($rootScope.cartQuant === 0){
-      //   scope.anyItemsInCart = false;
-      // } else {
-      //   // scope.itemsIncart = $rootScope.cartQuant;
-      //   scope.totalItems = $rootScope.cartQuant
-      //   console.log($rootScope.cartQuant, "roosope in directive");
-      // }
+    controller: function controller($scope, mainService, $rootScope) {
 
       $rootScope.$watch("cartQuant", function () {
-        console.log("it changed again");
+        console.log($rootScope.cartQuant, "it changed again");
+
+        if ($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined") {
+          $scope.anyItemsInCart = false;
+          console.log($scope.anyItemsInCart, "logging");
+        } else {
+          // scope.itemsIncart = $rootScope.cartQuant;
+          // scope.anyItemsInCart = true;
+          $scope.anyItemsInCart = true;
+          $scope.itemsInCart = $rootScope.cartQuant;
+          console.log($scope.itemsInCart);
+          console.log($scope.anyItemsInCart, "logging again");
+
+          // console.log($rootScope.cartQuant, "roosope in directive");
+        }
       });
     }
+
+    // controller: "cartController",
+    // link: function(scope, elem, attr){
+    //
+    //   $rootScope.$watch("cartQuant", function(){
+    //   console.log($rootScope.cartQuant, "it changed again");
+    //
+    //     if($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined"){
+    //       scope.anyItemsInCart = false;
+    //       console.log(scope.anyItemsInCart, "logging");
+    //     } else {
+    //       // scope.itemsIncart = $rootScope.cartQuant;
+    //       // scope.anyItemsInCart = true;
+    //       scope.anyItemsInCart = true;
+    //       scope.itemsInCart = $rootScope.cartQuant
+    //       console.log(scope.anyItemsInCart, "logging again");
+    //
+    //
+    //       // console.log($rootScope.cartQuant, "roosope in directive");
+    //     }
+    //   })
+    //
+    //
+    //
+    // }
+
 
     // template: "({{totalItems}})",
     // scope: {},
@@ -4705,7 +4772,7 @@ angular.module("ccvApp").directive("shipDate", function () {
 });
 "use strict";
 
-angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope) {
+angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
 
   return {
     restrict: "AE",
@@ -4716,55 +4783,89 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
     link: function link(scope, elem, attr) {
 
       var orderData = {
-        order: 1,
-        user: {
-          email: "martin@currentcuts.com",
-          name: "Martin",
-          address: "1234 s 10th st.",
-          zip: "91482",
-          note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        order: {
+          number: 5624,
+          note: "here is a note from the buyer"
         },
-        product: {
-          pName: "Wanderlust",
-          pColor: "Red",
-          pHeight: 6,
-          pWidth: 12,
-          pPrice: 15,
-          pQuantity: 3
-        }
+        email: "currentcutstest@gmail.com",
+        user: {
+          //   name: "Martin",
+          //   address: "1234 s 10th st.",
+          //   zip: "91482",
+          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: [] //{
+        //   pName: "Wanderlust",
+        //   pColor: "Red",
+        //   pHeight: 6,
+        //   pWidth: 12,
+        //   pPrice: 15,
+        //   pQuantity: 2
+        // }
       };
 
+      // setTimeout(function () {
+      //   var hello = mainService.addShippingInfo()
+      //   console.log(hello);
+      //
+      // }, 2000);
+
+      // setTimeout(function () {
+      // scope.value = $rootScope.$on.details
+      // console.log(scope.value, "scopedotvalue");
+      // }, 2000);
+
+
       $('.btn-stripe').on('click', orderData, function (e) {
+
+        scope.value = $rootScope.details;
+        console.log(scope.value, "scopedotvalue");
+
+        orderData.user = scope.value;
+        orderData.product = [];
+
+        mainService.getProductsInCart().then(function (response) {
+          console.log(response);
+          response.forEach(function (item, i) {
+            console.log(item, "item being logged");
+            orderData.product.push(item);
+          });
+        });
+        console.log(orderData, "orderdata logged");
         // Open Checkout with further options:
-        console.log(e.data, "USER DATA STRIPE CLICK");
-        var handler = StripeCheckout.configure({
-          key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-          locale: 'auto',
-          token: function token(_token) {
-            // You can access the token ID with `token.id`.
-            // Get the token ID to your server-side code for use.
+        // console.log(e.data, "USER DATA STRIPE CLICK");
+        if (!scope.value) {
+          alert("please enter shipping info");
+        } else {
+          var handler = StripeCheckout.configure({
+            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            token: function token(_token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
 
-            $http.post('/api/charge', {
-              stripeToken: _token.id,
-              price: stripeTotal,
-              email: _token.email,
-              stripeTokenCard: _token.card
-            }).then(function (response) {
-              $rootScope.cart = [];
-              $state.go('home');
-              return $http.post('/api/email', orderData);
-            });
-          }
-        });
-        var stripeTotal = scope.totalPrice * 100;
+              $http.post('/api/charge', {
+                stripeToken: _token.id,
+                price: stripeTotal,
+                email: _token.email,
+                stripeTokenCard: _token.card
+              }).then(function (response) {
+                $rootScope.cart = [];
+                $state.go('home');
+                return $http.post('/api/email', orderData);
+              });
+            }
+          });
+          var stripeTotal = scope.totalPrice * 100;
 
-        handler.open({
-          name: 'Current Cuts Vinyl',
-          description: 'Decal purchase',
-          amount: stripeTotal
-        });
-        e.preventDefault();
+          handler.open({
+            name: 'Current Cuts Vinyl',
+            description: 'Decal purchase',
+            amount: stripeTotal
+          });
+          e.preventDefault();
+        }
       });
 
       // Close Checkout on page navigation:
@@ -4986,6 +5087,11 @@ angular.module("ccvApp").service("mainService", function ($http) {
       console.log(response, "reponse in srvice");
       return response.data;
     });
+  };
+
+  this.addShippingInfo = function (details) {
+    console.log(details, "in service");
+    return details;
   };
 });
 "use strict";

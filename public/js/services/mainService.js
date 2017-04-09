@@ -167,4 +167,13 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
 
+
+
+  this.addShippingInfo = function(details){
+    console.log(details, "in service");
+    return details;
+  }
+
+
+
 })

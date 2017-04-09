@@ -3,11 +3,36 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
+  // $rootScope.cartQuant = 0;
+
+  // setTimeout(function () {
+  //   $rootScope.cartQuant = 20;
+  //
+  // }, 2000);
+  //
+  // setTimeout(function () {
+  //   $rootScope.cartQuant = 0;
+  //
+  // }, 5000);
+
+
+  $scope.addShippingInfo = ()=>{
+    $rootScope.details = {
+      recNameFirst: "Keith",
+      recNameLast: "THEbest",
+      address1: "123 4th st.",
+      address2: "apt 255",
+      city: "Seattle",
+      state: "WA",
+      zip: "99999"
+    }
+
+    console.log($rootScope.details);
+
+    // mainService.addShippingInfo($rootScope.details);
+  }
 
   $scope.cartDelete = function(item){
-
-    console.log(item, "kjasldkgjal;skdgjal;sd");
-
     mainService.deleteProductsInCart(item).then(function(response){
       $scope.cart = response.data;
       var costs = calculate($scope.cart);
@@ -37,6 +62,16 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
     }
   }
 
+  let findTotalItems = () => {
+    $scope.cartTotalItems = 0;
+    for(var i = 0; i < $scope.cart.length; i++) {
+      $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
+    }
+    console.log($scope.cartTotalItems, "total items function here");
+    return $scope.cartTotalItems;
+  }
+
+// findTotalItem();
   mainService.getProductsInCart().then(function(response){
 
     $scope.cart = response;
@@ -50,12 +85,17 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
 
 
     console.log($scope.cart, "in controller");
-    $rootScope.cartQuant = 0;
-    for (var i = 0; i < $scope.cart.length; i++) {
-      $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
-      console.log($rootScope.cartQuant, "cartQuant");
-    }
+    // $rootScope.cartQuant = 0;
+    // for (var i = 0; i < $scope.cart.length; i++) {
+    //   $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
+    //   console.log($rootScope.cartQuant, "cartQuant");
+    // }
+
+    $rootScope.cartQuant = findTotalItems();
   });
+
+
+
 
   // var getProductsInCart = function(){
   //   mainService.getProductsInCart().then(function(response){
