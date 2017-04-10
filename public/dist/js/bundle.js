@@ -4399,7 +4399,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
-  // $rootScope.cartQuant = 0;
+  $rootScope.cartQuant = 0;
 
   // setTimeout(function () {
   //   $rootScope.cartQuant = 20;
@@ -4462,8 +4462,10 @@ angular.module("ccvApp").controller("cartController", function ($scope, $rootSco
     $scope.cartTotalItems = 0;
     for (var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
+      mainService.cartStorage.push($scope.cart[i].productQuantity);
     }
     console.log($scope.cartTotalItems, "total items function here");
+    mainService.getCartStorage();
     return $scope.cartTotalItems;
   };
 
@@ -4675,14 +4677,25 @@ angular.module("ccvApp").directive("checkitemsincart", function () {
   return {
     restrict: "AE",
     // template: "{{totalItems}}",
-    // scope: {},
+    // scope: {hi: '@'},
 
     controller: function controller($scope, mainService, $rootScope) {
+
+      // var getItemsInCart = mainService.getCartStorage();
+      // console.log(getItemsInCart);
+      // $scope.itemsInCart = getItemsInCart;
+      //
+      // console.log($scope.itemsInCart);
+      //
+      // if($scope.itemsInCart){
+      //   $scope.anyItemsInCart = true;
+      // }
+
 
       $rootScope.$watch("cartQuant", function () {
         console.log($rootScope.cartQuant, "it changed again");
 
-        if ($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined") {
+        if ($rootScope.cartQuant === 0 || $rootScope.cartQuant == "undefined") {
           $scope.anyItemsInCart = false;
           console.log($scope.anyItemsInCart, "logging");
         } else {
@@ -4696,6 +4709,13 @@ angular.module("ccvApp").directive("checkitemsincart", function () {
           // console.log($rootScope.cartQuant, "roosope in directive");
         }
       });
+
+      // mainService.getCartStorage();
+
+      // setTimeout(function () {
+      //   mainService.getCartStorage();
+      //
+      // }, 8000);
     }
 
     // controller: "cartController",
@@ -4928,6 +4948,7 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
 "use strict";
 
 angular.module("ccvApp").service("mainService", function ($http) {
+  var _this = this;
 
   this.getAllProducts = function () {
     return $http({
@@ -5092,6 +5113,17 @@ angular.module("ccvApp").service("mainService", function ($http) {
   this.addShippingInfo = function (details) {
     console.log(details, "in service");
     return details;
+  };
+
+  this.cartStorage = [1, 2, 3];
+  this.sum = this.cartStorage.reduce(function (a, b) {
+    return a + b;
+  }, 0);
+
+  this.getCartStorage = function () {
+    console.log(_this.cartStorage, "loggin cart storage service");
+    console.log(_this.sum, "sum in service");
+    return _this.sum;
   };
 });
 "use strict";

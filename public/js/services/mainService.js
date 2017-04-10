@@ -176,4 +176,16 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
 
+
+  this.cartStorage = [1,2,3];
+  this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
+
+  this.getCartStorage = () => {
+    console.log(this.cartStorage, "loggin cart storage service");
+    console.log(this.sum, "sum in service");
+    return this.sum;
+  }
+
+
+
 })

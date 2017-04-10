@@ -3,7 +3,7 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
-  // $rootScope.cartQuant = 0;
+  $rootScope.cartQuant = 0;
 
   // setTimeout(function () {
   //   $rootScope.cartQuant = 20;
@@ -66,8 +66,10 @@ angular.module("ccvApp").controller("cartController", function($scope, $rootScop
     $scope.cartTotalItems = 0;
     for(var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
+      mainService.cartStorage.push($scope.cart[i].productQuantity)
     }
     console.log($scope.cartTotalItems, "total items function here");
+    mainService.getCartStorage();
     return $scope.cartTotalItems;
   }
 

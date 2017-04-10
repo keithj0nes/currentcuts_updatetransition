@@ -3,14 +3,26 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
   return {
     restrict: "AE",
     // template: "{{totalItems}}",
-    // scope: {},
+    // scope: {hi: '@'},
 
     controller: ($scope, mainService, $rootScope) => {
 
-      $rootScope.$watch("cartQuant", function(){
-      console.log($rootScope.cartQuant, "it changed again");
+      // var getItemsInCart = mainService.getCartStorage();
+      // console.log(getItemsInCart);
+      // $scope.itemsInCart = getItemsInCart;
+      //
+      // console.log($scope.itemsInCart);
+      //
+      // if($scope.itemsInCart){
+      //   $scope.anyItemsInCart = true;
+      // }
 
-        if($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined"){
+
+
+      $rootScope.$watch("cartQuant", function(){
+        console.log($rootScope.cartQuant, "it changed again");
+
+        if($rootScope.cartQuant === 0 || $rootScope.cartQuant == "undefined"){
           $scope.anyItemsInCart = false;
           console.log($scope.anyItemsInCart, "logging");
         } else {
@@ -26,6 +38,12 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
         }
       })
 
+      // mainService.getCartStorage();
+
+      // setTimeout(function () {
+      //   mainService.getCartStorage();
+      //
+      // }, 8000);
 
 }
 
