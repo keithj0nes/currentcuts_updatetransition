@@ -211,7 +211,7 @@ module.exports = {
 
     //  let text = "Hi " + b.user.recNameFirst + " " + b.user.recNameLast + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.order.note;
 
-     let text = "Hi " + b.user.recNameFirst + " " + b.user.recNameLast + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
+     let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
     text2.forEach(function(it){
       text += it;

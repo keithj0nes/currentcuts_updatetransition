@@ -1,5 +1,13 @@
 angular.module("ccvApp").directive("stripeDirective", function($http, $state, $rootScope, mainService){
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
+//////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+
   return {
     restrict: "AE",
     template: "<button class='btn-stripe'>Purchase with Stripe</button>",
@@ -51,10 +59,12 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
 
         scope.value = $rootScope.details
         console.log(scope.value, "scopedotvalue");
-        console.log($rootScope.note.note, "rootScope.no.note");
+        if($rootScope.note){
+          console.log($rootScope.note.note, "rootScope.no.note");
+          orderData.order.note = $rootScope.note.note;
+        }
         orderData.user = scope.value;
         orderData.product = [];
-        orderData.order.note = $rootScope.note.note;
 
         mainService.getProductsInCart().then(function(response){
           console.log(response);
@@ -95,7 +105,10 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
             handler.open({
               name: 'Current Cuts Vinyl',
               description: 'Decal purchase',
-              amount: stripeTotal
+              amount: stripeTotal,
+              // shippingAddress: true,
+              // billingAddress: true,
+              // zipCode: true
             });
             e.preventDefault();
           }
