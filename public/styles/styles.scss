@@ -543,6 +543,32 @@ footer {
 
   .checkout {
     // background: red;
+    // background: yellow;
+
+    .address-form {
+
+      input {
+        padding: 10px;
+        margin: 5px auto;
+        width: 100%;
+      }
+
+      button {
+        @extend .big-btn;
+        background-color: #ddd;
+        margin-top: 10px;
+      }
+    }
+    // display: flex;
+    // justify-content: space-between;
+    //
+    // .checkout-left {
+    //   width: 50%;
+    // }
+    //
+    // .checkout-right {
+    //   width: 50%;
+    // }
   }
 }
 
@@ -901,12 +927,20 @@ footer {
 
     }
     .checkout {
+
+      display: flex;
+      justify-content: space-between;
+
       div {
         text-align: center;
+      }
 
-        }
+      .checkout-left, .checkout-right {
+        width: 50%;
+      }
+
         .btn-stripe {
-          // width: 50%;
+          width: 75%;
       }
     }
 

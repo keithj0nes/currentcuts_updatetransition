@@ -221,25 +221,52 @@ module.exports = {
 
     console.log(itt);
 
-    // console.log(text);
-    var mailOptions = {
-      from: 'currentcutstest@gmail.com', // sender address
-      to: b.email,                  // list of receivers
-      bcc: 'currentcutstest@gmail.com',
-      subject: 'Order Confirmation - ' + b.order.number, // Subject line
-      // text: text //, // plaintext body
-      html: text
-    };
+    db.run("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[], function(err, order){
+      if(err){
+        console.log(err);
+        res.send(err);
+      }
 
-    transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          console.log(error);
-          res.json({yo: 'error'});
-      }else{
-          console.log('Message sent: ' + info.response);
-          res.json({yo: info.response});
+      var mailOptions = {
+        from: 'currentcutstest@gmail.com', // sender address
+        to: b.email,                  // list of receivers
+        bcc: 'currentcutstest@gmail.com',
+        subject: 'Order Confirmation - ' + order[0].id, // Subject line
+        // text: text //, // plaintext body
+        html: text
       };
-    });
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+            res.json({yo: 'error'});
+        }else{
+            console.log('Message sent: ' + info.response);
+            res.json({yo: info.response});
+        };
+      });
+    })
+
+    // console.log(text);
+
+    // var mailOptions = {
+    //   from: 'currentcutstest@gmail.com', // sender address
+    //   to: b.email,                  // list of receivers
+    //   bcc: 'currentcutstest@gmail.com',
+    //   subject: 'Order Confirmation - ' + b.order.number, // Subject line
+    //   // text: text //, // plaintext body
+    //   html: text
+    // };
+    //
+    // transporter.sendMail(mailOptions, function(error, info){
+    //   if(error){
+    //       console.log(error);
+    //       res.json({yo: 'error'});
+    //   }else{
+    //       console.log('Message sent: ' + info.response);
+    //       res.json({yo: info.response});
+    //   };
+    // });
   }
 
 

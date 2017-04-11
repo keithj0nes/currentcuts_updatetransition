@@ -17,25 +17,27 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
       //   $scope.anyItemsInCart = true;
       // }
 
+      $scope.anyItemsInCart = false;
 
+////////////////////////// cart number updated only when clicking on "cart" in the nav bar //////////////////////////
 
       $rootScope.$watch("cartQuant", function(){
         console.log($rootScope.cartQuant, "it changed again");
 
-        if($rootScope.cartQuant === 0 || $rootScope.cartQuant == "undefined"){
-          $scope.anyItemsInCart = false;
-          console.log($scope.anyItemsInCart, "logging");
-        } else {
-          // scope.itemsIncart = $rootScope.cartQuant;
-          // scope.anyItemsInCart = true;
-          $scope.anyItemsInCart = true;
-          $scope.itemsInCart = $rootScope.cartQuant
-          console.log($scope.itemsInCart);
-          console.log($scope.anyItemsInCart, "logging again");
-
-
-          // console.log($rootScope.cartQuant, "roosope in directive");
-        }
+        // if($rootScope.cartQuant == 0 || $rootScope.cartQuant == "undefined"){
+        //   $scope.anyItemsInCart = false;
+        //   console.log($scope.anyItemsInCart, "logging");
+        // } else {
+        //   // scope.itemsIncart = $rootScope.cartQuant;
+        //   // scope.anyItemsInCart = true;
+        //   $scope.anyItemsInCart = true;
+        //   $scope.itemsInCart = $rootScope.cartQuant
+        //   console.log($scope.itemsInCart);
+        //   console.log($scope.anyItemsInCart, "logging again");
+        //
+        //
+        //   // console.log($rootScope.cartQuant, "roosope in directive");
+        // }
       })
 
       // mainService.getCartStorage();

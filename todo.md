@@ -6,7 +6,7 @@
 [x] Create table to allow for different product **prices**
   * Table must automatically be joined when adding new product in admin page
 
-* Email alerts (to me and purchaser) once order is placed (nodemailer?)
+[x] Email alerts (to me and purchaser) once order is placed (nodemailer?)
 
 * Allow for message note to be sent in checkout (textarea)
 

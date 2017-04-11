@@ -13,7 +13,7 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
       let orderData = {
         order: {
           number: 5624,
-          note: "here is a note from the buyer"
+          // note: "here is a note from the buyer"
         },
         email: "currentcutstest@gmail.com",
         user: {
@@ -46,11 +46,15 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
 
       $('.btn-stripe').on('click', orderData, function(e) {
 
+        // $rootScope.fun()
+        // console.log($rootScope.fun());
+
         scope.value = $rootScope.details
         console.log(scope.value, "scopedotvalue");
-
+        console.log($rootScope.note.note, "rootScope.no.note");
         orderData.user = scope.value;
         orderData.product = [];
+        orderData.order.note = $rootScope.note.note;
 
         mainService.getProductsInCart().then(function(response){
           console.log(response);
@@ -65,7 +69,7 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
     // console.log(e.data, "USER DATA STRIPE CLICK");
     if (!scope.value){
       alert("please enter shipping info")
-    } else{
+    } else {
         var handler = StripeCheckout.configure({
           key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
           image: 'https://stripe.com/img/documentation/checkout/marketplace.png',

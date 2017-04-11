@@ -438,7 +438,7 @@ h1, h2, h3, h4 {
   border: 1px solid #000;
   border-radius: 3px; }
 
-.big-btn, .btn-facebook, .btn-stripe {
+.big-btn, .btn-facebook, .btn-stripe, .cart-main .checkout .address-form button {
   padding: 15px;
   width: 100%;
   border: none;
@@ -769,6 +769,13 @@ footer {
       text-align: right; }
     .cart-main .total-disc-ship .d .aleft {
       text-align: left; }
+  .cart-main .checkout .address-form input {
+    padding: 10px;
+    margin: 5px auto;
+    width: 100%; }
+  .cart-main .checkout .address-form button {
+    background-color: #ddd;
+    margin-top: 10px; }
 
 /* ============================================
                   ADMIN PAGE
@@ -952,8 +959,15 @@ footer {
       width: 50%; }
     .cart-main .total-disc-ship form {
       text-align: center; }
-    .cart-main .checkout div {
-      text-align: center; }
+    .cart-main .checkout {
+      display: flex;
+      justify-content: space-between; }
+      .cart-main .checkout div {
+        text-align: center; }
+      .cart-main .checkout .checkout-left, .cart-main .checkout .checkout-right {
+        width: 50%; }
+      .cart-main .checkout .btn-stripe {
+        width: 75%; }
   /* ============================================
                     ADMIN PAGE
   ============================================ */
