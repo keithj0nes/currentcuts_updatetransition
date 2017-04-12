@@ -2,6 +2,7 @@ const app = require("../server.js");
 const db = app.get('db');
 const nodemailer = require("nodemailer");
 const config = require("../config.js");
+const userCtrl = require("./usersCtrl.js")
 
 
 module.exports = {
@@ -83,6 +84,7 @@ module.exports = {
   },
 
   addProductsToCart: function(req, res, next){
+    console.log(req.user, "loggin userszzzz");
 
     if(!req.session.cart){
       req.session.cart = [];
@@ -181,20 +183,35 @@ module.exports = {
 
 
   mail: (req, res, next) => {
-    // console.log(req.body);
     let b = req.body;
+    let productTextInEmail = [];
+    let orderTotal = 0;
+    let shippingTotal;
 
-    let text2 = [];
 
-    let itt = 0;
+    //Create email HTML
+    //req.user.firstname replace this with b.user.recNameLast below
+    let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
-    b.product.forEach(function(item, i){
+    b.product.forEach(function(item){
       console.log(item, "item in product");
       // text2.push( "$" + item.productPrice + ", item color: " + item.productColor);
-      let iTotal = item.productQuantity * item.productPrice;
-      itt += iTotal;
-      text2.push("<br><br> $" + item.productPrice + ".00 | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + iTotal + ".00")
+      let itemTotal = item.productQuantity * item.productPrice;
+      orderTotal += itemTotal;
+      productTextInEmail.push("<br><br> $" + item.productPrice + ".00 | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + itemTotal + ".00")
     })
+
+    productTextInEmail.forEach(function(item){
+      text += item;
+    });
+
+    if(orderTotal < 10){
+      shippingTotal = 2;
+    } else {
+      shippingTotal = 3;
+    }
+
+    text += "<br><hr> Order Total: $" + orderTotal + ".00 <br> Shipping Total: $" + shippingTotal + ".00 <br><br> Note from Buyer: " + b.order.note;
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -204,22 +221,6 @@ module.exports = {
           pass: config.nodemailerAuth.pass // Your password
       }
     });
-    let emailItemTotal = b.product.pPrice * b.product.pQuantity;
-    // let text = "Hi " + req.body.userName + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> $" + req.body.pPrice + ".00 | " + req.body.pName + "<br> <b>color:</b> " + req.body.pColor + " | <b>size:</b> " + req.body.pHeight + "H x " +req.body.pWidth + "W inches <br> <b>quantity:</b> " + req.body.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00";
-
-    // let text = "Hi " + b.user.name + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.order.note;
-
-    //  let text = "Hi " + b.user.recNameFirst + " " + b.user.recNameLast + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> Shipping Address: " + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip + " <br><br> $" + b.product.pPrice + ".00 | " + b.product.pName + "<br> <b>color:</b> " + b.product.pColor + " | <b>size:</b> " + b.product.pHeight + "H x " + b.product.pWidth + "W inches <br> <b>quantity:</b> " + b.product.pQuantity + "<br><br><hr> Order Total: $" + emailItemTotal + ".00 <br><br><br> Note from Buyer: " + b.order.note;
-
-     let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
-
-    text2.forEach(function(it){
-      text += it;
-    });
-
-    text += "<br><hr> Order Total: $" + itt + ".00 <br><br><br> Note from Buyer: " + b.order.note;
-
-    console.log(itt);
 
     db.run("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[], function(err, order){
       if(err){

@@ -4664,7 +4664,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
           });
         }
       });
-      var stripeTotal = $scope.totalPrice * 100;
+      var stripeTotal = $scope.orderTotal * 100;
 
       handler.open({
         name: 'Current Cuts Vinyl',
