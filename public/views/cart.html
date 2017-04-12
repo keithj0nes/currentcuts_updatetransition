@@ -1,51 +1,71 @@
 <main class="cart-main">
 
 <!-- MOBILE VIEW ONLY -->
+
+  <!-- <div class="" ng-if="!somethingInCart">
+    <h2 class="pad">Sorry, looks like there's nothing in your cart. Add a product to view your cart.</h2>
+  </div>
+
+  <div class="" ng-if="somethingInCart">
+    Looks like there's an item in your cart, YAY!
+  </div> -->
+
+
   <div class="cart-user-m hideDesktop">
 
     <h2 class="pad">Your Cart</h2>
 
     <hr>
 
-    <div class="" ng-repeat="item in cart">    <!-- START SINGLE ITEM IN CART -->
+    <div class="empty-cart" ng-if="!somethingInCart">
+      <p class="">Looks like there's nothing in your cart. Let's get this thing filled up!</p>
 
-      <div class="cart-product-info-m pad">
-
-        <div class="cart-product-info-container-m">
-          <img ng-src="{{item.productImage}}" alt="">
-          <p>{{item.productPrice | currency}}|  {{item.productName}}<br>
-          <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{item.productSize}}</span></p>
-        </div>
-
-        <button class="btn-delete" ng-click="cartDelete($index)" name="button">X</button>
-
-      </div>
-
-      <hr>
-
-      <div class="cart-product-qty-m pad">
-        <div>
-          <h4>QTY</h4>
-        </div>
-        <div>
-          <!-- <input type="text" name="" value="{{items.productQuantity}}"> -->
-          {{item.productQuantity}}
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="cart-product-itemtotal-m pad">
-        <div>
-          <h4>Item Total</h4>
-        </div>
-        <div>
-          {{item.productPrice * item.productQuantity | currency}}
-        </div>
-      </div>
-
-      <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
+      <button type="button" ui-sref="home">SHOP FOR DEALS!</button>
     </div>
+
+    <div class="" ng-if="somethingInCart">
+      <div class="" ng-repeat="item in cart">    <!-- START SINGLE ITEM IN CART -->
+
+        <div class="cart-product-info-m pad">
+
+          <div class="cart-product-info-container-m">
+            <img ng-src="{{item.productImage}}" alt="">
+            <p>{{item.productPrice | currency}}|  {{item.productName}}<br>
+            <span style="font-size: 13px;"><strong>color:</strong> {{item.productColor}} | <strong>size:</strong> {{item.productSize}}</span></p>
+          </div>
+
+          <button class="btn-delete" ng-click="cartDelete($index)" name="button">X</button>
+
+        </div>
+
+        <hr>
+
+        <div class="cart-product-qty-m pad">
+          <div>
+            <h4>QTY</h4>
+          </div>
+          <div>
+            <!-- <input type="text" name="" value="{{items.productQuantity}}"> -->
+            {{item.productQuantity}}
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="cart-product-itemtotal-m pad">
+          <div>
+            <h4>Item Total</h4>
+          </div>
+          <div>
+            {{item.productPrice * item.productQuantity | currency}}
+          </div>
+        </div>
+
+        <hr class="lastItem">       <!-- END SINGLE ITEM IN CART -->
+      </div>
+
+    </div>
+
 
   </div>
 
@@ -60,6 +80,13 @@
     <h2 class="pad">Your Cart</h2>
 
     <hr>
+
+    <div class="empty-cart" ng-if="!somethingInCart">
+      <p class="">Looks like there's nothing in your cart. Let's get this thing filled up!</p>
+
+      <button type="button" ui-sref="home">SHOP FOR DEALS!</button>
+
+    </div>
 
     <div class="" ng-repeat="item in cart">
 
@@ -131,115 +158,119 @@
 
   <!---------------  START CART TOTAL -------------->
 
-  <div class="total-disc-ship pad">
+  <div class="" ng-if="somethingInCart">
 
-    <div class="d">
-      <div class="w75 aleft">
-        Total
-      </div>
-      <div class="w25">
-        {{cartTotal | currency}}
-      </div>
-    </div>
+    <div class="total-disc-ship pad">
 
-    <!-- <div class="d">
-      <div class="w75 aleft">
-        Discount
-      </div>
-      <div class="w25">
-        $0.00
-      </div>
-    </div> -->
-
-    <div class="d">
-      <div class="w75 aleft">
-        Shipping
-      </div>
-      <div class="w25">
-        {{shippingCost | currency}}
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="order-total">
       <div class="d">
         <div class="w75 aleft">
-          <strong>Order Total</strong>
+          Total
         </div>
         <div class="w25">
-          <strong>{{orderTotal | currency}}</strong>
+          {{cartTotal | currency}}
         </div>
       </div>
 
-    </div>
+      <!-- <div class="d">
+        <div class="w75 aleft">
+          Discount
+        </div>
+        <div class="w25">
+          $0.00
+        </div>
+      </div> -->
 
-    <hr class="lastItem">
-    <div class="">
-      <ship-date></ship-date>
-    </div>
-    <hr class="lastItem">
-
-
-
-    <!--  If user is not present, display login with facebook button  -->
-      <div class="" ng-if="!username" check-logged-in>  <!--ng show and hide-->
-        <form method="get" action="/auth/facebook">
-          <button type="submit" class="btn-facebook">Log In with Facebook to Checkout</button>
-        </form>
-
-        <hr>
+      <div class="d">
+        <div class="w75 aleft">
+          Shipping
+        </div>
+        <div class="w25">
+          {{shippingCost | currency}}
+        </div>
       </div>
 
+      <hr>
 
-
-
-    <!--  If user is present, display shipping / stripe button  -->
-
-      <div class="checkout" ng-if="username" check-logged-in>
-
-
-        <div class="checkout-left">
-          <h2 class="pad">Shipping</h2>
-          <hr>
-          <div class="">
-            <!-- <button type="button" class="btn-stripe">Checkout with Stripe</button> -->
-            <form class="address-form" ng-submit="addShippingInfo(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote)">
-              <input type="text" placeholder="First Name" ng-model="shipNameFirst">
-              <input type="text" placeholder="Last Name" ng-model="shipNameLast">
-              <input type="text" placeholder="Address" ng-model="shipAddress">
-              <input type="text" placeholder="Address 2" ng-model="shipAddress2">
-              <input type="text" placeholder="City" ng-model="shipCity">
-              <input type="text" placeholder="State" ng-model="shipState">
-              <input type="number" placeholder="Zip Code" ng-model="shipZip">
-              <!-- SAVE BUTTON FOR USING STRIPE DIRECTIVE TO ACCESS DETAILS OBJECT -->
-              <!-- <button type="submit" class="" >Save</button> -->
-
-            </form>
-
-            <hr class='lastItem hideDesktop'>
-
-
+      <div class="order-total">
+        <div class="d">
+          <div class="w75 aleft">
+            <strong>Order Total</strong>
           </div>
-        </div>
-
-        <div class="checkout-right">
-          <h2 class="pad">Payment Method</h2>
-          <hr>
-          <textarea name="name" ng-model="shipNote"></textarea>
-          <div class="">
-            <button type="button" class="btn-stripe" ng-click="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote)">Checkout with Stripe</button>
-            <!-- <stripe-directive total-price="orderTotal"></stripe-directive> -->
-
-            <hr class='lastItem hideDesktop'>
-
-
+          <div class="w25">
+            <strong>{{orderTotal | currency}}</strong>
           </div>
         </div>
 
       </div>
 
-      <hr class="lastItem hideMobile">
+      <hr class="lastItem">
+      <div class="">
+        <ship-date></ship-date>
+      </div>
+      <hr class="lastItem">
+
+
+
+      <!--  If user is not present, display login with facebook button  -->
+        <div class="" ng-if="!username" check-logged-in>  <!--ng show and hide-->
+          <form method="get" action="/auth/facebook">
+            <button type="submit" class="btn-facebook">Log In with Facebook to Checkout</button>
+          </form>
+
+          <hr>
+        </div>
+
+
+
+
+      <!--  If user is present, display shipping / stripe button  -->
+
+        <div class="checkout" ng-if="username" check-logged-in>
+          <form class="address-form" ng-submit="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote)">
+
+            <div class="checkout-left">
+
+              <h2 class="pad">Shipping</h2>
+              <hr>
+              <div class="checkout-left-inner">
+                <!-- <button type="button" class="btn-stripe">Checkout with Stripe</button> -->
+                  <input type="text" placeholder="First Name *" ng-model="shipNameFirst" required>
+                  <input type="text" placeholder="Last Name *" ng-model="shipNameLast" required>
+                  <input type="text" placeholder="Address *" ng-model="shipAddress" required>
+                  <input type="text" placeholder="Address 2" ng-model="shipAddress2">
+                  <input type="text" placeholder="City *" ng-model="shipCity" required>
+                  <input type="text" placeholder="State *" ng-model="shipState" required>
+                  <input type="number" placeholder="Zip Code *" ng-model="shipZip" required>
+                  <!-- SAVE BUTTON FOR USING STRIPE DIRECTIVE TO ACCESS DETAILS OBJECT -->
+                  <!-- <button type="submit" class="" >Save</button> -->
+                  <!-- <button type="submit" class="btn-stripe" >Complete Checkout</button> -->
+
+
+
+                <hr class='lastItem hideDesktop'>
+
+
+              </div>
+            </div>
+
+            <div class="checkout-right">
+              <h2 class="pad">Payment Method</h2>
+              <hr>
+              <div class="checkout-right-inner">
+
+              <textarea name="name" ng-model="shipNote" placeholder="Optional message"></textarea>
+                <button type="submit" class="btn-stripe" >Complete Checkout</button>
+                <!-- <stripe-directive total-price="orderTotal"></stripe-directive> -->
+                <hr class='lastItem hideDesktop'>
+
+
+              </div>
+            </div>
+          </form> <!-- end form -->
+
+        </div>
+
+        <hr class="lastItem hideMobile">
 
 
 
@@ -247,5 +278,7 @@
 
 
 
+    </div>
   </div>
+
 </main>

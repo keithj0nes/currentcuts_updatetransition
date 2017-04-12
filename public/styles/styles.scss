@@ -470,6 +470,18 @@ footer {
 .pad {
   padding: 0px 10px;
 }
+
+.empty-cart {
+  text-align: center;
+  p {
+    padding: 10px 0 20px;
+  }
+
+  button {
+    @extend .btn;
+    padding: 20px 40px;
+  }
+}
 .cart-main {
   background-color: #fff;
   padding: 20px 10px;
@@ -542,33 +554,31 @@ footer {
   }
 
   .checkout {
-    // background: red;
-    // background: yellow;
 
-    .address-form {
+    form.address-form {
 
       input {
         padding: 10px;
         margin: 5px auto;
         width: 100%;
+        border: 1px solid #aaa;
+        background-color: #fafafa;
       }
 
       button {
         @extend .big-btn;
-        background-color: #ddd;
         margin-top: 10px;
       }
     }
-    // display: flex;
-    // justify-content: space-between;
-    //
-    // .checkout-left {
-    //   width: 50%;
-    // }
-    //
-    // .checkout-right {
-    //   width: 50%;
-    // }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      margin: 5px 0 50px;
+      border: 1px solid #aaa;
+      background-color: #fafafa;
+    }
   }
 }
 
@@ -926,17 +936,33 @@ footer {
       }
 
     }
-    .checkout {
 
+    form.address-form {
       display: flex;
       justify-content: space-between;
 
-      div {
-        text-align: center;
-      }
+
+      // div {
+      //   text-align: center;
+      // }
 
       .checkout-left, .checkout-right {
+        text-align: center;
         width: 50%;
+      }
+
+      .checkout-left {
+        .checkout-left-inner {
+          // .address-form {
+            margin-right:10px;
+          // }
+        }
+      }
+
+      .checkout-right {
+        .checkout-right-inner {
+          margin-left:10px;
+        }
       }
 
         .btn-stripe {

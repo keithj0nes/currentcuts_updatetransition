@@ -432,13 +432,13 @@ h1, h2, h3, h4 {
   color: red;
   font-weight: bold; }
 
-.btn {
+.btn, .empty-cart button {
   padding: 5px 10px;
   background-color: #fff;
   border: 1px solid #000;
   border-radius: 3px; }
 
-.big-btn, .btn-facebook, .btn-stripe, .cart-main .checkout .address-form button {
+.big-btn, .btn-facebook, .btn-stripe, .cart-main .checkout form.address-form button {
   padding: 15px;
   width: 100%;
   border: none;
@@ -452,11 +452,11 @@ h1, h2, h3, h4 {
 .btn-stripe {
   background-color: #454545; }
 
-.btn:hover {
+.btn:hover, .empty-cart button:hover {
   background-color: #f3f3f3;
   cursor: pointer; }
 
-.btn:active {
+.btn:active, .empty-cart button:active {
   background-color: #d9d9d9; }
 
 .btn-delete {
@@ -597,7 +597,7 @@ nav {
     width: 70%;
     padding: 7px 15px;
     font-size: 20px; }
-  .search-box-container button.btn {
+  .search-box-container button.btn, .search-box-container .empty-cart button, .empty-cart .search-box-container button {
     font-size: 20px;
     min-width: 20%; }
 
@@ -714,7 +714,7 @@ footer {
       text-align: center;
       margin: 0 10px 10px 0;
       border: 1px solid gray; }
-    .product-single .details .btn {
+    .product-single .details .btn, .product-single .details .empty-cart button, .empty-cart .product-single .details button {
       font-size: 20px;
       width: 65%;
       padding: 10px;
@@ -731,6 +731,13 @@ footer {
 ============================================ */
 .pad {
   padding: 0px 10px; }
+
+.empty-cart {
+  text-align: center; }
+  .empty-cart p {
+    padding: 10px 0 20px; }
+  .empty-cart button {
+    padding: 20px 40px; }
 
 .cart-main {
   background-color: #fff;
@@ -769,13 +776,21 @@ footer {
       text-align: right; }
     .cart-main .total-disc-ship .d .aleft {
       text-align: left; }
-  .cart-main .checkout .address-form input {
+  .cart-main .checkout form.address-form input {
     padding: 10px;
     margin: 5px auto;
-    width: 100%; }
-  .cart-main .checkout .address-form button {
-    background-color: #ddd;
+    width: 100%;
+    border: 1px solid #aaa;
+    background-color: #fafafa; }
+  .cart-main .checkout form.address-form button {
     margin-top: 10px; }
+  .cart-main .checkout textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin: 5px 0 50px;
+    border: 1px solid #aaa;
+    background-color: #fafafa; }
 
 /* ============================================
                   ADMIN PAGE
@@ -959,14 +974,17 @@ footer {
       width: 50%; }
     .cart-main .total-disc-ship form {
       text-align: center; }
-    .cart-main .checkout {
+    .cart-main form.address-form {
       display: flex;
       justify-content: space-between; }
-      .cart-main .checkout div {
-        text-align: center; }
-      .cart-main .checkout .checkout-left, .cart-main .checkout .checkout-right {
+      .cart-main form.address-form .checkout-left, .cart-main form.address-form .checkout-right {
+        text-align: center;
         width: 50%; }
-      .cart-main .checkout .btn-stripe {
+      .cart-main form.address-form .checkout-left .checkout-left-inner {
+        margin-right: 10px; }
+      .cart-main form.address-form .checkout-right .checkout-right-inner {
+        margin-left: 10px; }
+      .cart-main form.address-form .btn-stripe {
         width: 75%; }
   /* ============================================
                     ADMIN PAGE
@@ -1044,7 +1062,7 @@ footer {
         text-align: center;
         margin: 0 10px 10px 0;
         border: 1px solid gray; }
-      .product-single .details .btn {
+      .product-single .details .btn, .product-single .details .empty-cart button, .empty-cart .product-single .details button {
         font-size: 20px;
         width: 65%;
         padding: 10px;

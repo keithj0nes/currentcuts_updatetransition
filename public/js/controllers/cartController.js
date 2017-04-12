@@ -95,6 +95,8 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
       $scope.cartTotal = costs.total;
       $scope.shippingCost = costs.shipping;
       $scope.orderTotal = costs.total + costs.shipping;
+      getProductsInCart();
+      // console.log(getProductsInCart);
     });
   }
 
@@ -129,7 +131,16 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
   }
 
 // findTotalItem();
+
+function getProductsInCart(){
   mainService.getProductsInCart().then(function(response){
+    console.log(response, "logging response in getProductsInCart");
+    if(response.length === 0){
+      $scope.somethingInCart = false;
+    } else {
+      $scope.somethingInCart = true;
+    }
+
 
     $scope.cart = response;
     console.log($scope.cart, "SCOPE DOT CART");
@@ -150,7 +161,9 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
 
     $rootScope.cartQuant = findTotalItems();
   });
+}
 
+getProductsInCart();
 
 
 
@@ -177,12 +190,23 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     // }
   }
 
+  if($rootScope.details){
+    $scope.shipNameFirst = $rootScope.details.recNameFirst;
+    $scope.shipNameLast = $rootScope.details.recNameLast;
+    $scope.shipAddress = $rootScope.details.address1;
+    $scope.shipAddress2 = $rootScope.details.address2;
+    $scope.shipCity = $rootScope.details.city;
+    $scope.shipState = $rootScope.details.state;
+    $scope.shipZip = $rootScope.details.zip;
+    $scope.shipNote = $rootScope.note.note;
+  }
+
   // $('.btn-stripe').on('click', orderData, function(e) {
   $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
 
-    console.log(shipNameFirst, "shipNameFirst being logged");
+    console.log($scope.shipNameFirst, "shipNameFirst being logged");
     // console.log(n, "shipNameFirst being logged");
-    $scope.details = {
+    $rootScope.details = {
       recNameFirst: shipNameFirst,
       recNameLast: shipNameLast,
       address1: shipAddress,
@@ -191,11 +215,21 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
       state: shipState,
       zip: shipZip
     }
-      console.log($scope.details, "scopedetailsbeinglogged");
+
+    $rootScope.note = {
+      note: shipNote
+    }
+      console.log($rootScope.details, "scopedetailsbeinglogged");
 
     console.log("clicked");
-    $scope.value = $scope.details
+    $scope.value = $rootScope.details
     console.log($scope.value, "scopedotvalue");
+    if($scope.value){
+      console.log(true);
+    } else {
+      console.log(false);
+    }
+
     if($rootScope.note){
       console.log($rootScope.note.note, "rootScope.no.note");
       orderData.order.note = $rootScope.note.note;
@@ -204,11 +238,15 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     orderData.product = [];
 
     mainService.getProductsInCart().then(function(response){
-      console.log(response);
-      response.forEach(function(item, i){
-        console.log(item, "item being logged");
-        orderData.product.push(item)
-      })
+      if(response){
+        console.log(response);
+
+        response.forEach(function(item, i){
+          console.log(item, "item being logged");
+          orderData.product.push(item)
+        })
+      }
+
 
     });
     console.log(orderData, "orderdata logged");
