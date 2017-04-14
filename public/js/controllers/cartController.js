@@ -96,6 +96,7 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
       $scope.shippingCost = costs.shipping;
       $scope.orderTotal = costs.total + costs.shipping;
       getProductsInCart();
+      $rootScope.$broadcast('cartCount')
       // console.log(getProductsInCart);
     });
   }
@@ -127,8 +128,10 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     }
     console.log($scope.cartTotalItems, "total items function here");
     // mainService.getCartStorage();
+
     return $scope.cartTotalItems;
   }
+
 
 // findTotalItem();
 

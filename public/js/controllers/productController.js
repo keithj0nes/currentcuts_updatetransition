@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("productController", function($scope, $stateParams, mainService){
+angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService){
 
   console.log("$stateParams", $stateParams);
   console.log("$stateParams.id", $stateParams.id);
@@ -40,16 +40,12 @@ angular.module("ccvApp").controller("productController", function($scope, $state
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
     console.log(productSize, "psize");
-      // if($scope.productSize === undefined){
-      //   swal("Please enter a size")
-      // } else if($scope.productColor === undefined){
-      //   swal("Please enter a color")
-      // } else {
-      //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
-      //   swal("Item added to cart!")
-      // }
+
         mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
           swal("Item added to cart!")
+
+          $rootScope.$broadcast('cartCount')
+
 
   }
 
