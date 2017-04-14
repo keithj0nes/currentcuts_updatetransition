@@ -109,7 +109,7 @@ app.get('/logout', function(req, res){
   console.log(req.user, "user in serverjs after logged out");
 });
 app.get("/api/orderhistory", function(req,res,next){
-  db.orderhistory([], function(err, history){
+  db.orderhistory([req.user.id], function(err, history){
     if(err){
       console.log(err);
       return res.status(500).send(err)
@@ -145,7 +145,6 @@ app.post("/api/charge", function(req, res, next){
 
   // Get the credit card details submitted by the form
   var token = req.body.stripeToken; // Using Express
-  console.log(req.body, "req.body.price 1");
 
   // Create a charge: this will charge the user's card
   var charge = stripe.charges.create({
@@ -163,7 +162,7 @@ app.post("/api/charge", function(req, res, next){
       console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
-      console.log(charge, "CHARGE in SERVER");
+      // console.log(charge, "CHARGE in SERVER");
       // res.status(200).send(charge);
 
     }

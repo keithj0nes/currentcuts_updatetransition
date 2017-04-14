@@ -122,9 +122,15 @@ module.exports = {
   addOrder: function(req, res, charge){
     var timeNow = new Date();
 
+    let cartTotal = 0;
+    req.session.cart.forEach(function(i){
+      cartTotal += i.productQuantity * i.productPrice;
+    })
+
     db.orders.insert({
       userid: req.user.id,
-      datesold: timeNow
+      datesold: timeNow,
+      ordertotal: cartTotal
     }, function(err, order){
       if(err){
         console.log("OMG AN AERRYOR", err);
@@ -141,7 +147,6 @@ module.exports = {
           }, function(err, orderline){
             if(err){
               console.log("ANOTHER ERRORRR", err);
-
               res.status(500).send(err);
             }
           })
@@ -150,15 +155,8 @@ module.exports = {
         console.log(req.session.cart, "req.session.cart");
         res.status(200).send(charge);
         console.log(charge, "charge sent");
-
       }
     })
-
-
-    // id SERIAL PRIMARY KEY,
-    // orderId INTEGER REFERENCES orders(id),
-    // productId INTEGER REFERENCES products(id),
-    // quantSold INT
 
   },
 
@@ -188,10 +186,15 @@ module.exports = {
     let orderTotal = 0;
     let shippingTotal;
 
+    if(!b.user.address2){
+      b.user.address2 = " ";
+    } else {
+      b.user.address2 = b.user.address2 + ", ";
+    }
 
     //Create email HTML
     //req.user.firstname replace this with b.user.recNameLast below
-    let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + ", " + b.user.city + ", " + b.user.state + ", " + b.user.zip
+    let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
     b.product.forEach(function(item){
       console.log(item, "item in product");

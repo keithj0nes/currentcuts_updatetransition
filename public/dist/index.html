@@ -6,7 +6,21 @@
     <title>Current Cuts Vinyl</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
-    <link rel="stylesheet" href="./dist/styles.c6d0b5ad.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.fc98c782.css" media="screen" title="no title">
+
+<style media="screen">
+table, th , td  {
+border: 1px solid grey;
+border-collapse: collapse;
+padding: 5px;
+}
+table tr:nth-child(odd) {
+background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+background-color: #ffffff;
+}
+</style>
 </head>
 
 <body>
@@ -66,8 +80,10 @@
     </ul>
 </header>
 
-
-<ui-view></ui-view>
+<!-- min height div -->
+<div class="minnie">
+  <ui-view></ui-view>
+</div>
 
 <footer>
   <div class="footer-container">

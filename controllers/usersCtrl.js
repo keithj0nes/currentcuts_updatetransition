@@ -1,7 +1,6 @@
 const app = require("../server.js");
 const db = app.get('db');
 
-
 module.exports = {
 
   loggedIn: function(req, res, next) {
@@ -19,10 +18,5 @@ module.exports = {
   getCurrentUser: function(req,res,next){
     res.status(200).send(req.user);
   }
-
-
-
-
-
 
 }

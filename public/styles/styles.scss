@@ -8,7 +8,13 @@ $charcoal: #a1a1a1;
 body {
   // overflow: hidden; //stops scroll from moving above page in chrome/safari
   background-color: $light-gray;
+
+  .minnie {
+    min-height: 80vh;
+  }
 }
+
+
 
 h1,h2,h3,h4 {
   font-weight: normal;

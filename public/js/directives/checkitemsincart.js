@@ -7,6 +7,10 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
 
     controller: ($scope, mainService, $rootScope) => {
 
+      mainService.getProductsInCart().then(function(response){
+        console.log(response, "getProductsInCart directive");
+      })
+
       // var getItemsInCart = mainService.getCartStorage();
       // console.log(getItemsInCart);
       // $scope.itemsInCart = getItemsInCart;
@@ -17,12 +21,12 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
       //   $scope.anyItemsInCart = true;
       // }
 
-      $scope.anyItemsInCart = false;
-
-////////////////////////// cart number updated only when clicking on "cart" in the nav bar //////////////////////////
-
-      $rootScope.$watch("cartQuant", function(){
-        console.log($rootScope.cartQuant, "it changed again");
+//       $scope.anyItemsInCart = false;
+//
+// ////////////////////////// cart number updated only when clicking on "cart" in the nav bar //////////////////////////
+//
+//       $rootScope.$watch("cartQuant", function(){
+//         console.log($rootScope.cartQuant, "it changed again");
 
         // if($rootScope.cartQuant == 0 || $rootScope.cartQuant == "undefined"){
         //   $scope.anyItemsInCart = false;
@@ -38,7 +42,7 @@ angular.module("ccvApp").directive("checkitemsincart",function(){
         //
         //   // console.log($rootScope.cartQuant, "roosope in directive");
         // }
-      })
+      // })
 
       // mainService.getCartStorage();
 
