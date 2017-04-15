@@ -2,7 +2,13 @@
 
   <h1>Search Results</h1>
 
-  <div class="searched-products">
+  <div ng-if="!search">
+    <p style="text-align: center;">Sorry, we could not find any results for "{{searchTerm}}".</p>
+
+  </div>
+
+
+  <div ng-if="search" class="searched-products">
     <div class="product-main" ng-repeat="product in searchProducts | orderBy: 'id'">
       <div class="product-img">
         <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">
