@@ -33,7 +33,7 @@
         <td>{{orders.id}}</td>
         <td>{{orders.datesold | date: 'M/d/yyyy'}}</td>
         <td>{{orders.ordertotal | currency}}</td>
-        <td>Order Details</td>
+        <td><a ui-sref="orderdetails({orderid:orders.id})">Order Details</a></td>
 
       </tr>
     </table>

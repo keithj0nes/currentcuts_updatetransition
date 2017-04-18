@@ -166,7 +166,15 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
 
-
+  this.getOrderById = (id) => {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id
+    }).then((response)=>{
+      // console.log(response, "getOrderById service");
+      return response.data;
+    })
+  }
 
 
   this.addShippingInfo = function(details){

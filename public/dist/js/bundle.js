@@ -49,6 +49,10 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     url: "/orderhistory",
     templateUrl: "views/orderhistory.html",
     controller: "userController"
+  }).state("orderdetails", {
+    url: "/order/:orderid",
+    templateUrl: "views/orderdetails.html",
+    controller: "userController"
   });
 
   $urlRouterProvider.otherwise("/");
@@ -4492,6 +4496,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
       $scope.shippingCost = costs.shipping;
       $scope.orderTotal = costs.total + costs.shipping;
       getProductsInCart();
+      $rootScope.$broadcast('cartCount');
       // console.log(getProductsInCart);
     });
   };
@@ -4523,6 +4528,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     }
     console.log($scope.cartTotalItems, "total items function here");
     // mainService.getCartStorage();
+
     return $scope.cartTotalItems;
   };
 
@@ -4740,7 +4746,7 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 });
 "use strict";
 
-angular.module("ccvApp").controller("productController", function ($scope, $stateParams, mainService) {
+angular.module("ccvApp").controller("productController", function ($scope, $rootScope, $stateParams, mainService) {
 
   console.log("$stateParams", $stateParams);
   console.log("$stateParams.id", $stateParams.id);
@@ -4782,16 +4788,11 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
     console.log(productSize, "psize");
-    // if($scope.productSize === undefined){
-    //   swal("Please enter a size")
-    // } else if($scope.productColor === undefined){
-    //   swal("Please enter a color")
-    // } else {
-    //   mainService.addProductsToCart(productName,productSize,productColor,productQuantity);
-    //   swal("Item added to cart!")
-    // }
+
     mainService.addProductsToCart(productSize, productColor, productQuantity, productName, productPrice, productImage, productId);
     swal("Item added to cart!");
+
+    $rootScope.$broadcast('cartCount');
   };
 
   getProductById();
@@ -4800,311 +4801,87 @@ angular.module("ccvApp").controller("productController", function ($scope, $stat
 
 angular.module("ccvApp").controller("searchController", function ($scope, $stateParams, mainService) {
 
-  console.log($stateParams, "state params search");
-  console.log($stateParams.search);
   var searchTerm = $stateParams.search;
-
-  $scope.test = "HEY";
-
-  console.log(searchTerm, "searchTerm");
 
   mainService.getProductByName(searchTerm).then(function (response) {
     $scope.searchProducts = response;
     console.log(response, "response in controller");
     console.log($scope.searchProducts, "scope search prodcutz");
-  });
 
-  setTimeout(function () {
-    console.log($scope.searchProducts);
-  }, 4000);
+    if (response.length >= 1) {
+      $scope.search = true;
+    } else {
+      $scope.search = false;
+    }
+  });
 });
 "use strict";
 
-angular.module("ccvApp").controller("userController", function ($scope, mainService) {
+angular.module("ccvApp").controller("userController", function ($scope, $state, mainService) {
 
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
       $scope.history = response;
-
-      console.log($scope.history, "scope.history");
+      console.log("getOrderHistory being hit");
+      // console.log($scope.history, "scope.history");
     });
   };
 
-  getOrderHistory();
+  console.log($state, "logging state");
+  console.log($state.params, "logging state params");
+
+  if ($state.params.orderid) {
+    console.log(true);
+    mainService.getOrderById($state.params.orderid).then(function (response) {
+      console.log(response, "here is the response");
+      $scope.hello = response;
+    });
+  } else {
+    console.log(false);
+    getOrderHistory();
+  }
 });
 "use strict";
 
-angular.module("ccvApp").service("mainService", function ($http) {
+angular.module("ccvApp").directive("adminAuth", function () {
 
-  this.getAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/products"
-    }).then(function (response) {
-      console.log(response.data, "getAllProducts");
-      return response.data;
-    });
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService) {
+
+      mainService.getAuth().then(function (response) {
+        console.log(response, "response in adminAuth directive");
+        if (response.data = " ") {
+          $scope.auth = true;
+        }
+      });
+    }
   };
-
-  this.getProductById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id
-    }).then(function (response) {
-      console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductById2 = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products2/" + id
-    }).then(function (response) {
-      console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductByName = function (name) {
-    console.log(name, "searched letters in service");
-    return $http({
-      method: "GET",
-      url: "/api/search/" + name
-    }).then(function (response) {
-      console.log(response.data, "search by name in service");
-      return response.data;
-    });
-  };
-
-  this.addProduct = function (name, description, price, img1, img2) {
-    var productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    };
-    return $http({
-      method: "POST",
-      url: "/api/products",
-      data: productObj
-    }).success(function () {
-      alert: "SUCCESS!";
-    });
-  };
-
-  this.updateProduct = function (id, name, description, price, img1, img2) {
-    var productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    };
-    return $http({
-      method: "PUT",
-      url: "/api/products/" + id,
-      data: productObj
-    }).success(function () {
-      alert: "SUCCESS!";
-    });
-  };
-
-  this.deleteProduct = function (product) {
-    var productId = product.id;
-    return $http({
-      method: "DELETE",
-      url: "/api/products/" + productId
-    });
-  };
-
-  this.getAuth = function () {
-    console.log("getAuth running");
-    return $http({
-      method: "GET",
-      url: "/api/checkauth"
-    }).then(function (response) {
-      return response;
-    });
-  };
-
-  this.getUsername = function () {
-    return $http({
-      method: "GET",
-      url: "/api/currentuser"
-    }).then(function (response) {
-      return response.data.firstname;
-    });
-  };
-
-  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId) {
-    var cartData = {
-      productSize: productSize,
-      productColor: productColor,
-      productQuantity: productQuantity,
-      productName: productName,
-      productPrice: productPrice,
-      productImage: productImage,
-      productId: productId
-    };
-    // console.log(cartData);
-    return $http({
-      method: "POST",
-      url: "/api/cart",
-      data: cartData
-    }).success(function () {
-      console.log("Item Added!");
-    });
-  };
-
-  this.getProductsInCart = function () {
-    return $http({
-      method: "GET",
-      url: "/api/cart"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.deleteProductsInCart = function (item) {
-
-    console.log(item, "In service");
-    return $http({
-      method: "DELETE",
-      url: "/api/cart/" + item
-    }).then(function (response) {
-      return response;
-    });
-  };
-
-  this.logout = function () {
-    return {
-      method: "GET",
-      url: "/logout"
-    }.success(function () {});
-  };
-
-  this.getOrderHistory = function () {
-    return $http({
-      method: "GET",
-      url: "/api/orderhistory"
-    }).then(function (response) {
-      console.log(response, "reponse in srvice");
-      return response.data;
-    });
-  };
-
-  this.addShippingInfo = function (details) {
-    console.log(details, "in service");
-    return details;
-  };
-
-  // this.cartStorage = [1,2,3];
-  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
-  //
-  // this.getCartStorage = () => {
-  //   console.log(this.cartStorage, "loggin cart storage service");
-  //   console.log(this.sum, "sum in service");
-  //   return this.sum;
-  // }
-
 });
-"use strict";
-
-angular.module("ccvApp").service("productService", function ($http) {});
 "use strict";
 
 angular.module("ccvApp").directive("checkitemsincart", function () {
 
   return {
     restrict: "AE",
-    // template: "{{totalItems}}",
-    // scope: {hi: '@'},
-
     controller: function controller($scope, mainService, $rootScope) {
 
-      mainService.getProductsInCart().then(function (response) {
-        console.log(response, "getProductsInCart directive");
+      var getNumber = function getNumber() {
+        mainService.getProductsInCart().then(function (response) {
+          var cartTotalItems = 0;
+          for (var i = 0; i < response.length; i++) {
+            cartTotalItems += Number(response[i].productQuantity);
+          }
+          $scope.itemsInCart = cartTotalItems;
+        });
+      };
+
+      getNumber();
+
+      $scope.$on('cartCount', function () {
+        getNumber();
       });
-
-      // var getItemsInCart = mainService.getCartStorage();
-      // console.log(getItemsInCart);
-      // $scope.itemsInCart = getItemsInCart;
-      //
-      // console.log($scope.itemsInCart);
-      //
-      // if($scope.itemsInCart){
-      //   $scope.anyItemsInCart = true;
-      // }
-
-      //       $scope.anyItemsInCart = false;
-      //
-      // ////////////////////////// cart number updated only when clicking on "cart" in the nav bar //////////////////////////
-      //
-      //       $rootScope.$watch("cartQuant", function(){
-      //         console.log($rootScope.cartQuant, "it changed again");
-
-      // if($rootScope.cartQuant == 0 || $rootScope.cartQuant == "undefined"){
-      //   $scope.anyItemsInCart = false;
-      //   console.log($scope.anyItemsInCart, "logging");
-      // } else {
-      //   // scope.itemsIncart = $rootScope.cartQuant;
-      //   // scope.anyItemsInCart = true;
-      //   $scope.anyItemsInCart = true;
-      //   $scope.itemsInCart = $rootScope.cartQuant
-      //   console.log($scope.itemsInCart);
-      //   console.log($scope.anyItemsInCart, "logging again");
-      //
-      //
-      //   // console.log($rootScope.cartQuant, "roosope in directive");
-      // }
-      // })
-
-      // mainService.getCartStorage();
-
-      // setTimeout(function () {
-      //   mainService.getCartStorage();
-      //
-      // }, 8000);
     }
-
-    // controller: "cartController",
-    // link: function(scope, elem, attr){
-    //
-    //   $rootScope.$watch("cartQuant", function(){
-    //   console.log($rootScope.cartQuant, "it changed again");
-    //
-    //     if($rootScope.cartQuant === 0 || $rootScope.cartQuant === "undefined"){
-    //       scope.anyItemsInCart = false;
-    //       console.log(scope.anyItemsInCart, "logging");
-    //     } else {
-    //       // scope.itemsIncart = $rootScope.cartQuant;
-    //       // scope.anyItemsInCart = true;
-    //       scope.anyItemsInCart = true;
-    //       scope.itemsInCart = $rootScope.cartQuant
-    //       console.log(scope.anyItemsInCart, "logging again");
-    //
-    //
-    //       // console.log($rootScope.cartQuant, "roosope in directive");
-    //     }
-    //   })
-    //
-    //
-    //
-    // }
-
-
-    // template: "({{totalItems}})",
-    // scope: {},
-    // controller: ($scope, mainService, $rootScope, $state) => {
-    //   $rootScope.$watch('cartTotal', function(){
-    //     console.log('it changed');
-    //     console.log($rootScope.cartQuant);
-    //     $scope.totalItems = $rootScope.cartQuant
-    //   })
-    // }
   };
 });
 "use strict";
@@ -5310,4 +5087,196 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
 //       }
 //     }
 //   });
+"use strict";
+
+angular.module("ccvApp").service("mainService", function ($http) {
+
+  this.getAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products"
+    }).then(function (response) {
+      console.log(response.data, "getAllProducts");
+      return response.data;
+    });
+  };
+
+  this.getProductById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id
+    }).then(function (response) {
+      console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductById2 = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products2/" + id
+    }).then(function (response) {
+      console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductByName = function (name) {
+    console.log(name, "searched letters in service");
+    return $http({
+      method: "GET",
+      url: "/api/search/" + name
+    }).then(function (response) {
+      console.log(response.data, "search by name in service");
+      return response.data;
+    });
+  };
+
+  this.addProduct = function (name, description, price, img1, img2) {
+    var productObj = {
+      name: name,
+      description: description,
+      price: price,
+      img1: img1,
+      img2: img2
+    };
+    return $http({
+      method: "POST",
+      url: "/api/products",
+      data: productObj
+    }).success(function () {
+      alert: "SUCCESS!";
+    });
+  };
+
+  this.updateProduct = function (id, name, description, price, img1, img2) {
+    var productObj = {
+      name: name,
+      description: description,
+      price: price,
+      img1: img1,
+      img2: img2
+    };
+    return $http({
+      method: "PUT",
+      url: "/api/products/" + id,
+      data: productObj
+    }).success(function () {
+      alert: "SUCCESS!";
+    });
+  };
+
+  this.deleteProduct = function (product) {
+    var productId = product.id;
+    return $http({
+      method: "DELETE",
+      url: "/api/products/" + productId
+    });
+  };
+
+  this.getAuth = function () {
+    console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/api/checkauth"
+    }).then(function (response) {
+      return response;
+    });
+  };
+
+  this.getUsername = function () {
+    return $http({
+      method: "GET",
+      url: "/api/currentuser"
+    }).then(function (response) {
+      return response.data.firstname;
+    });
+  };
+
+  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId) {
+    var cartData = {
+      productSize: productSize,
+      productColor: productColor,
+      productQuantity: productQuantity,
+      productName: productName,
+      productPrice: productPrice,
+      productImage: productImage,
+      productId: productId
+    };
+    // console.log(cartData);
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function () {
+      console.log("Item Added!");
+    });
+  };
+
+  this.getProductsInCart = function () {
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.deleteProductsInCart = function (item) {
+
+    console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function (response) {
+      return response;
+    });
+  };
+
+  this.logout = function () {
+    return {
+      method: "GET",
+      url: "/logout"
+    }.success(function () {});
+  };
+
+  this.getOrderHistory = function () {
+    return $http({
+      method: "GET",
+      url: "/api/orderhistory"
+    }).then(function (response) {
+      console.log(response, "reponse in srvice");
+      return response.data;
+    });
+  };
+
+  this.getOrderById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id
+    }).then(function (response) {
+      // console.log(response, "getOrderById service");
+      return response.data;
+    });
+  };
+
+  this.addShippingInfo = function (details) {
+    console.log(details, "in service");
+    return details;
+  };
+
+  // this.cartStorage = [1,2,3];
+  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
+  //
+  // this.getCartStorage = () => {
+  //   console.log(this.cartStorage, "loggin cart storage service");
+  //   console.log(this.sum, "sum in service");
+  //   return this.sum;
+  // }
+
+});
+"use strict";
+
+angular.module("ccvApp").service("productService", function ($http) {});
 //# sourceMappingURL=bundle.js.map

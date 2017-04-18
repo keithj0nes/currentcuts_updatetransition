@@ -137,24 +137,126 @@ module.exports = {
         res.status(500).send(err)
       } else {
         console.log("this should be good");
+        req.session.cart.forEach(function(result, index){
+          console.log(result, "result in forEach");
+          console.log(index, "index in forEach");
+        })
         for(var i = 0; i < req.session.cart.length; i++){
-          console.log(order.id, "HERE IS ORDER.ID");
-          console.log(req.session.cart[i].productQuantity, 'PRODUCT QUANTITY');
-          db.orderline.insert({
-            orderid: order.id,
-            productid: req.session.cart[i].productId,
-            quantsold: req.session.cart[i].productQuantity
-          }, function(err, orderline){
+
+          var matches = req.session.cart[i].productSize.match(/(\d+)H x (\d+)/);
+          var number1 = Number(matches[1]);
+          var number2 = Number(matches[2]);
+          let obj = {
+            height: number1,
+            width: number2
+          }
+
+          var myPrice = req.session.cart[i].productPrice;
+          var myProductId = req.session.cart[i].productId;
+          var myProductQ = req.session.cart[i].productQuantity;
+          // var sizesid;
+          // var pricesid;
+
+          db.sizes.findOne(obj, function(err, sResult){
             if(err){
-              console.log("ANOTHER ERRORRR", err);
-              res.status(500).send(err);
+              console.log(err, "here's an errror");
+              res.status(500).send(err)
             }
-          })
+              console.log(sResult, "result in finding sizes");
+              var sizesid = sResult.id;
+
+              db.prices.findOne({price: myPrice}, function(err, pResult){
+                if(err){
+                  console.log(err, "logging err in productPrice.findOne");
+                  res.status(500).send(err)
+                }
+                  console.log(pResult, "result in finding prices");
+                  var pricesid = pResult.id
+
+
+
+                  console.log(number1, "FIRST NUMBER");
+                  console.log(number2, "SECOND VALUE");
+                  console.log(order.id, "HERE IS ORDER.ID");
+                  // console.log(req.session.cart[i], 'req.session.cart[i]');
+                  db.orderline.insert({
+                    orderid: order.id,
+                    productid: myProductId,
+                    quantsold: myProductQ,
+                    sizeid: sizesid,
+                    priceid: pricesid
+                  }, function(err, orderline){
+                    if(err){
+                      console.log("ANOTHER ERRORRR", err);
+                      res.status(500).send(err);
+                    }
+                    console.log(orderline, "orderline");
+                  }) //end db.orderline.insert
+
+              }) //end db.prices.findOne
+
+          }) //end db.sizes.findOne
+
+
+            /////////// try running two queries ////////////////////
+
+            //db.sizes.findOne(obj, function(err, sResult){
+            // if(err){
+            //   console.log(err, "here's an errror");
+            //   res.status(500).send(err)
+            // }
+            // console.log(number1, "FIRST NUMBER");
+            // console.log(number2, "SECOND VALUE");
+            // console.log(order.id, "HERE IS ORDER.ID");
+            //
+            //   console.log(sResult, "result in finding sizes");
+            //   var sizesid = sResult.id;
+            //
+            //   db.orderline.insert({
+            //     orderid: order.id,
+            //     productid: myProductId,
+            //     quantsold: myProductQ,
+            //     sizeid: sizesid
+            //   }, function(err, orderline){
+            //     if(err){
+            //       console.log("ANOTHER ERRORRR", err);
+            //       res.status(500).send(err);
+            //     }
+            //     console.log(orderline, "orderline in sizes");
+            //   }) //end db.orderline.insert
+            // }) //end db.sizes.findOne
+            //
+            //
+            //   db.prices.findOne({price: myPrice}, function(err, pResult){
+            //     if(err){
+            //       console.log(err, "logging err in productPrice.findOne");
+            //       res.status(500).send(err)
+            //     }
+            //       console.log(pResult, "result in finding prices");
+            //       var pricesid = pResult.id
+            //
+            //
+            //       // console.log(req.session.cart[i], 'req.session.cart[i]');
+            //       db.orderline.update({
+            //         orderid: order.id
+            //       },
+            //       {
+            //         priceid: pricesid
+            //       }, function(err, orderline){
+            //         if(err){
+            //           console.log("ANOTHER ERRORRR", err);
+            //           res.status(500).send(err);
+            //         }
+            //         console.log(orderline, "orderline in prices");
+            //       }) //end db.orderline.insert
+            //
+            //   }) //end db.prices.findOne
+
         }
         req.session.cart = [];
-        console.log(req.session.cart, "req.session.cart");
+        // console.log(req.session.cart, "req.session.cart");
         res.status(200).send(charge);
-        console.log(charge, "charge sent");
+        // console.log(charge, "charge sent");
       }
     })
 
@@ -197,7 +299,7 @@ module.exports = {
     let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
     b.product.forEach(function(item){
-      console.log(item, "item in product");
+      // console.log(item, "item in product");
       // text2.push( "$" + item.productPrice + ", item color: " + item.productColor);
       let itemTotal = item.productQuantity * item.productPrice;
       orderTotal += itemTotal;

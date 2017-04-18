@@ -109,12 +109,29 @@ app.get('/logout', function(req, res){
   console.log(req.user, "user in serverjs after logged out");
 });
 app.get("/api/orderhistory", function(req,res,next){
-  db.orderhistory([req.user.id], function(err, history){
+  if(req.user){
+    db.orderhistory([req.user.id], function(err, history){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      return res.status(200).send(history)
+    })
+  } else {
+    console.log("Unauthorized");
+    res.status(500).send("Unauthorized again lolz")
+  }
+})
+
+app.get("/api/order/:id", function(req, res, next){
+  db.get_order_details_by_id([req.params.id], function(err, order){
     if(err){
       console.log(err);
-      return res.status(500).send(err)
+      res.status(500).send(err)
+    } else {
+      console.log("history being sent");
+      res.status(200).send(order)
     }
-    return res.status(200).send(history)
   })
 })
 
