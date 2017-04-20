@@ -272,8 +272,9 @@ getProductsInCart();
           email: token.email,
           stripeTokenCard: token.card
         }).then(function (response) {
+          console.log(response, "response in cartController charge lololololol");
           $rootScope.cart = [];
-          $state.go('home');
+          $state.go('orderdetails', {"orderid": response.data});
           return $http.post('/api/email', orderData);
         })
       }

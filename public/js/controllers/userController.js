@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("userController", function($scope, $state, mainService){
+angular.module("ccvApp").controller("userController", function($scope, $rootScope, $state, mainService){
 
 var getOrderHistory = function(){
   mainService.getOrderHistory().then(function(response){
@@ -16,8 +16,9 @@ console.log($state.params, "logging state params");
 if($state.params.orderid){
   console.log(true);
   mainService.getOrderById($state.params.orderid).then(function(response){
+    $rootScope.$broadcast('cartCount')
     console.log(response, "here is the response");
-    $scope.hello = response
+    $scope.orderProducts = response
   })
 } else {
   console.log(false);

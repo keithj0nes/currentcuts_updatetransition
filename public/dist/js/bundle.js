@@ -4664,8 +4664,9 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
             email: _token.email,
             stripeTokenCard: _token.card
           }).then(function (response) {
+            console.log(response, "response in cartController charge lololololol");
             $rootScope.cart = [];
-            $state.go('home');
+            $state.go('orderdetails', { "orderid": response.data });
             return $http.post('/api/email', orderData);
           });
         }
@@ -4817,7 +4818,7 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
 });
 "use strict";
 
-angular.module("ccvApp").controller("userController", function ($scope, $state, mainService) {
+angular.module("ccvApp").controller("userController", function ($scope, $rootScope, $state, mainService) {
 
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
@@ -4833,8 +4834,9 @@ angular.module("ccvApp").controller("userController", function ($scope, $state, 
   if ($state.params.orderid) {
     console.log(true);
     mainService.getOrderById($state.params.orderid).then(function (response) {
+      $rootScope.$broadcast('cartCount');
       console.log(response, "here is the response");
-      $scope.hello = response;
+      $scope.orderProducts = response;
     });
   } else {
     console.log(false);

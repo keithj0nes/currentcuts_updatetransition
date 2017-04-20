@@ -152,6 +152,7 @@ module.exports = {
           let myPrice = product.productPrice;
           let myProductId = product.productId;
           let myProductQ = product.productQuantity;
+          let myProductColor = product.productColor;
 
           db.sizes.findOne(obj, function(err, sResult){
             if(err){
@@ -180,7 +181,8 @@ module.exports = {
                     productid: myProductId,
                     quantsold: myProductQ,
                     sizeid: sizesid,
-                    priceid: pricesid
+                    priceid: pricesid,
+                    color: myProductColor
                   }, function(err, orderline){
                     if(err){
                       console.log("ANOTHER ERRORRR", err);
@@ -309,7 +311,8 @@ module.exports = {
         // }
         req.session.cart = [];
         // console.log(req.session.cart, "req.session.cart");
-        res.status(200).send(charge);
+        console.log(charge, "LOGGING CHARGE");
+        res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
         // console.log(charge, "charge sent");
       }
     })
