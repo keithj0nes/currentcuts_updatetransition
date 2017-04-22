@@ -108,6 +108,8 @@ app.get('/logout', function(req, res){
   res.redirect('/');
   console.log(req.user, "user in serverjs after logged out");
 });
+
+
 app.get("/api/orderhistory", function(req,res,next){
   if(req.user){
     db.orderhistory([req.user.id], function(err, history){
@@ -119,20 +121,33 @@ app.get("/api/orderhistory", function(req,res,next){
     })
   } else {
     console.log("Unauthorized");
-    res.status(500).send("Unauthorized again lolz")
+    res.send({requser:false})
   }
 })
 
 app.get("/api/order/:id", function(req, res, next){
-  db.get_order_details_by_id([req.params.id], function(err, order){
-    if(err){
-      console.log(err);
-      res.status(500).send(err)
-    } else {
-      console.log("history being sent");
-      res.status(200).send(order)
-    }
-  })
+  if(req.user){
+    db.get_order_details_by_id([req.params.id, req.user.id], function(err, order){
+      if(err){
+        console.log(err);
+        res.status(500).send(err)
+      }
+
+//// if order id is not associated with user id, results = false, else send order
+      if(order.length <= 0){
+        console.log("NO RESULTS SHOW");
+        res.send({results: false})
+      } else {
+        console.log(order, "history being sent");
+        res.status(200).send(order)
+      }
+
+    })
+  } else {
+    console.log("no user");
+    res.send({requser: false})
+  }
+
 })
 
 //CART

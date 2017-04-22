@@ -46,11 +46,11 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     controller: "adminController",
     resolve: adminResolve
   }).state("orderhistory", {
-    url: "/orderhistory",
+    url: "/orders",
     templateUrl: "views/orderhistory.html",
     controller: "userController"
   }).state("orderdetails", {
-    url: "/order/:orderid",
+    url: "/orders/:orderid",
     templateUrl: "views/orderdetails.html",
     controller: "userController"
   });
@@ -4823,23 +4823,40 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
       $scope.history = response;
-      console.log("getOrderHistory being hit");
+      // console.log(response, "getOrderHistory being hit");
       // console.log($scope.history, "scope.history");
+      if (response.requser === false) {
+        $state.go("login");
+      }
     });
   };
 
-  console.log($state, "logging state");
-  console.log($state.params, "logging state params");
+  // console.log($state, "logging state");
+  // console.log($state.params, "logging state params");
+
 
   if ($state.params.orderid) {
-    console.log(true);
-    mainService.getOrderById($state.params.orderid).then(function (response) {
-      $rootScope.$broadcast('cartCount');
-      console.log(response, "here is the response");
-      $scope.orderProducts = response;
+    console.log("order details");
+
+    mainService.getAuth().then(function (response) {
+      console.log(response, "userController");
+      if (response.reqUser) {
+        mainService.getOrderById($state.params.orderid).then(function (response) {
+          if (response.results === false) {
+            console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+            $state.go("orderhistory");
+          }
+          $rootScope.$broadcast('cartCount');
+          console.log(response, "here is the response");
+          $scope.orderProducts = response;
+        });
+      } else {
+        console.log("going to orderhistory");
+        $state.go("orderhistory");
+      }
     });
   } else {
-    console.log(false);
+    console.log("order history");
     getOrderHistory();
   }
 });
@@ -4852,8 +4869,8 @@ angular.module("ccvApp").directive("adminAuth", function () {
     controller: function controller($scope, mainService) {
 
       mainService.getAuth().then(function (response) {
-        console.log(response, "response in adminAuth directive");
-        if (response.data = " ") {
+        console.log(response);
+        if (response.reqUserAdmin === true) {
           $scope.auth = true;
         }
       });
@@ -5182,7 +5199,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "GET",
       url: "/api/checkauth"
     }).then(function (response) {
-      return response;
+      return response.data;
     });
   };
 
@@ -5191,7 +5208,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "GET",
       url: "/api/currentuser"
     }).then(function (response) {
-      return response.data.firstname;
+      return response.data;
     });
   };
 

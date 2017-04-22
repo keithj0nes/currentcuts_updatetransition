@@ -91,7 +91,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/checkauth"
     }).then((response) => {
-      return response;
+      return response.data;
     })
   }
 
@@ -100,7 +100,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/currentuser"
     }).then((response) => {
-      return response.data.firstname;
+      return response.data;
     })
   }
 

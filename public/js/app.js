@@ -63,12 +63,12 @@ angular.module("ccvApp", ["ui.router"])
       resolve: adminResolve
     })
     .state("orderhistory",{
-      url: "/orderhistory",
+      url: "/orders",
       templateUrl: "views/orderhistory.html",
       controller: "userController"
     })
     .state("orderdetails", {
-      url: "/order/:orderid",
+      url: "/orders/:orderid",
       templateUrl: "views/orderdetails.html",
       controller: "userController"
     })

@@ -5,18 +5,22 @@ module.exports = {
 
   loggedIn: function(req, res, next) {
       if (!req.user) {
-        res.status(401).send("Please Login");
+        res.send({reqUser: false});
+        return;
+      } else if (!req.user.admin) {
+        res.send({reqUserAdmin: false});
+        return;
+      } else if (req.user.admin){
+        res.send({reqUser: true, reqUserAdmin: true})
         return;
       }
-      if (!req.user.admin) {
-        res.status(403).send("Unauthorized");
-        return;
-      }
-      res.status(200).send(" ");
+      res.status(200).send({reqUser: true});
   },
 
   getCurrentUser: function(req,res,next){
-    res.status(200).send(req.user);
+    if(req.user){
+      res.status(200).send(req.user.firstname);
+    }
   }
 
 }

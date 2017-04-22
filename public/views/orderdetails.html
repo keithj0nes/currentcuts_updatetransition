@@ -14,7 +14,7 @@
 Order Date: {{orderProducts[0].datesold | date: 'longDate'}}
 <table>
   <th>Product Name</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>SubTotal</th>
-  <tr ng-repeat="o in orderProducts">
+  <tr ng-repeat="o in orderProducts track by $index">
     <td>{{o.name}}</td>
     <td>{{o.color}}</td>
     <td>{{o.height}}H x {{o.width}}W inches</td>

@@ -5,13 +5,11 @@ angular.module("ccvApp").directive("adminAuth", function(){
     controller: function($scope, mainService){
 
       mainService.getAuth().then(function(response){
-        console.log(response, "response in adminAuth directive");
-        if(response.data = " "){
+        console.log(response);
+        if(response.reqUserAdmin === true){
           $scope.auth = true;
         }
       })
-
     }
   }
-
 })
