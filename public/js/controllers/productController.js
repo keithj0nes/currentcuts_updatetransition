@@ -1,7 +1,7 @@
 angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService){
 
-  console.log("$stateParams", $stateParams);
-  console.log("$stateParams.id", $stateParams.id);
+  // console.log("$stateParams", $stateParams);
+  // console.log("$stateParams.id", $stateParams.id);
 
   // $scope.productPrice = {
   //   price: "22222"

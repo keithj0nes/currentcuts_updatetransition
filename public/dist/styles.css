@@ -522,6 +522,8 @@ nav {
   justify-content: space-between;
   border-bottom: 1px solid #f3f3f3;
   /* =================== HAMBURGER MENU ================= */ }
+  nav .scale-nav {
+    transform: scale(0.8); }
   nav .ham-search-container {
     padding-left: 20px; }
     nav .ham-search-container .hamburger-icon {
@@ -558,8 +560,6 @@ nav {
     justify-content: flex-end;
     padding-right: 20px;
     position: relative; }
-    nav .login-cart-container a:first-child {
-      visibility: hidden; }
     nav .login-cart-container a {
       color: black;
       padding: 10px;
@@ -567,6 +567,8 @@ nav {
       border-bottom: 1px solid transparent; }
     nav .login-cart-container a:hover {
       border-bottom: 1px solid black; }
+    nav .login-cart-container i:first-child {
+      padding-right: 10px; }
     nav .login-cart-container i {
       font-size: 36px;
       cursor: pointer; }
@@ -583,6 +585,10 @@ nav {
       line-height: 21px;
       border-radius: 50%;
       cursor: pointer; }
+    nav .login-cart-container .login-user-popup {
+      color: red;
+      background: blue;
+      text-align: center; }
 
 /*end nav*/
 .search-box-container.open {
@@ -862,8 +868,57 @@ footer {
           font-weight: bold; }
 
 @media only screen and (min-width: 768px) {
+  .hideDesktop {
+    display: none; }
   .hideMobile {
     display: block; }
+  .modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: black;
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */ }
+  .modal-content {
+    background-color: #fefefe;
+    position: absolute;
+    right: 60px;
+    top: 75px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+    min-width: 260px;
+    text-align: center; }
+  .close {
+    color: #aaaaaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold; }
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer; }
+  .display {
+    display: block; }
+  nav .scale-nav {
+    transform: scale(1); }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
     display: none; }
   nav .search-icon {
@@ -876,9 +931,8 @@ footer {
     cursor: pointer; }
   nav .login-cart-container {
     visibility: visible;
-    text-align: right; }
-    nav .login-cart-container a:first-child {
-      visibility: visible; }
+    text-align: right;
+    justify-content: flex-end; }
   .main-nav {
     width: 100%;
     height: auto;
@@ -965,8 +1019,6 @@ footer {
           position: absolute;
           top: 12px;
           right: 40px; }
-    .cart-main .hideDesktop {
-      display: none; }
     .cart-main .total-disc-ship .d div {
       text-align: center; }
     .cart-main .total-disc-ship .d .aleft {

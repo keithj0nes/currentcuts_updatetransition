@@ -15,7 +15,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/products/" + id
     }).then(function(response){
-      console.log(response.data, "in service");
+      // console.log(response.data, "in service");
       return response.data;
     })
   }
@@ -23,9 +23,9 @@ angular.module("ccvApp").service("mainService", function($http){
   this.getProductById2 = function(id){
     return $http({
       method: "GET",
-      url: "/api/products2/" + id
+      url: "/api/products/" + id + "/details"
     }).then(function(response){
-      console.log(response.data, "in service");
+      // console.log(response.data, "in service");
       return response.data;
     })
   }

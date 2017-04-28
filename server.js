@@ -158,7 +158,7 @@ app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
 //PRODUCTS
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
-app.get("/api/products2/:id", mainCtrl.getProductById2);
+app.get("/api/products/:id/details", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);
 app.get("/api/cat/:id", mainCtrl.getProductByCategory); //////////// not working
 app.post("/api/products", mainCtrl.addProductToDB);

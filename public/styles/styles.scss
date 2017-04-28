@@ -16,6 +16,14 @@ body {
 
 
 
+
+
+
+
+
+
+
+
 h1,h2,h3,h4 {
   font-weight: normal;
 }
@@ -152,6 +160,10 @@ nav {
   border-bottom: 1px solid $light-gray;
 
 /* =================== HAMBURGER MENU ================= */
+
+.scale-nav {
+  transform: scale(0.8);
+}
   .ham-search-container {
     padding-left: 20px;
 
@@ -159,6 +171,7 @@ nav {
       display: inline-block;
       cursor: pointer;
       margin-right: 4px;
+      // transform: scale(0.7);
       // padding-top: 2px;
 
       .nbar1, .nbar2, .nbar3 {
@@ -189,6 +202,7 @@ nav {
       font-size: 36px;
       // padding-left: 10px;
       cursor: pointer;
+      // transform: scale(0.8);
     }
   }
 
@@ -209,13 +223,16 @@ nav {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    // background: pink;
     padding-right: 20px;
     position: relative;
+    // overflow: hidden;
 
 
-    a:first-child {
-      visibility: hidden;
-    }
+    // a:first-child {
+    //   visibility: hidden;
+    // }
+
 
     a {
       color: black;
@@ -230,7 +247,9 @@ nav {
       // background-color: white;
       border-bottom: 1px solid black;
     }
-
+    i:first-child{
+      padding-right:10px;
+    }
     i {
       font-size: 36px;
       cursor: pointer;
@@ -249,6 +268,14 @@ nav {
       line-height: 21px;
       border-radius: 50%;
       cursor: pointer;
+    }
+
+
+    .login-user-popup {
+      color: red;
+      background: blue;
+      text-align: center;
+      // width: 10%;
     }
 
 
@@ -724,16 +751,72 @@ footer {
 @media only screen and (min-width: 768px) {
 
 
-
-
-
+  .hideDesktop {
+    display: none;
+  }
 
   .hideMobile {
     display: block;
   }
 
+
+  .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+
+  }
+  .modal-content {
+      background-color: #fefefe;
+      // margin: auto;
+      position: absolute;
+      right: 60px;
+      top: 75px;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 20%;
+      min-width: 260px;
+      text-align: center;
+  }
+
+  .close {
+      color: #aaaaaa;
+      // float: right;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+  }
+
+
+  .display {
+    display: block;
+  }
+
+
   nav {
+    .scale-nav {
+      transform: scale(1);
+    }
   //hide hamburger bar
+
     .hamburger-icon {
       .nbar1, .nbar2, .nbar3 {
         display: none;
@@ -762,10 +845,12 @@ footer {
     .login-cart-container {
       visibility: visible;
       text-align: right;
+      justify-content: flex-end;
 
-      a:first-child {
-        visibility: visible;
-      }
+
+      // a:first-child {
+      //   visibility: visible;
+      // }
     }
   }
   .main-nav {
@@ -914,9 +999,9 @@ footer {
 
     }
 
-    .hideDesktop {
-      display: none;
-    }
+    // .hideDesktop {
+    //   display: none;
+    // }
 
     .total-disc-ship {
 
