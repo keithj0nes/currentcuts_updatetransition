@@ -6,7 +6,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   // $scope.productPrice = {
   //   price: "22222"
   // };
-
+  $scope.addToCartModal = false;
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
       $scope.product = response[0];
@@ -42,11 +42,28 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     console.log(productSize, "psize");
 
         mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
-          swal("Item added to cart!")
+          // swal("Item added to cart!")
+          $scope.addToCartModal = true;
 
           $rootScope.$broadcast('cartCount')
+          console.log($scope.addToCartModal);
+
+  }
+
+  var modal = document.getElementById('modalz');
 
 
+  $scope.closeModal = function(){
+    $scope.addToCartModal = false;
+    console.log($scope.addToCartModal, "close");
+  }
+
+  window.onclick = function(e) {
+    if (e.target == modal) {
+      $scope.addToCartModal = false;
+      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+      console.log($scope.addToCartModal, "close window");
+    }
   }
 
 

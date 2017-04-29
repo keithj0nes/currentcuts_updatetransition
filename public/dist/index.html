@@ -6,7 +6,7 @@
     <title>Current Cuts Vinyl</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
-    <link rel="stylesheet" href="./dist/styles.63d4b19e.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.c6d12056.css" media="screen" title="no title">
 
 <style media="screen">
 table, th , td  {
@@ -57,13 +57,13 @@ background-color: #ffffff;
 
 
         <!-- desktop -->
-        <a ng-if="username" id="my-btn" class="login hideMobile" ng-click="showModal()">{{username}}</a>
+        <a ng-if="username" class="login hideMobile" ng-click="showModal()">{{username}}</a>
         <a ng-if="!username" ui-sref="login" class="login hideMobile">Login</a>
 
+        <!-- modal still visible in mobile if scaled down from desktop view -->
+        <div class="modal" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
 
-        <div class="modal hideMobile" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
-
-          <div class="modal-content">
+          <div class="modal-content-user">
             <span class="close" ng-click="closeModal()">&times;</span>
             <button type="button" class="btn" name="button" disabled>Account Settings</button>
 

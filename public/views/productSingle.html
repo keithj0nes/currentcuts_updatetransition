@@ -55,7 +55,24 @@
 
     <input type="text" name="" ng-model="productQuantity" >
 
-    <button type="submit" class="btn" name="button" value="Add to Cart">Add to Cart</button>
+    <button type="submit" class="btn flright" name="button" value="Add to Cart">Add to Cart</button>
+
+    <div class="modal" ng-class="{'display': addToCartModal, 'noscroll': addToCartModal}" id="modalz">
+      <div class="modal-content-product-added">
+        <span class="close" ng-click="closeModal()">&times;</span>
+        <i class="material-icons">check_circle</i>
+        <h3>ITEM ADDED!</h3>
+        <hr>
+
+        <button type="button" class="big-btn" name="button" ui-sref="cart">CHECKOUT</button>
+
+        <br><br>
+
+        <button type="button" class="big-btn" name="button" ng-click="addToCartModal = false">CONTINUE SHOPPING</button>
+
+
+      </div>
+    </div>
 
   </form>
 

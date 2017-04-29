@@ -420,6 +420,60 @@ body {
   body .minnie {
     min-height: 80vh; }
 
+.modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: black;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
+  .modal .modal-content-product-added {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    position: relative; }
+    .modal .modal-content-product-added i {
+      font-size: 56px;
+      color: #3085d6; }
+    .modal .modal-content-product-added .big-btn, .modal .modal-content-product-added .btn-facebook, .modal .modal-content-product-added .btn-stripe, .modal .modal-content-product-added .cart-main .checkout form.address-form button, .cart-main .checkout form.address-form .modal .modal-content-product-added button {
+      background-color: #3085d6;
+      color: #fff; }
+    .modal .modal-content-product-added .big-btn:hover, .modal .modal-content-product-added .btn-facebook:hover, .modal .modal-content-product-added .btn-stripe:hover, .modal .modal-content-product-added .cart-main .checkout form.address-form button:hover, .cart-main .checkout form.address-form .modal .modal-content-product-added button:hover {
+      background-color: #236bb0; }
+  .modal .close {
+    color: #aaaaaa;
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px; }
+  .modal .close:hover,
+  .modal .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer; }
+
+.display {
+  display: block; }
+
 h1, h2, h3, h4 {
   font-weight: normal; }
 
@@ -564,7 +618,8 @@ nav {
       color: black;
       padding: 10px;
       margin: 0 20px;
-      border-bottom: 1px solid transparent; }
+      border-bottom: 1px solid transparent;
+      cursor: pointer; }
     nav .login-cart-container a:hover {
       border-bottom: 1px solid black; }
     nav .login-cart-container i:first-child {
@@ -726,8 +781,7 @@ footer {
       font-size: 20px;
       width: 65%;
       padding: 10px;
-      border: 1px solid gray;
-      float: right; }
+      border: 1px solid gray; }
   .product-single h3 {
     padding: 10px;
     font-size: 24px; }
@@ -872,62 +926,26 @@ footer {
     display: none; }
   .hideMobile {
     display: block; }
-  .modal {
-    display: none;
-    /* Hidden by default */
-    position: fixed;
-    /* Stay in place */
-    z-index: 1;
-    /* Sit on top */
-    padding-top: 100px;
-    /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%;
-    /* Full width */
-    height: 100%;
-    /* Full height */
-    overflow: auto;
-    /* Enable scroll if needed */
-    background-color: black;
-    /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4);
-    /* Black w/ opacity */ }
-    .modal .modal-content {
-      background-color: #fefefe;
-      position: absolute;
-      right: 60px;
-      top: 75px;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 20%;
-      min-width: 260px;
-      text-align: center; }
-    .modal .modal-content:before {
-      content: '';
-      position: absolute;
-      bottom: 100%;
-      right: 32px;
-      height: 0;
-      width: 0;
-      border-bottom: solid 10px #fefefe;
-      border-left: solid 10px transparent;
-      border-right: solid 10px transparent; }
-    .modal .close {
-      color: #aaaaaa;
-      position: absolute;
-      top: 0px;
-      right: 10px;
-      font-size: 28px;
-      font-weight: bold;
-      padding: 10px; }
-    .modal .close:hover,
-    .modal .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer; }
-  .display {
-    display: block; }
+  .modal .modal-content-user {
+    background-color: #fefefe;
+    position: absolute;
+    right: 60px;
+    top: 75px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+    min-width: 260px;
+    text-align: center; }
+  .modal .modal-content-user:before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 32px;
+    height: 0;
+    width: 0;
+    border-bottom: solid 10px #fefefe;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent; }
   nav .scale-nav {
     transform: scale(1); }
   nav .hamburger-icon .nbar1, nav .hamburger-icon .nbar2, nav .hamburger-icon .nbar3 {
@@ -1131,8 +1149,7 @@ footer {
         font-size: 20px;
         width: 65%;
         padding: 10px;
-        border: 1px solid gray;
-        float: right; }
+        border: 1px solid gray; }
     .product-single .description {
       clear: both; }
       .product-single .description h3 {

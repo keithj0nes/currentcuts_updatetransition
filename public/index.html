@@ -57,13 +57,13 @@ background-color: #ffffff;
 
 
         <!-- desktop -->
-        <a ng-if="username" id="my-btn" class="login hideMobile" ng-click="showModal()">{{username}}</a>
+        <a ng-if="username" class="login hideMobile" ng-click="showModal()">{{username}}</a>
         <a ng-if="!username" ui-sref="login" class="login hideMobile">Login</a>
 
+        <!-- modal still visible in mobile if scaled down from desktop view -->
+        <div class="modal" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
 
-        <div class="modal hideMobile" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
-
-          <div class="modal-content">
+          <div class="modal-content-user">
             <span class="close" ng-click="closeModal()">&times;</span>
             <button type="button" class="btn" name="button" disabled>Account Settings</button>
 
