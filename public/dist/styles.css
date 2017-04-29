@@ -893,17 +893,17 @@ footer {
     /* Fallback color */
     background-color: rgba(0, 0, 0, 0.4);
     /* Black w/ opacity */ }
-  .modal-content {
-    background-color: #fefefe;
-    position: absolute;
-    right: 60px;
-    top: 75px;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 20%;
-    min-width: 260px;
-    text-align: center; }
-    .modal-content .modal-content:before {
+    .modal .modal-content {
+      background-color: #fefefe;
+      position: absolute;
+      right: 60px;
+      top: 75px;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 20%;
+      min-width: 260px;
+      text-align: center; }
+    .modal .modal-content:before {
       content: '';
       position: absolute;
       bottom: 100%;
@@ -913,7 +913,7 @@ footer {
       border-bottom: solid 10px #fefefe;
       border-left: solid 10px transparent;
       border-right: solid 10px transparent; }
-    .modal-content .close {
+    .modal .close {
       color: #aaaaaa;
       position: absolute;
       top: 0px;
@@ -921,8 +921,8 @@ footer {
       font-size: 28px;
       font-weight: bold;
       padding: 10px; }
-    .modal-content .close:hover,
-    .modal-content .close:focus {
+    .modal .close:hover,
+    .modal .close:focus {
       color: #000;
       text-decoration: none;
       cursor: pointer; }
