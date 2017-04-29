@@ -773,7 +773,6 @@ footer {
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
-
   }
   .modal-content {
       background-color: #fefefe;
@@ -786,24 +785,39 @@ footer {
       width: 20%;
       min-width: 260px;
       text-align: center;
+
+      .modal-content:before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        right: 32px;
+        height: 0;
+        width: 0;
+        border-bottom: solid 10px #fefefe;
+        border-left: solid 10px transparent;
+        border-right: solid 10px transparent;
+      }
+
+      .close {
+          color: #aaaaaa;
+          // float: right;
+          position: absolute;
+          top: 0px;
+          right: 10px;
+          font-size: 28px;
+          font-weight: bold;
+          padding: 10px;
+      }
+
+      .close:hover,
+      .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+      }
   }
 
-  .close {
-      color: #aaaaaa;
-      // float: right;
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-  }
 
-  .close:hover,
-  .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
-  }
 
 
   .display {
