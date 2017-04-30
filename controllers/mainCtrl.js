@@ -354,6 +354,13 @@ module.exports = {
       b.order.note = "No note";
     }
 
+    //USD money formatter
+    let formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+    });
+
     //Create email HTML
     //req.user.firstname replace this with b.user.recNameLast below
     let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + b.user.city + ", " + b.user.state + ", " + b.user.zip
@@ -362,14 +369,14 @@ module.exports = {
     b.product.forEach(function(item){
       let itemTotal = item.productQuantity * item.productPrice;
       orderTotal += itemTotal;
-      productTextInEmail.push("<br><br> $" + item.productPrice + ".00 | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + itemTotal + ".00")
+      productTextInEmail.push("<br><br>" + formatter.format(item.productPrice) + " | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + itemTotal + ".00")
     })
 
     productTextInEmail.forEach(function(item){
       text += item;
     });
 
-    text += "<br><hr> Order Total: $" + orderTotal + ".00 <br> Shipping Total: $" + b.shipping + ".00 <br><br> Note from Buyer: " + b.order.note;
+    text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note;
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',

@@ -26,13 +26,14 @@ if($state.params.orderid){
         if(response.results === false){
           console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
           $state.go("orderhistory");
+        } else if (response){
+          $rootScope.$broadcast('cartCount')
+          console.log(response, "here is the response");
+          $scope.orderNumber = $state.params.orderid;
+          $scope.orderProducts = response;
+          $scope.shipping = parseInt($scope.orderProducts[0].shipping);
         }
-        $rootScope.$broadcast('cartCount')
-        console.log(response, "here is the response");
-        $scope.orderNumber = $state.params.orderid;
-        $scope.orderProducts = response;
 
-        $scope.shipping = parseInt($scope.orderProducts[0].shipping);
 
       })
     } else {

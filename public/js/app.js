@@ -6,15 +6,13 @@ angular.module("ccvApp", ["ui.router"])
 
   var adminResolve = {
     security: (mainService, $state) => {
-      return mainService.getAuth()
-        .catch((err) => {
-          console.log(err);
-          if(err.status === 401){
-            $state.go("login");
-          } else if (err.status === 403){
-            $state.go("home");
-          }
-        })
+      return mainService.getAuth().then(function(response){
+        if(response.reqUser === false){
+          $state.go("login");
+        } else if (response.reqUserAdmin === false){
+          $state.go("home");
+        }
+      })
     }
   }
 

@@ -4,11 +4,10 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
 
   var adminResolve = {
     security: function security(mainService, $state) {
-      return mainService.getAuth().catch(function (err) {
-        console.log(err);
-        if (err.status === 401) {
+      return mainService.getAuth().then(function (response) {
+        if (response.reqUser === false) {
           $state.go("login");
-        } else if (err.status === 403) {
+        } else if (response.reqUserAdmin === false) {
           $state.go("home");
         }
       });
@@ -4776,13 +4775,13 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
           if (response.results === false) {
             console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
             $state.go("orderhistory");
+          } else if (response) {
+            $rootScope.$broadcast('cartCount');
+            console.log(response, "here is the response");
+            $scope.orderNumber = $state.params.orderid;
+            $scope.orderProducts = response;
+            $scope.shipping = parseInt($scope.orderProducts[0].shipping);
           }
-          $rootScope.$broadcast('cartCount');
-          console.log(response, "here is the response");
-          $scope.orderNumber = $state.params.orderid;
-          $scope.orderProducts = response;
-
-          $scope.shipping = parseInt($scope.orderProducts[0].shipping);
         });
       } else {
         console.log("going to orderhistory");
