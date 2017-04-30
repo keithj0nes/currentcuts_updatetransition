@@ -21,8 +21,12 @@
           <td>{{o.price * o.quantsold | currency}}</td>
         </tr>
         <tr>
+          <td colspan="5">Shipping</td>
+          <td>{{shipping | currency}}</td>
+        </tr>
+        <tr>
           <td colspan="5">Total</td>
-          <td>{{orderProducts[0].ordertotal | currency}}</td>
+          <td>{{orderProducts[0].ordertotal + shipping | currency}}</td>
         </tr>
       </table>
     </div>

@@ -32,6 +32,8 @@ if($state.params.orderid){
         $scope.orderNumber = $state.params.orderid;
         $scope.orderProducts = response;
 
+        $scope.shipping = parseInt($scope.orderProducts[0].shipping);
+
       })
     } else {
       console.log("going to orderhistory");

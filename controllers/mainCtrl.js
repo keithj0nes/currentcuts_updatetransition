@@ -343,7 +343,6 @@ module.exports = {
     let b = req.body;
     let productTextInEmail = [];
     let orderTotal = 0;
-    let shippingTotal;
 
     if(!b.user.address2){
       b.user.address2 = " ";
@@ -351,13 +350,16 @@ module.exports = {
       b.user.address2 = b.user.address2 + ", ";
     }
 
+    if(!b.order.note){
+      b.order.note = "No note";
+    }
+
     //Create email HTML
     //req.user.firstname replace this with b.user.recNameLast below
     let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
+    //loop through each product in product array and add it to the html email
     b.product.forEach(function(item){
-      // console.log(item, "item in product");
-      // text2.push( "$" + item.productPrice + ", item color: " + item.productColor);
       let itemTotal = item.productQuantity * item.productPrice;
       orderTotal += itemTotal;
       productTextInEmail.push("<br><br> $" + item.productPrice + ".00 | " + item.productName + "<br> <b>color:</b> " + item.productColor + " | <b>size:</b> " + item.productSize + "<br> <b>quantity:</b> " + item.productQuantity + "<br> Item Total: $" + itemTotal + ".00")
@@ -367,13 +369,7 @@ module.exports = {
       text += item;
     });
 
-    if(orderTotal < 10){
-      shippingTotal = 2;
-    } else {
-      shippingTotal = 3;
-    }
-
-    text += "<br><hr> Order Total: $" + orderTotal + ".00 <br> Shipping Total: $" + shippingTotal + ".00 <br><br> Note from Buyer: " + b.order.note;
+    text += "<br><hr> Order Total: $" + orderTotal + ".00 <br> Shipping Total: $" + b.shipping + ".00 <br><br> Note from Buyer: " + b.order.note;
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -384,30 +380,51 @@ module.exports = {
       }
     });
 
-    db.run("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[], function(err, order){
+    //find shipping.id based off price
+    db.shipping.findOne({price: b.shipping}, function(err, ship){
       if(err){
         console.log(err);
         res.send(err);
       }
 
-      var mailOptions = {
-        from: 'currentcutstest@gmail.com', // sender address
-        to: b.email,                  // list of receivers
-        bcc: 'currentcutstest@gmail.com',
-        subject: 'Order Confirmation - ' + order[0].id, // Subject line
-        // text: text //, // plaintext body
-        html: text
-      };
+      //find last order inserted
+      db.run("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[], function(err, order){
+        if(err){
+          console.log(err);
+          res.send(err);
+        }
 
-      transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error);
-            res.json({yo: 'error'});
-        }else{
-            console.log('Message sent: ' + info.response);
-            res.json({yo: info.response});
+        //update shippingid in orders table
+        db.orders.update({id: order[0].id, shippingid: ship.id}, function(err, orderUpdate){
+          if(err){
+            console.log(err);
+            res.send(err)
+          }
+          console.log(orderUpdate);
+          console.log("LOGGING ORDERUPDATE *********");
+        })
+
+        //create email
+        var mailOptions = {
+          from: 'currentcutstest@gmail.com',                  // sender address
+          to: b.email,                                        // list of receivers
+          bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+          subject: 'Order Confirmation - ' + order[0].id,     // Subject line
+          // text: text //,                                   // plaintext body
+          html: text                                          // html body
         };
-      });
+
+        //send email
+        transporter.sendMail(mailOptions, function(error, info){
+          if(error){
+              console.log(error);
+              res.json({yo: 'error'});
+          }else{
+              console.log('Message sent: ' + info.response);
+              res.json({yo: info.response});
+          };
+        });
+      })
     })
 
     // console.log(text);
