@@ -420,6 +420,32 @@ body {
   body .minnie {
     min-height: 80vh; }
 
+.center {
+  text-align: center; }
+
+.margin {
+  margin: 0 20px; }
+
+table, th, td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 10px 5px; }
+
+table th {
+  background: white; }
+
+table tr:nth-child(odd) {
+  background-color: #f6f6f6; }
+
+table tr:nth-child(even) {
+  background-color: #ffffff; }
+
+table tr {
+  text-align: center; }
+
+table tr:hover {
+  background-color: #e6e6e6; }
+
 .modal {
   display: none;
   /* Hidden by default */
@@ -897,29 +923,40 @@ footer {
     width: 350px; }
 
 /* ============================================
-                  HISTORY PAGE
+              ORDER HISTORY PAGE
 ============================================ */
-.historyEven {
-  background: #fafafa; }
-
 .orderhistory-main {
   padding: 20px; }
   .orderhistory-main .orderhistory-container {
-    background: #fff; }
-    .orderhistory-main .orderhistory-container .orderhistory-repeat {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px; }
-      .orderhistory-main .orderhistory-container .orderhistory-repeat img {
-        height: 75px; }
-      .orderhistory-main .orderhistory-container .orderhistory-repeat div {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center; }
-        .orderhistory-main .orderhistory-container .orderhistory-repeat div h4 {
-          padding: 5px;
-          font-weight: bold; }
+    background: #fff;
+    padding: 20px 0; }
+    .orderhistory-main .orderhistory-container h1 {
+      text-align: center; }
+    .orderhistory-main .orderhistory-container table {
+      width: 100% !important;
+      max-width: 600px;
+      margin: 0 auto; }
+      .orderhistory-main .orderhistory-container table tr {
+        text-align: center; }
+
+/* ============================================
+              ORDER DETAILS PAGE
+============================================ */
+.orderdetails-main {
+  padding: 20px; }
+  .orderdetails-main .orderdetails-container {
+    background: white;
+    padding: 20px 0; }
+    .orderdetails-main .orderdetails-container p {
+      padding: 20px; }
+    .orderdetails-main .orderdetails-container .table-overflow {
+      overflow: scroll; }
+      .orderdetails-main .orderdetails-container .table-overflow table {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto; }
+        .orderdetails-main .orderdetails-container .table-overflow table tr {
+          text-align: center; }
 
 @media only screen and (min-width: 768px) {
   .hideDesktop {
@@ -1014,8 +1051,6 @@ footer {
   /* ============================================
                     CART PAGE
   ============================================ */
-  .center {
-    text-align: center; }
   .cart-main {
     max-width: 800px;
     margin: 20px auto; }

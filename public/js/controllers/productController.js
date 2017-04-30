@@ -50,8 +50,9 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
   }
 
-  var modal = document.getElementById('modalz');
+  //modal to confirm item has been added to cart
 
+  var modal = document.getElementById('modalz');
 
   $scope.closeModal = function(){
     $scope.addToCartModal = false;

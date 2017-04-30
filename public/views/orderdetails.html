@@ -1,4 +1,38 @@
-<h1>HERE IS THE ORDERS DETAIL PAGE</h1>
+
+
+<main class="orderdetails-main">
+
+  <div class="orderdetails-container">
+
+    <h1 class="center">Order #{{orderNumber}}</h1>
+
+    <hr class="margin">
+
+    <p><strong>Order Date: </strong>{{orderProducts[0].datesold | date: 'longDate'}}</p>
+    <div class="table-overflow">
+      <table>
+        <th>Product Name</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>SubTotal</th>
+        <tr ng-repeat="o in orderProducts track by $index">
+          <td>{{o.name}}</td>
+          <td>{{o.color}}</td>
+          <td>{{o.height}}H x {{o.width}}W inches</td>
+          <td>{{o.price | currency}}</td>
+          <td>{{o.quantsold}}</td>
+          <td>{{o.price * o.quantsold | currency}}</td>
+        </tr>
+        <tr>
+          <td colspan="5">Total</td>
+          <td>{{orderProducts[0].ordertotal | currency}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+  </div>
+
+</main>
+
+
 
 
 <!-- <div class="" ng-repeat="orders in orderProducts">
@@ -10,20 +44,3 @@
   {{orders.ordertotal}}
 
 </div> -->
-
-Order Date: {{orderProducts[0].datesold | date: 'longDate'}}
-<table>
-  <th>Product Name</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>SubTotal</th>
-  <tr ng-repeat="o in orderProducts track by $index">
-    <td>{{o.name}}</td>
-    <td>{{o.color}}</td>
-    <td>{{o.height}}H x {{o.width}}W inches</td>
-    <td>{{o.price | currency}}</td>
-    <td>{{o.quantsold}}</td>
-    <td>{{o.price * o.quantsold | currency}}</td>
-  </tr>
-  <tr>
-    <td colspan="5">Total</td>
-    <td>{{orderProducts[0].ordertotal | currency}}</td>
-  </tr>
-</table>

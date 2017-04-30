@@ -15,7 +15,35 @@ body {
   }
 }
 
+.center {
+  text-align: center;
+}
 
+.margin {
+  margin: 0 20px;
+}
+
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 10px 5px;
+}
+table th {
+  background: white;
+}
+table tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+table tr {
+  text-align: center;
+}
+table tr:hover {
+  background-color: darken(#fff, 10%);
+  // background-color: #f1f1f1;
+}
 
 .modal {
     display: none; /* Hidden by default */
@@ -559,6 +587,8 @@ footer {
   padding: 0px 10px;
 }
 
+
+
 .empty-cart {
   text-align: center;
   p {
@@ -757,49 +787,67 @@ footer {
 
 
 /* ============================================
-                  HISTORY PAGE
+              ORDER HISTORY PAGE
 ============================================ */
-.historyEven {
-  background: rgb(250, 250, 250);
-}
+
+
 .orderhistory-main {
   padding: 20px;
 
   .orderhistory-container {
     background: #fff;
+    padding: 20px 0;
 
-    .orderhistory-repeat {
+    h1 {
+      text-align: center;
+    }
 
-      display: flex;
-      justify-content: space-between;
-      // background: red;
-      margin: 20px;
-
-      img {
-        height: 75px;
+    table {
+      width: 100% !important;
+      max-width: 600px;
+      margin: 0 auto;
+      th {
+        // font-size: 14px;
       }
-      // .order-content {
-        // display: flex;
-        // justify-content: space-between;
-
-        div {
-          // background: blue;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          h4 {
-            padding: 5px;
-            font-weight: bold;
-          }
-        }
-      // }
+      tr {
+        text-align: center;
+      }
     }
   }
 }
 
+/* ============================================
+              ORDER DETAILS PAGE
+============================================ */
 
+.orderdetails-main {
+  padding: 20px;
+
+  .orderdetails-container {
+    background: white;
+    padding: 20px 0;
+
+    p {
+      padding: 20px;
+    }
+
+    .table-overflow {
+      overflow: scroll;
+
+      table {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        th {
+          // font-size: 14px;
+        }
+        tr {
+          text-align: center;
+        }
+      }
+    }
+  }
+}
 
 
 
@@ -1009,9 +1057,7 @@ footer {
   //   width: 25%;
   // }
 
-  .center {
-    text-align: center;
-  }
+
 
   .cart-main {
     max-width: 800px;

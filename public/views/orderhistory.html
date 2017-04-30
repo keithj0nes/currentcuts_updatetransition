@@ -1,40 +1,15 @@
-
 <main class="orderhistory-main">
 
   <div class="orderhistory-container">
 
-    <!-- <div class="orderhistory-repeat" ng-class-even="'historyEven'" ng-repeat="orders in history">
-
-      <div class="">
-        <h4>Order ID</h4>
-        {{orders.id}}
-      </div>
-
-      <div class="">
-        <h4>Date</h4>
-        {{orders.datesold | date: 'M/d/yyyy'}}
-      </div>
-
-      <div class="">
-        <h4>Order Total</h4>
-        {{orders.ordertotal | currency}}
-      </div>
-
-      <div class="">
-        <h4>Order Total</h4>
-        {{orders.ordertotal | currency}}
-      </div>
-
-    </div> -->
-
+    <h1>My Orders</h1>
     <table>
-      <th>Order ID</th><th>Date</th><th>Order Total</th>
+      <th>Order #</th><th>Date</th><th>Order Total</th><th></th>
       <tr ng-repeat="orders in history">
         <td>{{orders.id}}</td>
         <td>{{orders.datesold | date: 'M/d/yyyy'}}</td>
         <td>{{orders.ordertotal | currency}}</td>
         <td><a ui-sref="orderdetails({orderid:orders.id})">Order Details</a></td>
-
       </tr>
     </table>
 

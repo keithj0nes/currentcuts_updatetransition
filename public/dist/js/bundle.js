@@ -4735,12 +4735,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
 
 angular.module("ccvApp").controller("mainController", function ($scope, mainService) {
 
-  $scope.userLoggedIn = false;
-
-  $scope.showModal = function () {
-    $scope.lol = true;
-    console.log($scope.lol, 'clicked');
-  };
+  // $scope.userLoggedIn = false;
 
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
@@ -4802,6 +4797,8 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     $rootScope.$broadcast('cartCount');
     console.log($scope.addToCartModal);
   };
+
+  //modal to confirm item has been added to cart
 
   var modal = document.getElementById('modalz');
 
@@ -4870,6 +4867,7 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
           }
           $rootScope.$broadcast('cartCount');
           console.log(response, "here is the response");
+          $scope.orderNumber = $state.params.orderid;
           $scope.orderProducts = response;
         });
       } else {

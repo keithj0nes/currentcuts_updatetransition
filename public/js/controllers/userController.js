@@ -29,6 +29,7 @@ if($state.params.orderid){
         }
         $rootScope.$broadcast('cartCount')
         console.log(response, "here is the response");
+        $scope.orderNumber = $state.params.orderid;
         $scope.orderProducts = response;
 
       })
