@@ -3,9 +3,6 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   // console.log("$stateParams", $stateParams);
   // console.log("$stateParams.id", $stateParams.id);
 
-  // $scope.productPrice = {
-  //   price: "22222"
-  // };
   $scope.addToCartModal = false;
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
@@ -15,20 +12,10 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     mainService.getProductById2($stateParams.id).then(function(response) {
       console.log(response, "HDLKKJDLGJALG");
       $scope.product2 = response;
-      //response[0] gives us description,id,image,name and price
       console.log($stateParams);
       console.log($scope.product2);
-      // console.log(response);
     })
   }
-
-  // $scope.timezzz = moment().format('MMM do YYYY, h:mm:ss a');
-// $scope.timmy = moment().format('MMMM Do YYYY, h:mm:ss a'); // December 27th 2016, 6:53:45 pm
-  // var addToCart
-
-  // if()
-
-  // console.log($scope.productSize.val(), "value");
 
   $scope.productQuantity = 1;
   $scope.addToCart = function(productColor,productQuantity, productObject){
@@ -41,12 +28,19 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     var productId = $scope.product.id;
     console.log(productSize, "psize");
 
-        mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
-          // swal("Item added to cart!")
-          $scope.addToCartModal = true;
+// Quick fix - if quantity is zero, do not add to cart
+    if(productQuantity !== "0"){
+      mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
+      $scope.addToCartModal = true;
 
-          $rootScope.$broadcast('cartCount')
-          console.log($scope.addToCartModal);
+      $rootScope.$broadcast('cartCount')
+      console.log($scope.addToCartModal);
+    } else {
+      swal("Please update quantity number")
+    }
+
+          // swal("Item added to cart!")
+
 
   }
 
