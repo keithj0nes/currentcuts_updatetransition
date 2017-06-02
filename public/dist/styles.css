@@ -1048,6 +1048,8 @@ footer {
     margin: 20px auto 0; }
     .product-single img {
       padding: 40px; }
+    .product-single .svg-img {
+      width: 100%; }
   /* ============================================
                     CART PAGE
   ============================================ */
@@ -1149,6 +1151,9 @@ footer {
     .product-single img {
       width: 60%;
       padding: 20px;
+      float: left; }
+    .product-single .svg-img {
+      width: 60%;
       float: left; }
     .product-single .details {
       width: 40%;

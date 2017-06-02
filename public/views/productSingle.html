@@ -1,50 +1,40 @@
 <main class="product-single">
-  <img src="{{product.img1}}" alt="">
+  <!-- <img src="{{product.img1}}" alt=""> -->
+  <div class="svg-img" style="background-color:{{bkgnd}}; padding: 20px; text-align:center">
+    <div ng-include="'img/dog1.svg'" style="fill: {{newColor.secon}};"></div>
+  </div>
+
+
+
 
   <div class="details">
     <h2 class="desc">{{product.name}}</h2>
-    <!-- <p class="productPrice" ng-model="productSize">{{product2[0].price | currency}}</p> -->
     <p class="productPrice" ng-model="pppprice">&nbsp;{{productPrice.price | currency}}</p>
 
   <form ng-submit="addToCart(productColor, productQuantity, productPrice)">
-    <!-- <select options="" class="select-size" required ng-model="productSize">
-      <option value="" >Size</option>
-      <option value='4"H x 10"W'>4"H x 10"W</option>
-      <option value='5"H x 12"W'>5"H x 13"W</option>
-      <option value='6"H x 16"W'>6"H x 16"W</option>
 
-      <option value='{{sizes.height}}"H x {{sizes.width}}"W' ng-repeat="sizes in product2">{{sizes.height}}"H x {{sizes.width}}"W - ${{sizes.price}}</option>
-      <option value='{{sizes.height}}"H x {{sizes.width}}"W' ng-repeat="sizes in product2">{{sizes.height}}"H x {{sizes.width}}"W - ${{sizes.price}}</option>
+    <select ng-model="productPrice"  required ng-options='details as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + ".00]") for details in product2'>
+      <option value="">Size</option>
+    </select>
 
-    </select> -->
-
-    <!-- <select ng-model="filterCondition.operator" ng-options="operator.value as operator.displayName for operator in operators">
-</select> -->
-
-<!-- <select ng-model="pprice" required ng-options="details.price as details.height for details in product2">
-  <option value="">SEZE</option>
-</select> -->
-<!-- <select ng-model="pprice" ng-init="product2[0].width" required ng-options='details.price as (details.height + "\"H x " + details.width + "\"W" + " [$" + details.price + ".00]") for details in product2'>
-  <option value="">Size</option>
-</select> -->
-
-<select ng-model="productPrice"  required ng-options='details as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + ".00]") for details in product2'>
-  <option value="">Size</option>
-</select>
-
-    <select options="" required ng-model="productColor">
+    <select options="" required ng-model="productColor" ng-change="updateImgColor(productColor)">
       <option value="">Color </option>
-      <option value="Black">Black</option>
-      <option value="White">White</option>
-      <option value="Dark Gray">Dark Gray</option>
-      <option value="Light Gray">Light Gray</option>
-      <option value="Crimson Red">Crimson Red</option>
-      <option value="Cardinal Red">Cardinal Red</option>
-      <option value="Tomato Red">Tomato Red</option>
-      <option value="Bright Orange">Bright Orange</option>
-      <option value="Sunflower Yellow">Sunflower Yellow</option>
-      <option value="Apple Green">Apple Green</option>
-      <option value="Bright Green">Bright Green</option>
+      <!-- <option value="Black">Black</option> -->
+      <option value='{"prime":"Black", "secon":"#000"}'>Black</option>
+
+      <option value='{"prime":"Black", "secon":"#fff"}'>White</option>
+      <option value='{"prime":"Black", "secon":"darkgray"}'>Dark Gray</option>
+      <!-- <option value="Light Gray">Light Gray</option> -->
+      <option value='{"prime":"Light Gray", "secon":"gray"}'>Light Gray</option>
+      <option value='{"prime":"Crimson Red", "secon":"#b20000"}'>Crimson Red</option>
+
+      <!-- <option value="Crimson Red">Crimson Red</option> -->
+      <option value='{"prime":"Cardinal Red", "secon":"#e50000"}'>Cardinal Red</option>
+      <option value='{"prime":"Tomato Red", "secon":"#ff1919"}'>Tomato Red</option>
+      <option value='{"prime":"Bright Orange", "secon":"FF6600"}'>Bright Orange</option>
+      <option value='{"prime":"Sunflower Yellow", "secon":"#FFFF00"}'>Sunflower Yellow</option>
+      <option value='{"prime":"Apple Green", "secon":"#8db600"}'>Apple Green</option>
+      <option value='{"prime":"Bright Green", "secon":"#28a428"}'>Bright Green</option>
       <option value="Olympic Blue">Olympic Blue</option>
       <option value="Sapphire Blue">Sapphire Blue</option>
       <option value="Dark Navy">Dark Navy</option>
@@ -73,6 +63,9 @@
 
       </div>
     </div>
+
+    <input type="radio" name="bkgdclr" value="#1e1e1e" ng-model="bkgnd">Dark <br>
+    <input type="radio" name="bkgdclr" value="#e7e7e7" ng-init="bkgnd='#e7e7e7'" ng-model="bkgnd">Light
 
   </form>
 

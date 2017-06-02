@@ -17,12 +17,20 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     })
   }
 
+$scope.updateImgColor = function(productColor){
+  $scope.newColor = JSON.parse(productColor)
+  console.log($scope.newColor.secon);
+}
+
+// console.log($scope.productColor.secon, "HELLO");
+
   $scope.productQuantity = 1;
   $scope.addToCart = function(productColor,productQuantity, productObject){
 
     var productName = $scope.product.name;
     var productPrice = productObject.price;
-    console.log(productObject, "HERE IS THE RICE LOL");
+    var productColorPrime = JSON.parse(productColor)
+    // console.log(hello.prime, "HERE IS THE RICE LOL");
     var productSize = productObject.height + "H x " + productObject.width + "W";
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
@@ -30,7 +38,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
 // Quick fix - if quantity is zero, do not add to cart
     if(productQuantity !== "0"){
-      mainService.addProductsToCart(productSize,productColor,productQuantity,productName,productPrice,productImage,productId);
+      mainService.addProductsToCart(productSize,productColorPrime.prime,productQuantity,productName,productPrice,productImage,productId);
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount')

@@ -522,6 +522,9 @@ footer {
   img {
     width: 100%;
   }
+  // .svg-img {
+  //   background-color: pink;
+  // }
 
   .details {
     padding: 20px;
@@ -1040,6 +1043,10 @@ footer {
     img {
       padding: 40px;
     }
+
+    .svg-img {
+      width: 100%;
+    }
   }
 
   /* ============================================
@@ -1267,6 +1274,11 @@ footer {
     img {
       width: 60%;
       padding: 20px;
+      float: left;
+    }
+
+    .svg-img {
+      width: 60%;
       float: left;
     }
 
