@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService){
+angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService, $sce){
 
   // console.log("$stateParams", $stateParams);
   // console.log("$stateParams.id", $stateParams.id);
@@ -18,8 +18,34 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   }
 
 $scope.updateImgColor = function(productColor){
-  $scope.newColor = JSON.parse(productColor)
-  console.log($scope.newColor.secon);
+  if(productColor){
+    $scope.newColor = JSON.parse(productColor)
+    console.log($scope.newColor.secon);
+  }
+
+}
+
+//set img on load
+$scope.vectorFile = "img/dog1.svg"
+
+//change img when inverted is clicked
+$scope.changeInverted = function(inverted){
+  console.log(inverted);
+  inverted ? $scope.vectorFile = "img/dog1-inverted2.svg" : $scope.vectorFile= "img/dog1.svg";
+
+  // if(imgz){
+  //   $scope.vectorFile = "img/dog1-inverted2.svg"
+  // } else {
+  //   $scope.vectorFile= "img/dog1.svg";
+  //   // $scope.newColor.secon = "#fff";
+  // }
+}
+
+console.log($sce.isEnabled());
+console.log($scope.hellooo);
+
+$scope.funx = function(x){
+  console.log(x);
 }
 
 // console.log($scope.productColor.secon, "HELLO");

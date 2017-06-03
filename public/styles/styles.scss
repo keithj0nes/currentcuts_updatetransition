@@ -524,7 +524,9 @@ footer {
   }
   .svg-img {
     padding: 25px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   //  background color is adjusted in HTML
   }
 
@@ -583,6 +585,7 @@ footer {
       border: 1px solid gray;
       display: flex;
       justify-content: center;
+      margin-bottom: 10px;
 
       label:nth-child(2) {
         border-right: 1px solid gray;
@@ -605,6 +608,22 @@ footer {
         color: white;
         transition: background 0.3s ease;
       }
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+    input[type="checkbox"] + label {
+      background: #e7e7e7;
+      cursor: pointer;
+      display: block;
+      text-align: center;
+      padding: 10px 0;
+    }
+    input[type="checkbox"]:checked + label {
+      background: #505050;
+      color: white;
+      transition: background 0.3s ease;
     }
   }
 

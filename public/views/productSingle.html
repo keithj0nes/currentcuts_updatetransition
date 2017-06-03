@@ -1,10 +1,9 @@
 <main class="product-single">
   <!-- <img src="{{product.img1}}" alt=""> -->
-  <div class="svg-img" style="background-color:{{bkgnd}}; ">
-    <div ng-include="'img/dog1.svg'" style="fill: {{newColor.secon}};"></div>
+  <div class="svg-img" ng-click="funx(hellooo)"style="background-color:{{bkgnd}}; height: 400px; overflow: scroll; ">
+    <!--  -->
+    <div ng-include="vectorFile" style="fill: {{newColor.secon}};"></div>
   </div>
-
-
 
 
   <div class="details">
@@ -26,7 +25,7 @@
       <option value='{"prime":"Crimson Red", "secon":"#b20000"}'>Crimson Red</option>
       <option value='{"prime":"Cardinal Red", "secon":"#e50000"}'>Cardinal Red</option>
       <option value='{"prime":"Tomato Red", "secon":"#ff1919"}'>Tomato Red</option>
-      <option value='{"prime":"Bright Orange", "secon":"FF6600"}'>Bright Orange</option>
+      <option value='{"prime":"Bright Orange", "secon":"#FF6600"}'>Bright Orange</option>
       <option value='{"prime":"Sunflower Yellow", "secon":"#FFFF00"}'>Sunflower Yellow</option>
       <option value='{"prime":"Apple Green", "secon":"#8db600"}'>Apple Green</option>
       <option value='{"prime":"Bright Green", "secon":"#28a428"}'>Bright Green</option>
@@ -59,18 +58,18 @@
       </div>
     </div>
 
-    <!-- <input type="radio" id="c1" name="bkgdclr" value="#1e1e1e" ng-model="bkgnd">
-    <label for="c1"><span></span>Dark</label>
-    <input type="radio" id="c2" name="bkgdclr" value="#e7e7e7" ng-model="bkgnd" ng-init="bkgnd='#e7e7e7'">
-    <label for="c2"><span></span>Light</label> <br> -->
     <h3>Choose your background</h3>
 
     <div class="radio-group">
-      <input type="radio" id="c1" name="bkgdclr" value="#1e1e1e" ng-model="bkgnd">
-      <label for="c1">Dark</label>
-      <input type="radio" id="c2" name="bkgdclr" value="#e7e7e7" ng-model="bkgnd" ng-init="bkgnd='#e7e7e7'">
-      <label for="c2">Light</label> <br>
+      <input type="radio" id="r1" name="bkgdclr" value="#1e1e1e" ng-model="bkgnd">
+      <label for="r1">Dark</label>
+      <input type="radio" id="r2" name="bkgdclr" value="#e7e7e7" ng-model="bkgnd" ng-init="bkgnd='#e7e7e7'">
+      <label for="r2">Light</label> <br>
     </div>
+
+    <h3>Look funny? Try inverting</h3>
+    <input type="checkbox" id="c1" name="" value="" ng-model="inverted" ng-change="changeInverted(inverted)">
+    <label for="c1">toggle inverted</label>
 
 
   </form>
