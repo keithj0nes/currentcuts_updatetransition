@@ -1,19 +1,35 @@
 # To Do list
 
-- [x] Create table to allow for different product **sizes**
-  * Table must automatically be joined when adding new product in admin page
+### Admin Page
 
-- [x] Create table to allow for different product **prices**
-  * Table must automatically be joined when adding new product in admin page
+- [ ] Create current orders tab
 
-- [x] Email alerts (to me and purchaser) once order is placed (nodemailer?)
+### Cart page
 
-- [x] Allow for message note to be sent in checkout (textarea)
+- [x] Email alerts (to me and purchaser) once order is placed (nodemailer) 4/4/17
 
-* Make sure stripe payment is working
+- [x] Allow for message note to be sent during checkout 4/4/17
 
-* Once using Passport LocalAuth, confirm hash and salting of passwords
+- [ ] Update quantity via 'update cart' button
 
-* Allow users to delete their accounts
+- [ ] Checkout as guest
+  - [ ] Create 'guest' user to default to if 'checkout as guest' is selected
 
-* ng-offClick? to update cart
+
+### Users
+
+- [ ] Once using Passport LocalAuth, confirm hash and salting of passwords
+
+- [ ] Allow users to delete their accounts
+
+
+### Tables
+
+- [x] Create table to allow for different product **prices** 4/3/17
+
+- [x] Create table to allow for different product **sizes** 4/3/17
+
+- [x] Create table that joins **prices** and **sizes** with a **product** 4/3/17
+
+- [ ] Create shipping profiles table for quick shipping
+  - [ ] Join to Orders table
