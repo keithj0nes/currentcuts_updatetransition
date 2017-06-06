@@ -4660,54 +4660,36 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 
 angular.module("ccvApp").controller("productController", function ($scope, $rootScope, $stateParams, mainService, $sce) {
 
-  // console.log("$stateParams", $stateParams);
-  // console.log("$stateParams.id", $stateParams.id);
-
   $scope.addToCartModal = false;
+
   var getProductById = function getProductById() {
     mainService.getProductById($stateParams.id).then(function (response) {
+      //response[0] gives us description, id, images, and name
       $scope.product = response[0];
-      //response[0] gives us description,id,image,name and price
+      //set image on load
+      $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      //if there's an outline image, set ng if to true to show outline toggle
+      $scope.product.imgoutlinevector ? $scope.outlineImage = true : $scope.outlineImage = false;
+      //change inverted image
+      $scope.changeInverted = function (inverted) {
+        console.log(inverted);
+        //if inverted = true, set the image to second outline image
+        inverted ? $scope.vectorFile = $scope.product.imgoutlinevector : $scope.vectorFile = $scope.product.imgmainvector;
+      };
+      //change color of vector graphic
+      $scope.updateImgColor = function (productColor) {
+        //if productColor = true, set the new color to be selected color
+        if (productColor) {
+          $scope.newColor = JSON.parse(productColor);
+          console.log($scope.newColor.secon);
+        }
+      };
     });
     mainService.getProductById2($stateParams.id).then(function (response) {
-      console.log(response, "HDLKKJDLGJALG");
+      //response gives us all heights, widths and prices
       $scope.product2 = response;
-      console.log($stateParams);
-      console.log($scope.product2);
     });
   };
-
-  $scope.updateImgColor = function (productColor) {
-    if (productColor) {
-      $scope.newColor = JSON.parse(productColor);
-      console.log($scope.newColor.secon);
-    }
-  };
-
-  //set img on load
-  $scope.vectorFile = "img/dog1.svg";
-
-  //change img when inverted is clicked
-  $scope.changeInverted = function (inverted) {
-    console.log(inverted);
-    inverted ? $scope.vectorFile = "img/dog1-inverted2.svg" : $scope.vectorFile = "img/dog1.svg";
-
-    // if(imgz){
-    //   $scope.vectorFile = "img/dog1-inverted2.svg"
-    // } else {
-    //   $scope.vectorFile= "img/dog1.svg";
-    //   // $scope.newColor.secon = "#fff";
-    // }
-  };
-
-  console.log($sce.isEnabled());
-  console.log($scope.hellooo);
-
-  $scope.funx = function (x) {
-    console.log(x);
-  };
-
-  // console.log($scope.productColor.secon, "HELLO");
 
   $scope.productQuantity = 1;
   $scope.addToCart = function (productColor, productQuantity, productObject) {
@@ -4731,9 +4713,6 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     } else {
       swal("Please update quantity number");
     }
-
-    // swal("Item added to cart!")
-
   };
 
   //modal to confirm item has been added to cart
