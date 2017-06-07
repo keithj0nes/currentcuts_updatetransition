@@ -4694,25 +4694,26 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
   $scope.productQuantity = 1;
   $scope.addToCart = function (productColor, productQuantity, productObject) {
-
-    var productName = $scope.product.name;
-    var productPrice = productObject.price;
-    var productColorPrime = JSON.parse(productColor);
-    var productSize = productObject.height + "H x " + productObject.width + "W";
-    var productImage = $scope.product.img1;
-    var productId = $scope.product.id;
-
-    // if(outlineCheckbox){
-    console.log(outlineCheckbox, "inverted was checked");
-    // }
+    //create object to send to service to push to cart
+    var cartData = {
+      productSize: productObject.height + "H x " + productObject.width + "W",
+      productColor: JSON.parse(productColor).prime,
+      productQuantity: productQuantity,
+      productName: $scope.product.name,
+      productPrice: productObject.price,
+      productImage: $scope.product.img1,
+      productId: $scope.product.id,
+      productOutline: outlineCheckbox
+    };
 
     // Quick fix - if quantity is zero, do not add to cart
     if (productQuantity !== "0") {
-      mainService.addProductsToCart(productSize, productColorPrime.prime, productQuantity, productName, productPrice, productImage, productId, outlineCheckbox);
+      //send object to service to push to cart
+      mainService.addProductsToCart(cartData);
+
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount');
-      console.log($scope.addToCartModal);
     } else {
       swal("Please update quantity number");
     }
@@ -5170,18 +5171,29 @@ angular.module("ccvApp").service("mainService", function ($http) {
     });
   };
 
-  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId, productOutline) {
-    var cartData = {
-      productSize: productSize,
-      productColor: productColor,
-      productQuantity: productQuantity,
-      productName: productName,
-      productPrice: productPrice,
-      productImage: productImage,
-      productId: productId,
-      productOutline: productOutline
-    };
-    // console.log(cartData);
+  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
+  //
+  //   const cartData = {
+  //     productSize: productSize,
+  //     productColor: productColor,
+  //     productQuantity: productQuantity,
+  //     productName: productName,
+  //     productPrice: productPrice,
+  //     productImage: productImage,
+  //     productId: productId,
+  //     productOutline: productOutline
+  //   }
+  //   // console.log(cartData);
+  //   return $http({
+  //     method: "POST",
+  //     url: "/api/cart",
+  //     data: cartData
+  //   }).success(function(){
+  //     console.log("Item Added!");
+  //   })
+  // }
+
+  this.addProductsToCart = function (cartData) {
     return $http({
       method: "POST",
       url: "/api/cart",

@@ -35,25 +35,26 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
   $scope.productQuantity = 1;
   $scope.addToCart = function(productColor,productQuantity, productObject){
-
-    var productName = $scope.product.name;
-    var productPrice = productObject.price;
-    var productColorPrime = JSON.parse(productColor)
-    var productSize = productObject.height + "H x " + productObject.width + "W";
-    var productImage = $scope.product.img1;
-    var productId = $scope.product.id;
-
-    // if(outlineCheckbox){
-      console.log(outlineCheckbox, "inverted was checked");
-    // }
+    //create object to send to service to push to cart
+    const cartData = {
+      productSize: productObject.height + "H x " + productObject.width + "W",
+      productColor: JSON.parse(productColor).prime,
+      productQuantity: productQuantity,
+      productName: $scope.product.name,
+      productPrice: productObject.price,
+      productImage: $scope.product.img1,
+      productId: $scope.product.id,
+      productOutline: outlineCheckbox
+    }
 
 // Quick fix - if quantity is zero, do not add to cart
     if(productQuantity !== "0"){
-      mainService.addProductsToCart(productSize,productColorPrime.prime,productQuantity,productName,productPrice,productImage,productId,outlineCheckbox);
+      //send object to service to push to cart
+      mainService.addProductsToCart(cartData);
+
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount')
-      console.log($scope.addToCartModal);
     } else {
       swal("Please update quantity number")
     }

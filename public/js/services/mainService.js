@@ -106,18 +106,29 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
 
-  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
-    const cartData = {
-      productSize: productSize,
-      productColor: productColor,
-      productQuantity: productQuantity,
-      productName: productName,
-      productPrice: productPrice,
-      productImage: productImage,
-      productId: productId,
-      productOutline: productOutline
-    }
-    // console.log(cartData);
+  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
+  //
+  //   const cartData = {
+  //     productSize: productSize,
+  //     productColor: productColor,
+  //     productQuantity: productQuantity,
+  //     productName: productName,
+  //     productPrice: productPrice,
+  //     productImage: productImage,
+  //     productId: productId,
+  //     productOutline: productOutline
+  //   }
+  //   // console.log(cartData);
+  //   return $http({
+  //     method: "POST",
+  //     url: "/api/cart",
+  //     data: cartData
+  //   }).success(function(){
+  //     console.log("Item Added!");
+  //   })
+  // }
+
+  this.addProductsToCart = function(cartData){
     return $http({
       method: "POST",
       url: "/api/cart",
