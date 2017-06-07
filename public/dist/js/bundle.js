@@ -4662,6 +4662,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
   $scope.addToCartModal = false;
 
+  var outlineCheckbox = false;
   var getProductById = function getProductById() {
     mainService.getProductById($stateParams.id).then(function (response) {
       //response[0] gives us description, id, images, and name
@@ -4674,7 +4675,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       $scope.changeInverted = function (inverted) {
         console.log(inverted);
         //if inverted = true, set the image to second outline image
-        inverted ? $scope.vectorFile = $scope.product.imgoutlinevector : $scope.vectorFile = $scope.product.imgmainvector;
+        inverted ? ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgoutlinevector), outlineCheckbox = true) : ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgmainvector), outlineCheckbox = false);
       };
       //change color of vector graphic
       $scope.updateImgColor = function (productColor) {
@@ -4697,15 +4698,17 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     var productName = $scope.product.name;
     var productPrice = productObject.price;
     var productColorPrime = JSON.parse(productColor);
-    // console.log(hello.prime, "HERE IS THE RICE LOL");
     var productSize = productObject.height + "H x " + productObject.width + "W";
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
-    console.log(productSize, "psize");
+
+    // if(outlineCheckbox){
+    console.log(outlineCheckbox, "inverted was checked");
+    // }
 
     // Quick fix - if quantity is zero, do not add to cart
     if (productQuantity !== "0") {
-      mainService.addProductsToCart(productSize, productColorPrime.prime, productQuantity, productName, productPrice, productImage, productId);
+      mainService.addProductsToCart(productSize, productColorPrime.prime, productQuantity, productName, productPrice, productImage, productId, outlineCheckbox);
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount');
@@ -5167,7 +5170,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
     });
   };
 
-  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId) {
+  this.addProductsToCart = function (productSize, productColor, productQuantity, productName, productPrice, productImage, productId, productOutline) {
     var cartData = {
       productSize: productSize,
       productColor: productColor,
@@ -5175,7 +5178,8 @@ angular.module("ccvApp").service("mainService", function ($http) {
       productName: productName,
       productPrice: productPrice,
       productImage: productImage,
-      productId: productId
+      productId: productId,
+      productOutline: productOutline
     };
     // console.log(cartData);
     return $http({

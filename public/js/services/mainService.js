@@ -106,7 +106,7 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
 
-  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId){
+  this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
     const cartData = {
       productSize: productSize,
       productColor: productColor,
@@ -114,7 +114,8 @@ angular.module("ccvApp").service("mainService", function($http){
       productName: productName,
       productPrice: productPrice,
       productImage: productImage,
-      productId: productId
+      productId: productId,
+      productOutline: productOutline
     }
     // console.log(cartData);
     return $http({

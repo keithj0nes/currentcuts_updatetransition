@@ -2,6 +2,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
   $scope.addToCartModal = false;
 
+  var outlineCheckbox = false;
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
       //response[0] gives us description, id, images, and name
@@ -14,7 +15,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       $scope.changeInverted = function(inverted){
         console.log(inverted);
         //if inverted = true, set the image to second outline image
-        inverted ? $scope.vectorFile = $scope.product.imgoutlinevector : $scope.vectorFile= $scope.product.imgmainvector;
+        inverted ? ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgoutlinevector), outlineCheckbox = true) : ($scope.vectorFile= $sce.trustAsResourceUrl($scope.product.imgmainvector), outlineCheckbox = false);
       }
       //change color of vector graphic
       $scope.updateImgColor = function(productColor){
@@ -38,15 +39,17 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     var productName = $scope.product.name;
     var productPrice = productObject.price;
     var productColorPrime = JSON.parse(productColor)
-    // console.log(hello.prime, "HERE IS THE RICE LOL");
     var productSize = productObject.height + "H x " + productObject.width + "W";
     var productImage = $scope.product.img1;
     var productId = $scope.product.id;
-    console.log(productSize, "psize");
+
+    // if(outlineCheckbox){
+      console.log(outlineCheckbox, "inverted was checked");
+    // }
 
 // Quick fix - if quantity is zero, do not add to cart
     if(productQuantity !== "0"){
-      mainService.addProductsToCart(productSize,productColorPrime.prime,productQuantity,productName,productPrice,productImage,productId);
+      mainService.addProductsToCart(productSize,productColorPrime.prime,productQuantity,productName,productPrice,productImage,productId,outlineCheckbox);
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount')
