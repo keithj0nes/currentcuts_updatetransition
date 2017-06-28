@@ -26,6 +26,11 @@ CREATE TABLE users (
   admin BOOLEAN
 );
 
+CREATE TABLE guest_users (
+  id SERIAL PRIMARY KEY,
+  email TEXT
+)
+
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name TEXT,
@@ -58,9 +63,10 @@ CREATE TABLE product_price_size (
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
   userId INTEGER REFERENCES users(id),
+  guestuserid INTEGER REFERENCES guest_users(id),
   dateSold TIMESTAMP,
   ordertotal INT,
-  shippingid INTEGER REFERENCE shipping(id)
+  shippingid INTEGER REFERENCES shipping(id)
 );
 
 CREATE TABLE orderline (
