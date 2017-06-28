@@ -4,6 +4,8 @@
 
 - [ ] Create current orders tab
 
+- [ ] USPS developer - allow shipping labels to be purchased through admin page
+
 ### Cart page
 
 - [x] Email alerts (to me and purchaser) once order is placed (nodemailer) 4/4/17
@@ -14,6 +16,9 @@
 
 - [ ] Checkout as guest
   - [ ] Create 'guest' user to default to if 'checkout as guest' is selected
+
+- [ ] Use Square to process payments
+  - [ ] Create inline purchase option (instead of stripe popup)
 
 
 ### Users
@@ -30,6 +35,8 @@
 - [x] Create table to allow for different product **sizes** 4/3/17
 
 - [x] Create table that joins **prices** and **sizes** with a **product** 4/3/17
+
+- [ ] Create GuestUser table for guest checkout users
 
 - [ ] Create shipping profiles table for quick shipping
   - [ ] Join to Orders table
