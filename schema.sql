@@ -2,6 +2,7 @@
 
 
 -- DROP existing TABLES, to clean out the database	=	=	=	=	=
+
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS sizes CASCADE;
@@ -11,8 +12,7 @@ DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS orderline CASCADE;
 DROP TABLE IF EXISTS shipping CASCADE;
 
-
--- CREATE TABLES	=	=	=	=	=	=	=	=	=	=	=	=	=
+-- CREATE TABLES	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = =
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -85,7 +85,7 @@ CREATE TABLE shipping (
 );
 
 
--- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	=
+-- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
 
 INSERT INTO products (name, description, img1, imgmainvector, isActive, imgoutlinevector)
 VALUES ('Take A Hike', 'Take A Hike vinyl decal', 'https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg', 'https://img0.etsystatic.com/132/0/9461344/il_570xN.895019502_41yc.jpg', true);
