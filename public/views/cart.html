@@ -226,7 +226,7 @@
       <!--  If user is present, display shipping / stripe button  -->
 
         <div class="checkout" ng-if="username" check-logged-in>
-          <form class="address-form" ng-submit="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote)">
+          <form class="address-form" ng-submit="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, shipEmail)">
 
             <div class="checkout-left">
 
@@ -241,6 +241,7 @@
                   <input type="text" placeholder="City *" ng-model="shipCity" required>
                   <input type="text" placeholder="State *" ng-model="shipState" required>
                   <input type="number" placeholder="Zip Code *" ng-model="shipZip" required>
+                  <input type="text" placeholder=" email " ng-model="shipEmail" required>
                   <!-- SAVE BUTTON FOR USING STRIPE DIRECTIVE TO ACCESS DETAILS OBJECT -->
                   <!-- <button type="submit" class="" >Save</button> -->
                   <!-- <button type="submit" class="btn-stripe" >Complete Checkout</button> -->

@@ -23,8 +23,10 @@ if($state.params.orderid){
     console.log(response, "userController");
     if(response.reqUser){
       mainService.getOrderById($state.params.orderid).then(function(response){
+        console.log(response, "HERE IS THE RESPONSE");
         if(response.results === false){
           console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+          console.log(response.results, "lol");
           $state.go("orderhistory");
         } else if (response){
           $rootScope.$broadcast('cartCount')

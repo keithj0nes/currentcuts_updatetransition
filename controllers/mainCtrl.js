@@ -340,6 +340,8 @@ module.exports = {
 
 
   mail: (req, res, next) => {
+
+    console.log(req.body, "logging body");
     let b = req.body;
     let productTextInEmail = [];
     let orderTotal = 0;
@@ -376,7 +378,7 @@ module.exports = {
       text += item;
     });
 
-    text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note;
+    text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note + "<br><br><br> email should be " + b.email;
 
     let transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -414,7 +416,7 @@ module.exports = {
         //create email
         var mailOptions = {
           from: 'currentcutstest@gmail.com',                  // sender address
-          to: b.email,                                        // list of receivers
+          // to: b.email,                                        // list of receivers
           bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
           subject: 'Order Confirmation - ' + order[0].id,     // Subject line
           // text: text //,                                   // plaintext body

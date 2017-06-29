@@ -4490,7 +4490,8 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
 
   var orderData = {
     order: {},
-    email: "currentcutstest@gmail.com",
+    // email: "currentcutstest@gmail.com",
+    // email: ,
     user: {},
     product: [] //{
 
@@ -4508,7 +4509,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
   }
 
   // $('.btn-stripe').on('click', orderData, function(e) {
-  $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote) {
+  $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, shipEmail) {
 
     console.log($scope.shipNameFirst, "shipNameFirst being logged");
     // console.log(n, "shipNameFirst being logged");
@@ -4525,6 +4526,12 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     $rootScope.note = {
       note: shipNote
     };
+
+    $rootScope.email = {
+      email: shipEmail
+    };
+
+    console.log($rootScope.email);
     console.log($rootScope.details, "scopedetailsbeinglogged");
 
     console.log("clicked");
@@ -4539,6 +4546,10 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     if ($rootScope.note) {
       console.log($rootScope.note.note, "rootScope.no.note");
       orderData.order.note = $rootScope.note.note;
+    }
+    if ($rootScope.email) {
+      console.log($rootScope.email.email, "rootScope.email");
+      orderData.email = $rootScope.email.email;
     }
     orderData.user = $scope.value;
     orderData.product = [];
@@ -4565,14 +4576,16 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
         key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
         image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
         locale: 'auto',
+        email: $rootScope.email.email,
+        allowRememberMe: false,
         token: function token(_token) {
           // You can access the token ID with `token.id`.
           // Get the token ID to your server-side code for use.
-
           $http.post('/api/charge', {
             stripeToken: _token.id,
             price: stripeTotal,
-            email: _token.email,
+            // email: token.email,
+            // email: "hello@hahaomg.com",
             stripeTokenCard: _token.card
           }).then(function (response) {
             console.log(response, "response in cartController charge lololololol");
@@ -4662,6 +4675,8 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
   $scope.addToCartModal = false;
 
+  // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
+
   var outlineCheckbox = false;
   var getProductById = function getProductById() {
     mainService.getProductById($stateParams.id).then(function (response) {
@@ -4669,6 +4684,8 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       $scope.product = response[0];
       //set image on load
       $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      $scope.vec = response[0].imgmainvector;
+      console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle
       $scope.product.imgoutlinevector ? $scope.outlineImage = true : $scope.outlineImage = false;
       //change inverted image
@@ -4782,8 +4799,10 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
       console.log(response, "userController");
       if (response.reqUser) {
         mainService.getOrderById($state.params.orderid).then(function (response) {
+          console.log(response, "HERE IS THE RESPONSE");
           if (response.results === false) {
             console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+            console.log(response.results, "lol");
             $state.go("orderhistory");
           } else if (response) {
             $rootScope.$broadcast('cartCount');

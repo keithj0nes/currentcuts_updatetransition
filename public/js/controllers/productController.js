@@ -2,6 +2,8 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
   $scope.addToCartModal = false;
 
+  // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
+
   var outlineCheckbox = false;
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
@@ -9,6 +11,8 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       $scope.product = response[0];
       //set image on load
       $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      $scope.vec = response[0].imgmainvector
+      console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle
       $scope.product.imgoutlinevector ? $scope.outlineImage = true : $scope.outlineImage = false;
       //change inverted image

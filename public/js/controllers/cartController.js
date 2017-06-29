@@ -98,7 +98,8 @@ getProductsInCart();
   let orderData = {
     order: {
     },
-    email: "currentcutstest@gmail.com",
+    // email: "currentcutstest@gmail.com",
+    // email: ,
     user: {
     },
     product: []//{
@@ -117,7 +118,7 @@ getProductsInCart();
   }
 
   // $('.btn-stripe').on('click', orderData, function(e) {
-  $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
+  $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, shipEmail){
 
     console.log($scope.shipNameFirst, "shipNameFirst being logged");
     // console.log(n, "shipNameFirst being logged");
@@ -134,7 +135,13 @@ getProductsInCart();
     $rootScope.note = {
       note: shipNote
     }
-      console.log($rootScope.details, "scopedetailsbeinglogged");
+
+    $rootScope.email = {
+      email: shipEmail
+    }
+
+    console.log($rootScope.email);
+    console.log($rootScope.details, "scopedetailsbeinglogged");
 
     console.log("clicked");
     $scope.value = $rootScope.details
@@ -148,6 +155,10 @@ getProductsInCart();
     if($rootScope.note){
       console.log($rootScope.note.note, "rootScope.no.note");
       orderData.order.note = $rootScope.note.note;
+    }
+    if($rootScope.email){
+      console.log($rootScope.email.email, "rootScope.email");
+      orderData.email = $rootScope.email.email;
     }
     orderData.user = $scope.value;
     orderData.product = [];
@@ -176,14 +187,16 @@ getProductsInCart();
       key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
       image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
       locale: 'auto',
+      email: $rootScope.email.email,
+      allowRememberMe: false,
       token: function(token) {
     // You can access the token ID with `token.id`.
     // Get the token ID to your server-side code for use.
-
         $http.post('/api/charge', {
           stripeToken: token.id,
           price: stripeTotal,
-          email: token.email,
+          // email: token.email,
+          // email: "hello@hahaomg.com",
           stripeTokenCard: token.card
         }).then(function (response) {
           console.log(response, "response in cartController charge lololololol");

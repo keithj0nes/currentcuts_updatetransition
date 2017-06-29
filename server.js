@@ -155,6 +155,25 @@ app.post("/api/cart", mainCtrl.addProductsToCart);
 app.get("/api/cart", mainCtrl.getProductsInCart);
 app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
 
+
+//save guest checkout user to guest-users table
+app.post("/api/guest-user", (req, res, next) => {
+  console.log("WORKING");
+
+  db.guest_users.insert({email: "heresanemail@m.com"}, (err, guser) => {
+    if(err){
+      console.log(err);
+      res.status(500).send(err)
+    }
+    res.send(guser)
+  })
+
+  // res.send("user saved")
+  console.log("guest user saved");
+
+})
+
+
 //PRODUCTS
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
