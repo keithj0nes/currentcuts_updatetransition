@@ -19,7 +19,7 @@ module.exports = {
 
   getCurrentUser: function(req,res,next){
     if(req.user){
-      res.status(200).send(req.user.firstname);
+      res.status(200).send({firstname:req.user.firstname, email:req.user.email});
     }
   }
 

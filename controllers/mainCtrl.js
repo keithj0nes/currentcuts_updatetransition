@@ -120,6 +120,8 @@ module.exports = {
   },
 
   addOrder: function(req, res, charge){
+
+    console.log(charge, "CHARGE MEEEEE");
     var timeNow = new Date();
 
     let cartTotal = 0;
@@ -127,195 +129,213 @@ module.exports = {
       cartTotal += i.productQuantity * i.productPrice;
     })
 
-    db.orders.insert({
-      userid: req.user.id,
-      datesold: timeNow,
-      ordertotal: cartTotal
-    }, function(err, order){
-      if(err){
-        console.log("OMG AN AERRYOR", err);
-        res.status(500).send(err)
-      } else {
-        console.log("this should be good");
-        req.session.cart.forEach(function(product, index){
-          console.log(product, "result in forEach");
-          console.log(index, "index in forEach");
+    console.log(charge.metadata.guestUser)
+    console.log(charge.source.name)
 
-          let matches = product.productSize.match(/(\d+)H x (\d+)/);
-          let number1 = Number(matches[1]);
-          let number2 = Number(matches[2]);
-          let obj = {
-            height: number1,
-            width: number2
-          }
 
-          let myPrice = product.productPrice;
-          let myProductId = product.productId;
-          let myProductQ = product.productQuantity;
-          let myProductColor = product.productColor;
+    if(charge.metadata.guestUser){
+      console.log('ITS TRUEEEEEE');
+      db.guest_users.insert({email: charge.source.name}, (err, guser) => {
+        if(err){
+          console.log(err);
+          res.status(500).send(err)
+        }
+        res.send(guser)
+      })
+    } else {
 
-          db.sizes.findOne(obj, function(err, sResult){
-            if(err){
-              console.log(err, "here's an errror");
-              res.status(500).send(err)
+      db.orders.insert({
+        userid: req.user.id,
+        datesold: timeNow,
+        ordertotal: cartTotal
+      }, function(err, order){
+        if(err){
+          console.log("OMG AN AERRYOR", err);
+          res.status(500).send(err)
+        } else {
+          console.log("this should be good");
+          req.session.cart.forEach(function(product, index){
+            console.log(product, "result in forEach");
+            console.log(index, "index in forEach");
+
+            let matches = product.productSize.match(/(\d+)H x (\d+)/);
+            let number1 = Number(matches[1]);
+            let number2 = Number(matches[2]);
+            let obj = {
+              height: number1,
+              width: number2
             }
-              console.log(sResult, "result in finding sizes");
-              let sizesid = sResult.id;
 
-              db.prices.findOne({price: myPrice}, function(err, pResult){
-                if(err){
-                  console.log(err, "logging err in productPrice.findOne");
-                  res.status(500).send(err)
-                }
-                  console.log(pResult, "result in finding prices");
-                  let pricesid = pResult.id
+            let myPrice = product.productPrice;
+            let myProductId = product.productId;
+            let myProductQ = product.productQuantity;
+            let myProductColor = product.productColor;
+
+            db.sizes.findOne(obj, function(err, sResult){
+              if(err){
+                console.log(err, "here's an errror");
+                res.status(500).send(err)
+              }
+                console.log(sResult, "result in finding sizes");
+                let sizesid = sResult.id;
+
+                db.prices.findOne({price: myPrice}, function(err, pResult){
+                  if(err){
+                    console.log(err, "logging err in productPrice.findOne");
+                    res.status(500).send(err)
+                  }
+                    console.log(pResult, "result in finding prices");
+                    let pricesid = pResult.id
 
 
 
-                  console.log(number1, "FIRST NUMBER");
-                  console.log(number2, "SECOND VALUE");
-                  console.log(order.id, "HERE IS ORDER.ID");
-                  // console.log(req.session.cart[i], 'req.session.cart[i]');
-                  db.orderline.insert({
-                    orderid: order.id,
-                    productid: myProductId,
-                    quantsold: myProductQ,
-                    sizeid: sizesid,
-                    priceid: pricesid,
-                    color: myProductColor
-                  }, function(err, orderline){
-                    if(err){
-                      console.log("ANOTHER ERRORRR", err);
-                      res.status(500).send(err);
-                    }
-                    console.log(orderline, "orderline");
-                  }) //end db.orderline.insert
+                    console.log(number1, "FIRST NUMBER");
+                    console.log(number2, "SECOND VALUE");
+                    console.log(order.id, "HERE IS ORDER.ID");
+                    // console.log(req.session.cart[i], 'req.session.cart[i]');
+                    db.orderline.insert({
+                      orderid: order.id,
+                      productid: myProductId,
+                      quantsold: myProductQ,
+                      sizeid: sizesid,
+                      priceid: pricesid,
+                      color: myProductColor
+                    }, function(err, orderline){
+                      if(err){
+                        console.log("ANOTHER ERRORRR", err);
+                        res.status(500).send(err);
+                      }
+                      console.log(orderline, "orderline");
+                    }) //end db.orderline.insert
 
-              }) //end db.prices.findOne
+                }) //end db.prices.findOne
 
-          }) //end db.sizes.findOne
+            }) //end db.sizes.findOne
 
-        }) // end forEach
+          }) // end forEach
 
-        // for(var i = 0; i < req.session.cart.length; i++){
-        //
-        //   let matches = req.session.cart[i].productSize.match(/(\d+)H x (\d+)/);
-        //   let number1 = Number(matches[1]);
-        //   let number2 = Number(matches[2]);
-        //   let obj = {
-        //     height: number1,
-        //     width: number2
-        //   }
-        //
-        //   let myPrice = req.session.cart[i].productPrice;
-        //   let myProductId = req.session.cart[i].productId;
-        //   let myProductQ = req.session.cart[i].productQuantity;
-        //   // var sizesid;
-        //   // var pricesid;
-        //
-        //   db.sizes.findOne(obj, function(err, sResult){
-        //     if(err){
-        //       console.log(err, "here's an errror");
-        //       res.status(500).send(err)
-        //     }
-        //       console.log(sResult, "result in finding sizes");
-        //       var sizesid = sResult.id;
-        //
-        //       db.prices.findOne({price: myPrice}, function(err, pResult){
-        //         if(err){
-        //           console.log(err, "logging err in productPrice.findOne");
-        //           res.status(500).send(err)
-        //         }
-        //           console.log(pResult, "result in finding prices");
-        //           var pricesid = pResult.id
-        //
-        //
-        //
-        //           console.log(number1, "FIRST NUMBER");
-        //           console.log(number2, "SECOND VALUE");
-        //           console.log(order.id, "HERE IS ORDER.ID");
-        //           // console.log(req.session.cart[i], 'req.session.cart[i]');
-        //           db.orderline.insert({
-        //             orderid: order.id,
-        //             productid: myProductId,
-        //             quantsold: myProductQ,
-        //             sizeid: sizesid,
-        //             priceid: pricesid
-        //           }, function(err, orderline){
-        //             if(err){
-        //               console.log("ANOTHER ERRORRR", err);
-        //               res.status(500).send(err);
-        //             }
-        //             console.log(orderline, "orderline");
-        //           }) //end db.orderline.insert
-        //
-        //       }) //end db.prices.findOne
-        //
-        //   }) //end db.sizes.findOne
-        //
-        //
-        //     /////////// try running two queries ////////////////////
-        //
-        //     //db.sizes.findOne(obj, function(err, sResult){
-        //     // if(err){
-        //     //   console.log(err, "here's an errror");
-        //     //   res.status(500).send(err)
-        //     // }
-        //     // console.log(number1, "FIRST NUMBER");
-        //     // console.log(number2, "SECOND VALUE");
-        //     // console.log(order.id, "HERE IS ORDER.ID");
-        //     //
-        //     //   console.log(sResult, "result in finding sizes");
-        //     //   var sizesid = sResult.id;
-        //     //
-        //     //   db.orderline.insert({
-        //     //     orderid: order.id,
-        //     //     productid: myProductId,
-        //     //     quantsold: myProductQ,
-        //     //     sizeid: sizesid
-        //     //   }, function(err, orderline){
-        //     //     if(err){
-        //     //       console.log("ANOTHER ERRORRR", err);
-        //     //       res.status(500).send(err);
-        //     //     }
-        //     //     console.log(orderline, "orderline in sizes");
-        //     //   }) //end db.orderline.insert
-        //     // }) //end db.sizes.findOne
-        //     //
-        //     //
-        //     //   db.prices.findOne({price: myPrice}, function(err, pResult){
-        //     //     if(err){
-        //     //       console.log(err, "logging err in productPrice.findOne");
-        //     //       res.status(500).send(err)
-        //     //     }
-        //     //       console.log(pResult, "result in finding prices");
-        //     //       var pricesid = pResult.id
-        //     //
-        //     //
-        //     //       // console.log(req.session.cart[i], 'req.session.cart[i]');
-        //     //       db.orderline.update({
-        //     //         orderid: order.id
-        //     //       },
-        //     //       {
-        //     //         priceid: pricesid
-        //     //       }, function(err, orderline){
-        //     //         if(err){
-        //     //           console.log("ANOTHER ERRORRR", err);
-        //     //           res.status(500).send(err);
-        //     //         }
-        //     //         console.log(orderline, "orderline in prices");
-        //     //       }) //end db.orderline.insert
-        //     //
-        //     //   }) //end db.prices.findOne
-        //
-        // }
-        req.session.cart = [];
-        // console.log(req.session.cart, "req.session.cart");
-        console.log(charge, "LOGGING CHARGE");
-        res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
-        // console.log(charge, "charge sent");
-      }
-    })
+          // for(var i = 0; i < req.session.cart.length; i++){
+          //
+          //   let matches = req.session.cart[i].productSize.match(/(\d+)H x (\d+)/);
+          //   let number1 = Number(matches[1]);
+          //   let number2 = Number(matches[2]);
+          //   let obj = {
+          //     height: number1,
+          //     width: number2
+          //   }
+          //
+          //   let myPrice = req.session.cart[i].productPrice;
+          //   let myProductId = req.session.cart[i].productId;
+          //   let myProductQ = req.session.cart[i].productQuantity;
+          //   // var sizesid;
+          //   // var pricesid;
+          //
+          //   db.sizes.findOne(obj, function(err, sResult){
+          //     if(err){
+          //       console.log(err, "here's an errror");
+          //       res.status(500).send(err)
+          //     }
+          //       console.log(sResult, "result in finding sizes");
+          //       var sizesid = sResult.id;
+          //
+          //       db.prices.findOne({price: myPrice}, function(err, pResult){
+          //         if(err){
+          //           console.log(err, "logging err in productPrice.findOne");
+          //           res.status(500).send(err)
+          //         }
+          //           console.log(pResult, "result in finding prices");
+          //           var pricesid = pResult.id
+          //
+          //
+          //
+          //           console.log(number1, "FIRST NUMBER");
+          //           console.log(number2, "SECOND VALUE");
+          //           console.log(order.id, "HERE IS ORDER.ID");
+          //           // console.log(req.session.cart[i], 'req.session.cart[i]');
+          //           db.orderline.insert({
+          //             orderid: order.id,
+          //             productid: myProductId,
+          //             quantsold: myProductQ,
+          //             sizeid: sizesid,
+          //             priceid: pricesid
+          //           }, function(err, orderline){
+          //             if(err){
+          //               console.log("ANOTHER ERRORRR", err);
+          //               res.status(500).send(err);
+          //             }
+          //             console.log(orderline, "orderline");
+          //           }) //end db.orderline.insert
+          //
+          //       }) //end db.prices.findOne
+          //
+          //   }) //end db.sizes.findOne
+          //
+          //
+          //     /////////// try running two queries ////////////////////
+          //
+          //     //db.sizes.findOne(obj, function(err, sResult){
+          //     // if(err){
+          //     //   console.log(err, "here's an errror");
+          //     //   res.status(500).send(err)
+          //     // }
+          //     // console.log(number1, "FIRST NUMBER");
+          //     // console.log(number2, "SECOND VALUE");
+          //     // console.log(order.id, "HERE IS ORDER.ID");
+          //     //
+          //     //   console.log(sResult, "result in finding sizes");
+          //     //   var sizesid = sResult.id;
+          //     //
+          //     //   db.orderline.insert({
+          //     //     orderid: order.id,
+          //     //     productid: myProductId,
+          //     //     quantsold: myProductQ,
+          //     //     sizeid: sizesid
+          //     //   }, function(err, orderline){
+          //     //     if(err){
+          //     //       console.log("ANOTHER ERRORRR", err);
+          //     //       res.status(500).send(err);
+          //     //     }
+          //     //     console.log(orderline, "orderline in sizes");
+          //     //   }) //end db.orderline.insert
+          //     // }) //end db.sizes.findOne
+          //     //
+          //     //
+          //     //   db.prices.findOne({price: myPrice}, function(err, pResult){
+          //     //     if(err){
+          //     //       console.log(err, "logging err in productPrice.findOne");
+          //     //       res.status(500).send(err)
+          //     //     }
+          //     //       console.log(pResult, "result in finding prices");
+          //     //       var pricesid = pResult.id
+          //     //
+          //     //
+          //     //       // console.log(req.session.cart[i], 'req.session.cart[i]');
+          //     //       db.orderline.update({
+          //     //         orderid: order.id
+          //     //       },
+          //     //       {
+          //     //         priceid: pricesid
+          //     //       }, function(err, orderline){
+          //     //         if(err){
+          //     //           console.log("ANOTHER ERRORRR", err);
+          //     //           res.status(500).send(err);
+          //     //         }
+          //     //         console.log(orderline, "orderline in prices");
+          //     //       }) //end db.orderline.insert
+          //     //
+          //     //   }) //end db.prices.findOne
+          //
+          // }
+          req.session.cart = [];
+          // console.log(req.session.cart, "req.session.cart");
+          console.log(charge, "LOGGING CHARGE");
+          res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
+          // console.log(charge, "charge sent");
+        }
+      })
+    } //end else statement stating user is logged in
+
+
 
   },
 

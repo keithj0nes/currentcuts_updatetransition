@@ -5,11 +5,13 @@ angular.module("ccvApp").directive("checkLoggedIn", function(mainService){
     link: function(scope, elem, attr){
       var getUsername = function() {
           mainService.getUsername().then(function(response){
-            scope.username = response;
-          if(scope.username){
-            scope.usernameFirst = scope.username.charAt(0);
-            // console.log(scope.usernameFirst, "scope.usernameFirst");
-          }
+            console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
+            scope.username = response.firstname;
+            scope.useremail = response.email;
+          // if(scope.username){
+          //   scope.usernameFirst = scope.username.charAt(0);
+          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
+          // }
           })
         }
 

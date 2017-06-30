@@ -1,5 +1,11 @@
 angular.module("ccvApp").controller("cartController", function($scope, $http, $state, $rootScope, mainService){
 
+  $scope.guestistrue = false;
+
+  $scope.guestUser = () => {
+    $scope.guestistrue = !$scope.guestistrue;
+  }
+
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
@@ -95,16 +101,16 @@ getProductsInCart();
 
 
 
-  let orderData = {
-    order: {
-    },
-    // email: "currentcutstest@gmail.com",
-    // email: ,
-    user: {
-    },
-    product: []//{
-
-  }
+  // let orderData = {
+  //   order: {
+  //   },
+  //   // email: "currentcutstest@gmail.com",
+  //   // email: ,
+  //   user: {
+  //   },
+  //   product: []//{
+  //
+  // }
 
   if($rootScope.details){
     $scope.shipNameFirst = $rootScope.details.recNameFirst;
@@ -118,10 +124,19 @@ getProductsInCart();
   }
 
   // $('.btn-stripe').on('click', orderData, function(e) {
-  $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, shipEmail){
+  $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
 
-    console.log($scope.shipNameFirst, "shipNameFirst being logged");
-    // console.log(n, "shipNameFirst being logged");
+    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
+
+    let orderData = {
+      order: {
+      },
+      user: {
+      },
+      guestuser: $scope.guestistrue
+
+    }
+
     $rootScope.details = {
       recNameFirst: shipNameFirst,
       recNameLast: shipNameLast,
@@ -137,29 +152,31 @@ getProductsInCart();
     }
 
     $rootScope.email = {
-      email: shipEmail
+      email: document.getElementById('userEmail').value
     }
 
-    console.log($rootScope.email);
+    // console.log(shipEmail);
     console.log($rootScope.details, "scopedetailsbeinglogged");
 
-    console.log("clicked");
+    // console.log("clicked");
     $scope.value = $rootScope.details
-    console.log($scope.value, "scopedotvalue");
-    if($scope.value){
-      console.log(true);
-    } else {
-      console.log(false);
-    }
+    // console.log($scope.value, "scopedotvalue");
+    // if($scope.value){
+    //   console.log(true);
+    // } else {
+    //   console.log(false);
+    // }
 
-    if($rootScope.note){
-      console.log($rootScope.note.note, "rootScope.no.note");
+    if($rootScope.note.note){
+      // console.log($rootScope.note.note, "rootScope.no.note");
       orderData.order.note = $rootScope.note.note;
     }
-    if($rootScope.email){
-      console.log($rootScope.email.email, "rootScope.email");
+
+    if($rootScope.email.email){
+      // console.log($rootScope.email.email, "rootScope.email");
       orderData.email = $rootScope.email.email;
     }
+
     orderData.user = $scope.value;
     orderData.product = [];
     orderData.shipping = $rootScope.shippingCost2;
@@ -192,12 +209,15 @@ getProductsInCart();
       token: function(token) {
     // You can access the token ID with `token.id`.
     // Get the token ID to your server-side code for use.
+      let newCard = token.card;
+      newCard.metadata = {guestUser: orderData.guestuser}
+
         $http.post('/api/charge', {
           stripeToken: token.id,
           price: stripeTotal,
           // email: token.email,
           // email: "hello@hahaomg.com",
-          stripeTokenCard: token.card
+          stripeTokenCard: newCard,
         }).then(function (response) {
           console.log(response, "response in cartController charge lololololol");
           $rootScope.cart = [];

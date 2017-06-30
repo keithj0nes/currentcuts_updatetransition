@@ -196,13 +196,18 @@ app.post("/api/charge", function(req, res, next){
 
   // Get the credit card details submitted by the form
   var token = req.body.stripeToken; // Using Express
-
+  var guestUser = req.body.stripeTokenCard.metadata;
+  console.log(req.body, "LOgging Body");
+  console.log(guestUser, "logging guestUser");
   // Create a charge: this will charge the user's card
   var charge = stripe.charges.create({
     amount: req.body.price, // Amount in cents
     currency: "usd",
     source: token,
-    description: "Hello",
+    description: "Decal Purchase",
+    // metadata: {"guestUser": req.body.stripeTokenCard.metadata}
+    metadata: {'guestUser': guestUser.guestUser}
+
 
   }, function(err, charge) {
     console.log(req.body.price, "req.body.price 2");
