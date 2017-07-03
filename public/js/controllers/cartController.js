@@ -3,7 +3,10 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
   $scope.guestistrue = false;
 
   $scope.guestUser = () => {
+    console.log("GUEST USER", $scope.guestistrue);
     $scope.guestistrue = !$scope.guestistrue;
+    console.log("GUEST USER", $scope.guestistrue);
+
   }
 
   $scope.cartTotal = 0;
@@ -133,7 +136,7 @@ getProductsInCart();
       },
       user: {
       },
-      guestuser: $scope.guestistrue
+      isguestuser: $scope.guestistrue
 
     }
 
@@ -210,7 +213,7 @@ getProductsInCart();
     // You can access the token ID with `token.id`.
     // Get the token ID to your server-side code for use.
       let newCard = token.card;
-      newCard.metadata = {guestUser: orderData.guestuser}
+      newCard.metadata = {guestUser: orderData.isguestuser}
 
         $http.post('/api/charge', {
           stripeToken: token.id,

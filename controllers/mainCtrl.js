@@ -132,18 +132,98 @@ module.exports = {
     console.log(charge.metadata.guestUser)
     console.log(charge.source.name)
 
+// if guestUser is present, save to guest_users table
+    if(charge.metadata.guestUser === 'true'){
+      console.log('LOGGING METADATA.GUESTUSER');
 
-    if(charge.metadata.guestUser){
-      console.log('ITS TRUEEEEEE');
       db.guest_users.insert({email: charge.source.name}, (err, guser) => {
         if(err){
           console.log(err);
           res.status(500).send(err)
         }
-        res.send(guser)
-      })
-    } else {
+        console.log("SAVING GUEST EMAIL");
 
+        db.orders.insert({
+          datesold: timeNow,
+          ordertotal: cartTotal,
+          guestuserid: guser.id
+        }, function(err, order){
+          if(err){
+            console.log(err);
+            res.status(500).send(err)
+          } else {
+            console.log("this should be good");
+            req.session.cart.forEach(function(product, index){
+              console.log(product, "result in forEach");
+              console.log(index, "index in forEach");
+
+              let matches = product.productSize.match(/(\d+)H x (\d+)/);
+              let number1 = Number(matches[1]);
+              let number2 = Number(matches[2]);
+              let obj = {
+                height: number1,
+                width: number2
+              }
+
+              let myPrice = product.productPrice;
+              let myProductId = product.productId;
+              let myProductQ = product.productQuantity;
+              let myProductColor = product.productColor;
+
+              db.sizes.findOne(obj, function(err, sResult){
+                if(err){
+                  console.log(err, "here's an errror");
+                  res.status(500).send(err)
+                }
+                  console.log(sResult, "result in finding sizes");
+                  let sizesid = sResult.id;
+
+                  db.prices.findOne({price: myPrice}, function(err, pResult){
+                    if(err){
+                      console.log(err, "logging err in productPrice.findOne");
+                      res.status(500).send(err)
+                    }
+                      console.log(pResult, "result in finding prices");
+                      let pricesid = pResult.id
+
+
+
+                      console.log(number1, "FIRST NUMBER");
+                      console.log(number2, "SECOND VALUE");
+                      console.log(order.id, "HERE IS ORDER.ID");
+                      db.orderline.insert({
+                        orderid: order.id,
+                        productid: myProductId,
+                        quantsold: myProductQ,
+                        sizeid: sizesid,
+                        priceid: pricesid,
+                        color: myProductColor
+                      }, function(err, orderline){
+                        if(err){
+                          console.log("ANOTHER ERRORRR", err);
+                          res.status(500).send(err);
+                        }
+                        console.log(orderline, "orderline");
+                      }) //end db.orderline.insert
+
+                  }) //end db.prices.findOne
+
+              }) //end db.sizes.findOne
+
+            }) // end forEach
+
+            // console.log(req.session.cart, "req.session.cart");
+            console.log(charge, "LOGGING CHARGE");
+            req.session.cart = [];
+            res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
+            // console.log(charge, "charge sent");
+          }
+        }) //end db.orders.insert
+      }) //end db.guest_users.insert
+
+    } else {
+// else registered user is present so save to users table
+console.log('ITS GETTING HERE EVEN THO IT SHOULDNT BE');
       db.orders.insert({
         userid: req.user.id,
         datesold: timeNow,
@@ -214,125 +294,13 @@ module.exports = {
 
           }) // end forEach
 
-          // for(var i = 0; i < req.session.cart.length; i++){
-          //
-          //   let matches = req.session.cart[i].productSize.match(/(\d+)H x (\d+)/);
-          //   let number1 = Number(matches[1]);
-          //   let number2 = Number(matches[2]);
-          //   let obj = {
-          //     height: number1,
-          //     width: number2
-          //   }
-          //
-          //   let myPrice = req.session.cart[i].productPrice;
-          //   let myProductId = req.session.cart[i].productId;
-          //   let myProductQ = req.session.cart[i].productQuantity;
-          //   // var sizesid;
-          //   // var pricesid;
-          //
-          //   db.sizes.findOne(obj, function(err, sResult){
-          //     if(err){
-          //       console.log(err, "here's an errror");
-          //       res.status(500).send(err)
-          //     }
-          //       console.log(sResult, "result in finding sizes");
-          //       var sizesid = sResult.id;
-          //
-          //       db.prices.findOne({price: myPrice}, function(err, pResult){
-          //         if(err){
-          //           console.log(err, "logging err in productPrice.findOne");
-          //           res.status(500).send(err)
-          //         }
-          //           console.log(pResult, "result in finding prices");
-          //           var pricesid = pResult.id
-          //
-          //
-          //
-          //           console.log(number1, "FIRST NUMBER");
-          //           console.log(number2, "SECOND VALUE");
-          //           console.log(order.id, "HERE IS ORDER.ID");
-          //           // console.log(req.session.cart[i], 'req.session.cart[i]');
-          //           db.orderline.insert({
-          //             orderid: order.id,
-          //             productid: myProductId,
-          //             quantsold: myProductQ,
-          //             sizeid: sizesid,
-          //             priceid: pricesid
-          //           }, function(err, orderline){
-          //             if(err){
-          //               console.log("ANOTHER ERRORRR", err);
-          //               res.status(500).send(err);
-          //             }
-          //             console.log(orderline, "orderline");
-          //           }) //end db.orderline.insert
-          //
-          //       }) //end db.prices.findOne
-          //
-          //   }) //end db.sizes.findOne
-          //
-          //
-          //     /////////// try running two queries ////////////////////
-          //
-          //     //db.sizes.findOne(obj, function(err, sResult){
-          //     // if(err){
-          //     //   console.log(err, "here's an errror");
-          //     //   res.status(500).send(err)
-          //     // }
-          //     // console.log(number1, "FIRST NUMBER");
-          //     // console.log(number2, "SECOND VALUE");
-          //     // console.log(order.id, "HERE IS ORDER.ID");
-          //     //
-          //     //   console.log(sResult, "result in finding sizes");
-          //     //   var sizesid = sResult.id;
-          //     //
-          //     //   db.orderline.insert({
-          //     //     orderid: order.id,
-          //     //     productid: myProductId,
-          //     //     quantsold: myProductQ,
-          //     //     sizeid: sizesid
-          //     //   }, function(err, orderline){
-          //     //     if(err){
-          //     //       console.log("ANOTHER ERRORRR", err);
-          //     //       res.status(500).send(err);
-          //     //     }
-          //     //     console.log(orderline, "orderline in sizes");
-          //     //   }) //end db.orderline.insert
-          //     // }) //end db.sizes.findOne
-          //     //
-          //     //
-          //     //   db.prices.findOne({price: myPrice}, function(err, pResult){
-          //     //     if(err){
-          //     //       console.log(err, "logging err in productPrice.findOne");
-          //     //       res.status(500).send(err)
-          //     //     }
-          //     //       console.log(pResult, "result in finding prices");
-          //     //       var pricesid = pResult.id
-          //     //
-          //     //
-          //     //       // console.log(req.session.cart[i], 'req.session.cart[i]');
-          //     //       db.orderline.update({
-          //     //         orderid: order.id
-          //     //       },
-          //     //       {
-          //     //         priceid: pricesid
-          //     //       }, function(err, orderline){
-          //     //         if(err){
-          //     //           console.log("ANOTHER ERRORRR", err);
-          //     //           res.status(500).send(err);
-          //     //         }
-          //     //         console.log(orderline, "orderline in prices");
-          //     //       }) //end db.orderline.insert
-          //     //
-          //     //   }) //end db.prices.findOne
-          //
-          // }
-          req.session.cart = [];
           // console.log(req.session.cart, "req.session.cart");
           console.log(charge, "LOGGING CHARGE");
+          req.session.cart = [];
           res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
           // console.log(charge, "charge sent");
         }
-      })
+      }) //end db.orders.insert
     } //end else statement stating user is logged in
 
 
@@ -455,28 +423,7 @@ module.exports = {
         });
       })
     })
-
-    // console.log(text);
-
-    // var mailOptions = {
-    //   from: 'currentcutstest@gmail.com', // sender address
-    //   to: b.email,                  // list of receivers
-    //   bcc: 'currentcutstest@gmail.com',
-    //   subject: 'Order Confirmation - ' + b.order.number, // Subject line
-    //   // text: text //, // plaintext body
-    //   html: text
-    // };
-    //
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if(error){
-    //       console.log(error);
-    //       res.json({yo: 'error'});
-    //   }else{
-    //       console.log('Message sent: ' + info.response);
-    //       res.json({yo: info.response});
-    //   };
-    // });
-  }
+  } //end mail function
 
 
 
@@ -485,108 +432,3 @@ module.exports = {
 
 
 } //end module exports
-
-
-
-// module.exports = {
-//   mail: (req,res,next)=>{
-//     const app = require('../index')
-//     const nodemailer = require('nodemailer');
-//     const hbs = require('nodemailer-express-handlebars');
-//     let transporter = nodemailer.createTransport({
-//       service: 'gmail',
-//       secure: true,
-//       auth: {
-//         user: process.env.emailAddress,
-//         pass: process.env.emailPas
-//       }
-//     });
-//     //
-//     if(req.body.order){
-//       let text = 'name: '+req.body.name+'\n\n'+'phone: '+req.body.phone+'\n\n'+'order: '+req.body.order+'\n\n'+'message: '+req.body.message;
-//       let mailOptions = {
-//         from: process.env.emailAddress, // sender address // your email address
-//         to: process.env.emailAddress, // list of receivers // their email address
-//         subject: 'From:'+req.body.email+'  RETURN', // Subject line
-//         text: text//, // plaintext body
-//       };
-//       transporter.sendMail(mailOptions, function(error, info){
-//           if(error){
-//               console.log(error);
-//               res.send('error');
-//           }else{
-//               console.log('Message sent: ' + info.response);
-//               res.send({yo: info.response});
-//           };
-//       });
-//     }else{
-//       let text = 'name: '+req.body.name+'\n\n'+'phone: '+req.body.phone+'\n\n'+'message: '+req.body.message;
-//       let mailOptions = {
-//         from: process.env.emailAddress, // sender address
-//         to: process.env.emailAddress, // list of receivers
-//         subject: 'From:'+req.body.email, // Subject line
-//         text: text//, // plaintext body
-//         // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-//       };
-//       transporter.sendMail(mailOptions, function(error, info){
-//         if(error){
-//           console.log(error);
-//           res.send('error');
-//         }else{
-//           console.log('Message sent: ' + info.response);
-//           res.send({yo: info.response});
-//         };
-//       });
-//     }
-//   }
-// }
-
-
-
-
-
-// { "order": {
-// 	"number": 5624,
-// 	"note": "here is a note from the buyer"
-// 	},
-//
-//   "email": "currentcutstest@gmail.com",
-//   "user": {
-//   	"recNameFirst": "Keith",
-//     "recNameLast": "THEbest",
-//     "address1": "123 4th st.",
-//     "address2": "apt 255",
-//     "city": "Seattle",
-//     "state": "WA",
-//     "zip": "99999"
-//   },
-//   "product": [
-//   	{
-//   	   "productSize": "3H x 3W",
-//        "productColor": "Black",
-//        "productQuantity": 1,
-//        "productName": "Wanderlust",
-//        "productPrice": 2,
-//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
-//        "productId": 2
-//   	},
-//     {
-//        "productSize": "3H x 3W",
-//        "productColor": "White",
-//        "productQuantity": 1,
-//        "productName": "Wanderlust",
-//        "productPrice": 2,
-//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
-//        "productId": 2
-//     },
-//     {
-//        "productSize": "3H x 3W",
-//        "productColor": "Dark Gray",
-//        "productQuantity": 1,
-//        "productName": "Wanderlust",
-//        "productPrice": 2,
-//        "productImage": "https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg",
-//        "productId": 2
-//     }
-//   ]
-// }
