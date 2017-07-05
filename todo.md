@@ -6,6 +6,7 @@
 
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
 
+
 ### Cart page
 
 - [x] Email alerts (to me and purchaser) once order is placed (nodemailer) 4/4/17
@@ -14,7 +15,7 @@
 
 - [ ] Update quantity via 'update cart' button
 
-- [ ] Checkout as guest 6/28/17
+- [ ] Checkout as guest 6/28/17 <br>
   <strike> - [ ] Create 'guest' user to default to if 'checkout as guest' is selected </strike>
   - [ ] Guest user email stored to Guest User table to differentiate orders 6/29/17
 
@@ -23,6 +24,12 @@
 
 
 ### Users
+
+- [ ] Allow user to edit stored email in Account Settings
+
+- [ ] Create log in with Google
+
+- [ ] Create log in with Twitter
 
 - [ ] Once using Passport LocalAuth, confirm hash and salting of passwords
 
