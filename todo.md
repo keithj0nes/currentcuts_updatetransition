@@ -14,8 +14,9 @@
 
 - [ ] Update quantity via 'update cart' button
 
-- [ ] Checkout as guest
-  - [ ] Create 'guest' user to default to if 'checkout as guest' is selected
+- [ ] Checkout as guest 6/28/17
+  <strike> - [ ] Create 'guest' user to default to if 'checkout as guest' is selected </strike>
+  - [ ] Guest user email stored to Guest User table to differentiate orders 6/29/17
 
 - [ ] Use Square to process payments
   - [ ] Create inline purchase option (instead of stripe popup)
@@ -36,7 +37,7 @@
 
 - [x] Create table that joins **prices** and **sizes** with a **product** 4/3/17
 
-- [ ] Create GuestUser table for guest checkout users
+- [x] Create Guest User table for guest checkout users 6/28/17
 
 - [ ] Create shipping profiles table for quick shipping
   - [ ] Join to Orders table
