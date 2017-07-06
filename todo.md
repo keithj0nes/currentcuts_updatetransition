@@ -15,12 +15,15 @@
 
 - [ ] Update quantity via 'update cart' button
 
-- [ ] Checkout as guest 6/28/17 <br>
-  <strike> - [ ] Create 'guest' user to default to if 'checkout as guest' is selected </strike>
-  - [ ] Guest user email stored to Guest User table to differentiate orders 6/29/17
+- [x] Checkout as guest 6/28/17 <br>
+  <strike> [ ] Create 'guest' user to default to if 'checkout as guest' is selected </strike>
+  - [x] Guest user email stored to Guest User table to differentiate orders 6/29/17
 
 - [ ] Use Square to process payments
   - [ ] Create inline purchase option (instead of stripe popup)
+
+- [x] Create Thank You page to redirect to after order transaction is successful 7/5/17
+  - [ ] Page should pull order id with order details
 
 
 ### Users
