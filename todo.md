@@ -23,7 +23,7 @@
   - [ ] Create inline purchase option (instead of stripe popup)
 
 - [x] Create Thank You page to redirect to after order transaction is successful 7/5/17
-  - [ ] Page should pull order id with order details
+  - [x] Page should pull order id with order details 7/6/17
 
 
 ### Users
