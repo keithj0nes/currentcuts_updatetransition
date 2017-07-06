@@ -181,9 +181,19 @@ angular.module("ccvApp").service("mainService", function($http){
   this.getOrderById = (id) => {
     return $http({
       method: "GET",
-      url: "/api/order/" + id
-    }).then((response)=>{
+      url: "/api/order/" + id + "/history"
+    }).then((response) => {
       // console.log(response, "getOrderById service");
+      return response.data;
+    })
+  }
+
+  this.getThankYouById = (id) => {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id + "/thankyou"
+    }).then((response) => {
+      console.log(response);
       return response.data;
     })
   }

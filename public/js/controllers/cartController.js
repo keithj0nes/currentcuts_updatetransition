@@ -129,7 +129,10 @@ getProductsInCart();
   // $('.btn-stripe').on('click', orderData, function(e) {
   $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
 
-    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
+    //
+    // if(!shipNameFirst){
+    //   swal("please enter your name")
+    // }
 
     let orderData = {
       order: {
@@ -154,6 +157,7 @@ getProductsInCart();
       note: shipNote
     }
 
+    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
     $rootScope.email = {
       email: document.getElementById('userEmail').value
     }
@@ -224,7 +228,7 @@ getProductsInCart();
         }).then(function (response) {
           console.log(response, "response in cartController charge lololololol");
           $rootScope.cart = [];
-          $state.go('orderdetails', {"orderid": response.data});
+          $state.go('thankyou', {"orderid": response.data});
           return $http.post('/api/email', orderData);
         })
       }

@@ -50,17 +50,28 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       productId: $scope.product.id,
       productOutline: outlineCheckbox
     }
-
+    console.log(productQuantity, "TONY IS THE MAN");
 // Quick fix - if quantity is zero, do not add to cart
-    if(productQuantity !== "0"){
-      //send object to service to push to cart
-      mainService.addProductsToCart(cartData);
+    // if(productQuantity !== "0" || productQuantity !== 0){
+    //   //send object to service to push to cart
+    //   mainService.addProductsToCart(cartData);
+    //
+    //   $scope.addToCartModal = true;
+    //
+    //   $rootScope.$broadcast('cartCount')
+    // } else {
+    //   swal("Please update quantity number")
+    // }
 
-      $scope.addToCartModal = true;
-
-      $rootScope.$broadcast('cartCount')
-    } else {
+    if(productQuantity === 0){
       swal("Please update quantity number")
+    } else {
+        //send object to service to push to cart
+        mainService.addProductsToCart(cartData);
+
+        $scope.addToCartModal = true;
+
+        $rootScope.$broadcast('cartCount')
     }
   }
 

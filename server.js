@@ -110,6 +110,9 @@ app.get('/logout', function(req, res){
 });
 
 
+//ORDERS
+app.post("/api/email", mainCtrl.mail);
+
 app.get("/api/orderhistory", function(req,res,next){
   if(req.user){
     db.orderhistory([req.user.id], function(err, history){
@@ -125,7 +128,7 @@ app.get("/api/orderhistory", function(req,res,next){
   }
 })
 
-app.get("/api/order/:id", function(req, res, next){
+app.get("/api/order/:id/history", function(req, res, next){
   if(req.user){
     db.get_order_details_by_id([req.params.id, req.user.id], function(err, order){
       if(err){
@@ -150,28 +153,24 @@ app.get("/api/order/:id", function(req, res, next){
 
 })
 
-//CART
-app.post("/api/cart", mainCtrl.addProductsToCart);
-app.get("/api/cart", mainCtrl.getProductsInCart);
-app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
-
-
-//save guest checkout user to guest-users table
-app.post("/api/guest-user", (req, res, next) => {
-  console.log("WORKING");
-
-  db.guest_users.insert({email: "heresanemail@m.com"}, (err, guser) => {
+app.get("/api/order/:id/thankyou", function(req, res, next){
+  console.log(req.params.id, "logging params");
+  /////// NEED TO SET SOME SORT OF EXPIRATION
+  db.get_thank_you_by_id([req.params.id], function(err, order){
     if(err){
       console.log(err);
       res.status(500).send(err)
     }
-    res.send(guser)
+
+    console.log(order, "logging order in thankyou");
+    res.send(order)
   })
-
-  // res.send("user saved")
-  console.log("guest user saved");
-
 })
+
+//CART
+app.post("/api/cart", mainCtrl.addProductsToCart);
+app.get("/api/cart", mainCtrl.getProductsInCart);
+app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
 
 
 //PRODUCTS
@@ -189,7 +188,6 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.put("/api/users/:id");
 // app.delete("/api/users/:d");
 
-app.post("/api/email", mainCtrl.mail);
 
 
 app.post("/api/charge", function(req, res, next){

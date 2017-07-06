@@ -52,6 +52,10 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     url: "/orders/:orderid",
     templateUrl: "views/orderdetails.html",
     controller: "userController"
+  }).state("thankyou", {
+    url: "/thankyou/:orderid",
+    templateUrl: "views/thankyou.html",
+    controller: "thankyouController"
   });
 
   $urlRouterProvider.otherwise("/");
@@ -4521,7 +4525,10 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
   // $('.btn-stripe').on('click', orderData, function(e) {
   $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote) {
 
-    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
+    //
+    // if(!shipNameFirst){
+    //   swal("please enter your name")
+    // }
 
     var orderData = {
       order: {},
@@ -4544,6 +4551,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
       note: shipNote
     };
 
+    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
     $rootScope.email = {
       email: document.getElementById('userEmail').value
     };
@@ -4612,7 +4620,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
           }).then(function (response) {
             console.log(response, "response in cartController charge lololololol");
             $rootScope.cart = [];
-            $state.go('orderdetails', { "orderid": response.data });
+            $state.go('thankyou', { "orderid": response.data });
             return $http.post('/api/email', orderData);
           });
         }
@@ -4744,17 +4752,28 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       productId: $scope.product.id,
       productOutline: outlineCheckbox
     };
-
+    console.log(productQuantity, "TONY IS THE MAN");
     // Quick fix - if quantity is zero, do not add to cart
-    if (productQuantity !== "0") {
+    // if(productQuantity !== "0" || productQuantity !== 0){
+    //   //send object to service to push to cart
+    //   mainService.addProductsToCart(cartData);
+    //
+    //   $scope.addToCartModal = true;
+    //
+    //   $rootScope.$broadcast('cartCount')
+    // } else {
+    //   swal("Please update quantity number")
+    // }
+
+    if (productQuantity === 0) {
+      swal("Please update quantity number");
+    } else {
       //send object to service to push to cart
       mainService.addProductsToCart(cartData);
 
       $scope.addToCartModal = true;
 
       $rootScope.$broadcast('cartCount');
-    } else {
-      swal("Please update quantity number");
     }
   };
 
@@ -4793,6 +4812,33 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
     } else {
       $scope.search = false;
     }
+  });
+});
+"use strict";
+
+angular.module("ccvApp").controller("thankyouController", function ($scope, $state, mainService) {
+
+  console.log($state.params.orderid, "order id passed from cart");
+  $scope.test = $state.params.orderid + " here is order id haha";
+
+  mainService.getThankYouById($state.params.orderid).then(function (response) {
+    console.log(response, "HERE IS THE RESPONSE");
+    $scope.orderNumber = $state.params.orderid;
+    $scope.thankyouOrder = response;
+    $scope.shipping = parseInt($scope.thankyouOrder[0].shipping);
+
+    // if(response.results === false){
+    //   console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+    //   console.log(response.results, "lol");
+    //   $state.go("orderhistory");
+    // } else if (response){
+    //   $rootScope.$broadcast('cartCount')
+    //   console.log(response, "here is the response");
+    //   $scope.orderNumber = $state.params.orderid;
+    //   $scope.orderProducts = response;
+    //   $scope.shipping = parseInt($scope.orderProducts[0].shipping);
+    // }
+
   });
 });
 "use strict";
@@ -5287,9 +5333,19 @@ angular.module("ccvApp").service("mainService", function ($http) {
   this.getOrderById = function (id) {
     return $http({
       method: "GET",
-      url: "/api/order/" + id
+      url: "/api/order/" + id + "/history"
     }).then(function (response) {
       // console.log(response, "getOrderById service");
+      return response.data;
+    });
+  };
+
+  this.getThankYouById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id + "/thankyou"
+    }).then(function (response) {
+      console.log(response);
       return response.data;
     });
   };
