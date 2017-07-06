@@ -4,4 +4,4 @@ join products on orderline.productid = products.id
 join sizes on orderline.sizeid = sizes.id
 join prices on orderline.priceid = prices.id
 join shipping on orders.shippingid = shipping.id
-where orders.id = $1
+where (orders.id = $1) and (orders.tyexpired is null or orders.tyexpired = false);

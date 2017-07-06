@@ -161,6 +161,12 @@ app.get("/api/order/:id/thankyou", function(req, res, next){
       console.log(err);
       res.status(500).send(err)
     }
+    // change tyexpired to true after 5 seconds, returning nothing to the front end
+    setTimeout(function(){
+      db.orders.update({id: req.params.id, tyexpired: true}, function(err, newOrder){
+        console.log(newOrder, "tyexpired has been updated to true");
+      })
+    }, 5000);
 
     console.log(order, "logging order in thankyou");
     res.send(order)

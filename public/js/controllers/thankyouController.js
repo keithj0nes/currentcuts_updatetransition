@@ -5,9 +5,16 @@ angular.module("ccvApp").controller("thankyouController", function($scope, $stat
 
   mainService.getThankYouById($state.params.orderid).then(function(response){
     console.log(response, "HERE IS THE RESPONSE");
-    $scope.orderNumber = $state.params.orderid;
-    $scope.thankyouOrder = response;
-    $scope.shipping = parseInt($scope.thankyouOrder[0].shipping);
+    console.log(response.length, "logging length");
+    if(response.length >= 1){
+      $scope.thankyouResponse = true;
+      $scope.orderNumber = $state.params.orderid;
+      $scope.thankyouOrder = response;
+      $scope.shipping = parseInt($scope.thankyouOrder[0].shipping);
+    } else {
+      $scope.thankyouResponse = false;
+    }
+
 
     // if(response.results === false){
     //   console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");

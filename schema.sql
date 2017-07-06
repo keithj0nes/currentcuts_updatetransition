@@ -67,6 +67,7 @@ CREATE TABLE orders (
   dateSold TIMESTAMP,
   ordertotal INT,
   shippingid INTEGER REFERENCES shipping(id)
+  tyexpired BOOLEAN
 );
 
 CREATE TABLE orderline (
