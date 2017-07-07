@@ -38,6 +38,8 @@
 
 - [ ] Allow users to delete their accounts
 
+- [ ] Allow users to like/favorite products
+
 
 ### Tables
 
@@ -51,3 +53,5 @@
 
 - [ ] Create shipping profiles table for quick shipping
   - [ ] Join to Orders table
+
+- [ ] Add new order id column to Orders table to display unique order id.
