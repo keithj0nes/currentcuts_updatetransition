@@ -204,6 +204,17 @@ angular.module("ccvApp").service("mainService", function($http){
     return details;
   }
 
+  this.updateAccount = function(newEmail){
+
+    return $http({
+      method: "PUT",
+      url: "/api/user/email",
+      data: newEmail
+    }).then((res) => {
+      console.log(res);
+      return res.data
+    })
+  }
 
 
 

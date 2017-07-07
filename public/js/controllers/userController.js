@@ -14,6 +14,17 @@ var getOrderHistory = function(){
 $scope.test = "here is a test"
 // console.log($state, "logging state");
 // console.log($state.params, "logging state params");
+$scope.updateAccount = function(userEmail){
+  let newEmail = {
+    email: userEmail
+  }
+  console.log(newEmail);
+  
+  mainService.updateAccount(newEmail).then(function(response){
+    console.log(response);
+  })
+
+}
 
 
 

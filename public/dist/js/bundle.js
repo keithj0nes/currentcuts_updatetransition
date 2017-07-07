@@ -4869,7 +4869,16 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   $scope.test = "here is a test";
   // console.log($state, "logging state");
   // console.log($state.params, "logging state params");
+  $scope.updateAccount = function (userEmail) {
+    var newEmail = {
+      email: userEmail
+    };
+    console.log(newEmail);
 
+    mainService.updateAccount(newEmail).then(function (response) {
+      console.log(response);
+    });
+  };
 
   if ($state.params.orderid) {
     console.log("order details");
@@ -5364,6 +5373,18 @@ angular.module("ccvApp").service("mainService", function ($http) {
   this.addShippingInfo = function (details) {
     console.log(details, "in service");
     return details;
+  };
+
+  this.updateAccount = function (newEmail) {
+
+    return $http({
+      method: "PUT",
+      url: "/api/user/email",
+      data: newEmail
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
   };
 
   // this.cartStorage = [1,2,3];
