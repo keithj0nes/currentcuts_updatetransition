@@ -11,6 +11,7 @@ var getOrderHistory = function(){
   })
 }
 
+$scope.test = "here is a test"
 // console.log($state, "logging state");
 // console.log($state.params, "logging state params");
 

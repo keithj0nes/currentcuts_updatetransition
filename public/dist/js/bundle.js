@@ -56,6 +56,10 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     url: "/thankyou/:orderid",
     templateUrl: "views/thankyou.html",
     controller: "thankyouController"
+  }).state("accountsettings", {
+    url: "/user/account",
+    templateUrl: "views/accountsettings.html",
+    controller: "userController"
   });
 
   $urlRouterProvider.otherwise("/");
@@ -4862,6 +4866,7 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
     });
   };
 
+  $scope.test = "here is a test";
   // console.log($state, "logging state");
   // console.log($state.params, "logging state params");
 
