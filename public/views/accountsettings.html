@@ -7,3 +7,22 @@
     <button type="submit" name="button">Update Account</button>
   </form>
 </div>
+
+
+
+
+
+
+<div class="modal" ng-class="{'display': updateSuccess, 'noscroll': updateSuccess}" id="modalz">
+  <div class="modal-content-product-added">
+    <span class="close" ng-click="closeAccountModal()">&times;</span>
+    <i class="material-icons">check_circle</i>
+    <h3>Your account has been updated!</h3>
+    <hr>
+
+    <br><br>
+
+    <button type="button" class="big-btn" name="button" ng-click="closeAccountModal()">CLOSE</button>
+
+  </div>
+</div>

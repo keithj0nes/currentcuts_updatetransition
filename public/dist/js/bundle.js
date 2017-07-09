@@ -4855,6 +4855,8 @@ angular.module("ccvApp").controller("thankyouController", function ($scope, $sta
 
 angular.module("ccvApp").controller("userController", function ($scope, $rootScope, $state, mainService) {
 
+  $scope.updateSuccess = false;
+
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
       $scope.history = response;
@@ -4877,6 +4879,11 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 
     mainService.updateAccount(newEmail).then(function (response) {
       console.log(response);
+      if (response.success === true) {
+        $scope.updateSuccess = true;
+      } else {
+        swal("NoT sUcEsSfUL");
+      }
     });
   };
 
@@ -4909,6 +4916,24 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
     console.log("order history");
     getOrderHistory();
   }
+
+  //modal to confirm account update successfull
+
+  var modal = document.getElementById('modalz');
+
+  $scope.closeAccountModal = function () {
+    $scope.updateSuccess = false;
+    console.log($scope.updateSuccess, "close");
+  };
+
+  window.onclick = function (e) {
+    console.log(e.target, "logging target");
+    if (e.target == modal) {
+      $scope.updateSuccess = false;
+      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+      console.log($scope.updateSuccess, "close window");
+    }
+  };
 });
 "use strict";
 

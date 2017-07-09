@@ -1,5 +1,7 @@
 angular.module("ccvApp").controller("userController", function($scope, $rootScope, $state, mainService){
 
+$scope.updateSuccess = false;
+
 var getOrderHistory = function(){
   mainService.getOrderHistory().then(function(response){
     $scope.history = response;
@@ -19,9 +21,14 @@ $scope.updateAccount = function(userEmail){
     email: userEmail
   }
   console.log(newEmail);
-  
+
   mainService.updateAccount(newEmail).then(function(response){
     console.log(response);
+    if(response.success === true){
+      $scope.updateSuccess = true;
+    } else {
+      swal("NoT sUcEsSfUL")
+    }
   })
 
 }
@@ -62,7 +69,23 @@ if($state.params.orderid){
 }
 
 
+//modal to confirm account update successfull
 
+var modal = document.getElementById('modalz');
+
+$scope.closeAccountModal = function(){
+  $scope.updateSuccess = false;
+  console.log($scope.updateSuccess, "close");
+}
+
+window.onclick = function(e) {
+  console.log(e.target, "logging target");
+  if (e.target == modal) {
+    $scope.updateSuccess = false;
+    $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+    console.log($scope.updateSuccess, "close window");
+  }
+}
 
 
 

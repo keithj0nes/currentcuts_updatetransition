@@ -101,15 +101,18 @@ failureRedirect: '/#/', successRedirect:'/#/login-success'
 
 //USERS
 app.put("/api/user/email", function(req, res, next){
-  console.log(req.user.id, "logging user id");
-  console.log(req.body, "logging req.body");
+  // console.log(req.user.id, "logging user id");
+  // console.log(req.body, "logging req.body");
 
   db.users.update({id: req.user.id, email: req.body.email}, function(err, user){
     if(err){
       console.log(err);
       res.status(500).send(err)
     }
-    res.send(user)
+  // console.log(req.user.email, "before change");
+  req.user.email = user.email;
+  // console.log(req.user.email, "after change");
+    res.send({success: true})
   })
   // res.send("a ok!")
 })
