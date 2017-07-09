@@ -16,7 +16,6 @@
 - [ ] Update quantity via 'update cart' button
 
 - [x] Checkout as guest 6/28/17 <br>
-  <strike> [ ] Create 'guest' user to default to if 'checkout as guest' is selected </strike>
   - [x] Guest user email stored to Guest User table to differentiate orders 6/29/17
 
 - [ ] Use Square to process payments
@@ -25,10 +24,11 @@
 - [x] Create Thank You page to redirect to after order transaction is successful 7/5/17
   - [x] Page should pull order id with order details 7/6/17
 
+- [ ] Create form validity function - alert with inline styles (required tag not supported in all browsers)
 
 ### Users
 
-- [ ] Allow user to edit stored email in Account Settings
+- [x] Allow user to edit stored email in Account Settings 7/9/17
 
 - [ ] Create log in with Google
 
