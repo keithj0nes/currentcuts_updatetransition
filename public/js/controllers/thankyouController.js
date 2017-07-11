@@ -1,12 +1,8 @@
-angular.module("ccvApp").controller("thankyouController", function($scope, $state, mainService){
-
-  console.log($state.params.orderid, "order id passed from cart");
-  $scope.test = $state.params.orderid + " here is order id haha"
+angular.module("ccvApp").controller("thankyouController", function($scope, $rootScope, $state, mainService){
 
   mainService.getThankYouById($state.params.orderid).then(function(response){
-    console.log(response, "HERE IS THE RESPONSE");
-    console.log(response.length, "logging length");
     if(response.length >= 1){
+      $rootScope.$broadcast('cartCount')
       $scope.thankyouResponse = true;
       $scope.orderNumber = $state.params.orderid;
       $scope.thankyouOrder = response;
@@ -14,21 +10,6 @@ angular.module("ccvApp").controller("thankyouController", function($scope, $stat
     } else {
       $scope.thankyouResponse = false;
     }
-
-
-    // if(response.results === false){
-    //   console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
-    //   console.log(response.results, "lol");
-    //   $state.go("orderhistory");
-    // } else if (response){
-    //   $rootScope.$broadcast('cartCount')
-    //   console.log(response, "here is the response");
-    //   $scope.orderNumber = $state.params.orderid;
-    //   $scope.orderProducts = response;
-    //   $scope.shipping = parseInt($scope.orderProducts[0].shipping);
-    // }
-
-
   })
 
 })

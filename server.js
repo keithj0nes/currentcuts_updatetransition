@@ -188,6 +188,11 @@ app.get("/api/order/:id/thankyou", function(req, res, next){
 app.post("/api/cart", mainCtrl.addProductsToCart);
 app.get("/api/cart", mainCtrl.getProductsInCart);
 app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
+app.put("/api/cart", (req, res, next) => {
+  console.log(req.body, "UPDATE CART");
+  req.session.cart = req.body;
+  res.send(req.session.cart);
+})
 
 
 //PRODUCTS

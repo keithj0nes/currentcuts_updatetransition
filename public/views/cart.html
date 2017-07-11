@@ -88,7 +88,7 @@
 
     </div>
 
-    <div class="" ng-repeat="item in cart">
+    <div class="" ng-repeat="item in cart track by $index">
 
 
       <div class="cart-product-info-d pad" > <!-- ng-repeat items in cart -->
@@ -115,7 +115,8 @@
         </div>
 
         <div class="cart-product-qty-d pad w25">
-            <input type="text" name="" value="{{item.productQuantity}}">
+            <input type="text" id="itemincartid_{{$index}}" value="{{item.productQuantity}}">
+            <button type="button" ng-click="updateCart($index)">UD</button>
         </div>
 
         <div class="cart-product-itemtotal-d pad w25 center">
@@ -206,6 +207,7 @@
       <hr class="lastItem">
       <div class="">
         <ship-date></ship-date>
+        <!-- <button type="button" ng-click="updateCart()">Update Cart</button> -->
       </div>
       <hr class="lastItem">
 

@@ -1,32 +1,35 @@
 angular.module("ccvApp").controller("cartController", function($scope, $http, $state, $rootScope, mainService){
 
   $scope.guestistrue = false;
-
-  $scope.guestUser = () => {
-    console.log("GUEST USER", $scope.guestistrue);
-    $scope.guestistrue = !$scope.guestistrue;
-    console.log("GUEST USER", $scope.guestistrue);
-
-  }
-
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
   $rootScope.cartQuant = 0;
   let shipAddressConfirmed;
 
+  $scope.guestUser = () => {
+    $scope.guestistrue = !$scope.guestistrue;
+  }
+
   $scope.cartDelete = function(item){
     mainService.deleteProductsInCart(item).then(function(response){
       $scope.cart = response.data;
       var costs = calculate($scope.cart);
-
       $scope.cartTotal = costs.total;
       $scope.shippingCost = costs.shipping;
       $scope.orderTotal = costs.total + costs.shipping;
       getProductsInCart();
       $rootScope.$broadcast('cartCount')
-      // console.log(getProductsInCart);
     });
+  }
+
+  $scope.updateCart = function(index){
+    var value = document.getElementById("itemincartid_"+index).value;
+    $scope.cart[index].productQuantity = value;
+    mainService.updateProductsInCart($scope.cart).then((response) => {
+      getProductsInCart();
+      $rootScope.$broadcast('cartCount');
+    })
   }
 
   function calculate(cart) {
@@ -56,10 +59,8 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     $scope.cartTotalItems = 0;
     for(var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
-      // mainService.cartStorage.push($scope.cart[i].productQuantity)
     }
     console.log($scope.cartTotalItems, "total items function here");
-    // mainService.getCartStorage();
 
     return $scope.cartTotalItems;
   }
@@ -103,18 +104,6 @@ getProductsInCart();
 
 
 
-
-  // let orderData = {
-  //   order: {
-  //   },
-  //   // email: "currentcutstest@gmail.com",
-  //   // email: ,
-  //   user: {
-  //   },
-  //   product: []//{
-  //
-  // }
-
   if($rootScope.details){
     $scope.shipNameFirst = $rootScope.details.recNameFirst;
     $scope.shipNameLast = $rootScope.details.recNameLast;
@@ -126,7 +115,6 @@ getProductsInCart();
     $scope.shipNote = $rootScope.note.note;
   }
 
-  // $('.btn-stripe').on('click', orderData, function(e) {
   $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
 
     //
@@ -162,17 +150,9 @@ getProductsInCart();
       email: document.getElementById('userEmail').value
     }
 
-    // console.log(shipEmail);
-    console.log($rootScope.details, "scopedetailsbeinglogged");
+    // console.log($rootScope.details, "scopedetailsbeinglogged");
 
-    // console.log("clicked");
     $scope.value = $rootScope.details
-    // console.log($scope.value, "scopedotvalue");
-    // if($scope.value){
-    //   console.log(true);
-    // } else {
-    //   console.log(false);
-    // }
 
     if($rootScope.note.note){
       // console.log($rootScope.note.note, "rootScope.no.note");
@@ -201,6 +181,9 @@ getProductsInCart();
 
 
     });
+
+
+
     console.log(orderData, "orderdata logged");
   // Open Checkout with further options:
   // console.log(e.data, "USER DATA STRIPE CLICK");
@@ -248,54 +231,5 @@ getProductsInCart();
   };
 
 
-
-  // var getProductsInCart = function(){
-  //   mainService.getProductsInCart().then(function(response){
-  //     console.log(response, "in controller");
-  //     $scope.cart = response;
-  //     $scope.cartTotal = 0;
-  //     console.log($scope.cart.length, "hajksdhgjlka;sdjgl;asd");
-  //
-  //     var calculate = function(){
-  //       for (var i = 0; i < $scope.cart.length; i++) {
-  //         $scope.cartTotal += (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
-  //         console.log($scope.cart[i].productQuantity);
-  //         console.log($scope.cart[i].productPrice);
-  //         //discount if 5 or more items
-  //         // if ($scope.cart[i].productQuantity >= 5){
-  //         //   $scope.cart[i].productPrice *= .95
-  //         // }
-  //       }
-  //       console.log($scope.cartTotal);
-  //
-  //       $scope.shippingCost = 0;
-  //       if ($scope.cartTotal >= 1 && $scope.cartTotal <= 9 ){
-  //         $scope.shippingCost = 2;
-  //       } else if ($scope.cartTotal >= 10){
-  //         $scope.shippingCost = 3;
-  //       }
-  //
-  //       $scope.orderTotal = $scope.cartTotal + $scope.shippingCost;
-  //
-  //       $scope.cartDelete = function(item){
-  //         for(var i = $scope.cart.length-1; i>=0; i--){
-  //           if($scope.cart[i].productName === item.productName){
-  //             $scope.cart.splice(i, 1);
-  //             $scope.cartTotal -= (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
-  //           }
-  //         }
-  //         calculate();
-  //       }
-  //     }
-  //     calculate();
-  //
-  //
-  //
-  //   })
-  // }
-
-  // getProductsInCart();
-
-  // $scope.itemTotal =
 
 })

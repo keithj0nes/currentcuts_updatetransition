@@ -138,6 +138,17 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.updateProductsInCart = function(cartData){
+    return $http({
+      method: "PUT",
+      url: "/api/cart",
+      data: cartData
+    }).then(function(res){
+      console.log(res, "in service");
+      return res.data;
+    })
+  }
+
   this.getProductsInCart = function(){
     return $http({
       method: "GET",

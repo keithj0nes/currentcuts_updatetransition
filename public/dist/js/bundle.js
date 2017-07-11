@@ -4408,30 +4408,34 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 angular.module("ccvApp").controller("cartController", function ($scope, $http, $state, $rootScope, mainService) {
 
   $scope.guestistrue = false;
-
-  $scope.guestUser = function () {
-    console.log("GUEST USER", $scope.guestistrue);
-    $scope.guestistrue = !$scope.guestistrue;
-    console.log("GUEST USER", $scope.guestistrue);
-  };
-
   $scope.cartTotal = 0;
   $scope.shippingCost = 0;
   $scope.orderTotal = 0;
   $rootScope.cartQuant = 0;
   var shipAddressConfirmed = void 0;
 
+  $scope.guestUser = function () {
+    $scope.guestistrue = !$scope.guestistrue;
+  };
+
   $scope.cartDelete = function (item) {
     mainService.deleteProductsInCart(item).then(function (response) {
       $scope.cart = response.data;
       var costs = calculate($scope.cart);
-
       $scope.cartTotal = costs.total;
       $scope.shippingCost = costs.shipping;
       $scope.orderTotal = costs.total + costs.shipping;
       getProductsInCart();
       $rootScope.$broadcast('cartCount');
-      // console.log(getProductsInCart);
+    });
+  };
+
+  $scope.updateCart = function (index) {
+    var value = document.getElementById("itemincartid_" + index).value;
+    $scope.cart[index].productQuantity = value;
+    mainService.updateProductsInCart($scope.cart).then(function (response) {
+      getProductsInCart();
+      $rootScope.$broadcast('cartCount');
     });
   };
 
@@ -4462,10 +4466,8 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     $scope.cartTotalItems = 0;
     for (var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
-      // mainService.cartStorage.push($scope.cart[i].productQuantity)
     }
     console.log($scope.cartTotalItems, "total items function here");
-    // mainService.getCartStorage();
 
     return $scope.cartTotalItems;
   };
@@ -4504,17 +4506,6 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
 
   getProductsInCart();
 
-  // let orderData = {
-  //   order: {
-  //   },
-  //   // email: "currentcutstest@gmail.com",
-  //   // email: ,
-  //   user: {
-  //   },
-  //   product: []//{
-  //
-  // }
-
   if ($rootScope.details) {
     $scope.shipNameFirst = $rootScope.details.recNameFirst;
     $scope.shipNameLast = $rootScope.details.recNameLast;
@@ -4526,7 +4517,6 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     $scope.shipNote = $rootScope.note.note;
   }
 
-  // $('.btn-stripe').on('click', orderData, function(e) {
   $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote) {
 
     //
@@ -4560,17 +4550,9 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
       email: document.getElementById('userEmail').value
     };
 
-    // console.log(shipEmail);
-    console.log($rootScope.details, "scopedetailsbeinglogged");
+    // console.log($rootScope.details, "scopedetailsbeinglogged");
 
-    // console.log("clicked");
     $scope.value = $rootScope.details;
-    // console.log($scope.value, "scopedotvalue");
-    // if($scope.value){
-    //   console.log(true);
-    // } else {
-    //   console.log(false);
-    // }
 
     if ($rootScope.note.note) {
       // console.log($rootScope.note.note, "rootScope.no.note");
@@ -4597,6 +4579,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
         });
       }
     });
+
     console.log(orderData, "orderdata logged");
     // Open Checkout with further options:
     // console.log(e.data, "USER DATA STRIPE CLICK");
@@ -4639,55 +4622,6 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
       // e.preventDefault();
     }
   };
-
-  // var getProductsInCart = function(){
-  //   mainService.getProductsInCart().then(function(response){
-  //     console.log(response, "in controller");
-  //     $scope.cart = response;
-  //     $scope.cartTotal = 0;
-  //     console.log($scope.cart.length, "hajksdhgjlka;sdjgl;asd");
-  //
-  //     var calculate = function(){
-  //       for (var i = 0; i < $scope.cart.length; i++) {
-  //         $scope.cartTotal += (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
-  //         console.log($scope.cart[i].productQuantity);
-  //         console.log($scope.cart[i].productPrice);
-  //         //discount if 5 or more items
-  //         // if ($scope.cart[i].productQuantity >= 5){
-  //         //   $scope.cart[i].productPrice *= .95
-  //         // }
-  //       }
-  //       console.log($scope.cartTotal);
-  //
-  //       $scope.shippingCost = 0;
-  //       if ($scope.cartTotal >= 1 && $scope.cartTotal <= 9 ){
-  //         $scope.shippingCost = 2;
-  //       } else if ($scope.cartTotal >= 10){
-  //         $scope.shippingCost = 3;
-  //       }
-  //
-  //       $scope.orderTotal = $scope.cartTotal + $scope.shippingCost;
-  //
-  //       $scope.cartDelete = function(item){
-  //         for(var i = $scope.cart.length-1; i>=0; i--){
-  //           if($scope.cart[i].productName === item.productName){
-  //             $scope.cart.splice(i, 1);
-  //             $scope.cartTotal -= (parseInt($scope.cart[i].productPrice) * parseInt($scope.cart[i].productQuantity));
-  //           }
-  //         }
-  //         calculate();
-  //       }
-  //     }
-  //     calculate();
-  //
-  //
-  //
-  //   })
-  // }
-
-  // getProductsInCart();
-
-  // $scope.itemTotal =
 });
 "use strict";
 
@@ -4820,15 +4754,11 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
 });
 "use strict";
 
-angular.module("ccvApp").controller("thankyouController", function ($scope, $state, mainService) {
-
-  console.log($state.params.orderid, "order id passed from cart");
-  $scope.test = $state.params.orderid + " here is order id haha";
+angular.module("ccvApp").controller("thankyouController", function ($scope, $rootScope, $state, mainService) {
 
   mainService.getThankYouById($state.params.orderid).then(function (response) {
-    console.log(response, "HERE IS THE RESPONSE");
-    console.log(response.length, "logging length");
     if (response.length >= 1) {
+      $rootScope.$broadcast('cartCount');
       $scope.thankyouResponse = true;
       $scope.orderNumber = $state.params.orderid;
       $scope.thankyouOrder = response;
@@ -4836,19 +4766,6 @@ angular.module("ccvApp").controller("thankyouController", function ($scope, $sta
     } else {
       $scope.thankyouResponse = false;
     }
-
-    // if(response.results === false){
-    //   console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
-    //   console.log(response.results, "lol");
-    //   $state.go("orderhistory");
-    // } else if (response){
-    //   $rootScope.$broadcast('cartCount')
-    //   console.log(response, "here is the response");
-    //   $scope.orderNumber = $state.params.orderid;
-    //   $scope.orderProducts = response;
-    //   $scope.shipping = parseInt($scope.orderProducts[0].shipping);
-    // }
-
   });
 });
 "use strict";
@@ -5334,6 +5251,17 @@ angular.module("ccvApp").service("mainService", function ($http) {
       data: cartData
     }).success(function () {
       console.log("Item Added!");
+    });
+  };
+
+  this.updateProductsInCart = function (cartData) {
+    return $http({
+      method: "PUT",
+      url: "/api/cart",
+      data: cartData
+    }).then(function (res) {
+      console.log(res, "in service");
+      return res.data;
     });
   };
 
