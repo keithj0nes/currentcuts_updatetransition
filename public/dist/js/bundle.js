@@ -4642,7 +4642,9 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 angular.module("ccvApp").controller("productController", function ($scope, $rootScope, $stateParams, mainService, $sce) {
 
   $scope.addToCartModal = false;
+  $scope.productQuantity = 1;
 
+  // console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
 
   var outlineCheckbox = false;
@@ -4677,7 +4679,16 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     });
   };
 
-  $scope.productQuantity = 1;
+  $scope.addFavorite = function () {
+    console.log("clicked");
+    mainService.addFavorite($stateParams.id).then(function (res) {
+      console.log(res, "res in addFavorite");
+      if (res.reqUser === false) {
+        swal("you must be logged in");
+      }
+    });
+  };
+
   $scope.addToCart = function (productColor, productQuantity, productObject) {
     //create object to send to service to push to cart
     var cartData = {
@@ -5329,6 +5340,20 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "PUT",
       url: "/api/user/email",
       data: newEmail
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
+  };
+
+  this.addFavorite = function (productId) {
+    var product = {
+      productId: productId
+    };
+    return $http({
+      method: "POST",
+      url: "/api/user/favorite",
+      data: product
     }).then(function (res) {
       console.log(res);
       return res.data;

@@ -1,7 +1,9 @@
 angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService, $sce){
 
   $scope.addToCartModal = false;
+  $scope.productQuantity = 1;
 
+// console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
 
   var outlineCheckbox = false;
@@ -37,7 +39,17 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   }
 
 
-  $scope.productQuantity = 1;
+  $scope.addFavorite = function(){
+    console.log("clicked");
+    mainService.addFavorite($stateParams.id).then((res) => {
+      console.log(res, "res in addFavorite");
+      if(res.reqUser === false){
+        swal("you must be logged in")
+      }
+    })
+  }
+
+
   $scope.addToCart = function(productColor,productQuantity, productObject){
     //create object to send to service to push to cart
     const cartData = {

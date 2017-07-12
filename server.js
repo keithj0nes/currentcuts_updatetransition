@@ -223,6 +223,28 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
 
 
+app.post("/api/user/favorite", function(req,res,next){
+
+  if(req.user){
+    console.log(true);
+    db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}, (err, fav) => {
+      if(err){
+        console.log(err);
+        res.status(500).send(err)
+      }
+      console.log(fav);
+      res.send(fav);
+    })
+  } else {
+    console.log(false);
+    res.send({reqUser: false});
+  }
+
+
+})
+
+
+
 app.post("/api/charge", function(req, res, next){
 
   // Get the credit card details submitted by the form

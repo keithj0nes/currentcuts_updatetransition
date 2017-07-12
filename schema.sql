@@ -29,7 +29,13 @@ CREATE TABLE users (
 CREATE TABLE guest_users (
   id SERIAL PRIMARY KEY,
   email TEXT
-)
+);
+
+CREATE TABLE favorites (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id),
+  product_id INTEGER REFERENCES products(id)
+);
 
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,

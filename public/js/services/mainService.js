@@ -227,6 +227,20 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.addFavorite = function(productId){
+    const product = {
+      productId: productId
+    }
+    return $http({
+      method: "POST",
+      url: "/api/user/favorite",
+      data: product
+    }).then((res) => {
+      console.log(res);
+      return res.data;
+    })
+  }
+
 
 
   // this.cartStorage = [1,2,3];
