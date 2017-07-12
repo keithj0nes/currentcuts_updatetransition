@@ -42,7 +42,7 @@
   - [ ] Show total likes/favorites on product page
 
 - [x] Allow user to edit stored email in Account Settings 7/9/17
-  - [ ] Check db to make sure email is not already taken
+  - [x] Check db to make sure email is not already taken 7/12/17
 
 - [ ] Sign up with Twitter/Google/Facebook pulls guest orders specified with email
 
