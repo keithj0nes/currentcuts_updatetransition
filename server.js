@@ -102,14 +102,25 @@ failureRedirect: '/#/', successRedirect:'/#/login-success'
 //USERS
   //update user email
 app.put("/api/user/email", function(req, res, next){
-  db.users.update({id: req.user.id, email: req.body.email}, function(err, user){
+  db.users.findOne({email: req.body.email}, (err, findEmail) => {
     if(err){
       console.log(err);
-      res.status(500).send(err)
+      res.status(500).send(err);
     }
-    req.user.email = user.email;
-    res.send({success: true})
+    if(findEmail){
+      res.send({success: false})
+    } else {
+      db.users.update({id: req.user.id, email: req.body.email}, function(err, user){
+        if(err){
+          console.log(err);
+          res.status(500).send(err)
+        }
+        req.user.email = user.email;
+        res.send({success: true})
+      })
+    }
   })
+
 })
 app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/currentuser", usersCtrl.getCurrentUser)
@@ -165,7 +176,7 @@ app.get("/api/order/:id/history", function(req, res, next){
 })
 
 app.get("/api/order/:id/thankyou", function(req, res, next){
-  console.log(req.params.id, "logging params");
+  // console.log(req.params.id, "logging params");
   /////// NEED TO SET SOME SORT OF EXPIRATION
   db.get_thank_you_by_id([req.params.id], function(err, order){
     if(err){

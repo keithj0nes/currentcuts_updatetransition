@@ -5,29 +5,24 @@ $scope.updateSuccess = false;
 var getOrderHistory = function(){
   mainService.getOrderHistory().then(function(response){
     $scope.history = response;
-    // console.log(response, "getOrderHistory being hit");
-    // console.log($scope.history, "scope.history");
     if(response.requser === false){
       $state.go("login");
     }
   })
 }
 
-$scope.test = "here is a test"
-// console.log($state, "logging state");
-// console.log($state.params, "logging state params");
 $scope.updateAccount = function(userEmail){
   let newEmail = {
     email: userEmail
   }
-  console.log(newEmail);
 
   mainService.updateAccount(newEmail).then(function(response){
-    console.log(response);
     if(response.success === true){
       $scope.updateSuccess = true;
+      $scope.accountMessage = "Your account has been updated!"
     } else {
-      swal("NoT sUcEsSfUL")
+      $scope.updateSuccess = true;
+      $scope.accountMessage = "Sorry, that email already exists"
     }
   })
 
@@ -71,21 +66,21 @@ if($state.params.orderid){
 
 //modal to confirm account update successfull
 
-var modal = document.getElementById('modalz');
+  var modal = document.getElementById('modalz');
 
-$scope.closeAccountModal = function(){
-  $scope.updateSuccess = false;
-  console.log($scope.updateSuccess, "close");
-}
-
-window.onclick = function(e) {
-  console.log(e.target, "logging target");
-  if (e.target == modal) {
+  $scope.closeAccountModal = function(){
     $scope.updateSuccess = false;
-    $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-    console.log($scope.updateSuccess, "close window");
+    console.log($scope.updateSuccess, "close");
   }
-}
+
+  window.onclick = function(e) {
+    console.log(e.target, "logging target");
+    if (e.target == modal) {
+      $scope.updateSuccess = false;
+      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+      console.log($scope.updateSuccess, "close window");
+    }
+  }
 
 
 

@@ -4777,29 +4777,24 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
       $scope.history = response;
-      // console.log(response, "getOrderHistory being hit");
-      // console.log($scope.history, "scope.history");
       if (response.requser === false) {
         $state.go("login");
       }
     });
   };
 
-  $scope.test = "here is a test";
-  // console.log($state, "logging state");
-  // console.log($state.params, "logging state params");
   $scope.updateAccount = function (userEmail) {
     var newEmail = {
       email: userEmail
     };
-    console.log(newEmail);
 
     mainService.updateAccount(newEmail).then(function (response) {
-      console.log(response);
       if (response.success === true) {
         $scope.updateSuccess = true;
+        $scope.accountMessage = "Your account has been updated!";
       } else {
-        swal("NoT sUcEsSfUL");
+        $scope.updateSuccess = true;
+        $scope.accountMessage = "Sorry, that email already exists";
       }
     });
   };
