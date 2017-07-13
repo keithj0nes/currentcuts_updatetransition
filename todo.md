@@ -41,7 +41,7 @@
 - [ ] Sign up with Twitter/Google/Facebook pulls guest orders specified with email
 
 - [x] Allow users to like/favorite products 7/12/17
-  - [ ] Show total likes/favorites on product page
+  - [x] Show total likes/favorites on product page 7/12/17
 
 - [x] Allow user to edit stored email in Account Settings 7/9/17
   - [x] Check db to make sure email is not already taken 7/12/17
