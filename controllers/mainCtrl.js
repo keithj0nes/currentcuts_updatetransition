@@ -33,14 +33,31 @@ module.exports = {
   },
 
   getProductById2: function(req, res, next){
+    console.log(req.params.id, "req.params.id");
+    var wholeProduct = {};
     db.get_product_by_id_details([req.params.id], function(err, product){
       if(err){
         console.log(err);
         return res.status(500).send(err)
       }
       console.log("getProductById2");
-      return res.send(product)
+      // return res.send(product)
+      wholeProduct["product"] = product;
+
+      db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
+        if(err){
+          console.log(err);
+          res.status(500).send(err);
+        }
+        console.log(totalFavs, "logging totalFavs");
+        // res.send(totalFavs)
+        wholeProduct.totalFavs = totalFavs;
+        // console.log(wholeProduct, "hi");
+        res.send(wholeProduct)
+      })
+
     })
+
   },
 
   //simple search

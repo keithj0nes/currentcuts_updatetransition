@@ -4675,17 +4675,22 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     });
     mainService.getProductById2($stateParams.id).then(function (response) {
       //response gives us all heights, widths and prices
-      $scope.product2 = response;
+      $scope.product2 = response.product;
+      //response gives us the total number of favorites
+      $scope.favCount = response.totalFavs[0].count;
     });
   };
 
   $scope.addFavorite = function () {
-    console.log("clicked");
     mainService.addFavorite($stateParams.id).then(function (res) {
-      console.log(res, "res in addFavorite");
-      $scope.favCount = res[0].count;
+
       if (res.reqUser === false) {
         swal("you must be logged in");
+      } else if (res.favFound === true) {
+        swal("this is already a favorite");
+      } else if (res[0]) {
+        $scope.favCount = res[0].count;
+        console.log("added to favorite!");
       }
     });
   };
