@@ -4683,6 +4683,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     console.log("clicked");
     mainService.addFavorite($stateParams.id).then(function (res) {
       console.log(res, "res in addFavorite");
+      $scope.favCount = res[0].count;
       if (res.reqUser === false) {
         swal("you must be logged in");
       }

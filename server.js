@@ -222,19 +222,42 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.delete("/api/users/:d");
 
 
-
 app.post("/api/user/favorite", function(req,res,next){
 
   if(req.user){
     console.log(true);
-    db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}, (err, fav) => {
+
+    db.favorites.findOne({user_id: req.user.id, product_id: req.body.productId}, (err, found) => {
       if(err){
         console.log(err);
-        res.status(500).send(err)
+        res.status(500).send(err);
       }
-      console.log(fav);
-      res.send(fav);
+
+      if(found){
+        console.log("found");
+        res.send({favFound: true})
+      } else {
+        console.log("not found");
+        db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}, (err, fav) => {
+          if(err){
+            console.log(err);
+            res.status(500).send(err)
+          }
+          console.log(fav);
+          db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId], (err, totalFavs) => {
+            if(err){
+              console.log(err);
+              res.status(500).send(err);
+            }
+            console.log(totalFavs, "logging totalFavs");
+            res.send(totalFavs)
+          })
+          // res.send({favAdded: true});
+        })
+      }
+      console.log(found);
     })
+
   } else {
     console.log(false);
     res.send({reqUser: false});
