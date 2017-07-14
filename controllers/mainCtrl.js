@@ -41,19 +41,36 @@ module.exports = {
         return res.status(500).send(err)
       }
       console.log("getProductById2");
-      // return res.send(product)
-      wholeProduct["product"] = product;
+      wholeProduct.product = product;
 
       db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
         if(err){
           console.log(err);
           res.status(500).send(err);
         }
-        console.log(totalFavs, "logging totalFavs");
-        // res.send(totalFavs)
+
         wholeProduct.totalFavs = totalFavs;
-        // console.log(wholeProduct, "hi");
-        res.send(wholeProduct)
+
+        if(req.user){
+          db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
+            if(err){
+              console.log(err);
+              res.status(500).send(err);
+            }
+
+            if(found){
+              wholeProduct.favFound = true;
+              // console.log(wholeProduct, "holdprodcut");
+              res.send(wholeProduct)
+
+            } else {
+              // no favorite found
+              res.send(wholeProduct)
+            }
+          })
+        } else {
+          res.send(wholeProduct)
+        }
       })
 
     })

@@ -2,6 +2,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
   $scope.addToCartModal = false;
   $scope.productQuantity = 1;
+  $scope.favorited = false;
 
 // console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
@@ -37,19 +38,33 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       $scope.product2 = response.product;
       //response gives us the total number of favorites
       $scope.favCount = response.totalFavs[0].count;
+      console.log(response);
+      if(response.favFound){
+        console.log(true);
+        $scope.favorited = true;
+      }
     })
   }
 
 
   $scope.addFavorite = function(){
-    mainService.addFavorite($stateParams.id).then((res) => {
+    // $scope.favorited = !$scope.favorited;
+    // console.log($scope.favorited);
 
+    mainService.addFavorite($stateParams.id).then((res) => {
+// console.log(res);
+// $scope.favorited = !$scope.favorited;
+console.log($scope.favorited);
       if(res.reqUser === false){
         swal("you must be logged in")
       } else if(res.favFound === true){
         swal("this is already a favorite");
+        $scope.favorited = true;
       } else if (res[0]){
         $scope.favCount = res[0].count;
+        // $scope.favorited = true;
+        $scope.favorited = !$scope.favorited;
+
         console.log("added to favorite!");
       }
     })

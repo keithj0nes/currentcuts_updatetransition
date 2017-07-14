@@ -7,7 +7,16 @@
 
   <div class="details">
     <h2 class="desc">{{product.name}}</h2>
-    {{favCount}}<p style="float:right; cursor: pointer;" ng-click="addFavorite()">&lt;3</p>
+
+    <button type="button" class="flright" style="width: 70px; height: 30px; padding: 0px 5px;" ng-click="addFavorite()">
+      <div ng-if="!favorited" style="padding: 0px 5px; display: flex; align-items: center; justify-content: space-between;">
+        <i class="material-icons" style="">favorite_border</i> {{favCount}}
+      </div>
+      <div ng-if="favorited" style=" padding: 0px 5px; display: flex; align-items: center; justify-content: space-between;">
+        <i class="material-icons" style="color: blue;">favorite</i> {{favCount}}
+      </div>
+    </button>
+    
     <p class="productPrice" ng-model="pppprice">&nbsp;{{productPrice.price | currency}}</p>
 
   <form ng-submit="addToCart(productColor, productQuantity, productPrice)">
