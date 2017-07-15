@@ -36,13 +36,15 @@
         <!-- mobile -->
         <!-- <a ng-if="username" ui-sref="login" class="login hideDesktop">{{usernameFirst}}</a>
         <a ng-if="!username" ui-sref="login" class="login hideDesktop">L</a> -->
-
+        <i class="material-icons hideDesktop scale-nav" ui-sref="userfavorites">favorite_border</i>
         <i class="material-icons hideDesktop scale-nav" ui-sref="login">person</i>
 
 
 
 
         <!-- desktop -->
+        <!-- need to style -->
+        <i class="material-icons hideMobile" ui-sref="userfavorites">favorite_border</i>
         <a ng-if="username" class="login hideMobile" ng-click="showModal()">{{username}}</a>
         <a ng-if="!username" ui-sref="login" class="login hideMobile">Login</a>
 

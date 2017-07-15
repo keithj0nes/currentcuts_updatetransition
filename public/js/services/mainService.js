@@ -233,10 +233,20 @@ angular.module("ccvApp").service("mainService", function($http){
     }
     return $http({
       method: "POST",
-      url: "/api/user/favorite",
+      url: "/api/user/favorites",
       data: product
     }).then((res) => {
       console.log(res);
+      return res.data;
+    })
+  }
+
+  this.getFavorites = function(){
+    return $http({
+      method: "GET",
+      url: "/api/user/favorites"
+    }).then((res) => {
+      console.log(res, "getFavorites in service");
       return res.data;
     })
   }

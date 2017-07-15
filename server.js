@@ -222,7 +222,7 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.delete("/api/users/:d");
 
 
-app.post("/api/user/favorite", function(req,res,next){
+app.post("/api/user/favorites", function(req,res,next){
 
   if(req.user){
     db.favorites.findOne({user_id: req.user.id, product_id: req.body.productId}, (err, found) => {
@@ -266,6 +266,24 @@ app.post("/api/user/favorite", function(req,res,next){
     res.send({reqUser: false});
   }
 
+
+})
+
+app.get("/api/user/favorites", (req, res,next) => {
+
+  if(req.user){
+    db.get_favorites_by_user_id([req.user.id], (err, userFavs) => {
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+      console.log(userFavs, "logging userFavs");
+      res.send(userFavs);
+    })
+  } else {
+    console.log("no one logged in");
+    res.send({reqUser: false})
+  }
 
 })
 

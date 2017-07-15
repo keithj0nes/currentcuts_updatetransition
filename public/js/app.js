@@ -80,6 +80,11 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/accountsettings.html",
       controller: "userController"
     })
+    .state("userfavorites", {
+      url: "/user/favorites",
+      templateUrl: "views/favorites.html",
+      controller: "favoriteController"
+    })
 
     $urlRouterProvider
   .otherwise("/");
