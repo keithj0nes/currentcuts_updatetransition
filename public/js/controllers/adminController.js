@@ -1,9 +1,12 @@
 angular.module("ccvApp").controller("adminController", function($scope, mainService){
 
+  $scope.priceSize = false;
+  $scope.addNew = false;
   $scope.products = [];
   $scope.selectedProductToEdit;
   var getAllProducts = function(){
-    mainService.getAllProducts().then(function(response){
+    mainService.adminGetAllProducts().then(function(response){
+      console.log(response, "response in adminController");
       $scope.products = response;
     })
   }
@@ -33,6 +36,24 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productPrice = product.price;
     $scope.productImgOne = product.img1;
     $scope.productImgTwo = product.img2;
+    console.log(product, "editProducts");
+    mainService.adminEditProducts(product.id).then((res) => {
+      $scope.priceSize = true;
+      $scope.addNew = true;
+      $scope.productDetails = res.product;
+      console.log(res, "editProducts res");
+
+
+    })
+  }
+
+  $scope.addNewRow = function(){
+    console.log("running");
+    $scope.productDetails.push({"height": $scope.height,
+                                "width": $scope.width,
+                                "price": $scope.price})
+                                console.log($scope.productDetails, "hahah lol momg");
+
   }
 
   $scope.clearForm = function(){
@@ -42,6 +63,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
+    $scope.productDetails = "";
+    $scope.addNew = false;
   }
 
 
@@ -59,6 +82,25 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   }
 
+  $scope.updateDetails = function(productDetails){
+    console.log(productDetails);
+    let details = {
+      // height:
+    }
+  }
+
+  $scope.deleteDetails = function(index, productDetails){
+
+    var objLength = Object.keys(productDetails).length;
+    for (var i = objLength-1; i >= 0; i--) {
+      // if($scope.products[i].id === product.id){
+      if(i === index){
+      console.log(i, index);
+        $scope.productDetails.splice(index, 1);
+      }
+    }
+    console.log($scope.productDetails);
+  }
   $scope.update = function(id, name, description, price, img1, img2){
     mainService.updateProduct(id, name, description, price, img1, img2);
     setTimeout(function () {
@@ -86,12 +128,12 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
-  var getUsername = function() {
-    mainService.getUsername().then(function(response){
-      $scope.username = response;
-    })
-  }
-
-  getUsername();
+  // var getUsername = function() {
+  //   mainService.getUsername().then(function(response){
+  //     $scope.username = response;
+  //   })
+  // }
+  //
+  // getUsername();
 
 })

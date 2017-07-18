@@ -9,6 +9,24 @@ angular.module("ccvApp").service("mainService", function($http){
       return response.data
     })
   }
+  this.adminGetAllProducts = function(){
+    return $http({
+      method: "GET",
+      url: "/api/admin/products"
+    }).then(function(response){
+      console.log(response.data, "getAllProducts");
+      return response.data
+    })
+  }
+
+  this.adminEditProducts = function(id){
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id + "/details"
+    }).then((res) => {
+      return res.data;
+    })
+  }
 
   this.getProductById = function(id){
     return $http({

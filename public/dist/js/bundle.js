@@ -4329,10 +4329,13 @@ angular.module("ccvApp").directive("shiptime", function ($interval) {
 
 angular.module("ccvApp").controller("adminController", function ($scope, mainService) {
 
+  $scope.priceSize = false;
+  $scope.addNew = false;
   $scope.products = [];
   $scope.selectedProductToEdit;
   var getAllProducts = function getAllProducts() {
-    mainService.getAllProducts().then(function (response) {
+    mainService.adminGetAllProducts().then(function (response) {
+      console.log(response, "response in adminController");
       $scope.products = response;
     });
   };
@@ -4349,6 +4352,21 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productPrice = product.price;
     $scope.productImgOne = product.img1;
     $scope.productImgTwo = product.img2;
+    console.log(product, "editProducts");
+    mainService.adminEditProducts(product.id).then(function (res) {
+      $scope.priceSize = true;
+      $scope.addNew = true;
+      $scope.productDetails = res.product;
+      console.log(res, "editProducts res");
+    });
+  };
+
+  $scope.addNewRow = function () {
+    console.log("running");
+    $scope.productDetails.push({ "height": $scope.height,
+      "width": $scope.width,
+      "price": $scope.price });
+    console.log($scope.productDetails, "hahah lol momg");
   };
 
   $scope.clearForm = function () {
@@ -4358,6 +4376,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
+    $scope.productDetails = "";
+    $scope.addNew = false;
   };
 
   $scope.add = function (name, description, price, img1, img2) {
@@ -4373,6 +4393,25 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     }, 100);
   };
 
+  $scope.updateDetails = function (productDetails) {
+    console.log(productDetails);
+    var details = {
+      // height:
+    };
+  };
+
+  $scope.deleteDetails = function (index, productDetails) {
+
+    var objLength = Object.keys(productDetails).length;
+    for (var i = objLength - 1; i >= 0; i--) {
+      // if($scope.products[i].id === product.id){
+      if (i === index) {
+        console.log(i, index);
+        $scope.productDetails.splice(index, 1);
+      }
+    }
+    console.log($scope.productDetails);
+  };
   $scope.update = function (id, name, description, price, img1, img2) {
     mainService.updateProduct(id, name, description, price, img1, img2);
     setTimeout(function () {
@@ -4399,13 +4438,13 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     });
   };
 
-  var getUsername = function getUsername() {
-    mainService.getUsername().then(function (response) {
-      $scope.username = response;
-    });
-  };
-
-  getUsername();
+  // var getUsername = function() {
+  //   mainService.getUsername().then(function(response){
+  //     $scope.username = response;
+  //   })
+  // }
+  //
+  // getUsername();
 });
 "use strict";
 
@@ -5183,6 +5222,24 @@ angular.module("ccvApp").service("mainService", function ($http) {
     }).then(function (response) {
       console.log(response.data, "getAllProducts");
       return response.data;
+    });
+  };
+  this.adminGetAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products"
+    }).then(function (response) {
+      console.log(response.data, "getAllProducts");
+      return response.data;
+    });
+  };
+
+  this.adminEditProducts = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id + "/details"
+    }).then(function (res) {
+      return res.data;
     });
   };
 

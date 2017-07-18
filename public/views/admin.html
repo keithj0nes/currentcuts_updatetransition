@@ -1,5 +1,8 @@
 <main class="admin-main">
-  <h1>Admin - {{username}}</h1>
+  <div check-logged-in>
+    <h1>Admin - {{username}}</h1>
+
+  </div>
 
   <div class="admin-items">
     <div class="admin-filter">
@@ -24,9 +27,44 @@
     <h3>Description</h3>
     <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
 
-    <h3>Price</h3>
-    <input type="text" name="" placeholder="Price" ng-model="productPrice">
+    <h3 style="display: inline-block; width: 60%;">Size</h3>
+    <h3 style="display: inline-block; width: 30%;">Price</h3>
 
+    <div ng-repeat="ps in productDetails">
+      <!-- <h3>Size</h3> -->
+      <!-- <h3>Price</h3> -->
+      <div ng-hide="editing" class="">
+        <!-- <span ng-hide="editing">{{ps.height}} "H</span>
+        <span ng-hide="editing">{{ps.height}} "H</span> -->
+        <span style="display: inline-block; width: 30%;">{{ps.height}} "H</span>
+        <span style="display: inline-block; width: 30%;">{{ps.width}} "W</span>
+        <span style="display: inline-block; width: 30%;">${{ps.price}}</span>
+        <button ng-click="editing = true" ng-hide="editing" name="button" >edit</button>
+        <button  type="submit" ng-click="deleteDetails($index, ps)">X</button>
+
+      </div>
+      <!-- <span ng-hide="editing">{{ps.height}} "H</span> -->
+      <form ng-show="editing" ng-submit="editing = false">
+        <input type="number" step="any" style="width: 30%;"ng-model="ps.height" />
+        <input type="number" step="any" style="width: 30%;" ng-model="ps.width" />
+        <input type="number" step="any" style="width: 30%;"ng-model="ps.price" />
+
+        <button  type="submit" ng-click="updateDetails(ps)">Save</button>
+      </form>
+
+
+      <!-- <input ng-show="editing" type="text" style="width: 25%;" ng-model="ps.height">"H
+      <input type="text" style="width: 25%;" ng-model="ps.width">"W -->
+
+    </div>
+
+
+    <button ng-if="addNew" type="button" ng-click="addNewRow()">add new row</button>
+
+
+<div class="" style="clear: both">
+
+</div>
     <h3>Image 1</h3>
     <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
 

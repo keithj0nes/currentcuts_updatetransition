@@ -41,21 +41,36 @@ app.use(passport.session());
 
 isAuthenticated = (req, res, next) => {
   if(req.user){
-    console.log("req.user true");
+    // console.log("req.user true");
     if(req.user.admin){
-      console.log("req.user.admin true");
+      // console.log("req.user.admin true");
       req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
       return next()
     }
     req.reqUser = {reqUser: true};
-    console.log("no admin");
+    // console.log("no admin");
     return next();
   } else {
-    console.log("sending no user lol");
+    // console.log("sending no user lol");
     res.send({reqUser: false})
   }
 }
 
+// isAdmin = (req, res, next) => {
+//   console.log("running isAdmin");
+//   if(req.user){
+//     if(req.user.admin){
+//       console.log("req.user.admin is true");
+//       return next();
+//     } else {
+//       console.log("sending not an admin");
+//       res.send({reqUserAdmin: false})
+//     }
+//   } else {
+//     console.log("sending no logged in user");
+//     res.send({reqUser: false})
+//   }
+// }
 
 passport.use(new FacebookStrategy({
     clientID: config.facebookAuth.clientID,
@@ -135,15 +150,6 @@ app.get("/api/checkauth", isAuthenticated, function(req, res){
 
 app.get("/api/currentuser", usersCtrl.getCurrentUser)
 
-// app.get('/logout', function(req, res){
-//   console.log(req.user, "user in serverjs");
-//   req.logout();
-//   res.redirect('/');
-//   console.log(req.user, "user in serverjs after logged out");
-// });
-
-
-
 
 //ORDERS
 app.post("/api/email", mainCtrl.mail);
@@ -181,6 +187,17 @@ app.put("/api/cart", (req, res, next) => {
 
 
 //PRODUCTS
+app.get("/api/admin/products", (req,res) => {
+  db.admin_get_all_products([], function(err, products){
+    if(err){
+      console.log(err);
+      return res.status(500).send(err)
+    }
+    console.log("admin products shown");
+    return res.send(products)
+  })
+});
+
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
 app.get("/api/products/:id/details", mainCtrl.getProductById2);
