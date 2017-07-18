@@ -20,7 +20,7 @@
   <div class="login-container" ng-if="username" check-logged-in>
     <h1>Hi {{username}}</h1>
 
-    <button type="button" class="btn" name="button" disabled>Account Settings</button>
+    <button type="button" class="btn" ui-sref="accountsettings">Account Settings</button>
 
     <br><br>
 
@@ -28,7 +28,7 @@
 
     <br><br>
 
-    <form  action="/logout" method="get">
+    <form  action="/api/user/logout" method="get">
       <button type="submit" class="btn" name="button">Log Out</button>
     </form>
 

@@ -4,8 +4,12 @@ $scope.updateSuccess = false;
 
 var getOrderHistory = function(){
   mainService.getOrderHistory().then(function(response){
+    console.log(response, "HAHA HERE IS THE RESPONSE");
     $scope.history = response;
-    if(response.requser === false){
+    // if(response.requser === false){
+    //   $state.go("login");
+    // }
+    if(response.reqUser === false){
       $state.go("login");
     }
   })
@@ -33,18 +37,21 @@ $scope.updateAccount = function(userEmail){
 if($state.params.orderid){
   console.log("order details");
 
-  mainService.getAuth().then(function(response){
-    console.log(response, "userController");
-    if(response.reqUser){
+  // mainService.getAuth().then(function(response){
+  //   console.log(response, "userController");
+  //   if(response.reqUser){
       mainService.getOrderById($state.params.orderid).then(function(response){
         console.log(response, "HERE IS THE RESPONSE");
-        if(response.results === false){
+        if(response.reqUser === false){
+          console.log("no reqUser");
+          $state.go("login");
+        } else if(response.results === false){
           console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
           console.log(response.results, "lol");
           $state.go("orderhistory");
         } else if (response){
           $rootScope.$broadcast('cartCount')
-          console.log(response, "here is the response");
+          // console.log(response, "here is the response");
           $scope.orderNumber = $state.params.orderid;
           $scope.orderProducts = response;
           $scope.shipping = parseInt($scope.orderProducts[0].shipping);
@@ -52,11 +59,11 @@ if($state.params.orderid){
 
 
       })
-    } else {
-      console.log("going to orderhistory");
-      $state.go("orderhistory");
-    }
-  })
+  //   } else {
+  //     console.log("going to orderhistory");
+  //     $state.go("orderhistory");
+  //   }
+  // })
 
 } else {
   console.log("order history");

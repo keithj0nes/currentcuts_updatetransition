@@ -4830,8 +4830,12 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
+      console.log(response, "HAHA HERE IS THE RESPONSE");
       $scope.history = response;
-      if (response.requser === false) {
+      // if(response.requser === false){
+      //   $state.go("login");
+      // }
+      if (response.reqUser === false) {
         $state.go("login");
       }
     });
@@ -4856,28 +4860,31 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   if ($state.params.orderid) {
     console.log("order details");
 
-    mainService.getAuth().then(function (response) {
-      console.log(response, "userController");
-      if (response.reqUser) {
-        mainService.getOrderById($state.params.orderid).then(function (response) {
-          console.log(response, "HERE IS THE RESPONSE");
-          if (response.results === false) {
-            console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
-            console.log(response.results, "lol");
-            $state.go("orderhistory");
-          } else if (response) {
-            $rootScope.$broadcast('cartCount');
-            console.log(response, "here is the response");
-            $scope.orderNumber = $state.params.orderid;
-            $scope.orderProducts = response;
-            $scope.shipping = parseInt($scope.orderProducts[0].shipping);
-          }
-        });
-      } else {
-        console.log("going to orderhistory");
+    // mainService.getAuth().then(function(response){
+    //   console.log(response, "userController");
+    //   if(response.reqUser){
+    mainService.getOrderById($state.params.orderid).then(function (response) {
+      console.log(response, "HERE IS THE RESPONSE");
+      if (response.reqUser === false) {
+        console.log("no reqUser");
+        $state.go("login");
+      } else if (response.results === false) {
+        console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+        console.log(response.results, "lol");
         $state.go("orderhistory");
+      } else if (response) {
+        $rootScope.$broadcast('cartCount');
+        // console.log(response, "here is the response");
+        $scope.orderNumber = $state.params.orderid;
+        $scope.orderProducts = response;
+        $scope.shipping = parseInt($scope.orderProducts[0].shipping);
       }
     });
+    //   } else {
+    //     console.log("going to orderhistory");
+    //     $state.go("orderhistory");
+    //   }
+    // })
   } else {
     console.log("order history");
     getOrderHistory();
@@ -5334,18 +5341,19 @@ angular.module("ccvApp").service("mainService", function ($http) {
       return response;
     });
   };
-
-  this.logout = function () {
-    return {
-      method: "GET",
-      url: "/logout"
-    }.success(function () {});
-  };
+  //not being used anywhere
+  // this.logout = function(){
+  //   return ({
+  //     method: "GET",
+  //     url: "/api/user/logout"
+  //   }).success(function(){
+  //   })
+  // }
 
   this.getOrderHistory = function () {
     return $http({
       method: "GET",
-      url: "/api/orderhistory"
+      url: "/api/user/orders"
     }).then(function (response) {
       console.log(response, "reponse in srvice");
       return response.data;
@@ -5355,7 +5363,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
   this.getOrderById = function (id) {
     return $http({
       method: "GET",
-      url: "/api/order/" + id + "/history"
+      url: "/api/user/orders/" + id
     }).then(function (response) {
       // console.log(response, "getOrderById service");
       return response.data;

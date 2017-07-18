@@ -1,3 +1,12 @@
+
+
+/////
+/////
+//// THIS BACKUP IS BEFORE isAuthenticated FUNCTION working
+/////
+/////
+
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
@@ -26,6 +35,9 @@ var db = app.get('db'); // declare a db object for requests
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
 
+
+
+
 //middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -38,23 +50,6 @@ app.use(cors());
 app.use(express.static(__dirname + "/public"));    //current file directory + /public folder
 app.use(passport.initialize());
 app.use(passport.session());
-
-isAuthenticated = (req, res, next) => {
-  if(req.user){
-    console.log("req.user true");
-    if(req.user.admin){
-      console.log("req.user.admin true");
-      req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
-      return next()
-    }
-    req.reqUser = {reqUser: true};
-    console.log("no admin");
-    return next();
-  } else {
-    console.log("sending no user lol");
-    res.send({reqUser: false})
-  }
-}
 
 
 passport.use(new FacebookStrategy({
@@ -97,12 +92,10 @@ passport.use(new FacebookStrategy({
 ));
 
 passport.serializeUser(function(user, done) {
-  // console.log(user, "loggin user in serializeUser");
     done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  // console.log(user, "logging user in deserializeUser");
     if(user[0]) {
       user = user[0];
     }
@@ -116,41 +109,83 @@ failureRedirect: '/#/', successRedirect:'/#/login-success'
 }))
 
 //USERS
-app.put("/api/user/email", isAuthenticated, usersCtrl.updateEmail);
-app.post("/api/user/favorites", isAuthenticated, usersCtrl.updateFavorite);
-app.get("/api/user/favorites", isAuthenticated, usersCtrl.getFavorites);
-app.get("/api/user/orders", isAuthenticated, usersCtrl.getOrderHistory);
-app.get("/api/user/orders/:id", isAuthenticated, usersCtrl.getOrderHistoryById);
-app.get('/api/user/logout', isAuthenticated, usersCtrl.logout);
+  //update user email
+app.put("/api/user/email", function(req, res, next){
+  db.users.findOne({email: req.body.email}, (err, findEmail) => {
+    if(err){
+      console.log(err);
+      res.status(500).send(err);
+    }
+    if(findEmail){
+      res.send({success: false})
+    } else {
+      db.users.update({id: req.user.id, email: req.body.email}, function(err, user){
+        if(err){
+          console.log(err);
+          res.status(500).send(err)
+        }
+        req.user.email = user.email;
+        res.send({success: true})
+      })
+    }
+  })
 
-// app.get("/api/checkauth", usersCtrl.loggedIn);
-app.get("/api/checkauth", isAuthenticated, function(req, res){
-  console.log(req.reqUserAdmin, "ypu");
-  if(req.reqUserAdmin){
-    res.send(req.reqUserAdmin)
-  } else {
-    res.send({reqUserAdmin: false})
-  }
-});
-
+})
+app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/currentuser", usersCtrl.getCurrentUser)
-
-// app.get('/logout', function(req, res){
-//   console.log(req.user, "user in serverjs");
-//   req.logout();
-//   res.redirect('/');
-//   console.log(req.user, "user in serverjs after logged out");
-// });
-
-
+app.get('/logout', function(req, res){
+  console.log(req.user, "user in serverjs");
+  req.logout();
+  res.redirect('/');
+  console.log(req.user, "user in serverjs after logged out");
+});
 
 
 //ORDERS
 app.post("/api/email", mainCtrl.mail);
 
+app.get("/api/orderhistory", function(req,res,next){
+  if(req.user){
+    db.orderhistory([req.user.id], function(err, history){
+      if(err){
+        console.log(err);
+        return res.status(500).send(err)
+      }
+      return res.status(200).send(history)
+    })
+  } else {
+    console.log("Unauthorized");
+    res.send({requser:false})
+  }
+})
 
+app.get("/api/order/:id/history", function(req, res, next){
+  if(req.user){
+    db.get_order_details_by_id([req.params.id, req.user.id], function(err, order){
+      if(err){
+        console.log(err);
+        res.status(500).send(err)
+      }
+
+//// if order id is not associated with user id, results = false, else send order
+      if(order.length <= 0){
+        console.log("NO RESULTS SHOW");
+        res.send({results: false})
+      } else {
+        console.log(order, "history being sent");
+        res.status(200).send(order)
+      }
+
+    })
+  } else {
+    console.log("no user");
+    res.send({requser: false})
+  }
+
+})
 
 app.get("/api/order/:id/thankyou", function(req, res, next){
+  // console.log(req.params.id, "logging params");
   /////// NEED TO SET SOME SORT OF EXPIRATION
   db.get_thank_you_by_id([req.params.id], function(err, order){
     if(err){
@@ -194,6 +229,73 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 // app.post("/api/users/:id");
 // app.put("/api/users/:id");
 // app.delete("/api/users/:d");
+
+
+app.post("/api/user/favorites", function(req,res,next){
+
+  if(req.user){
+    db.favorites.findOne({user_id: req.user.id, product_id: req.body.productId}, (err, found) => {
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+
+      if(found){
+        db.run("DELETE FROM favorites WHERE user_id = $1 and product_id = $2", [req.user.id, req.body.productId], (err, deleted) =>{
+          if(err){
+            console.log(err);
+            res.status(500).send(err);
+          }
+          db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId], (err, totalFavs) => {
+            if(err){
+              console.log(err);
+              res.status(500).send(err);
+            }
+            res.send(totalFavs)
+          })
+        })
+      } else {
+        db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}, (err, fav) => {
+          if(err){
+            console.log(err);
+            res.status(500).send(err)
+          }
+          db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId], (err, totalFavs) => {
+            if(err){
+              console.log(err);
+              res.status(500).send(err);
+            }
+            res.send(totalFavs)
+          })
+        })
+      }
+    })
+
+  } else {
+    res.send({reqUser: false});
+  }
+
+
+})
+
+app.get("/api/user/favorites", (req, res,next) => {
+
+  if(req.user){
+    db.get_favorites_by_user_id([req.user.id], (err, userFavs) => {
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+      console.log(userFavs, "logging userFavs");
+      res.send(userFavs);
+    })
+  } else {
+    console.log("no one logged in");
+    res.send({reqUser: false})
+  }
+
+})
+
 
 
 app.post("/api/charge", function(req, res, next){

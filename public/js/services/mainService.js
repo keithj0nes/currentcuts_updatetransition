@@ -169,19 +169,19 @@ angular.module("ccvApp").service("mainService", function($http){
       return response;
     })
   }
-
-  this.logout = function(){
-    return ({
-      method: "GET",
-      url: "/logout"
-    }).success(function(){
-    })
-  }
+//not being used anywhere
+  // this.logout = function(){
+  //   return ({
+  //     method: "GET",
+  //     url: "/api/user/logout"
+  //   }).success(function(){
+  //   })
+  // }
 
   this.getOrderHistory = function(){
     return $http({
       method: "GET",
-      url: "/api/orderhistory"
+      url: "/api/user/orders"
     }).then(function(response){
       console.log(response, "reponse in srvice");
       return response.data;
@@ -192,7 +192,7 @@ angular.module("ccvApp").service("mainService", function($http){
   this.getOrderById = (id) => {
     return $http({
       method: "GET",
-      url: "/api/order/" + id + "/history"
+      url: "/api/user/orders/" + id
     }).then((response) => {
       // console.log(response, "getOrderById service");
       return response.data;
