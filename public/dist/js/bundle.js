@@ -4351,13 +4351,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productDescription = product.description;
     $scope.productPrice = product.price;
     $scope.productImgOne = product.img1;
-    $scope.productImgTwo = product.img2;
-    console.log(product, "editProducts");
+    $scope.productImgTwo = product.imgmainvector;
+    $scope.productImgThree = product.imgoutlinevector;
+    // console.log(product, "editProducts");
     mainService.adminEditProducts(product.id).then(function (res) {
       $scope.priceSize = true;
       $scope.addNew = true;
       $scope.productDetails = res.product;
-      console.log(res, "editProducts res");
+      // console.log(res, "editProducts res");
+
     });
   };
 
@@ -4376,24 +4378,83 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productPrice = "";
     $scope.productImgOne = "";
     $scope.productImgTwo = "";
+    $scope.productImgThree = "";
     $scope.productDetails = "";
     $scope.addNew = false;
   };
 
-  $scope.add = function (name, description, price, img1, img2) {
-    mainService.addProduct(name, description, price, img1, img2);
-    $scope.productId = "";
-    $scope.productName = "";
-    $scope.productDescription = "";
-    $scope.productPrice = "";
-    $scope.productImgOne = "";
-    $scope.productImgTwo = "";
+  $scope.add = function (name, description, img1, imgmainvector, imgoutlinevector) {
+
+    if (name == null || description == null || img1 == null || imgmainvector == null) {
+      console.log("it's null");
+    } else {
+
+      var productObj = {
+        name: name,
+        description: description,
+        img1: img1,
+        imgmainvector: imgmainvector,
+        isActive: true,
+        imgoutlinevector: imgoutlinevector
+      };
+
+      mainService.addProduct(productObj);
+    }
+    // if(name === null){
+    //   console.log("it's null ===");
+    // }
+    // if(name == undefined){
+    //   console.log("it's undefined");
+    // }
+    // if(name === undefined){
+    //   console.log("it's undefined ===");
+    // }
+
+    // const productObj = {
+    //   name: name,
+    //   description: description,
+    //   img1: img1,
+    //   imgmainvector: imgmainvector,
+    //   isActive: true,
+    //   imgoutlinevector: imgoutlinevector
+    // }
+
+    // Object.keys(productObj).some((k) => {
+    //   if(productObj[k] == undefined || productObj[k] === " "){
+    //     console.log("there is no value here");
+    //   } else {
+    //     console.log("adding product");
+    //     mainService.addProduct(productObj);
+    //   }
+    // })
+
+    // console.log(!!productObj.isActive);
+    // console.log(!!productObj.img1);
+
+    // mainService.addProduct(productObj);
+    // $scope.productId = "";
+    // $scope.productName = "";
+    // $scope.productDescription = "";
+    // $scope.productPrice = "";
+    // $scope.productImgOne = "";
+    // $scope.productImgTwo = "";
     setTimeout(function () {
       getAllProducts();
     }, 100);
   };
 
-  $scope.updateDetails = function (productDetails) {
+  $scope.updateDetails = function (productDetails, psheight, pswidth, psprice) {
+    console.log(psheight, "psheight");
+    console.log(pswidth, "pswidth");
+
+    console.log(psprice, "psprice");
+
+    if (psheight == undefined || pswidth == undefined || psprice == undefined) {
+      console.log("not defined");
+    }
+    // if(productDetails.height == undefined || productDetails.width == undefined || productDetails.price == undefined){
+    //   console.log("not defined");
+    // }
     console.log(productDetails);
     var details = {
       // height:
@@ -5274,14 +5335,15 @@ angular.module("ccvApp").service("mainService", function ($http) {
     });
   };
 
-  this.addProduct = function (name, description, price, img1, img2) {
-    var productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    };
+  this.addProduct = function (productObj) {
+    // const productObj = {
+    //   name: name,
+    //   description: description,
+    //   img1: img1,
+    //   imgmainvector: imgmainvector,
+    //   isActive: true,
+    //   imgoutlinevector: imgoutlinevector
+    // }
     return $http({
       method: "POST",
       url: "/api/products",

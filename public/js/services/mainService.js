@@ -59,14 +59,15 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
-  this.addProduct = function(name, description, price, img1, img2){
-    const productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    }
+  this.addProduct = function(productObj){
+    // const productObj = {
+    //   name: name,
+    //   description: description,
+    //   img1: img1,
+    //   imgmainvector: imgmainvector,
+    //   isActive: true,
+    //   imgoutlinevector: imgoutlinevector
+    // }
     return $http({
       method: "POST",
       url: "/api/products",
@@ -75,6 +76,7 @@ angular.module("ccvApp").service("mainService", function($http){
       alert: "SUCCESS!";
     })
   }
+
 
   this.updateProduct = function(id, name, description, price, img1, img2){
     const productObj = {

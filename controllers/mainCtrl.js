@@ -107,12 +107,13 @@ module.exports = {
 
 //post
   addProductToDB: function(req, res, next){
-    const newProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2];
+    const newProduct = [req.body.name, req.body.description, req.body.img1, req.body.imgoutlinevector, req.body.isActive, req.body.imgoutlinevector];
     db.add_product(newProduct, function(err, product){
       if(err){
         console.log(err);
         return res.status(500).send(err)
       }
+      console.log(product, "adding to db");
       return res.status(200).send(product)
     })
   },
