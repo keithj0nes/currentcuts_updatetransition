@@ -4335,7 +4335,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
   $scope.selectedProductToEdit;
   var getAllProducts = function getAllProducts() {
     mainService.adminGetAllProducts().then(function (response) {
-      console.log(response, "response in adminController");
+      // console.log(response, "response in adminController");
       $scope.products = response;
     });
   };
@@ -4449,8 +4449,12 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
     console.log(psprice, "psprice");
 
-    if (psheight == undefined || pswidth == undefined || psprice == undefined) {
+    if (psheight == undefined || pswidth == undefined || psprice == null) {
       console.log("not defined");
+    }
+
+    if (psheight && pswidth && psprice) {
+      console.log("all defined!");
     }
     // if(productDetails.height == undefined || productDetails.width == undefined || productDetails.price == undefined){
     //   console.log("not defined");
@@ -4463,16 +4467,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   $scope.deleteDetails = function (index, productDetails) {
 
-    var objLength = Object.keys(productDetails).length;
-    for (var i = objLength - 1; i >= 0; i--) {
-      // if($scope.products[i].id === product.id){
+    for (var i = $scope.productDetails.length - 1; i >= 0; i--) {
+
       if (i === index) {
-        console.log(i, index);
-        $scope.productDetails.splice(index, 1);
+        console.log("these values are equal");
+        $scope.productDetails.splice(i, 1);
       }
     }
-    console.log($scope.productDetails);
   };
+
   $scope.update = function (id, name, description, price, img1, img2) {
     mainService.updateProduct(id, name, description, price, img1, img2);
     setTimeout(function () {
@@ -5290,7 +5293,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "GET",
       url: "/api/admin/products"
     }).then(function (response) {
-      console.log(response.data, "getAllProducts");
+      // console.log(response.data, "getAllProducts");
       return response.data;
     });
   };

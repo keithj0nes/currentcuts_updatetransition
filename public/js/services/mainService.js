@@ -14,7 +14,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/admin/products"
     }).then(function(response){
-      console.log(response.data, "getAllProducts");
+      // console.log(response.data, "getAllProducts");
       return response.data
     })
   }
