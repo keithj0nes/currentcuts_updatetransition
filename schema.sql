@@ -49,14 +49,14 @@ CREATE TABLE products (
 
 CREATE TABLE sizes (
   id SERIAL PRIMARY KEY,
-  height INT,
-  width INT,
+  height DECIMAL(6,1),
+  width DECIMAL(6,1),
   garmentSize TEXT
 );
 
 CREATE TABLE prices (
   id SERIAL PRIMARY KEY,
-  price INT
+  price DECIMAL(6,2)
 );
 
 CREATE TABLE product_price_size (
@@ -131,3 +131,30 @@ INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 5, 5);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 6, 1);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (3, 2, 3);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (4, 2, 3);
+
+--new inserts since updating integers to decimals on each table
+
+INSERT INTO prices (price) VALUES (4);
+INSERT INTO prices (price) VALUES (6);
+INSERT INTO prices (price) VALUES (8);
+INSERT INTO prices (price) VALUES (16.5);
+INSERT INTO prices (price) VALUES (20.99);
+INSERT INTO prices (price) VALUES (2);
+
+INSERT INTO sizes (height, width, garmentSize) VALUES (3, 3.5, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (4.2, 5, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (7, 2, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (10.8, 10, null);
+INSERT INTO sizes (height, width, garmentSize) VALUES (15, 20.5, null);
+
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 11, 11);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 12, 12);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 13, 13);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 12, 13);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 12, 12);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 11, 13);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 14, 14);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 15, 15);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 16, 11);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (3, 12, 13);
+INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (4, 12, 14);

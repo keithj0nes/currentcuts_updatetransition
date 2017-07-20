@@ -41,7 +41,35 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     mainService.adminEditProducts(product.id).then((res) => {
       $scope.priceSize = true;
       $scope.addNew = true;
+      console.log(res);
+
+
+              //try to figure out 'res.product should be a number'
+                      // var arr = [];
+                      // for(var key in res.product){
+                      //   console.log(key, "logging key");
+                      //   console.log(res.product.hasOwnProperty(key));
+                      //   console.log(res.product[key]);
+                      //   if (res.product.hasOwnProperty(key)){
+                      //     // console.log(res.product[+key], "yep");
+                      //     // console.log(res.product[key], "again");
+                      //     var obj = res.product[key];
+                      //     for (var prop in obj) {
+                      //       if (obj.hasOwnProperty(prop)) {
+                      //         console.log(prop + " = " + obj[prop]);
+                      //       }
+                      //     }
+                      //
+                      //     arr.push(res.product[+key]);
+                      //   }
+                      // }
+                      //
+                      // console.log(arr, "logging arr");
+
+
+
       $scope.productDetails = res.product;
+      // console.log($scope.productDetails);
       // console.log(res, "editProducts res");
 
 
@@ -84,41 +112,9 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         isActive: true,
         imgoutlinevector: imgoutlinevector
       }
-
-
       mainService.addProduct(productObj);
 
     }
-    // if(name === null){
-    //   console.log("it's null ===");
-    // }
-    // if(name == undefined){
-    //   console.log("it's undefined");
-    // }
-    // if(name === undefined){
-    //   console.log("it's undefined ===");
-    // }
-
-    // const productObj = {
-    //   name: name,
-    //   description: description,
-    //   img1: img1,
-    //   imgmainvector: imgmainvector,
-    //   isActive: true,
-    //   imgoutlinevector: imgoutlinevector
-    // }
-
-    // Object.keys(productObj).some((k) => {
-    //   if(productObj[k] == undefined || productObj[k] === " "){
-    //     console.log("there is no value here");
-    //   } else {
-    //     console.log("adding product");
-    //     mainService.addProduct(productObj);
-    //   }
-    // })
-
-    // console.log(!!productObj.isActive);
-    // console.log(!!productObj.img1);
 
     // mainService.addProduct(productObj);
     // $scope.productId = "";

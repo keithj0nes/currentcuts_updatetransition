@@ -16,12 +16,12 @@
         <i class="material-icons" style="color: blue;">favorite</i> {{favCount}}
       </div>
     </button>
-    
+
     <p class="productPrice" ng-model="pppprice">&nbsp;{{productPrice.price | currency}}</p>
 
   <form ng-submit="addToCart(productColor, productQuantity, productPrice)">
 
-    <select ng-model="productPrice"  required ng-options='details as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + ".00]") for details in product2'>
+    <select ng-model="productPrice"  required ng-options='details as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + "]") for details in product2'>
       <option value="">Size</option>
     </select>
 

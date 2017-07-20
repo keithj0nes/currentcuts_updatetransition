@@ -75,9 +75,9 @@
             </div>
             <!-- <span ng-hide="editing">{{ps.height}} "H</span> -->
             <form ng-show="editing" ng-submit="editing = false">
-              <input type="number" step="any" style="width: 30%;" placeholder="height" ng-model="ps.height" />
-              <input type="number" step="any" style="width: 30%;" placeholder="width" ng-model="ps.width" />
-              <input type="number" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
+              <input type="text" step="any" style="width: 30%;" placeholder="height" ng-model="ps.height" />
+              <input type="text" step="any" style="width: 30%;" placeholder="width" ng-model="ps.width" />
+              <input type="text" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
 
               <button  type="submit" ng-click="updateDetails(ps, ps.height, ps.width, ps.price)">Save</button>
             </form>
