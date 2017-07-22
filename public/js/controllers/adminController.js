@@ -11,6 +11,17 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
+  var getProductDetails = function(prodId){
+    mainService.adminEditProducts(prodId).then((res) => {
+      $scope.priceSize = true;
+      $scope.addNew = true;
+      console.log(res);
+      $scope.productDetails = res.product;
+      // console.log($scope.productDetails);
+      // console.log(res, "editProducts res");
+    })
+  }
+
   getAllProducts();
 
 
@@ -38,42 +49,44 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productImgTwo = product.imgmainvector;
     $scope.productImgThree = product.imgoutlinevector;
     // console.log(product, "editProducts");
-    mainService.adminEditProducts(product.id).then((res) => {
-      $scope.priceSize = true;
-      $scope.addNew = true;
-      console.log(res);
 
-
-              //try to figure out 'res.product should be a number'
-                      // var arr = [];
-                      // for(var key in res.product){
-                      //   console.log(key, "logging key");
-                      //   console.log(res.product.hasOwnProperty(key));
-                      //   console.log(res.product[key]);
-                      //   if (res.product.hasOwnProperty(key)){
-                      //     // console.log(res.product[+key], "yep");
-                      //     // console.log(res.product[key], "again");
-                      //     var obj = res.product[key];
-                      //     for (var prop in obj) {
-                      //       if (obj.hasOwnProperty(prop)) {
-                      //         console.log(prop + " = " + obj[prop]);
-                      //       }
-                      //     }
-                      //
-                      //     arr.push(res.product[+key]);
-                      //   }
-                      // }
-                      //
-                      // console.log(arr, "logging arr");
-
-
-
-      $scope.productDetails = res.product;
-      // console.log($scope.productDetails);
-      // console.log(res, "editProducts res");
-
-
-    })
+    getProductDetails($scope.productId);
+    // mainService.adminEditProducts(product.id).then((res) => {
+    //   $scope.priceSize = true;
+    //   $scope.addNew = true;
+    //   console.log(res);
+    //
+    //
+    //           //try to figure out 'res.product should be a number'
+    //                   // var arr = [];
+    //                   // for(var key in res.product){
+    //                   //   console.log(key, "logging key");
+    //                   //   console.log(res.product.hasOwnProperty(key));
+    //                   //   console.log(res.product[key]);
+    //                   //   if (res.product.hasOwnProperty(key)){
+    //                   //     // console.log(res.product[+key], "yep");
+    //                   //     // console.log(res.product[key], "again");
+    //                   //     var obj = res.product[key];
+    //                   //     for (var prop in obj) {
+    //                   //       if (obj.hasOwnProperty(prop)) {
+    //                   //         console.log(prop + " = " + obj[prop]);
+    //                   //       }
+    //                   //     }
+    //                   //
+    //                   //     arr.push(res.product[+key]);
+    //                   //   }
+    //                   // }
+    //                   //
+    //                   // console.log(arr, "logging arr");
+    //
+    //
+    //
+    //   $scope.productDetails = res.product;
+    //   // console.log($scope.productDetails);
+    //   // console.log(res, "editProducts res");
+    //
+    //
+    // })
   }
 
   $scope.addNewRow = function(){
@@ -113,6 +126,9 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         imgoutlinevector: imgoutlinevector
       }
       mainService.addProduct(productObj);
+      // $scope.addNew = true;
+      // ///////?////////////
+      // need to send adminEditProducts function in order for scopeaddnew to work
 
     }
 
@@ -129,30 +145,46 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   }
 
-  $scope.updateDetails = function(productDetails, psheight, pswidth, psprice){
+  $scope.updateDetails = function(index, productDetails, psheight, pswidth, psprice){
+    console.log($scope.productId, "productId from the original requests");
     console.log(psheight, "psheight");
     console.log(pswidth, "pswidth");
-
     console.log(psprice, "psprice");
+    console.log(index, "index");
 
-    if(psheight == undefined || pswidth == undefined || psprice == null){
-      console.log("not defined");
-    }
+    // send index to backend if index has value in pps then change it else add new
+
 
     if(psheight && pswidth && psprice){
       console.log("all defined!");
+      let sizePriceDetails = {
+        index: index,
+        height: psheight,
+        width: pswidth,
+        price: psprice
+      }
+
+      mainService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails)
+
+      setTimeout(function(){
+        getProductDetails($scope.productId);
+      }, 100)
+
+    } else {
+      alert("you must fill in everything")
     }
-    // if(productDetails.height == undefined || productDetails.width == undefined || productDetails.price == undefined){
-    //   console.log("not defined");
-    // }
-    console.log(productDetails);
-    let details = {
-      // height:
-    }
+    console.log($scope.productDetails, "SCOPEDOTPRODUCTDETAILS");
+    console.log($scope.productDetails[index], "SCOPEDOTPRODUCTDETAILSINDEX");
+
   }
+
+
+
+
 
   $scope.deleteDetails = function(index, productDetails){
 
+    console.log(productDetails);
     for (var i = $scope.productDetails.length-1; i >= 0; i--) {
 
       if( i === index){
@@ -160,6 +192,10 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         $scope.productDetails.splice(i, 1);
       }
     }
+
+    // mainService.adminDeleteDetails()//.then((res) => {
+
+    // })
   }
 
   $scope.update = function(id, name, description, price, img1, img2){
@@ -186,6 +222,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
           }
         }
       mainService.deleteProduct(product);
+      $scope.clearForm();
     })
   }
 

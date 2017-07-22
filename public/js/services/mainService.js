@@ -22,9 +22,19 @@ angular.module("ccvApp").service("mainService", function($http){
   this.adminEditProducts = function(id){
     return $http({
       method: "GET",
-      url: "/api/products/" + id + "/details"
+      url: "/api/admin/products/" + id + "/details"
     }).then((res) => {
       return res.data;
+    })
+  }
+
+  this.adminUpdateProductSizePrice = function(id, sizePriceDetails){
+    return $http({
+      method: "PUT",
+      url: "/api/products/" + id + "/sizeprice",
+      data: sizePriceDetails
+    }).then((res) => {
+      console.log(res, "updated price and size in service");
     })
   }
 
