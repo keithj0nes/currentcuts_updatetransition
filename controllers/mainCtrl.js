@@ -333,9 +333,10 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     } else {
       // console.log("this should be good");
       req.session.cart.forEach(function(product, index){
-        // console.log(product, "result in forEach");
+        console.log(product, "result in forEach");
         // console.log(index, "index in forEach");
 
+        ///////////////// not working because letmatches regex is only getting last number before H and first number after x
         let matches = product.productSize.match(/(\d+)H x (\d+)/);
         let number1 = Number(matches[1]);
         let number2 = Number(matches[2]);
@@ -343,6 +344,8 @@ function insertOrder(reqUserId, guestUserResult, req, res){
           height: number1,
           width: number2
         }
+
+        console.log(obj, "logging object being sent to db.sizes.findOne");
 
         let myPrice = product.productPrice;
         let myProductId = product.productId;

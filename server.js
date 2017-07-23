@@ -210,7 +210,7 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
 app.get("/api/admin/products/:id/details", function(req, res){
   var wholeProduct = {};
-  db.run("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id  = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id], function(err, product){
+  db.run("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id], function(err, product){
     if(err){
       console.log(err);
       return res.status(500).send(err)
@@ -253,6 +253,7 @@ app.get("/api/admin/products/:id/details", function(req, res){
 
 //admin
 app.put("/api/products/:id/sizeprice", (req, res) => {
+  console.log("************************************************************");
   console.log(req.params.id, "req.params.id haha");
   console.log(req.body, "req.body");
   let index = req.body.index;
@@ -281,7 +282,7 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
           console.log("the same price was found");
 
           //trying to find out how to get correct index in product_price_size table from frontend - problem: it's sorted by price in front end
-          db.run("SELECT * FROM product_price_size WHERE productid = $1", [req.params.id], (err, product) => {
+          db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
             if(err){
               console.log(err);
               res.status(500).send(err);
@@ -299,7 +300,12 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
                     res.status(500).send(err)
                   }
 
-                  console.log(updatedPrice, "updated price after .save()");
+                  console.log(updatedPrice, "updated price after .save(), 302");
+
+                  db.run("select * from product_price_size where productid = $1 order by id", [req.params.id], function(err, prod){
+                    console.log(prod, "logging prod after updatedPrice 305");
+                    res.send(updatedPrice);
+                  })
                 })
 
               } else {
@@ -310,13 +316,14 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
             console.log(loopCount);
 
             if(!loopCount){
-              console.log("running this part because loopCount = " + loopCount);
+              console.log("running this part because loopCount = " + loopCount + ", aka new line added");
                 db.product_price_size.insert({productid: req.params.id, priceid: foundPrice.id, sizeid: foundSize.id}, (err, addedPps) => {
                   if(err){
                     console.log(err);
                     res.status(500).send(err);
                   }
                   console.log(addedPps, "THESE CONNECT NEW ROW YAYYY");
+                  res.send(addedPps)
                 })
 
             }
@@ -351,6 +358,7 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
                       }
 
                       console.log(updatedPrice, "UPDATED PRICE AFTER SAVE()");
+                      res.send(updatedPrice)
                     })
 
                   } else {
@@ -368,6 +376,7 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
                       res.status(500).send(err);
                     }
                     console.log(addedPps, "added a new price then connected them!");
+                    res.send(addedPps)
                   })
                 }
               })
@@ -377,23 +386,134 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
       })
     } else {
       console.log("sizes werent found");
-      // db.sizes.insert({height: height, width: width}, (err, addedSize) => {
-      //   if(err){
-      //     console.log(err);
-      //     res.status(500).send(err)
-      //   }
-      //   console.log(addedSize, "new size added");
-      //   if(addedSize){
-      //     console.log("new size added = true");
-      //     // db.product_price_size.insert({productid: req.params.id, sizeid: addedSize.id}, (err, pps) => {
-      //     //   if(err){
-      //     //     console.log(err);
-      //     //     res.status(500).send(err);
-      //     //   }
-      //     //   console.log(pps, "product_price_size");
-      //     // })
-      //   }
-      // })
+      db.sizes.insert({height: height, width: width}, (err, addedSize) => {
+        if(err){
+          console.log(err);
+          res.status(500).send(err)
+        }
+        console.log(addedSize, "new size added");
+        if(addedSize){
+          console.log("new size added = true");
+
+          db.prices.findOne({price: price}, (err, foundPrice) => {
+            if(err){
+              console.log(err);
+              res.status(500).send(err);
+            }
+            if(foundPrice){
+              console.log(foundPrice, "foundPrice in new size added");
+
+              db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
+                if(err){
+                  console.log(err);
+                  res.status(500).send(err);
+                }
+
+                console.log(product, "logging product 403");
+                product.forEach(function(r, i){
+                  if(index === i){
+                    console.log(r, "found the correct index in new size added");
+                    loopCount++
+
+                    db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: addedSize.id }, function(err, updatedPrice){
+                      if(err){
+                        console.log(err);
+                        res.status(500).send(err)
+                      }
+
+                      console.log(updatedPrice, "updated price after .save()");
+                      res.send(updatedPrice)
+                    })
+
+                  } else {
+                    console.log("cant find it");
+                  }
+                })
+
+                console.log(loopCount);
+
+                if(!loopCount){
+                  console.log("running because loopCount = " + loopCount + ", adddedd a new line 436");
+                  db.product_price_size.insert({productid: req.params.id, priceid: foundPrice.id, sizeid: addedSize.id}, (err, addedPps) => {
+                    if(err){
+                      console.log(err);
+                      res.status(500).send(err);
+                    }
+                    console.log(addedPps, "THESE CONNECT NEW ROW YAYYY");
+                    res.send(addedPps)
+                  })
+
+                }
+
+              })
+            } else {
+              console.log("no price found in new size added");
+              db.prices.insert({price: price}, (err, addedPrice) => {
+                if(err){
+                  console.log(err);
+                  res.status(500).send(err);
+                }
+                if(addedPrice){
+                  console.log("new price added in new size added");
+
+                  db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
+                    if(err){
+                      console.log(err);
+                      res.status(500).send(err);
+                    }
+
+                    console.log(product, "logging product 454");
+                    product.forEach(function(r, i){
+                      if(index === i){
+                        console.log(r, "index in addedPrice in addedSize");
+                        loopCount++
+
+                        db.product_price_size.save({id: r.id, priceid: addedPrice.id, sizeid: addedSize.id }, function(err, updatedPrice){
+                          if(err){
+                            console.log(err);
+                            res.status(500).send(err)
+                          }
+
+                          console.log(updatedPrice, "UPDATED PRICE AFTER SAVING EDITED LINE");
+                          res.send(updatedPrice)
+                        })
+
+                      } else {
+                        console.log("cant find it");
+                      }
+                    })
+
+                    console.log(loopCount);
+
+                    if(!loopCount){
+                      console.log("running this part because loopCount = " + loopCount + " IN ADDEDPRICE slash ADDEDSIZE");
+                      db.product_price_size.insert({productid: req.params.id, priceid: addedPrice.id, sizeid: addedSize.id}, (err, addedPps) => {
+                        if(err){
+                          console.log(err);
+                          res.status(500).send(err);
+                        }
+                        console.log(addedPps, "added a new price then connected them!");
+                        res.send(addedPps)
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          })
+
+          // db.product_price_size.insert({productid: req.params.id, sizeid: addedSize.id}, (err, pps) => {
+          //   if(err){
+          //     console.log(err);
+          //     res.status(500).send(err);
+          //   }
+          //   console.log(pps, "product_price_size");
+          // })
+        } else {
+          console.log("addedSize not inserted");
+
+        }
+      })
     }
 
 

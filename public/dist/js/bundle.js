@@ -4425,6 +4425,10 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.addNew = false;
   };
 
+  $scope.clickme = function (index) {
+    console.log(index, "logging index");
+  };
+
   $scope.add = function (name, description, img1, imgmainvector, imgoutlinevector) {
 
     if (name == null || description == null || img1 == null || imgmainvector == null) {

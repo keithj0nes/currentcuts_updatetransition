@@ -110,6 +110,10 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.addNew = false;
   }
 
+  $scope.clickme = function(index){
+    console.log(index, "logging index");
+  }
+
 
   $scope.add = function(name, description, img1, imgmainvector, imgoutlinevector){
 
