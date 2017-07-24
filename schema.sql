@@ -71,7 +71,7 @@ CREATE TABLE orders (
   userId INTEGER REFERENCES users(id),
   guestuserid INTEGER REFERENCES guest_users(id),
   dateSold TIMESTAMP,
-  ordertotal INT,
+  ordertotal DECIMAL(8,2),
   shippingid INTEGER REFERENCES shipping(id)
   tyexpired BOOLEAN
 );
