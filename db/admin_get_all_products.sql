@@ -3,4 +3,5 @@
 -- INNER JOIN prices ON prices.id = product_price_size.priceId
 -- ORDER BY products.id, prices.price
 
-SELECT * FROM products;
+-- SELECT * FROM products WHERE NOT archived = true;
+SELECT * FROM products WHERE (archived IS NULL OR archived = false)

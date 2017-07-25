@@ -202,14 +202,12 @@ module.exports = {
 
   deleteProductById: function(req, res, next){
     console.log("deleted function fired");
-    console.log(req.params.id);
-    const deletedProduct = [req.params.id];
-    db.delete_product(deletedProduct, function(err, product){
+    db.products.update({id: req.params.id, archived: true}, (err, archivedProduct) => {
       if(err){
         console.log(err);
         return res.status(500).send(err)
       }
-      return res.status(200).send(product)
+      return res.status(200).send(archivedProduct)
     })
   },
 
