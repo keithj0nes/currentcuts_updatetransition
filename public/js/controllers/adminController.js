@@ -133,24 +133,21 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         isActive: true,
         imgoutlinevector: imgoutlinevector
       }
-      mainService.addProduct(productAdd);
+      mainService.addProduct(productAdd).then((res) => {
+        console.log(res, "logging response in admin apge");
+        if(res.productExists === true){
+          swal("this product is already in the database")
+        } else {
+          setTimeout(function () {
+            getAllProducts();
+          }, 100);
+        }
+      });
       // $scope.addNew = true;
       // ///////?////////////
       // need to send adminEditProducts function in order for scopeaddnew to work
 
     }
-
-    // mainService.addProduct(productObj);
-    // $scope.productId = "";
-    // $scope.productName = "";
-    // $scope.productDescription = "";
-    // $scope.productPrice = "";
-    // $scope.productImgOne = "";
-    // $scope.productImgTwo = "";
-    setTimeout(function () {
-      getAllProducts();
-    }, 100);
-
   }
 
   $scope.updateDetails = function(index, productDetails, psheight, pswidth, psprice){

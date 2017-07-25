@@ -87,9 +87,14 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "POST",
       url: "/api/products",
       data: productAdd
-    }).success(function(){
-      alert: "SUCCESS!";
+    }).then((res) => {
+      console.log(res.data);
+      return res.data;
     })
+
+    //.success(function(){
+    //   alert: "SUCCESS!";
+    // })
   }
 
 

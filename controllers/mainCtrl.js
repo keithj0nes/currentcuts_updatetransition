@@ -114,12 +114,20 @@ module.exports = {
                         imgoutlinevector: req.body.imgoutlinevector,
                         active: req.body.active}
 
-    db.products.insert(newProduct, (err, addedProduct) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
+    db.products.findOne({name: req.body.name, or: [{"archived =": false}, {"archived =": null}]}, (err, result) => {
+      if(result){
+        console.log(result, "found oneeeeeee that's active!!");
+        res.send({productExists: true})
+      } else {
+        console.log(result, "couldnt find one active");
+        db.products.insert(newProduct, (err, addedProduct) => {
+          if(err){
+            console.log(err);
+            res.status(500).send(err);
+          }
+          res.send(addedProduct)
+        })
       }
-      res.send(addedProduct)
     })
   },
 
