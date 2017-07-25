@@ -44,7 +44,7 @@ CREATE TABLE products (
   img1 TEXT,
   imgmainvector TEXT,
   imgoutlinevector TEXT,
-  isActive BOOLEAN
+  active BOOLEAN
 );
 
 CREATE TABLE sizes (

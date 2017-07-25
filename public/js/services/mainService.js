@@ -82,37 +82,22 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
-  this.addProduct = function(productObj){
-    // const productObj = {
-    //   name: name,
-    //   description: description,
-    //   img1: img1,
-    //   imgmainvector: imgmainvector,
-    //   isActive: true,
-    //   imgoutlinevector: imgoutlinevector
-    // }
+  this.addProduct = function(productAdd){
     return $http({
       method: "POST",
       url: "/api/products",
-      data: productObj
+      data: productAdd
     }).success(function(){
       alert: "SUCCESS!";
     })
   }
 
 
-  this.updateProduct = function(id, name, description, price, img1, img2){
-    const productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    }
+  this.updateProduct = function(id, productUpdate){
     return $http({
       method: "PUT",
       url: "/api/products/" + id,
-      data: productObj
+      data: productUpdate
     }).success(function(){
       alert: "SUCCESS!";
     })

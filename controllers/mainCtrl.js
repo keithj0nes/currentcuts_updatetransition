@@ -119,14 +119,10 @@ module.exports = {
   },
 
   addProductsToCart: function(req, res, next){
-    console.log(req.user, "loggin userszzzz");
-
     if(!req.session.cart){
       req.session.cart = [];
     }
-
     req.session.cart.push(req.body);
-    // console.log(req.session.cart, "after pusshinggg");
     res.send("addProductsInCart");
   },
 
@@ -142,15 +138,21 @@ module.exports = {
 
 
   updateProductById: function(req, res, next){
-    const updateProduct = [req.body.name, req.body.description, req.body.price, req.body.img1, req.body.img2, req.params.id];
-    console.log(updateProduct);
-    console.log("update function fired!");
-    db.update_product(updateProduct, function(err, product){
+    const updateProduct = {id: req.params.id,
+                           name: req.body.name,
+                           description: req.body.description,
+                           img1: req.body.img1,
+                           imgmainvector: req.body.imgmainvector,
+                           imgoutlinevector: req.body.imgoutlinevector,
+                           active: req.body.active}
+
+    db.products.update(updateProduct, (err, updatedProduct) => {
       if(err){
         console.log(err);
-        return res.status(500).send(err)
+        res.status(500).send(err);
       }
-      return res.status(200).send(product)
+      console.log(updatedProduct, "updated product after save");
+      res.send(updatedProduct)
     })
   },
 
@@ -339,7 +341,7 @@ function insertOrder(reqUserId, guestUserResult, req, res){
         ///////////////// not working because letmatches regex is only getting last number before H and first number after x
         // let matches = product.productSize.match(/(\d+)H x (\d+)/);
         let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
-        
+
         let number1 = Number(matches[1]);
         let number2 = Number(matches[2]);
         let obj = {

@@ -4331,11 +4331,13 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   $scope.priceSize = false;
   $scope.addNew = false;
+  $scope.productActive = false;
   $scope.products = [];
   $scope.selectedProductToEdit;
   var getAllProducts = function getAllProducts() {
     mainService.adminGetAllProducts().then(function (response) {
       // console.log(response, "response in adminController");
+      console.log(response);
       $scope.products = response;
     });
   };
@@ -4364,6 +4366,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productImgOne = product.img1;
     $scope.productImgTwo = product.imgmainvector;
     $scope.productImgThree = product.imgoutlinevector;
+    $scope.productActive = product.active;
     // console.log(product, "editProducts");
 
     getProductDetails($scope.productId);
@@ -4423,6 +4426,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productImgThree = "";
     $scope.productDetails = "";
     $scope.addNew = false;
+    $scope.productActive = false;
   };
 
   $scope.clickme = function (index) {
@@ -4435,7 +4439,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
       console.log("it's null");
     } else {
 
-      var productObj = {
+      var productAdd = {
         name: name,
         description: description,
         img1: img1,
@@ -4443,7 +4447,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
         isActive: true,
         imgoutlinevector: imgoutlinevector
       };
-      mainService.addProduct(productObj);
+      mainService.addProduct(productAdd);
       // $scope.addNew = true;
       // ///////?////////////
       // need to send adminEditProducts function in order for scopeaddnew to work
@@ -4510,8 +4514,20 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     // })
   };
 
-  $scope.update = function (id, name, description, price, img1, img2) {
-    mainService.updateProduct(id, name, description, price, img1, img2);
+  $scope.update = function (id, name, description, img1, imgmainvector, imgoutlinevector, active) {
+
+    var productUpdate = {
+      name: name,
+      description: description,
+      img1: img1,
+      imgmainvector: imgmainvector,
+      imgoutlinevector: imgoutlinevector,
+      active: active
+    };
+
+    // console.log(productObj);
+
+    mainService.updateProduct(id, productUpdate);
     setTimeout(function () {
       getAllProducts();
     }, 100);
@@ -5396,36 +5412,21 @@ angular.module("ccvApp").service("mainService", function ($http) {
     });
   };
 
-  this.addProduct = function (productObj) {
-    // const productObj = {
-    //   name: name,
-    //   description: description,
-    //   img1: img1,
-    //   imgmainvector: imgmainvector,
-    //   isActive: true,
-    //   imgoutlinevector: imgoutlinevector
-    // }
+  this.addProduct = function (productAdd) {
     return $http({
       method: "POST",
       url: "/api/products",
-      data: productObj
+      data: productAdd
     }).success(function () {
       alert: "SUCCESS!";
     });
   };
 
-  this.updateProduct = function (id, name, description, price, img1, img2) {
-    var productObj = {
-      name: name,
-      description: description,
-      price: price,
-      img1: img1,
-      img2: img2
-    };
+  this.updateProduct = function (id, productUpdate) {
     return $http({
       method: "PUT",
       url: "/api/products/" + id,
-      data: productObj
+      data: productUpdate
     }).success(function () {
       alert: "SUCCESS!";
     });

@@ -2,11 +2,13 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.priceSize = false;
   $scope.addNew = false;
+  $scope.productActive = false;
   $scope.products = [];
   $scope.selectedProductToEdit;
   var getAllProducts = function(){
     mainService.adminGetAllProducts().then(function(response){
       // console.log(response, "response in adminController");
+      console.log(response);
       $scope.products = response;
     })
   }
@@ -48,6 +50,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productImgOne = product.img1;
     $scope.productImgTwo = product.imgmainvector;
     $scope.productImgThree = product.imgoutlinevector;
+    $scope.productActive = product.active;
     // console.log(product, "editProducts");
 
     getProductDetails($scope.productId);
@@ -108,6 +111,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productImgThree = "";
     $scope.productDetails = "";
     $scope.addNew = false;
+    $scope.productActive = false;
   }
 
   $scope.clickme = function(index){
@@ -121,7 +125,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       console.log("it's null");
     } else {
 
-      const productObj = {
+      const productAdd = {
         name: name,
         description: description,
         img1: img1,
@@ -129,7 +133,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         isActive: true,
         imgoutlinevector: imgoutlinevector
       }
-      mainService.addProduct(productObj);
+      mainService.addProduct(productAdd);
       // $scope.addNew = true;
       // ///////?////////////
       // need to send adminEditProducts function in order for scopeaddnew to work
@@ -204,8 +208,20 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     // })
   }
 
-  $scope.update = function(id, name, description, price, img1, img2){
-    mainService.updateProduct(id, name, description, price, img1, img2);
+  $scope.update = function(id, name, description, img1, imgmainvector, imgoutlinevector, active){
+
+    const productUpdate = {
+      name: name,
+      description: description,
+      img1: img1,
+      imgmainvector: imgmainvector,
+      imgoutlinevector: imgoutlinevector,
+      active: active
+    }
+
+    // console.log(productObj);
+
+    mainService.updateProduct(id, productUpdate);
     setTimeout(function () {
       getAllProducts();
     }, 100);
