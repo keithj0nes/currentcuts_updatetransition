@@ -107,14 +107,19 @@ module.exports = {
 
 //post
   addProductToDB: function(req, res, next){
-    const newProduct = [req.body.name, req.body.description, req.body.img1, req.body.imgoutlinevector, req.body.isActive, req.body.imgoutlinevector];
-    db.add_product(newProduct, function(err, product){
+    const newProduct = {name: req.body.name,
+                        description: req.body.description,
+                        img1: req.body.img1,
+                        imgmainvector: req.body.imgmainvector,
+                        imgoutlinevector: req.body.imgoutlinevector,
+                        active: req.body.active}
+
+    db.products.insert(newProduct, (err, addedProduct) => {
       if(err){
         console.log(err);
-        return res.status(500).send(err)
+        res.status(500).send(err);
       }
-      console.log(product, "adding to db");
-      return res.status(200).send(product)
+      res.send(addedProduct)
     })
   },
 
@@ -151,7 +156,6 @@ module.exports = {
         console.log(err);
         res.status(500).send(err);
       }
-      console.log(updatedProduct, "updated product after save");
       res.send(updatedProduct)
     })
   },
