@@ -6,6 +6,11 @@
 
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
 
+- [x] Product information 7/25/17
+  - [x] Add sizes and prices to specific products 7/23/17
+  - [x] Delete sizes and prices to specific products 7/24/17
+  - [x] Set active / inactive to specific product 7/25/17
+
 
 ### Cart page
 
