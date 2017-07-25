@@ -188,7 +188,9 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.deleteDetails = function(index, productDetails){
 
-    console.log(productDetails);
+    // console.log(productDetails);
+    productDetails.index = index;
+    // console.log(productDetails);
     for (var i = $scope.productDetails.length-1; i >= 0; i--) {
 
       if( i === index){
@@ -197,7 +199,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       }
     }
 
-    // mainService.adminDeleteDetails()//.then((res) => {
+    mainService.adminDeleteDetails($scope.productId, productDetails)//.then((res) => {
 
     // })
   }

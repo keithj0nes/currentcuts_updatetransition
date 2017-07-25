@@ -38,6 +38,19 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.adminDeleteDetails = function(id, sizePriceDetails){
+    console.log("******");
+    console.log(sizePriceDetails);
+    return $http({
+      method: "DELETE",
+      url: "api/products/" + id + "/sizeprice",
+      data: sizePriceDetails,
+      headers: {"Content-Type": "application/json;charset=utf-8"}
+    }).then((res) => {
+      console.log(res, "adminDeleteDetails in service");
+    })
+  }
+
   this.getProductById = function(id){
     return $http({
       method: "GET",

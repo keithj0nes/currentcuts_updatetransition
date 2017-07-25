@@ -4494,7 +4494,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   $scope.deleteDetails = function (index, productDetails) {
 
-    console.log(productDetails);
+    // console.log(productDetails);
+    productDetails.index = index;
+    // console.log(productDetails);
     for (var i = $scope.productDetails.length - 1; i >= 0; i--) {
 
       if (i === index) {
@@ -4503,7 +4505,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
       }
     }
 
-    // mainService.adminDeleteDetails()//.then((res) => {
+    mainService.adminDeleteDetails($scope.productId, productDetails); //.then((res) => {
 
     // })
   };
@@ -5347,6 +5349,19 @@ angular.module("ccvApp").service("mainService", function ($http) {
       data: sizePriceDetails
     }).then(function (res) {
       console.log(res, "updated price and size in service");
+    });
+  };
+
+  this.adminDeleteDetails = function (id, sizePriceDetails) {
+    console.log("******");
+    console.log(sizePriceDetails);
+    return $http({
+      method: "DELETE",
+      url: "api/products/" + id + "/sizeprice",
+      data: sizePriceDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      console.log(res, "adminDeleteDetails in service");
     });
   };
 

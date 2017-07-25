@@ -521,6 +521,37 @@ app.put("/api/products/:id/sizeprice", (req, res) => {
   }) //end db.sizes.findOne
 })
 
+app.delete("/api/products/:id/sizeprice", (req, res) => {
+  console.log("delete triggered");
+  console.log(req.params.id);
+  console.log(req.body);
+  let index = req.body.index
+  db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], function(err, result){
+    if(err){
+      console.log(err);
+      res.status(500).send(err);
+    }
+
+    console.log(result, "loggig result");
+    result.forEach(function(r, i){
+      if(index === i){
+        console.log(r.id, "r.id");
+        console.log(r, "index === i in forEach loop");
+        db.product_price_size.destroy({id: r.id}, (err, destroyedPps) => {
+          if(err){
+            console.log(err);
+            res.status(500).send(err);
+          }
+          console.log(destroyedPps, "destroyedPps data");
+          res.send(destroyedPps)
+        })
+      } else {
+        console.log("this one does not === i");
+      }
+    })
+  })
+})
+
 // NOT MVP
 // app.post("/api/users/:id");
 // app.put("/api/users/:id");
