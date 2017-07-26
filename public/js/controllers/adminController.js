@@ -3,6 +3,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   $scope.priceSize = false;
   $scope.addNew = false;
   $scope.productActive = false;
+  $scope.editDisable = false;
   $scope.products = [];
   $scope.selectedProductToEdit;
   var getAllProducts = function(){
@@ -98,7 +99,6 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
                                 "width": $scope.width,
                                 "price": $scope.price})
                                 console.log($scope.productDetails, "hahah lol momg");
-
   }
 
   $scope.clearForm = function(){
@@ -116,6 +116,11 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.clickme = function(index){
     console.log(index, "logging index");
+    $scope.editDisable = true;
+  }
+
+  $scope.clearDisabled = function(){
+    $scope.editDisable = false;
   }
 
 
@@ -168,6 +173,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         width: pswidth,
         price: psprice
       }
+      $scope.editDisable = false;
+
 
       mainService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails)
 

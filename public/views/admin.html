@@ -75,7 +75,7 @@
               <input type="text" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
 
               <button type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
-              <button type="button" name="button" ng-click="editing = false">X</button>
+              <button type="button" name="button" ng-click="editing = false; clearDisabled()">X</button>
             </form>
 
           </div>
@@ -89,9 +89,9 @@
       <!-- <br><br> -->
 
       <div class="" style="text-align: center;">
-        <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productImgOne, productImgTwo, productImgThree, productActive)">Update</button>
-        <button class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)">Add New</button>
-        <button class="btn" name="button" ng-click="clearForm()">Clear</button>
+        <button class="btn" name="button" ng-click="update(productId, productName, productDescription, productImgOne, productImgTwo, productImgThree, productActive)" ng-disabled="editDisable">Update</button>
+        <button class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)" ng-disabled="editDisable">Add New</button>
+        <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
 
       </div>
 
