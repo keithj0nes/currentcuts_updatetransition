@@ -6,9 +6,10 @@
 
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
 
-- [x] Product information 7/25/17
-  - [x] Add sizes and prices to specific products 7/23/17
-  - [x] Delete sizes and prices to specific products 7/24/17
+- [ ] Product information
+  - [ ] Set categories to specific product  
+  - [x] Add sizes and prices to specific product 7/23/17
+  - [x] Delete sizes and prices to specific product 7/24/17
   - [x] Set active / inactive to specific product 7/25/17
 
 
@@ -60,6 +61,8 @@
   - [ ] Join to Orders table
 
 - [ ] Add new order id column to Orders table to display unique order id.
+
+- [ ] Create Categories table and Product_Category joiner table
 
 - [x] Create table to allow for different product **prices** 4/3/17
 
