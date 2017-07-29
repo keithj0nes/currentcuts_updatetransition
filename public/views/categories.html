@@ -12,7 +12,7 @@
 
   <div ng-if="!bottomLevel" class="searched-products">
     <div class="product-main" ng-repeat="categories in subCategories | orderBy: 'id'">
-      <h2 class="desc" ui-sref="category({catname:categories.name})">{{categories.name}}</h2>
+      <h2 class="desc" ui-sref="category({catname:categories.name})">{{categories.titleName}}</h2>
     </div>
   </div>
 
