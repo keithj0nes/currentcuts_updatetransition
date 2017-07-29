@@ -1,0 +1,33 @@
+
+
+<main class="search-main">
+
+  <h1>{{title}}</h1>
+
+  <!-- <div ng-if="!category">
+    <p style="text-align: center;">Sorry, we could not find any results for "{{searchTerm}}".</p>
+
+  </div> -->
+
+
+  <div ng-if="!bottomLevel" class="searched-products">
+    <div class="product-main" ng-repeat="categories in subCategories | orderBy: 'id'">
+      <h2 class="desc" ui-sref="category({catname:categories.name})">{{categories.name}}</h2>
+    </div>
+  </div>
+
+
+  <div ng-if="bottomLevel" class="searched-products">
+    <div class="product-main" ng-repeat="product in categoryProducts | orderBy: 'id'">
+      <div class="product-img">
+        <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">
+      </div>
+      <div class="product-info">
+        <h2 class="desc">{{product.name}}</h2>
+        <p class="price">From <span class="red">${{product.price}}</span></p>
+        <button class="btn atc-home" name="button" ui-sref="products({id:product.id})">View Product</button>
+      </div>
+    </div>
+  </div>
+
+</main>

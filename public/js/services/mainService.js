@@ -285,6 +285,16 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
 
+  this.getProductByCategory = function(catId){
+    // console.log(catId);
+    return $http({
+      method: "GET",
+      url: "/api/products/category/" + catId
+    }).then(function(res){
+      return res.data;
+    })
+  }
+
 
   // this.cartStorage = [1,2,3];
   // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);

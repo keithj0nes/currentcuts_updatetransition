@@ -202,7 +202,32 @@ app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
 app.get("/api/products/:id/details", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);
-app.get("/api/cat/:id", mainCtrl.getProductByCategory); //////////// not working
+// app.get("/api/cat/:id", mainCtrl.getProductByCategory); //////////// not working
+app.get("/api/products/category/:id", function(req, res){
+  console.log(req.params.id, "in cat id haha");
+
+  // db.run("select * from categories where name = $1", [req.params.id], (err, hi) => {
+  //   res.send(hi);
+  // })
+
+  // db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProducts){
+  db.run("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id], function(err, categoryProducts){
+    console.log(categoryProducts, "catprod");
+    console.log(categoryProducts.length, "length");
+    if(categoryProducts.length <= 0){
+      console.log("no more results");
+  db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProductsDetails){
+    console.log(categoryProductsDetails, "even more details!");
+    res.send({categoryProductsDetails: categoryProductsDetails, bottomlevel: true})
+  })
+
+} else {
+  res.send(categoryProducts);
+
+}
+  })
+});
+
 app.post("/api/products", mainCtrl.addProductToDB);
 app.put("/api/products/:id", mainCtrl.updateProductById);
 app.delete("/api/products/:id", mainCtrl.deleteProductById);

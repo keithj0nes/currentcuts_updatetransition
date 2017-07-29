@@ -37,6 +37,18 @@ CREATE TABLE favorites (
   product_id INTEGER REFERENCES products(id)
 );
 
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name TEXT,
+  parent_id INTEGER REFERENCES categories(id)
+);
+
+CREATE TABLE product_category (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES products(id)
+  category_id INTEGER REFERENCES categories(id)
+);
+
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name TEXT,
@@ -159,3 +171,20 @@ INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (2, 15, 15);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (1, 16, 11);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (3, 12, 13);
 INSERT INTO product_price_size (productId, priceId, sizeid) VALUES (4, 12, 14);
+
+
+
+
+INSERT INTO categories (name, parent_id) VALUES ('Schools', null);
+INSERT INTO categories (name, parent_id) VALUES ('sports', null);
+INSERT INTO categories (name, parent_id) VALUES ('Animals', null);
+INSERT INTO categories (name, parent_id) VALUES ('Cars', null);
+INSERT INTO categories (name, parent_id) VALUES ('NFL', 2);
+INSERT INTO categories (name, parent_id) VALUES ('Seahawks', 5);
+INSERT INTO categories (name, parent_id) VALUES ('action_sports', 2);
+
+
+--seahawks city associated with seahawks category
+INSERT INTO product_category (product_id, category_id) VALUES (99, 6);
+
+INSERT INTO product_category (product_id, category_id) VALUES (99, 6);

@@ -85,6 +85,16 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/favorites.html",
       controller: "favoriteController"
     })
+    .state("category", {
+      url: "/categories/:catname",
+      templateUrl: "views/categories.html",
+      controller: "categoryController"
+    })
+    // .state("subcategory", {
+    //   url: "/categories/:catname2",
+    //   templateUrl: "views/categories.html",
+    //   controller: "categoryController"
+    // })
 
     $urlRouterProvider
   .otherwise("/");
