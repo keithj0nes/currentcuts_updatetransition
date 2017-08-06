@@ -235,6 +235,26 @@ app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
 app.get("/api/admin/products/:id/details", function(req, res){
   var wholeProduct = {};
+
+// db.run("select id, name from categories where parent_id is null", [], function(err, topLevelCategories){
+db.run("select * from categories order by name", [], function(err, allCategories){
+
+  console.log(allCategories, "top level cats");
+  wholeProduct.allCategories = allCategories
+
+  db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+
+    // console.log(cats, "categories in .get");
+    if(cats.length >= 1){
+      wholeProduct.selectedCategories = cats;
+    }
+  })
+
+})
+
+
+
+
   db.run("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id], function(err, product){
     if(err){
       console.log(err);

@@ -12,7 +12,7 @@
       <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
       {{product.name}}
       <div class="edit-buttons">
-        <button class="btn" ng-click="editProducts(product)" name="button">Edit</button>
+        <!-- <button class="btn" ng-click="editProducts(product)" name="button">Edit</button> -->
         <button class="btn" ng-click="delete(product)" name="button">Delete</button>
       </div>
     </div>
@@ -27,8 +27,15 @@
     <h3>Description</h3>
     <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
 
-    <h3>Active - {{productActive}}</h3>
-    <input type="checkbox" name="" ng-model="productActive">
+    <!-- <div ng-if=""> -->
+      <h3>Total Favorites</h3>
+      <p>{{productDetails.totalFavs[0].count}}</p>
+
+      <h3>Active - {{productActive}}</h3>
+      <input type="checkbox" name="" ng-model="productActive">
+    <!-- </div> -->
+
+
 
 
 <div class="" style="clear: both">
@@ -44,23 +51,36 @@
     <input type="text" name="" placeholder="Image 3 URL" ng-model="productImgThree">
       <br><br>
 
-      <!-- <select ng-model="cat1" ng-options="type.category for type in decalType">
-        <option value="null">Category 1</option>
+      <div ng-repeat="sel in allCategories">
+        {{sel}}
+      </div>
+
+      <div ng-repeat="sels in defaultSelected">
+        {{sels}}
+      </div>
+
+
+      <select ng-repeat="selec in defaultSelected">
+        <option value="">-- Category --</option>
+        <option value="" ng-selected="{{all.name == selec.name}}" ng-repeat="all in allCategories">{{all.name}}</option>
+        {{selec}}
+
       </select>
 
-      <select ng-model="cat2" ng-options="type.category for type in decalType">
-        <option value="null">Category 2</option>
+      <select ng-if="first" class="" name="" ng-model="optionChange0" ng-change="changeMe(optionChange0, null)" ng-options="catz.name for catz in topLevelCategories">
+        <option value="">Main</option>
       </select>
 
-      <select ng-model="cat3" ng-options="type.category for type in decalType">
-        <option value="null">Category 3</option>
-      </select> -->
+      <select ng-if="second" name="" ng-model="optionChange1" ng-change="changeMe(optionChange1)" ng-options="catz2.name for catz2 in secondLevelCategories">
+        <option value="">Sub</option>
+      </select>
 
+<br><br>
 
           <h3 style="display: inline-block; width: 60%;">Size</h3>
           <h3 style="display: inline-block; width: 30%;">Price</h3>
 
-          <div ng-repeat="ps in productDetails track by $index">
+          <div ng-repeat="ps in productDetails.product track by $index">
             <div ng-hide="editing" class="">
               <span style="display: inline-block; width: 30%;">H - {{ps.height}}</span>
               <span style="display: inline-block; width: 30%;">W - {{ps.width}}</span>
@@ -96,6 +116,5 @@
       </div>
 
   </div>
-
 
 </main>

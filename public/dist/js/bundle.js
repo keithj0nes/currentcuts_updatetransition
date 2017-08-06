@@ -4352,12 +4352,78 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     });
   };
 
+  $scope.changeMe = function (cat, cat2) {
+    console.log(cat, "CHANGED");
+    console.log(cat2, "change 1111");
+
+    var allCats = [];
+    $scope.allCategories.forEach(function (item, index) {
+      console.log(item, index);
+      if (item.parent_id === cat.id) {
+        console.log(item, "WE HAVE A MATCH");
+        $scope.second = true;
+        allCats.push(item);
+        $scope.secondLevelCategories = allCats;
+      }
+    });
+    console.log($scope.secondLevelCategories, "SECONDZZZZZ");
+  };
+
   var getProductDetails = function getProductDetails(prodId) {
     mainService.adminEditProducts(prodId).then(function (res) {
       $scope.priceSize = true;
       $scope.addNew = true;
       console.log(res);
-      $scope.productDetails = res.product;
+      $scope.productDetails = res;
+
+      $scope.allCategories = res.allCategories;
+      $scope.defaultSelected = [];
+
+      if (res.selectedCategories) {
+        for (var j = 0; j < res.allCategories.length; j++) {
+          var selectedCat = res.allCategories[j];
+
+          for (var i = 0; i < res.selectedCategories.length; i++) {
+            var allCat = res.selectedCategories[i];
+
+            if (selectedCat.name === allCat.name) {
+              console.log("we have a match!");
+              $scope.defaultSelected.push(selectedCat);
+            } else {
+              console.log("no match");
+            }
+          }
+        }
+      }
+
+      // if(res.selectedCategories){
+      //   $scope.selectedCategories = res.selectedCategories.reverse()
+      //   console.log($scope.selectedCategories, "selected");
+      //   for(var i = 0; i < $scope.selectedCategories.length; i++){
+      //     var currentCat = $scope.selectedCategories[i];
+      //     console.log(currentCat, "currentCat");
+      //     $scope.optionChange0 = currentCat.name;
+      //   }
+      // }
+      //
+      // var newList = []
+      // if(res.alllCategories){
+      //   $scope.allCategories = res.alllCategories.reverse();
+      //   for(var i = 0; i < $scope.allCategories.length; i++){
+      //     var currentCat = $scope.allCategories[i];
+      //
+      //     // console.log(currentCat);
+      //     if(!currentCat.parent_id){
+      //       // console.log(currentCat, " null");
+      //       newList.push(currentCat)
+      //       $scope.topLevelCategories = newList;
+      //       console.log($scope.topLevelCategories, " null");
+      //     }
+      //   }
+      //
+      //   // console.log($scope.topLevelCategories);
+      // }
+
       // console.log($scope.productDetails);
       // console.log(res, "editProducts res");
     });
@@ -4419,8 +4485,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
   };
 
   $scope.addNewRow = function () {
-    console.log("running");
-    $scope.productDetails.push({ "height": $scope.height,
+    console.log($scope.productDetails.product, "running");
+    $scope.productDetails.product.push({ "height": $scope.height,
       "width": $scope.width,
       "price": $scope.price });
     console.log($scope.productDetails, "hahah lol momg");
@@ -4574,6 +4640,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
   // }
   //
   // getUsername();
+
 });
 "use strict";
 

@@ -179,12 +179,15 @@ INSERT INTO categories (name, parent_id) VALUES ('Schools', null);
 INSERT INTO categories (name, parent_id) VALUES ('sports', null);
 INSERT INTO categories (name, parent_id) VALUES ('Animals', null);
 INSERT INTO categories (name, parent_id) VALUES ('Cars', null);
-INSERT INTO categories (name, parent_id) VALUES ('NFL', 2);
-INSERT INTO categories (name, parent_id) VALUES ('Seahawks', 5);
-INSERT INTO categories (name, parent_id) VALUES ('action_sports', 2);
+
+
+------- not creating sub categories for now
+-- INSERT INTO categories (name, parent_id) VALUES ('NFL', 2);
+-- INSERT INTO categories (name, parent_id) VALUES ('Seahawks', 5);
+-- INSERT INTO categories (name, parent_id) VALUES ('action_sports', 2);
 
 
 --seahawks city associated with seahawks category
-INSERT INTO product_category (product_id, category_id) VALUES (99, 6);
+INSERT INTO product_category (product_id, category_id) VALUES (99, 2);
 
-INSERT INTO product_category (product_id, category_id) VALUES (99, 6);
+INSERT INTO product_category (product_id, category_id) VALUES (6, 2);
