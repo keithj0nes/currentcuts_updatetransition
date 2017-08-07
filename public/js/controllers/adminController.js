@@ -14,6 +14,10 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
+  $scope.saveCategory = function(h){
+    console.log(h, "loggin gh");
+  }
+
   $scope.changeMe = function(cat, cat2){
     console.log(cat, "CHANGED");
     console.log(cat2, "change 1111");
@@ -52,6 +56,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
             if(selectedCat.name ===  allCat.name){
               console.log("we have a match!");
               $scope.defaultSelected.push(selectedCat)
+              console.log($scope.defaultSelected, "loggin");
             } else {
               console.log("no match");
             }
@@ -61,37 +66,6 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         }
 
       }
-
-      // if(res.selectedCategories){
-      //   $scope.selectedCategories = res.selectedCategories.reverse()
-      //   console.log($scope.selectedCategories, "selected");
-      //   for(var i = 0; i < $scope.selectedCategories.length; i++){
-      //     var currentCat = $scope.selectedCategories[i];
-      //     console.log(currentCat, "currentCat");
-      //     $scope.optionChange0 = currentCat.name;
-      //   }
-      // }
-      //
-      // var newList = []
-      // if(res.alllCategories){
-      //   $scope.allCategories = res.alllCategories.reverse();
-      //   for(var i = 0; i < $scope.allCategories.length; i++){
-      //     var currentCat = $scope.allCategories[i];
-      //
-      //     // console.log(currentCat);
-      //     if(!currentCat.parent_id){
-      //       // console.log(currentCat, " null");
-      //       newList.push(currentCat)
-      //       $scope.topLevelCategories = newList;
-      //       console.log($scope.topLevelCategories, " null");
-      //     }
-      //   }
-      //
-      //   // console.log($scope.topLevelCategories);
-      // }
-
-      // console.log($scope.productDetails);
-      // console.log(res, "editProducts res");
     })
   }
 
@@ -161,6 +135,13 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     //
     //
     // })
+  }
+
+  $scope.addNewCategory = function(){
+    console.log($scope.allCategories, "clicked");
+    $scope.defaultSelected.push({"name": $scope.catName});
+    console.log($scope.defaultSelected, "after clicked");
+
   }
 
   $scope.addNewRow = function(){

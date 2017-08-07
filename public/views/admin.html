@@ -55,25 +55,20 @@
         {{sel}}
       </div>
 
-      <div ng-repeat="sels in defaultSelected">
-        {{sels}}
+      <div class="" style="border: 2px solid black; width: 100%;">
+
       </div>
 
+      <div ng-repeat="selected in defaultSelected">
+        <select ng-options="all as all.name for all in allCategories"  ng-model="selected">
+          <option value="">-- Category --</option>
+        </select>
 
-      <select ng-repeat="selec in defaultSelected">
-        <option value="">-- Category --</option>
-        <option value="" ng-selected="{{all.name == selec.name}}" ng-repeat="all in allCategories">{{all.name}}</option>
-        {{selec}}
+       <button type="button" name="button" ng-click="saveCategory(selected)">save</button>
+      </div>
 
-      </select>
+      <button type="button" name="button" ng-click="addNewCategory()">Add Cat</button>
 
-      <select ng-if="first" class="" name="" ng-model="optionChange0" ng-change="changeMe(optionChange0, null)" ng-options="catz.name for catz in topLevelCategories">
-        <option value="">Main</option>
-      </select>
-
-      <select ng-if="second" name="" ng-model="optionChange1" ng-change="changeMe(optionChange1)" ng-options="catz2.name for catz2 in secondLevelCategories">
-        <option value="">Sub</option>
-      </select>
 
 <br><br>
 

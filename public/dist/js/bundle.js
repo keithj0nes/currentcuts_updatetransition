@@ -4352,6 +4352,10 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     });
   };
 
+  $scope.saveCategory = function (h) {
+    console.log(h, "loggin gh");
+  };
+
   $scope.changeMe = function (cat, cat2) {
     console.log(cat, "CHANGED");
     console.log(cat2, "change 1111");
@@ -4389,43 +4393,13 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
             if (selectedCat.name === allCat.name) {
               console.log("we have a match!");
               $scope.defaultSelected.push(selectedCat);
+              console.log($scope.defaultSelected, "loggin");
             } else {
               console.log("no match");
             }
           }
         }
       }
-
-      // if(res.selectedCategories){
-      //   $scope.selectedCategories = res.selectedCategories.reverse()
-      //   console.log($scope.selectedCategories, "selected");
-      //   for(var i = 0; i < $scope.selectedCategories.length; i++){
-      //     var currentCat = $scope.selectedCategories[i];
-      //     console.log(currentCat, "currentCat");
-      //     $scope.optionChange0 = currentCat.name;
-      //   }
-      // }
-      //
-      // var newList = []
-      // if(res.alllCategories){
-      //   $scope.allCategories = res.alllCategories.reverse();
-      //   for(var i = 0; i < $scope.allCategories.length; i++){
-      //     var currentCat = $scope.allCategories[i];
-      //
-      //     // console.log(currentCat);
-      //     if(!currentCat.parent_id){
-      //       // console.log(currentCat, " null");
-      //       newList.push(currentCat)
-      //       $scope.topLevelCategories = newList;
-      //       console.log($scope.topLevelCategories, " null");
-      //     }
-      //   }
-      //
-      //   // console.log($scope.topLevelCategories);
-      // }
-
-      // console.log($scope.productDetails);
-      // console.log(res, "editProducts res");
     });
   };
 
@@ -4482,6 +4456,12 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     //
     //
     // })
+  };
+
+  $scope.addNewCategory = function () {
+    console.log($scope.allCategories, "clicked");
+    $scope.defaultSelected.push({ "name": $scope.catName });
+    console.log($scope.defaultSelected, "after clicked");
   };
 
   $scope.addNewRow = function () {
@@ -5239,270 +5219,6 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 });
 "use strict";
 
-angular.module("ccvApp").directive("adminAuth", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService) {
-
-      mainService.getAuth().then(function (response) {
-        console.log(response);
-        if (response.reqUserAdmin === true) {
-          $scope.auth = true;
-        }
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkitemsincart", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService, $rootScope) {
-
-      var getNumber = function getNumber() {
-        mainService.getProductsInCart().then(function (response) {
-          var cartTotalItems = 0;
-          for (var i = 0; i < response.length; i++) {
-            cartTotalItems += Number(response[i].productQuantity);
-          }
-          $scope.itemsInCart = cartTotalItems;
-        });
-      };
-
-      getNumber();
-
-      $scope.$on('cartCount', function () {
-        getNumber();
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkLoggedIn", function (mainService) {
-
-  return {
-    restrict: "AE",
-    link: function link(scope, elem, attr) {
-      var getUsername = function getUsername() {
-        mainService.getUsername().then(function (response) {
-          console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
-          scope.username = response.firstname;
-          scope.useremail = response.email;
-          // if(scope.username){
-          //   scope.usernameFirst = scope.username.charAt(0);
-          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
-          // }
-        });
-      };
-
-      // modal functionality when clicking username in desktop view
-      var modal = document.getElementById('my-modal');
-
-      scope.showModal = function () {
-        scope.userModal = true;
-      };
-
-      scope.closeModal = function () {
-        scope.userModal = false;
-      };
-
-      window.onclick = function (e) {
-        if (e.target == modal) {
-          scope.userModal = false;
-          scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-        }
-      };
-
-      getUsername();
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("shipDate", function () {
-
-  return {
-    restrict: "AE",
-    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
-    link: function link(scope, elem, attr) {
-      scope.daystoship = moment().add(3, "days").format('MMMM Do');
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
-
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
-  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-
-
-  return {
-    restrict: "AE",
-    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
-    scope: {
-      totalPrice: '='
-    },
-    link: function link(scope, elem, attr) {
-
-      var orderData = {
-        order: {
-          number: 5624
-        },
-        email: "currentcutstest@gmail.com",
-        user: {
-          //   name: "Martin",
-          //   address: "1234 s 10th st.",
-          //   zip: "91482",
-          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
-        },
-        product: [] //{
-        //   pName: "Wanderlust",
-        //   pColor: "Red",
-        //   pHeight: 6,
-        //   pWidth: 12,
-        //   pPrice: 15,
-        //   pQuantity: 2
-        // }
-      };
-
-      // setTimeout(function () {
-      //   var hello = mainService.addShippingInfo()
-      //   console.log(hello);
-      //
-      // }, 2000);
-
-      // setTimeout(function () {
-      // scope.value = $rootScope.$on.details
-      // console.log(scope.value, "scopedotvalue");
-      // }, 2000);
-
-
-      $('.btn-stripe').on('click', orderData, function (e) {
-
-        // $rootScope.fun()
-        // console.log($rootScope.fun());
-
-        scope.value = $rootScope.details;
-        console.log(scope.value, "scopedotvalue");
-        if ($rootScope.note) {
-          console.log($rootScope.note.note, "rootScope.no.note");
-          orderData.order.note = $rootScope.note.note;
-        }
-        orderData.user = scope.value;
-        orderData.product = [];
-
-        mainService.getProductsInCart().then(function (response) {
-          console.log(response);
-          response.forEach(function (item, i) {
-            console.log(item, "item being logged");
-            orderData.product.push(item);
-          });
-        });
-        console.log(orderData, "orderdata logged");
-        // Open Checkout with further options:
-        // console.log(e.data, "USER DATA STRIPE CLICK");
-        if (!scope.value) {
-          alert("please enter shipping info");
-        } else {
-          var handler = StripeCheckout.configure({
-            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-            locale: 'auto',
-            token: function token(_token) {
-              // You can access the token ID with `token.id`.
-              // Get the token ID to your server-side code for use.
-
-              $http.post('/api/charge', {
-                stripeToken: _token.id,
-                price: stripeTotal,
-                email: _token.email,
-                stripeTokenCard: _token.card
-              }).then(function (response) {
-                $rootScope.cart = [];
-                $state.go('home');
-                return $http.post('/api/email', orderData);
-              });
-            }
-          });
-          var stripeTotal = scope.totalPrice * 100;
-
-          handler.open({
-            name: 'Current Cuts Vinyl',
-            description: 'Decal purchase',
-            amount: stripeTotal
-          });
-          e.preventDefault();
-        }
-      });
-
-      // Close Checkout on page navigation:
-      //       // $(window).on('popstate', function() {
-      //       //   handler.close();
-      //       //   $state.go('mainProducts');
-      //       // });
-    }
-  };
-});
-
-// angular.module('capriccio')
-//   .directive('stripeButton', function ($http, $state, $rootScope) {
-//     return {
-//       restrict: 'E',
-//       template: '<button id="stripePayButton">Pay Now</button>',
-//       scope: {
-//         totalPrice: '='
-//       },
-//       link: function (scope, element, attrs) {
-//         var totalOrderPrice = scope.totalPrice;
-//         var handler = StripeCheckout.configure({
-//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
-//           image: 'assetts/img/thumb-100.png',
-//           locale: 'auto',
-//           token: function(token) {
-//           // You can access the token ID with `token.id`.
-//           // Get the token ID to your server-side code for use.
-//             $http.post('/api/charge', {
-//               stripeToken: token.id,
-//               price: totalOrderPrice,
-//               email: token.email,
-//               stripeTokenCard: token.card
-//             }).then(function (response) {
-//               $rootScope.userCart = [];
-//               $state.go('mainProducts');
-//             })
-//           }
-//         })
-//         $('#stripePayButton').on('click', function(e) {
-//           // Open Checkout with further options:
-//           var stripeTotal = scope.totalPrice * 100;
-//
-//           handler.open({
-//             name: 'Capriccio',
-//             description: 'Music purchase',
-//             amount: stripeTotal
-//           });
-//           e.preventDefault();
-//         });
-//
-//       // Close Checkout on page navigation:
-//       // $(window).on('popstate', function() {
-//       //   handler.close();
-//       //   $state.go('mainProducts');
-//       // });
-//       }
-//     }
-//   });
-"use strict";
-
 angular.module("ccvApp").service("mainService", function ($http) {
 
   this.getAllProducts = function () {
@@ -5805,4 +5521,268 @@ angular.module("ccvApp").service("mainService", function ($http) {
 "use strict";
 
 angular.module("ccvApp").service("productService", function ($http) {});
+"use strict";
+
+angular.module("ccvApp").directive("adminAuth", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService) {
+
+      mainService.getAuth().then(function (response) {
+        console.log(response);
+        if (response.reqUserAdmin === true) {
+          $scope.auth = true;
+        }
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkitemsincart", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService, $rootScope) {
+
+      var getNumber = function getNumber() {
+        mainService.getProductsInCart().then(function (response) {
+          var cartTotalItems = 0;
+          for (var i = 0; i < response.length; i++) {
+            cartTotalItems += Number(response[i].productQuantity);
+          }
+          $scope.itemsInCart = cartTotalItems;
+        });
+      };
+
+      getNumber();
+
+      $scope.$on('cartCount', function () {
+        getNumber();
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkLoggedIn", function (mainService) {
+
+  return {
+    restrict: "AE",
+    link: function link(scope, elem, attr) {
+      var getUsername = function getUsername() {
+        mainService.getUsername().then(function (response) {
+          console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
+          scope.username = response.firstname;
+          scope.useremail = response.email;
+          // if(scope.username){
+          //   scope.usernameFirst = scope.username.charAt(0);
+          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
+          // }
+        });
+      };
+
+      // modal functionality when clicking username in desktop view
+      var modal = document.getElementById('my-modal');
+
+      scope.showModal = function () {
+        scope.userModal = true;
+      };
+
+      scope.closeModal = function () {
+        scope.userModal = false;
+      };
+
+      window.onclick = function (e) {
+        if (e.target == modal) {
+          scope.userModal = false;
+          scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+        }
+      };
+
+      getUsername();
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("shipDate", function () {
+
+  return {
+    restrict: "AE",
+    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
+    link: function link(scope, elem, attr) {
+      scope.daystoship = moment().add(3, "days").format('MMMM Do');
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
+
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
+  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+
+
+  return {
+    restrict: "AE",
+    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
+    scope: {
+      totalPrice: '='
+    },
+    link: function link(scope, elem, attr) {
+
+      var orderData = {
+        order: {
+          number: 5624
+        },
+        email: "currentcutstest@gmail.com",
+        user: {
+          //   name: "Martin",
+          //   address: "1234 s 10th st.",
+          //   zip: "91482",
+          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: [] //{
+        //   pName: "Wanderlust",
+        //   pColor: "Red",
+        //   pHeight: 6,
+        //   pWidth: 12,
+        //   pPrice: 15,
+        //   pQuantity: 2
+        // }
+      };
+
+      // setTimeout(function () {
+      //   var hello = mainService.addShippingInfo()
+      //   console.log(hello);
+      //
+      // }, 2000);
+
+      // setTimeout(function () {
+      // scope.value = $rootScope.$on.details
+      // console.log(scope.value, "scopedotvalue");
+      // }, 2000);
+
+
+      $('.btn-stripe').on('click', orderData, function (e) {
+
+        // $rootScope.fun()
+        // console.log($rootScope.fun());
+
+        scope.value = $rootScope.details;
+        console.log(scope.value, "scopedotvalue");
+        if ($rootScope.note) {
+          console.log($rootScope.note.note, "rootScope.no.note");
+          orderData.order.note = $rootScope.note.note;
+        }
+        orderData.user = scope.value;
+        orderData.product = [];
+
+        mainService.getProductsInCart().then(function (response) {
+          console.log(response);
+          response.forEach(function (item, i) {
+            console.log(item, "item being logged");
+            orderData.product.push(item);
+          });
+        });
+        console.log(orderData, "orderdata logged");
+        // Open Checkout with further options:
+        // console.log(e.data, "USER DATA STRIPE CLICK");
+        if (!scope.value) {
+          alert("please enter shipping info");
+        } else {
+          var handler = StripeCheckout.configure({
+            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            token: function token(_token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+
+              $http.post('/api/charge', {
+                stripeToken: _token.id,
+                price: stripeTotal,
+                email: _token.email,
+                stripeTokenCard: _token.card
+              }).then(function (response) {
+                $rootScope.cart = [];
+                $state.go('home');
+                return $http.post('/api/email', orderData);
+              });
+            }
+          });
+          var stripeTotal = scope.totalPrice * 100;
+
+          handler.open({
+            name: 'Current Cuts Vinyl',
+            description: 'Decal purchase',
+            amount: stripeTotal
+          });
+          e.preventDefault();
+        }
+      });
+
+      // Close Checkout on page navigation:
+      //       // $(window).on('popstate', function() {
+      //       //   handler.close();
+      //       //   $state.go('mainProducts');
+      //       // });
+    }
+  };
+});
+
+// angular.module('capriccio')
+//   .directive('stripeButton', function ($http, $state, $rootScope) {
+//     return {
+//       restrict: 'E',
+//       template: '<button id="stripePayButton">Pay Now</button>',
+//       scope: {
+//         totalPrice: '='
+//       },
+//       link: function (scope, element, attrs) {
+//         var totalOrderPrice = scope.totalPrice;
+//         var handler = StripeCheckout.configure({
+//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
+//           image: 'assetts/img/thumb-100.png',
+//           locale: 'auto',
+//           token: function(token) {
+//           // You can access the token ID with `token.id`.
+//           // Get the token ID to your server-side code for use.
+//             $http.post('/api/charge', {
+//               stripeToken: token.id,
+//               price: totalOrderPrice,
+//               email: token.email,
+//               stripeTokenCard: token.card
+//             }).then(function (response) {
+//               $rootScope.userCart = [];
+//               $state.go('mainProducts');
+//             })
+//           }
+//         })
+//         $('#stripePayButton').on('click', function(e) {
+//           // Open Checkout with further options:
+//           var stripeTotal = scope.totalPrice * 100;
+//
+//           handler.open({
+//             name: 'Capriccio',
+//             description: 'Music purchase',
+//             amount: stripeTotal
+//           });
+//           e.preventDefault();
+//         });
+//
+//       // Close Checkout on page navigation:
+//       // $(window).on('popstate', function() {
+//       //   handler.close();
+//       //   $state.go('mainProducts');
+//       // });
+//       }
+//     }
+//   });
 //# sourceMappingURL=bundle.js.map
