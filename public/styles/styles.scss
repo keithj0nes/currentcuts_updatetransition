@@ -6,6 +6,10 @@ $light-gray: #f3f3f3;
 $charcoal: #a1a1a1;
 $add-to-cart-color: #3085d6;
 
+.highlighted {
+  background: #bbb;
+}
+
 body {
   // overflow: hidden; //stops scroll from moving above page in chrome/safari
   background-color: $light-gray;

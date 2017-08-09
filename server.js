@@ -694,9 +694,7 @@ app.delete("/api/products/:id/sizeprice", (req, res) => {
           console.log(destroyedPps, "destroyedPps data");
           res.send(destroyedPps)
         })
-      } else {
-        console.log("this one does not === i");
-      }
+      } 
     })
   })
 })

@@ -415,6 +415,9 @@ template {
 [hidden] {
   display: none; }
 
+.highlighted {
+  background: #bbb; }
+
 body {
   background-color: #f3f3f3; }
   body .minnie {

@@ -4343,10 +4343,11 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
   $scope.productActive = false;
   $scope.editDisable = false;
   $scope.showExtraDetails = false;
+  $scope.selected = null; //highlights selected product
+
 
   var getAllProducts = function getAllProducts() {
     mainService.adminGetAllProducts().then(function (response) {
-      // console.log(response, "response in adminController");
       console.log(response);
       $scope.products = response;
     });
@@ -4354,27 +4355,21 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   var getProductDetails = function getProductDetails(prodId) {
     mainService.adminEditProducts(prodId).then(function (res) {
-      $scope.showExtraDetails = true;
-
-      console.log(res);
-      $scope.productDetails = res;
-
-      $scope.allCategories = res.allCategories;
       $scope.defaultSelected = [];
+      $scope.showExtraDetails = true;
+      $scope.productDetails = res;
+      $scope.productId = prodId;
+      $scope.allCategories = res.allCategories;
 
       if (res.selectedCategories) {
         for (var j = 0; j < res.allCategories.length; j++) {
           var selectedCat = res.allCategories[j];
-
           for (var i = 0; i < res.selectedCategories.length; i++) {
             var allCat = res.selectedCategories[i];
-
             if (selectedCat.name === allCat.name) {
-              console.log("we have a match!");
+              // console.log("we have a match!");
               $scope.defaultSelected.push(selectedCat);
-              console.log($scope.defaultSelected, "loggin");
-            } else {
-              console.log("no match");
+              // console.log($scope.defaultSelected, "loggin");
             }
           }
         }
@@ -4384,10 +4379,10 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   getAllProducts();
 
-  $scope.decalType = [{ category: 'Adventure' }, { category: 'Sports' }, { category: 'Schools' }, { category: 'Games' }, { category: 'Characters' }, { category: 'Animals' }];
-
   //editProducts function displays information about specific product when called with the Edit Button
-  $scope.editProducts = function (product) {
+  $scope.editProducts = function (product, index) {
+
+    $scope.selected = index;
     $scope.productId = product.id;
     $scope.productName = product.name;
     $scope.productDescription = product.description;
@@ -4509,6 +4504,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     $scope.productDetails = "";
     $scope.productActive = false;
     $scope.showExtraDetails = false;
+    $scope.selected = null;
   };
 
   $scope.clickme = function (index) {
@@ -4541,7 +4537,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
         } else {
           setTimeout(function () {
             getAllProducts();
-            console.log("calling for details");
+            console.log(res.id, "calling for details");
             getProductDetails(res.id);
           }, 100);
         }
