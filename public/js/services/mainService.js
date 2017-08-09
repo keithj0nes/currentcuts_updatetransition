@@ -115,12 +115,7 @@ angular.module("ccvApp").service("mainService", function($http){
       console.log(res.data);
       return res.data;
     })
-
-    //.success(function(){
-    //   alert: "SUCCESS!";
-    // })
   }
-
 
   this.updateProduct = function(id, productUpdate){
     return $http({
@@ -133,8 +128,8 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
 
-  this.deleteProduct = function(product){
-    const productId = product.id;
+  this.deleteProduct = function(productId){
+    // const productId = product.id;
     return $http({
       method: "DELETE",
       url: "/api/products/" + productId

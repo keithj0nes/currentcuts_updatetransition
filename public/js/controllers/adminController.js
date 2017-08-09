@@ -1,11 +1,12 @@
 angular.module("ccvApp").controller("adminController", function($scope, mainService){
 
-  $scope.priceSize = false;
-  $scope.addNew = false;
+  //admin globals
+  $scope.products = [];
   $scope.productActive = false;
   $scope.editDisable = false;
-  $scope.products = [];
-  $scope.selectedProductToEdit;
+  $scope.showExtraDetails = false;
+
+
   var getAllProducts = function(){
     mainService.adminGetAllProducts().then(function(response){
       // console.log(response, "response in adminController");
@@ -18,8 +19,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   var getProductDetails = function(prodId){
     mainService.adminEditProducts(prodId).then((res) => {
-      $scope.priceSize = true;
-      $scope.addNew = true;
+      $scope.showExtraDetails = true;
+
       console.log(res);
       $scope.productDetails = res;
 
@@ -191,8 +192,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productImgTwo = "";
     $scope.productImgThree = "";
     $scope.productDetails = "";
-    $scope.addNew = false;
     $scope.productActive = false;
+    $scope.showExtraDetails = false;
   }
 
   $scope.clickme = function(index){
@@ -226,6 +227,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         } else {
           setTimeout(function () {
             getAllProducts();
+            console.log("calling for details");
+            getProductDetails(res.id)
           }, 100);
         }
       });
@@ -304,8 +307,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       active: active
     }
 
-    // console.log(productObj);
-
+    console.log($scope.productActive, name);
+    //
     mainService.updateProduct(id, productUpdate);
     setTimeout(function () {
       getAllProducts();
@@ -313,7 +316,8 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   }
 
-  $scope.delete = function(product){
+  $scope.delete = function(productId){
+    console.log(productId);
     swal({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -323,12 +327,13 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
     }).then(function () {
+      console.log($scope.products, "logging products");
         for (var i = $scope.products.length-1; i >= 0; i--) {
-          if($scope.products[i].id === product.id){
+          if($scope.products[i].id === productId){
             $scope.products.splice(i, 1);
           }
         }
-      mainService.deleteProduct(product);
+      mainService.deleteProduct(productId);
       $scope.clearForm();
     })
   }
