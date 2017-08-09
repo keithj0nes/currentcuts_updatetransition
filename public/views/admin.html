@@ -59,12 +59,12 @@
 
       </div>
 
-      <div ng-repeat="selected in defaultSelected">
+      <div ng-repeat="selected in defaultSelected track by $index">
         <select ng-options="all as all.name for all in allCategories"  ng-model="selected">
           <option value="">-- Category --</option>
         </select>
 
-       <button type="button" name="button" ng-click="saveCategory(selected)">save</button>
+       <button type="button" name="button" ng-click="saveCategory($index, selected)">save</button>
       </div>
 
       <button type="button" name="button" ng-click="addNewCategory()">Add Cat</button>

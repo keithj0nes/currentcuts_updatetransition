@@ -232,25 +232,118 @@ app.post("/api/products", mainCtrl.addProductToDB);
 app.put("/api/products/:id", mainCtrl.updateProductById);
 app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
+app.put("/api/admin/products/:id/categories", function(req, res){
+  // console.log(req.body);
+  console.log("*******");
+
+  let index = req.body.index;
+  let cat_id = req.body.id
+  let catMatch = 0;
+
+  let updatedCategory = {};
+
+    db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+      // console.log(product, "here's the categories");
+      product.forEach(function(prod, ind){
+        if(index === ind){
+          catMatch++
+          console.log("found a match at index: ", index, prod);
+          db.product_category.save({id: prod.id, product_id: req.params.id, category_id: cat_id}, function(err, updatedCat){
+            // console.log(updatedCat, "this has been updated");
+
+            db.run("select * from categories order by id", [], function(err, allCategories){
+
+            // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
+
+
+              // console.log(allCategories, "top level cats");
+              updatedCategory.allCategories = allCategories
+
+              db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+              // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
+
+                // console.log(cats, "categories in .get");
+                if(cats.length >= 1){
+                  updatedCategory.selectedCategories = cats;
+                  // console.log(updatedCategory, "updated category in line 272");
+                  res.send(updatedCategory)
+                }
+              })
+
+            })
+            // res.send(updatedCat)
+          })
+        } else {
+          console.log("no match");
+        }
+      })
+
+      if(!catMatch){
+        console.log("new Line added!!");
+        db.product_category.insert({product_id: req.params.id, category_id: cat_id}, (err, insertedCat) => {
+          if(err){
+            console.log(err);
+            res.status(500).send(err);
+          }
+          console.log(insertedCat, "inserted category");
+
+          db.run("select * from categories order by id", [], function(err, allCategories){
+
+          // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
+
+
+            // console.log(allCategories, "top level cats");
+            updatedCategory.allCategories = allCategories
+
+            db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+            // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
+
+              // console.log(cats, "categories in .get");
+              if(cats.length >= 1){
+                updatedCategory.selectedCategories = cats;
+                // console.log(updatedCategory, "updated category in line 272");
+                res.send(updatedCategory)
+              }
+            })
+
+          })
+
+          // res.send(insertedCat)
+        })
+      }
+    })
+
+
+
+
+})
 
 app.get("/api/admin/products/:id/details", function(req, res){
   var wholeProduct = {};
 
 // db.run("select id, name from categories where parent_id is null", [], function(err, topLevelCategories){
-db.run("select * from categories order by name", [], function(err, allCategories){
+  db.run("select * from categories order by id", [], function(err, allCategories){
 
-  // console.log(allCategories, "top level cats");
-  wholeProduct.allCategories = allCategories
+  // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
 
-  db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
 
-    // console.log(cats, "categories in .get");
-    if(cats.length >= 1){
-      wholeProduct.selectedCategories = cats;
-    }
+    // console.log(allCategories, "top level cats");
+    wholeProduct.allCategories = allCategories
+
+    db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+    // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
+
+      // console.log(cats, "categories in .get");
+      if(cats.length >= 1){
+        wholeProduct.selectedCategories = cats;
+      }
+    })
+
   })
-
-})
 
 
 

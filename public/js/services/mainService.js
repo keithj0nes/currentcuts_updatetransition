@@ -51,6 +51,17 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.adminSaveCategory = function(updateCat, productId){
+
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + productId + "/categories",
+      data: updateCat
+    }).then((res) => {
+      return res.data;
+    })
+  }
+
   this.getProductById = function(id){
     return $http({
       method: "GET",

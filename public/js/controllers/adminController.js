@@ -14,27 +14,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
-  $scope.saveCategory = function(h){
-    console.log(h, "loggin gh");
-  }
 
-  $scope.changeMe = function(cat, cat2){
-    console.log(cat, "CHANGED");
-    console.log(cat2, "change 1111");
-
-    let allCats = []
-    $scope.allCategories.forEach(function(item, index){
-      console.log(item, index);
-      if(item.parent_id === cat.id){
-        console.log(item, "WE HAVE A MATCH");
-        $scope.second = true;
-        allCats.push(item)
-        $scope.secondLevelCategories = allCats;
-      }
-    })
-    console.log($scope.secondLevelCategories, "SECONDZZZZZ");
-
-  }
 
   var getProductDetails = function(prodId){
     mainService.adminEditProducts(prodId).then((res) => {
@@ -135,6 +115,40 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     //
     //
     // })
+  }
+
+  $scope.saveCategory = function(index,updateCat){
+
+    if(updateCat){
+      if(updateCat.name){
+        updateCat.index = index;
+        mainService.adminSaveCategory(updateCat, $scope.productId).then((res)=>{
+
+          $scope.allCategories = res.allCategories;
+          if(res.selectedCategories){
+            $scope.defaultSelected = [];
+            for(var j = 0; j < res.allCategories.length; j++){
+              let selectedCat = res.allCategories[j];
+              for(var i = 0; i < res.selectedCategories.length; i++){
+                let allCat = res.selectedCategories[i]
+                if(selectedCat.name ===  allCat.name){
+                  $scope.defaultSelected.push(selectedCat)
+                }
+              }
+            }
+          }
+        })
+      } else {
+        swal("Please select a category");
+      }
+    } else {
+      swal("Please select a category");
+    }
+
+
+
+
+    console.log("getting here");
   }
 
   $scope.addNewCategory = function(){
