@@ -4468,6 +4468,22 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
     console.log("getting here");
   };
 
+  $scope.deleteCategory = function (index, category) {
+    console.log(index, category);
+
+    category.index = index;
+
+    mainService.adminDeleteCategory(category, $scope.productId);
+
+    for (var i = $scope.defaultSelected.length - 1; i >= 0; i--) {
+      console.log($scope.defaultSelected[i], index);
+      if (index === i) {
+        console.log("UPPPPSSS");
+        $scope.defaultSelected.splice(i, 1);
+      }
+    }
+  };
+
   $scope.addNewCategory = function () {
     console.log($scope.allCategories, "clicked");
     $scope.defaultSelected.push({ "name": $scope.catName });
@@ -5552,6 +5568,19 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "PUT",
       url: "/api/admin/products/" + productId + "/categories",
       data: updateCat
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteCategory = function (categoryDetails, id) {
+    console.log("yuuppppp!!!");
+
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + id + "/categories",
+      data: categoryDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
     }).then(function (res) {
       return res.data;
     });

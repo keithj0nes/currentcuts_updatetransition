@@ -151,6 +151,22 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     console.log("getting here");
   }
 
+  $scope.deleteCategory = function(index, category){
+    console.log(index, category);
+
+    category.index = index;
+
+    mainService.adminDeleteCategory(category, $scope.productId);
+
+    for(var i = $scope.defaultSelected.length-1; i >= 0; i--){
+      console.log($scope.defaultSelected[i], index);
+      if(index === i){
+        console.log("UPPPPSSS");
+        $scope.defaultSelected.splice(i, 1);
+      }
+    }
+  }
+
   $scope.addNewCategory = function(){
     console.log($scope.allCategories, "clicked");
     $scope.defaultSelected.push({"name": $scope.catName});

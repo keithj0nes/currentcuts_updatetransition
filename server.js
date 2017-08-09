@@ -232,6 +232,17 @@ app.post("/api/products", mainCtrl.addProductToDB);
 app.put("/api/products/:id", mainCtrl.updateProductById);
 app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
+app.delete("/api/admin/products/:id/categories", function(req, res){
+  db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
+    product.forEach(function(item, ind){
+      if(req.body.index === ind){
+        db.product_category.destroy({id: item.id}, function(err, deletedCat){
+        })
+      }
+    })
+  })
+})
+
 app.put("/api/admin/products/:id/categories", function(req, res){
   // console.log(req.body);
   console.log("*******");

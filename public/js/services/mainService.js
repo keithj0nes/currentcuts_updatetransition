@@ -62,6 +62,19 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.adminDeleteCategory = function(categoryDetails, id){
+    console.log("yuuppppp!!!");
+
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + id + "/categories",
+      data: categoryDetails,
+      headers: {"Content-Type": "application/json;charset=utf-8"}
+    }).then((res) => {
+      return res.data;
+    })
+  }
+
   this.getProductById = function(id){
     return $http({
       method: "GET",
