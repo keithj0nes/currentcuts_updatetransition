@@ -2,9 +2,12 @@
 
 ### Admin Page
 
-- [ ] Create current orders tab
-
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
+
+- [ ] Create current orders tab
+  - [ ] Set datecompleted timestamp once completed is checked true
+  - [ ] Allow tracking number to be entered once completed
+  - [ ] Use nodemailer to send follow up email to email associated with order
 
 - [x] Product information 8/9/17
   - [x] Set categories to specific product 8/9/17
