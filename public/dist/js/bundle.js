@@ -4348,8 +4348,35 @@ angular.module("ccvApp").controller("adminController", function ($scope, mainSer
 
   var getAllProducts = function getAllProducts() {
     mainService.adminGetAllProducts().then(function (response) {
-      console.log(response);
+      // console.log(response);
       $scope.products = response;
+    });
+  };
+
+  $scope.getOpenOrders = function () {
+    mainService.adminGetOpenOrders().then(function (res) {
+      console.log(res, "res in adminGetOpenOrders");
+      $scope.openOrders = res;
+
+      // for(var i = 0; i < res.length; i++){
+      //
+      //   // console.log(res[i].id);
+      //   if($scope.openOrders.length === 0){
+      //     // console.log("ahahaha");
+      //     $scope.openOrders.push(res[i])
+      //   } else {
+      //     console.log($scope.openOrders, i);
+      //     for(var j = 0; j < $scope.openOrders.length; j++){
+      //       // if($scope.openOrders[i].id === res[i].id){
+      //       //   console.log("MATCH!!");
+      //       // } else {
+      //       //   console.log("no match");
+      //       // }
+      //     }
+      //   }
+      //
+      // 
+      // }
     });
   };
 
@@ -5317,6 +5344,15 @@ angular.module("ccvApp").service("mainService", function ($http) {
       url: "/api/admin/products/" + id + "/categories",
       data: categoryDetails,
       headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOpenOrders = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders"
     }).then(function (res) {
       return res.data;
     });

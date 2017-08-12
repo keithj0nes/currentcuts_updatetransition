@@ -75,6 +75,15 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.adminGetOpenOrders = function(){
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders"
+    }).then((res)=>{
+      return res.data;
+    })
+  }
+
   this.getProductById = function(id){
     return $http({
       method: "GET",

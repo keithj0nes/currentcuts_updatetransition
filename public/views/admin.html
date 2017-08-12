@@ -1,9 +1,22 @@
 <main class="admin-main">
-  <div check-logged-in>
+  <!-- <div check-logged-in> -->
     <h1>Admin - {{username}}</h1>
 
-  </div>
+  <!-- </div> -->
 
+  <button type="button" name="button" ng-click="orderss = true; productss = false; getOpenOrders()">Show Orders</button>
+  <button type="button" name="button" ng-click="productss = true; orderss = false">Show Products</button>
+
+
+<div ng-if="orderss">
+  <h1>hahahaha</h1>
+
+  <div ng-repeat="open in openOrders">
+    {{open.id}}
+  </div>
+</div>
+
+<div ng-if="productss">
   <div class="admin-items">
     <div class="admin-filter">
       <input type="text" placeholder="Search" ng-model="searchDB.name">
@@ -27,9 +40,9 @@
     <h3>Description</h3>
     <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
 
-<div class="" style="clear: both">
+<!-- <div class="" style="clear: both">
 
-</div>
+</div> -->
     <h3>Main Image</h3>
     <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
 
@@ -108,5 +121,7 @@
       </div>
 
   </div>
+</div>
+
 
 </main>

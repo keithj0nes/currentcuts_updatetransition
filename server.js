@@ -232,6 +232,25 @@ app.post("/api/products", mainCtrl.addProductToDB);
 app.put("/api/products/:id", mainCtrl.updateProductById);
 app.delete("/api/products/:id", mainCtrl.deleteProductById);
 
+
+app.get("/api/admin/orders", function(req, res){
+
+  let openOrders = {};
+
+  db.run("select orders.id, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping, users.email as useremail, guest_users.email as guestemail from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join shipping on orders.shippingid = shipping.id where orders.completed = false;", [], function(err, mainOrders){
+    openOrders.mainOrder = mainOrders;
+    mainOrders.forEach((main, index) => {
+      db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
+        openOrders.mainOrder[index].subOrder = subOrder;
+      })
+    })
+    //res.send sends before db.run is completed - must use setTimeout to allow db.run data to be stored
+    setTimeout(()=>{
+      res.send(openOrders)
+    }, 100);
+  })
+})
+
 app.delete("/api/admin/products/:id/categories", function(req, res){
   db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
     product.forEach(function(item, ind){
@@ -694,7 +713,7 @@ app.delete("/api/products/:id/sizeprice", (req, res) => {
           console.log(destroyedPps, "destroyedPps data");
           res.send(destroyedPps)
         })
-      } 
+      }
     })
   })
 })

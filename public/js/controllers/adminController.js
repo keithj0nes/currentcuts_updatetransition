@@ -10,8 +10,36 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   var getAllProducts = function(){
     mainService.adminGetAllProducts().then(function(response){
-      console.log(response);
+      // console.log(response);
       $scope.products = response;
+    })
+  }
+
+
+  $scope.getOpenOrders = function(){
+    mainService.adminGetOpenOrders().then((res)=>{
+      console.log(res, "res in adminGetOpenOrders");
+      $scope.openOrders = res
+
+      // for(var i = 0; i < res.length; i++){
+      //
+      //   // console.log(res[i].id);
+      //   if($scope.openOrders.length === 0){
+      //     // console.log("ahahaha");
+      //     $scope.openOrders.push(res[i])
+      //   } else {
+      //     console.log($scope.openOrders, i);
+      //     for(var j = 0; j < $scope.openOrders.length; j++){
+      //       // if($scope.openOrders[i].id === res[i].id){
+      //       //   console.log("MATCH!!");
+      //       // } else {
+      //       //   console.log("no match");
+      //       // }
+      //     }
+      //   }
+      //
+      // 
+      // }
     })
   }
 
