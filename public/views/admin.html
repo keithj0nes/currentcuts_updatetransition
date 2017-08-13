@@ -4,19 +4,132 @@
 
   <!-- </div> -->
 
-  <button type="button" name="button" ng-click="orderss = true; productss = false; getOpenOrders()">Show Orders</button>
-  <button type="button" name="button" ng-click="productss = true; orderss = false">Show Products</button>
+  <button type="button" name="button" ng-click="showOrders = true; showProducts = false; showOpenOrders = true; getOpenOrders(); ">Show Orders</button>
+  <button type="button" name="button" ng-click="showProducts = true; showOrders = false">Show Products</button>
 
 
-<div ng-if="orderss">
-  <h1>hahahaha</h1>
 
-  <div ng-repeat="open in openOrders">
-    {{open.id}}
+<!-- ORDERS SECTION -->
+<div ng-if="showOrders" class="admin-orders">
+  <h1>Orders Section</h1>
+
+  <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false;">Show Open Orders</button>
+  <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false;">Show Completed Orders</button>
+  <br />
+  <br />
+  <br />
+  <br />
+
+  <!-- OPEN ORDERS SECTION -->
+  <div ng-if="showOpenOrders" >
+    <div ng-repeat="open in openOrders track by $index" class="open-order">
+
+      <div class="open-order-left">
+        <div class="open-order-top">
+          <div class="">
+            usernamehere <br />
+            <span ng-if="open.useremail">{{open.useremail}}</span>
+            <span ng-if="open.guestemail">{{open.guestemail}}</span>
+          </div>
+
+          <div class="">
+            ordered <br /> {{open.datesold | date}}
+          </div>
+
+          <div class="">
+            total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
+          </div>
+
+        </div>
+
+
+        <div ng-repeat="deets in open.subOrder" class="open-order-item">
+
+          <div class="fakeimg">
+            <img ng-src="{{deets.img1}}" alt="{{deets.name}}" class="fakeimg">
+          </div>
+
+          <div class="open-order-item-details">
+            {{deets.name}}
+
+            <div class="open-order-item-details-hilite">
+              Size - {{deets.height}}H x {{deets.width}}W inches <br/>
+              Color - {{deets.color}}
+            </div>
+
+            <br />
+
+
+
+             <div class="open-order-item-details-bottom">
+               <div class="">
+                Quantity <br />
+                {{deets.quantsold}}
+               </div>
+               <div class="">
+                Price <br />
+                {{deets.price | currency}}
+               </div>
+             </div>
+
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+      <div class="open-order-right">
+        <div class="open-order-top">
+          <div class="">
+            order <br /> {{open.id}}
+          </div>
+
+          shipping - {{open.shipping | currency}}
+
+        </div>
+
+        <div class="open-order-shipping">
+
+          <form >
+            <input type="text" name="" placeholder="Tracking Number">
+
+            <textarea name="name" placeholder="Note To Buyer"></textarea>
+
+            <button class="btn" name="button">Send Confirmation</button>
+          </form>
+        </div>
+
+
+      </div>
+
+
+
+
+
+      <br />
+      <br />
+    </div> <!-- end ng-repeat -->
   </div>
+
+  <!-- CLOSED ORDERS SECTION -->
+  <div ng-if="showClosedOrders">
+    <h1>HERE IS WHERE COMPLETED ORDERS WILL BE</h1>
+  </div>
+
+
+
+
+
 </div>
 
-<div ng-if="productss">
+
+
+<!-- PRODUCTS SECTION -->
+
+
+<div ng-if="showProducts">
   <div class="admin-items">
     <div class="admin-filter">
       <input type="text" placeholder="Search" ng-model="searchDB.name">

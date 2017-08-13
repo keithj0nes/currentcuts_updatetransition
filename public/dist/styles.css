@@ -930,6 +930,56 @@ footer {
   padding: 10px; }
   .admin-main h1 {
     text-align: center; }
+  .admin-main .admin-orders {
+    margin: 0 auto;
+    min-width: 600px;
+    max-width: 1000px; }
+    .admin-main .admin-orders .open-order {
+      border: 1px solid gray;
+      border-radius: 5px;
+      background: white;
+      margin-bottom: 30px;
+      display: flex; }
+      .admin-main .admin-orders .open-order .open-order-left {
+        width: 66.6%; }
+        .admin-main .admin-orders .open-order .open-order-left .open-order-item {
+          display: flex;
+          padding: 10px; }
+          .admin-main .admin-orders .open-order .open-order-left .open-order-item .fakeimg {
+            height: 75px;
+            width: 75px; }
+          .admin-main .admin-orders .open-order .open-order-left .open-order-item .open-order-item-details {
+            padding-left: 10px;
+            width: 100%; }
+            .admin-main .admin-orders .open-order .open-order-left .open-order-item .open-order-item-details .open-order-item-details-hilite {
+              background: #FFFACD;
+              padding: 5px 40px 5px 5px;
+              margin: 5px 0;
+              border: 1px solid #cdb900;
+              border-radius: 5px; }
+            .admin-main .admin-orders .open-order .open-order-left .open-order-item .open-order-item-details .open-order-item-details-bottom {
+              display: flex;
+              justify-content: space-between; }
+      .admin-main .admin-orders .open-order .open-order-right {
+        width: 33.3%;
+        border-left: 1px solid pink; }
+        .admin-main .admin-orders .open-order .open-order-right .open-order-shipping {
+          padding: 10px; }
+          .admin-main .admin-orders .open-order .open-order-right .open-order-shipping form {
+            text-align: center; }
+            .admin-main .admin-orders .open-order .open-order-right .open-order-shipping form input {
+              width: 90%;
+              padding: 5px; }
+            .admin-main .admin-orders .open-order .open-order-right .open-order-shipping form textarea {
+              width: 90%;
+              height: 100px;
+              padding: 5px;
+              margin: 10px 0; }
+      .admin-main .admin-orders .open-order .open-order-top {
+        display: flex;
+        justify-content: space-between;
+        background: lightgray;
+        padding: 10px; }
   .admin-main .admin-items .admin-filter input {
     width: 100%;
     padding: 7px; }

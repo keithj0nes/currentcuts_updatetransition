@@ -16,32 +16,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   }
 
 
-  $scope.getOpenOrders = function(){
-    mainService.adminGetOpenOrders().then((res)=>{
-      console.log(res, "res in adminGetOpenOrders");
-      $scope.openOrders = res
 
-      // for(var i = 0; i < res.length; i++){
-      //
-      //   // console.log(res[i].id);
-      //   if($scope.openOrders.length === 0){
-      //     // console.log("ahahaha");
-      //     $scope.openOrders.push(res[i])
-      //   } else {
-      //     console.log($scope.openOrders, i);
-      //     for(var j = 0; j < $scope.openOrders.length; j++){
-      //       // if($scope.openOrders[i].id === res[i].id){
-      //       //   console.log("MATCH!!");
-      //       // } else {
-      //       //   console.log("no match");
-      //       // }
-      //     }
-      //   }
-      //
-      // 
-      // }
-    })
-  }
 
 
 
@@ -354,6 +329,27 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   //
   // getUsername();
 
+
+
+
+
+
+
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+                      // OPEN ORDERS SECTION //
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+
+  $scope.getOpenOrders = function(){
+    mainService.adminGetOpenOrders().then((res)=>{
+      console.log(res, "res in adminGetOpenOrders");
+      $scope.openOrders = res.mainOrder;
+
+      $scope.openOrdersDetails = res.mainOrder.subOrder;
+
+    })
+  }
 
 
 })

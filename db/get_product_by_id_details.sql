@@ -5,67 +5,193 @@ INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
 WHERE products.id = $1
 ORDER BY prices.price
 
-
-
-SELECT prices.price, sizes.height, sizes.width, categories.name FROM products
-INNER JOIN product_price_size ON products.id = product_price_size.productId
-INNER JOIN prices ON prices.id = product_price_size.priceId
-INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
-INNER JOIN product_category ON products.id = product_category.product_id
-INNER JOIN categories ON categories.id = product_category.category_id
-WHERE products.id = $1
-ORDER BY prices.price
-
-
-
-SELECT DISTINCT on (products.id) products.*, prices.price FROM products
-INNER JOIN product_price_size ON products.id = product_price_size.productId
-INNER JOIN prices ON prices.id = product_price_size.priceId
-INNER JOIN product_category ON products.id = product_category.product_id
-INNER JOIN categories ON categories.id = product_category.category_id
-WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1
-ORDER BY products.id, prices.price
-
-
-SELECT categories.name FROM categories
-WHERE categories.parent_id = 2;
-
-SELECT prices.price, sizes.height, sizes.width FROM products
-INNER JOIN product_price_size ON products.id = product_price_size.productId
-INNER JOIN prices ON prices.id = product_price_size.priceId
-INNER JOIN sizes ON sizes.id = product_price_size.sizeId
-WHERE products.id = $1
-order by product_price_size.id
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---get open orders
-
-select * from orders
-
-select orders.id, orders.datesold, orders.completed, orders.tracking, orders.datecompleted,
-shipping.price,
-users.email, guest_users.email,
-products.name,
-prices.price, sizes.height, sizes.width from orders
-inner join shipping on shipping.id = orders.shippingid
-inner join users on users.id = orders.userid
-inner join guest_users on guest_users.id = orders.guestuserid
-inner join orderline on orderline.orderid = orders.id
-inner join products on products.id = orderline.productid
-INNER JOIN product_price_size ON products.id = product_price_size.productId
-INNER JOIN prices ON prices.id = product_price_size.priceId
-INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
-where completed = false
+--
+--
+-- SELECT prices.price, sizes.height, sizes.width, categories.name FROM products
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
+-- INNER JOIN product_category ON products.id = product_category.product_id
+-- INNER JOIN categories ON categories.id = product_category.category_id
+-- WHERE products.id = $1
+-- ORDER BY prices.price
+--
+--
+--
+-- SELECT DISTINCT on (products.id) products.*, prices.price FROM products
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN product_category ON products.id = product_category.product_id
+-- INNER JOIN categories ON categories.id = product_category.category_id
+-- WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1
+-- ORDER BY products.id, prices.price
+--
+--
+-- SELECT categories.name FROM categories
+-- WHERE categories.parent_id = 2;
+--
+-- SELECT prices.price, sizes.height, sizes.width FROM products
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN sizes ON sizes.id = product_price_size.sizeId
+-- WHERE products.id = $1
+-- order by product_price_size.id
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+-- --get open orders
+--
+-- select * from orders
+--
+-- select distinct on (orders.id) orders.id, orders.datesold, orders.completed, orders.tracking, orders.datecompleted,
+-- shipping.price as shipprice,
+-- users.email as useremail, guest_users.email as guestemail,
+-- products.name,
+-- prices.price, sizes.height, sizes.width from orders
+-- inner join shipping on shipping.id = orders.shippingid
+-- inner join users on users.id = orders.userid
+-- inner join guest_users on guest_users.id = orders.guestuserid
+-- inner join orderline on orderline.orderid = orders.id
+-- inner join products on products.id = orderline.productid
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
+-- where completed = false
+--
+--
+--
+-- select distinct on (orders.id) * from orders
+-- inner join shipping on shipping.id = orders.shippingid
+-- inner join users on users.id = orders.userid
+-- inner join guest_users on guest_users.id = orders.guestuserid
+-- inner join orderline on orderline.orderid = orders.id
+-- inner join products on products.id = orderline.productid
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
+-- where completed = false
+--
+--
+--
+--
+--
+--
+--
+-- select distinct on (orders.id) orders.id, orders.datesold, orders.completed, orders.tracking, orders.datecompleted,
+-- shipping.price as shipprice,
+-- users.email as useremail, guest_users.email as guestemail,
+-- products.name,
+-- prices.price, sizes.height, sizes.width from orders
+-- inner join shipping on shipping.id = orders.shippingid
+-- left join users on users.id = orders.userid
+-- left join guest_users on guest_users.id = orders.guestuserid
+-- inner join orderline on orderline.orderid = orders.id
+-- inner join products on products.id = orderline.productid
+-- INNER JOIN product_price_size ON products.id = product_price_size.productId
+-- INNER JOIN prices ON prices.id = product_price_size.priceId
+-- INNER JOIN sizes  ON sizes.id  = product_price_size.sizeId
+-- where completed = false
+--
+--
+-- select * from orders
+-- left join users on orders.userid = users.id
+-- left join guest_users on orders.guestuserid = guest_users.id
+-- where completed = false
+--
+-- select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping from orderline
+-- join orders on orderline.orderid = orders.id
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.id = $1 and orders.userid = $2;
+--
+-- select products.name, products.img1,
+-- sizes.height, sizes.width, prices.price,
+-- orderline.quantsold, orderline.color,
+-- orders.userid, orders.datesold, orders.ordertotal,
+-- shipping.price AS shipping from orderline
+-- join orders on orderline.orderid = orders.id
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.id = $1 and orders.userid = $2;
+--
+--
+--
+--
+--
+-- select orders.id, products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping from orderline
+-- join orders on orderline.orderid = orders.id
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.completed = false;
+--
+--
+-- select products.name, products.img1,
+-- sizes.height, sizes.width, prices.price,
+-- orderline.quantsold, orderline.color,
+-- orders.id, orders.userid, orders.datesold, orders.ordertotal,
+-- shipping.price AS shipping,
+-- users.email as useremail, guest_users.email as guestemail
+-- from orderline
+-- join orders on orderline.orderid = orders.id
+-- left join users on users.id = orders.userid
+-- left join guest_users on guest_users.id = orders.guestuserid
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.completed = false;
+--
+--
+--
+-- -- get order id and then get all information regarding that order id
+--
+-- select products.name, products.img1,
+-- sizes.height, sizes.width, prices.price,
+-- orderline.quantsold, orderline.color,
+-- orders.id, orders.userid, orders.datesold, orders.ordertotal,
+-- shipping.price AS shipping,
+-- users.email as useremail, guest_users.email as guestemail
+-- from orderline
+-- join orders on orderline.orderid = orders.id
+-- left join users on users.id = orders.userid
+-- left join guest_users on guest_users.id = orders.guestuserid
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.completed = false;
+--
+--
+--
+--
+--
+-- select products.name, products.img1,
+-- sizes.height, sizes.width, prices.price,
+-- orderline.quantsold, orderline.color
+-- from orderline
+-- join orders on orderline.orderid = orders.id
+-- left join users on users.id = orders.userid
+-- left join guest_users on guest_users.id = orders.guestuserid
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.id = 159;
