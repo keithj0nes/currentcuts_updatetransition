@@ -9,80 +9,6 @@ angular.module("ccvApp").service("mainService", function($http){
       return response.data
     })
   }
-  this.adminGetAllProducts = function(){
-    return $http({
-      method: "GET",
-      url: "/api/admin/products"
-    }).then(function(response){
-      // console.log(response.data, "getAllProducts");
-      return response.data
-    })
-  }
-
-  this.adminEditProducts = function(id){
-    return $http({
-      method: "GET",
-      url: "/api/admin/products/" + id + "/details"
-    }).then((res) => {
-      return res.data;
-    })
-  }
-
-  this.adminUpdateProductSizePrice = function(id, sizePriceDetails){
-    return $http({
-      method: "PUT",
-      url: "/api/products/" + id + "/sizeprice",
-      data: sizePriceDetails
-    }).then((res) => {
-      console.log(res, "updated price and size in service");
-    })
-  }
-
-  this.adminDeleteDetails = function(id, sizePriceDetails){
-    console.log("******");
-    console.log(sizePriceDetails);
-    return $http({
-      method: "DELETE",
-      url: "api/products/" + id + "/sizeprice",
-      data: sizePriceDetails,
-      headers: {"Content-Type": "application/json;charset=utf-8"}
-    }).then((res) => {
-      console.log(res, "adminDeleteDetails in service");
-    })
-  }
-
-  this.adminSaveCategory = function(updateCat, productId){
-
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + productId + "/categories",
-      data: updateCat
-    }).then((res) => {
-      return res.data;
-    })
-  }
-
-  this.adminDeleteCategory = function(categoryDetails, id){
-    console.log("yuuppppp!!!");
-
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + id + "/categories",
-      data: categoryDetails,
-      headers: {"Content-Type": "application/json;charset=utf-8"}
-    }).then((res) => {
-      return res.data;
-    })
-  }
-
-  this.adminGetOpenOrders = function(){
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders"
-    }).then((res)=>{
-      return res.data;
-    })
-  }
 
   this.getProductById = function(id){
     return $http({
@@ -115,35 +41,7 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
-  this.addProduct = function(productAdd){
-    return $http({
-      method: "POST",
-      url: "/api/products",
-      data: productAdd
-    }).then((res) => {
-      console.log(res.data);
-      return res.data;
-    })
-  }
 
-  this.updateProduct = function(id, productUpdate){
-    return $http({
-      method: "PUT",
-      url: "/api/products/" + id,
-      data: productUpdate
-    }).success(function(){
-      alert: "SUCCESS!";
-    })
-  }
-
-
-  this.deleteProduct = function(productId){
-    // const productId = product.id;
-    return $http({
-      method: "DELETE",
-      url: "/api/products/" + productId
-    })
-  }
 
 
   this.getAuth = ()=> {

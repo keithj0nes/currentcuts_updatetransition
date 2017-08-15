@@ -99,6 +99,17 @@ CREATE TABLE orderline (
   color TEXT
 );
 
+CREATE TABLE order_addresses (
+  id SERIAL PRIMARY KEY,
+  firstName TEXT,
+  lastName TEXT,
+  address_one TEXT,
+  address_two TEXT,
+  city TEXT,
+  state TEXT,
+  zipcode TEXT
+);
+
 CREATE TABLE shipping (
   id SERIAL PRIMARY KEY,
   price NUMERIC --allows decimals

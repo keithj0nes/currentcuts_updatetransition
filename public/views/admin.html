@@ -33,11 +33,11 @@
           </div>
 
           <div class="">
-            ordered <br /> {{open.datesold | date}}
+            Ordered <br /> {{open.datesold | date}}
           </div>
 
           <div class="">
-            total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
+            Total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
           </div>
 
         </div>
@@ -83,21 +83,29 @@
       <div class="open-order-right">
         <div class="open-order-top">
           <div class="">
-            order <br /> {{open.id}}
+            Order <br /> {{open.id}}
           </div>
 
-          shipping - {{open.shipping | currency}}
-
+          <div class="">
+            Shipping <br /> {{open.shipping | currency}}
+          </div>
         </div>
 
         <div class="open-order-shipping">
 
-          <form >
+          <div class="" ng-show="!readyToSendTracking">
+            address goes here
+
+            <button class="btn" ng-click="readyToSendTracking = true;">Ready To Ship</button>
+          </div>
+
+          <form ng-show="readyToSendTracking">
             <input type="text" name="" placeholder="Tracking Number">
 
             <textarea name="name" placeholder="Note To Buyer"></textarea>
 
-            <button class="btn" name="button">Send Confirmation</button>
+            <button class="btn">Send Confirmation</button>
+            <button class="btn" ng-click="readyToSendTracking = false;">Cancel</button>
           </form>
         </div>
 
@@ -199,7 +207,7 @@
                     <span style="display: inline-block; width: 30%;">H - {{ps.height}}</span>
                     <span style="display: inline-block; width: 30%;">W - {{ps.width}}</span>
                     <span style="display: inline-block; width: 30%;">${{ps.price}}</span>
-                    <button ng-click="editing = true; clickme($index)" ng-hide="editing" name="button" >edit</button>
+                    <button ng-click="editing = true; editDisableBtn($index)" ng-hide="editing" name="button" >edit</button>
                     <button  type="submit" ng-click="deleteDetails($index, ps)">X</button>
 
                   </div>

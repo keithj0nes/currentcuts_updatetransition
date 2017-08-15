@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("adminController", function($scope, mainService){
+angular.module("ccvApp").controller("adminController", function($scope, adminService){
 
   //admin globals
   $scope.products = [];
@@ -6,22 +6,21 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   $scope.editDisable = false;
   $scope.showExtraDetails = false;
   $scope.selected = null; //highlights selected product
+  $scope.readyToSendTracking = false;
 
 
   var getAllProducts = function(){
-    mainService.adminGetAllProducts().then(function(response){
+    adminService.adminGetAllProducts().then(function(response){
       // console.log(response);
       $scope.products = response;
     })
   }
 
-
-
-
+  getAllProducts();
 
 
   var getProductDetails = function(prodId){
-    mainService.adminEditProducts(prodId).then((res) => {
+    adminService.adminEditProducts(prodId).then((res) => {
       $scope.defaultSelected = [];
       $scope.showExtraDetails = true;
       $scope.productDetails = res;
@@ -44,12 +43,10 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     })
   }
 
-  getAllProducts();
 
 
 //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function(product, index){
-
     $scope.selected = index;
     $scope.productId = product.id;
     $scope.productName = product.name;
@@ -59,45 +56,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.productImgTwo = product.imgmainvector;
     $scope.productImgThree = product.imgoutlinevector;
     $scope.productActive = product.active;
-    // console.log(product, "editProducts");
-
     getProductDetails($scope.productId);
-    // mainService.adminEditProducts(product.id).then((res) => {
-    //   $scope.priceSize = true;
-    //   $scope.addNew = true;
-    //   console.log(res);
-    //
-    //
-    //           //try to figure out 'res.product should be a number'
-    //                   // var arr = [];
-    //                   // for(var key in res.product){
-    //                   //   console.log(key, "logging key");
-    //                   //   console.log(res.product.hasOwnProperty(key));
-    //                   //   console.log(res.product[key]);
-    //                   //   if (res.product.hasOwnProperty(key)){
-    //                   //     // console.log(res.product[+key], "yep");
-    //                   //     // console.log(res.product[key], "again");
-    //                   //     var obj = res.product[key];
-    //                   //     for (var prop in obj) {
-    //                   //       if (obj.hasOwnProperty(prop)) {
-    //                   //         console.log(prop + " = " + obj[prop]);
-    //                   //       }
-    //                   //     }
-    //                   //
-    //                   //     arr.push(res.product[+key]);
-    //                   //   }
-    //                   // }
-    //                   //
-    //                   // console.log(arr, "logging arr");
-    //
-    //
-    //
-    //   $scope.productDetails = res.product;
-    //   // console.log($scope.productDetails);
-    //   // console.log(res, "editProducts res");
-    //
-    //
-    // })
   }
 
   $scope.saveCategory = function(index,updateCat){
@@ -105,8 +64,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     if(updateCat){
       if(updateCat.name){
         updateCat.index = index;
-        mainService.adminSaveCategory(updateCat, $scope.productId).then((res)=>{
-
+        adminService.adminSaveCategory(updateCat, $scope.productId).then((res)=>{
           $scope.allCategories = res.allCategories;
           if(res.selectedCategories){
             $scope.defaultSelected = [];
@@ -127,11 +85,6 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     } else {
       swal("Please select a category");
     }
-
-
-
-
-    console.log("getting here");
   }
 
   $scope.deleteCategory = function(index, category){
@@ -139,7 +92,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
     category.index = index;
 
-    mainService.adminDeleteCategory(category, $scope.productId);
+    adminService.adminDeleteCategory(category, $scope.productId);
 
     for(var i = $scope.defaultSelected.length-1; i >= 0; i--){
       console.log($scope.defaultSelected[i], index);
@@ -179,7 +132,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
     $scope.selected = null;
   }
 
-  $scope.clickme = function(index){
+  $scope.editDisableBtn = function(index){
     console.log(index, "logging index");
     $scope.editDisable = true;
   }
@@ -191,7 +144,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
   $scope.add = function(name, description, img1, imgmainvector, imgoutlinevector){
 
-    if(name == null || description == null || img1 == null || imgmainvector == null){
+    if(name == null || description == null || img1 == null || imgmainvector == null || name == "" || description == "" || img1 == "" || imgmainvector == ""){
       console.log("it's null");
     } else {
 
@@ -203,7 +156,12 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
         isActive: true,
         imgoutlinevector: imgoutlinevector
       }
-      mainService.addProduct(productAdd).then((res) => {
+
+      console.log(productAdd);
+      console.log(productAdd.name);
+
+      console.log("GOT HERE");
+      adminService.adminAddProduct(productAdd).then((res) => {
         console.log(res, "logging response in admin apge");
         if(res.productExists === true){
           swal("this product is already in the database")
@@ -215,7 +173,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
           }, 100);
         }
       });
-      // $scope.addNew = true;
+      $scope.addNew = true;
       // ///////?////////////
       // need to send adminEditProducts function in order for scopeaddnew to work
 
@@ -243,7 +201,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       $scope.editDisable = false;
 
 
-      mainService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails)
+      adminService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails)
 
       setTimeout(function(){
         getProductDetails($scope.productId);
@@ -274,7 +232,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
       }
     }
 
-    mainService.adminDeleteDetails($scope.productId, productDetails)//.then((res) => {
+    adminService.adminDeleteDetails($scope.productId, productDetails)//.then((res) => {
 
     // })
   }
@@ -292,7 +250,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
 
     console.log($scope.productActive, name);
     //
-    mainService.updateProduct(id, productUpdate);
+    adminService.adminUpdateProduct(id, productUpdate);
     setTimeout(function () {
       getAllProducts();
     }, 100);
@@ -316,13 +274,13 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
             $scope.products.splice(i, 1);
           }
         }
-      mainService.deleteProduct(productId);
+      adminService.adminDeleteProduct(productId);
       $scope.clearForm();
     })
   }
 
   // var getUsername = function() {
-  //   mainService.getUsername().then(function(response){
+  //   adminService.getUsername().then(function(response){
   //     $scope.username = response;
   //   })
   // }
@@ -342,7 +300,7 @@ angular.module("ccvApp").controller("adminController", function($scope, mainServ
   ///////////////////////////////////////////////////////////////////
 
   $scope.getOpenOrders = function(){
-    mainService.adminGetOpenOrders().then((res)=>{
+    adminService.adminGetOpenOrders().then((res)=>{
       console.log(res, "res in adminGetOpenOrders");
       $scope.openOrders = res.mainOrder;
 
