@@ -94,42 +94,24 @@ module.exports = {
   },
 
   getProductByCategory: function(req, res, next){
-    console.log(req.params.id);
-    db.get_product_by_cat([req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      console.log("Specific item");
-      return res.send(product)
-    })
-  },
+    console.log(req.params.id, "in cat id haha");
 
-//post
-  addProductToDB: function(req, res, next){
-    const newProduct = {name: req.body.name,
-                        description: req.body.description,
-                        img1: req.body.img1,
-                        imgmainvector: req.body.imgmainvector,
-                        imgoutlinevector: req.body.imgoutlinevector,
-                        active: req.body.active}
-
-    db.products.findOne({name: req.body.name, or: [{"archived =": false}, {"archived =": null}]}, (err, result) => {
-      if(result){
-        console.log(result, "found oneeeeeee that's active!!");
-        res.send({productExists: true})
-      } else {
-        console.log(result, "couldnt find one active");
-        db.products.insert(newProduct, (err, addedProduct) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
-          res.send(addedProduct)
+    db.run("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id], function(err, categoryProducts){
+      console.log(categoryProducts, "catprod");
+      console.log(categoryProducts.length, "length");
+      if(categoryProducts.length <= 0){
+        console.log("no more results");
+        db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProductsDetails){
+          // console.log(categoryProductsDetails, "even more details!");
+          res.send({categoryProductsDetails: categoryProductsDetails, bottomlevel: true})
         })
+      } else {
+        res.send(categoryProducts);
       }
     })
   },
+
+
 
   addProductsToCart: function(req, res, next){
     if(!req.session.cart){
@@ -150,23 +132,7 @@ module.exports = {
 
 
 
-  updateProductById: function(req, res, next){
-    const updateProduct = {id: req.params.id,
-                           name: req.body.name,
-                           description: req.body.description,
-                           img1: req.body.img1,
-                           imgmainvector: req.body.imgmainvector,
-                           imgoutlinevector: req.body.imgoutlinevector,
-                           active: req.body.active}
 
-    db.products.update(updateProduct, (err, updatedProduct) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-      res.send(updatedProduct)
-    })
-  },
 
   addOrder: function(req, res, charge){
 
@@ -206,18 +172,6 @@ module.exports = {
   },
 
 
-  //delete
-
-  deleteProductById: function(req, res, next){
-    console.log("deleted function fired");
-    db.products.update({id: req.params.id, archived: true}, (err, archivedProduct) => {
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      return res.status(200).send(archivedProduct)
-    })
-  },
 
 
 

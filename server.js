@@ -25,6 +25,7 @@ var db = app.get('db'); // declare a db object for requests
 
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
+const adminCtrl = require("./controllers/adminCtrl.js");
 
 //middleware
 app.use(bodyParser.json());
@@ -187,536 +188,34 @@ app.put("/api/cart", (req, res, next) => {
 
 
 //PRODUCTS
-app.get("/api/admin/products", (req,res) => {
-  db.admin_get_all_products([], function(err, products){
-    if(err){
-      console.log(err);
-      return res.status(500).send(err)
-    }
-    console.log("admin products shown");
-    return res.send(products)
-  })
-});
+
 
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
 app.get("/api/products/:id/details", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);
-// app.get("/api/cat/:id", mainCtrl.getProductByCategory); //////////// not working
-app.get("/api/products/category/:id", function(req, res){
-  console.log(req.params.id, "in cat id haha");
+app.get("/api/products/category/:id", mainCtrl.getProductByCategory);
 
-  // db.run("select * from categories where name = $1", [req.params.id], (err, hi) => {
-  //   res.send(hi);
-  // })
 
-  // db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProducts){
-  db.run("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id], function(err, categoryProducts){
-    console.log(categoryProducts, "catprod");
-    console.log(categoryProducts.length, "length");
-    if(categoryProducts.length <= 0){
-      console.log("no more results");
-  db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProductsDetails){
-    console.log(categoryProductsDetails, "even more details!");
-    res.send({categoryProductsDetails: categoryProductsDetails, bottomlevel: true})
-  })
 
-} else {
-  res.send(categoryProducts);
 
-}
-  })
-});
 
-app.post("/api/products", mainCtrl.addProductToDB);
-app.put("/api/products/:id", mainCtrl.updateProductById);
-app.delete("/api/products/:id", mainCtrl.deleteProductById);
+/////// ADMIN ///////
+app.get("/api/admin/products", adminCtrl.getAllAdminProducts);
+app.get("/api/admin/products/:id/details", adminCtrl.getProductDetails);
+app.get("/api/admin/orders/open", adminCtrl.getOpenOrders);
 
+app.post("/api/admin/products", adminCtrl.addProductToDB);
 
-app.get("/api/admin/orders", function(req, res){
+app.put("/api/admin/products/:id", adminCtrl.updateProductById);
+app.put("/api/admin/products/:id/sizeprice", adminCtrl.addSizePrice);
+app.put("/api/admin/products/:id/categories", adminCtrl.updateCategories);
 
-  let openOrders = {};
+app.delete("/api/admin/products/:id", adminCtrl.deleteProductById);
+app.delete("/api/admin/products/:id/sizeprice", adminCtrl.deleteSizePrice);
+app.delete("/api/admin/products/:id/categories", adminCtrl.deleteCategories);
 
-  db.run("select orders.id, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping, users.email as useremail, guest_users.email as guestemail from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join shipping on orders.shippingid = shipping.id where orders.completed = false;", [], function(err, mainOrders){
-    openOrders.mainOrder = mainOrders;
-    mainOrders.forEach((main, index) => {
-      db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
-        openOrders.mainOrder[index].subOrder = subOrder;
-      })
-    })
-    //res.send sends before db.run is completed - must use setTimeout to allow db.run data to be stored
-    setTimeout(()=>{
-      res.send(openOrders)
-    }, 100);
-  })
-})
 
-app.delete("/api/admin/products/:id/categories", function(req, res){
-  db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
-    product.forEach(function(item, ind){
-      if(req.body.index === ind){
-        db.product_category.destroy({id: item.id}, function(err, deletedCat){
-        })
-      }
-    })
-  })
-})
-
-app.put("/api/admin/products/:id/categories", function(req, res){
-  // console.log(req.body);
-  console.log("*******");
-
-  let index = req.body.index;
-  let cat_id = req.body.id
-  let catMatch = 0;
-
-  let updatedCategory = {};
-
-    db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-      // console.log(product, "here's the categories");
-      product.forEach(function(prod, ind){
-        if(index === ind){
-          catMatch++
-          console.log("found a match at index: ", index, prod);
-          db.product_category.save({id: prod.id, product_id: req.params.id, category_id: cat_id}, function(err, updatedCat){
-            // console.log(updatedCat, "this has been updated");
-
-            db.run("select * from categories order by id", [], function(err, allCategories){
-
-            // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
-
-
-              // console.log(allCategories, "top level cats");
-              updatedCategory.allCategories = allCategories
-
-              db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
-              // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
-
-                // console.log(cats, "categories in .get");
-                if(cats.length >= 1){
-                  updatedCategory.selectedCategories = cats;
-                  // console.log(updatedCategory, "updated category in line 272");
-                  res.send(updatedCategory)
-                }
-              })
-
-            })
-            // res.send(updatedCat)
-          })
-        } else {
-          console.log("no match");
-        }
-      })
-
-      if(!catMatch){
-        console.log("new Line added!!");
-        db.product_category.insert({product_id: req.params.id, category_id: cat_id}, (err, insertedCat) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
-          console.log(insertedCat, "inserted category");
-
-          db.run("select * from categories order by id", [], function(err, allCategories){
-
-          // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
-
-
-            // console.log(allCategories, "top level cats");
-            updatedCategory.allCategories = allCategories
-
-            db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
-            // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
-
-              // console.log(cats, "categories in .get");
-              if(cats.length >= 1){
-                updatedCategory.selectedCategories = cats;
-                // console.log(updatedCategory, "updated category in line 272");
-                res.send(updatedCategory)
-              }
-            })
-
-          })
-
-          // res.send(insertedCat)
-        })
-      }
-    })
-
-
-
-
-})
-
-app.get("/api/admin/products/:id/details", function(req, res){
-  var wholeProduct = {};
-
-// db.run("select id, name from categories where parent_id is null", [], function(err, topLevelCategories){
-  db.run("select * from categories order by id", [], function(err, allCategories){
-
-  // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
-
-
-    // console.log(allCategories, "top level cats");
-    wholeProduct.allCategories = allCategories
-
-    db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
-    // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
-
-      // console.log(cats, "categories in .get");
-      if(cats.length >= 1){
-        wholeProduct.selectedCategories = cats;
-      }
-    })
-
-  })
-
-
-
-
-  db.run("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id], function(err, product){
-    if(err){
-      console.log(err);
-      return res.status(500).send(err)
-    }
-    console.log("getProductById2");
-    wholeProduct.product = product;
-
-    db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-
-      wholeProduct.totalFavs = totalFavs;
-
-      if(req.user){
-        db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
-
-          if(found){
-            wholeProduct.favFound = true;
-            // console.log(wholeProduct, "holdprodcut");
-            res.send(wholeProduct)
-
-          } else {
-            // no favorite found
-            res.send(wholeProduct)
-          }
-        })
-      } else {
-        res.send(wholeProduct)
-      }
-    })
-
-  })
-})
-
-//admin
-app.put("/api/products/:id/sizeprice", (req, res) => {
-  console.log("************************************************************");
-  console.log(req.params.id, "req.params.id haha");
-  console.log(req.body, "req.body");
-  let index = req.body.index;
-  let height = req.body.height;
-  let width = req.body.width;
-  let price = req.body.price;
-  let loopCount = 0;
-
-  // NEED TO FIND OBJ ID TO UPDATE SPECIFIC ITEM IN OBJ
-
-  db.sizes.findOne({height: height, width: width}, (err, foundSize) => {
-    if(err){
-      console.log(err);
-      res.status(500).send(err);
-    }
-
-    if(foundSize){
-      console.log("the same size was found");
-      db.prices.findOne({price: price}, (err, foundPrice) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err);
-        }
-
-        if(foundPrice){
-          console.log("the same price was found");
-
-          //trying to find out how to get correct index in product_price_size table from frontend - problem: it's sorted by price in front end
-          db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
-
-            console.log(product, "logging product 244");
-            product.forEach(function(r, i){
-              if(index === i){
-                console.log(r, "found the correct index");
-                loopCount++
-
-                db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: foundSize.id }, function(err, updatedPrice){
-                  if(err){
-                    console.log(err);
-                    res.status(500).send(err)
-                  }
-
-                  console.log(updatedPrice, "updated price after .save(), 302");
-
-                  db.run("select * from product_price_size where productid = $1 order by id", [req.params.id], function(err, prod){
-                    console.log(prod, "logging prod after updatedPrice 305");
-                    res.send(updatedPrice);
-                  })
-                })
-
-              } else {
-                console.log("cant find it");
-              }
-            })
-
-            console.log(loopCount);
-
-            if(!loopCount){
-              console.log("running this part because loopCount = " + loopCount + ", aka new line added");
-                db.product_price_size.insert({productid: req.params.id, priceid: foundPrice.id, sizeid: foundSize.id}, (err, addedPps) => {
-                  if(err){
-                    console.log(err);
-                    res.status(500).send(err);
-                  }
-                  console.log(addedPps, "THESE CONNECT NEW ROW YAYYY");
-                  res.send(addedPps)
-                })
-
-            }
-
-          })
-        } else {
-          console.log("price not in db");
-          db.prices.insert({price: price}, (err, addedPrice) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
-            if(addedPrice){
-              console.log("new price added");
-
-              db.run("SELECT * FROM product_price_size WHERE productid = $1", [req.params.id], (err, product) => {
-                if(err){
-                  console.log(err);
-                  res.status(500).send(err);
-                }
-
-                console.log(product, "logging product 341");
-                product.forEach(function(r, i){
-                  if(index === i){
-                    console.log(r, "he be de correct index");
-                    loopCount++
-
-                    db.product_price_size.save({id: r.id, priceid: addedPrice.id, sizeid: foundSize.id }, function(err, updatedPrice){
-                      if(err){
-                        console.log(err);
-                        res.status(500).send(err)
-                      }
-
-                      console.log(updatedPrice, "UPDATED PRICE AFTER SAVE()");
-                      res.send(updatedPrice)
-                    })
-
-                  } else {
-                    console.log("cant find it");
-                  }
-                })
-
-                console.log(loopCount);
-
-                if(!loopCount){
-                  console.log("running this part because loopCount = " + loopCount);
-                  db.product_price_size.insert({productid: req.params.id, priceid: addedPrice.id, sizeid: foundSize.id}, (err, addedPps) => {
-                    if(err){
-                      console.log(err);
-                      res.status(500).send(err);
-                    }
-                    console.log(addedPps, "added a new price then connected them!");
-                    res.send(addedPps)
-                  })
-                }
-              })
-            }
-          })
-        }
-      })
-    } else {
-      console.log("sizes werent found");
-      db.sizes.insert({height: height, width: width}, (err, addedSize) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err)
-        }
-        console.log(addedSize, "new size added");
-        if(addedSize){
-          console.log("new size added = true");
-
-          db.prices.findOne({price: price}, (err, foundPrice) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
-            if(foundPrice){
-              console.log(foundPrice, "foundPrice in new size added");
-
-              db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
-                if(err){
-                  console.log(err);
-                  res.status(500).send(err);
-                }
-
-                console.log(product, "logging product 403");
-                product.forEach(function(r, i){
-                  if(index === i){
-                    console.log(r, "found the correct index in new size added");
-                    loopCount++
-
-                    db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: addedSize.id }, function(err, updatedPrice){
-                      if(err){
-                        console.log(err);
-                        res.status(500).send(err)
-                      }
-
-                      console.log(updatedPrice, "updated price after .save()");
-                      res.send(updatedPrice)
-                    })
-
-                  } else {
-                    console.log("cant find it");
-                  }
-                })
-
-                console.log(loopCount);
-
-                if(!loopCount){
-                  console.log("running because loopCount = " + loopCount + ", adddedd a new line 436");
-                  db.product_price_size.insert({productid: req.params.id, priceid: foundPrice.id, sizeid: addedSize.id}, (err, addedPps) => {
-                    if(err){
-                      console.log(err);
-                      res.status(500).send(err);
-                    }
-                    console.log(addedPps, "THESE CONNECT NEW ROW YAYYY");
-                    res.send(addedPps)
-                  })
-
-                }
-
-              })
-            } else {
-              console.log("no price found in new size added");
-              db.prices.insert({price: price}, (err, addedPrice) => {
-                if(err){
-                  console.log(err);
-                  res.status(500).send(err);
-                }
-                if(addedPrice){
-                  console.log("new price added in new size added");
-
-                  db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], (err, product) => {
-                    if(err){
-                      console.log(err);
-                      res.status(500).send(err);
-                    }
-
-                    console.log(product, "logging product 454");
-                    product.forEach(function(r, i){
-                      if(index === i){
-                        console.log(r, "index in addedPrice in addedSize");
-                        loopCount++
-
-                        db.product_price_size.save({id: r.id, priceid: addedPrice.id, sizeid: addedSize.id }, function(err, updatedPrice){
-                          if(err){
-                            console.log(err);
-                            res.status(500).send(err)
-                          }
-
-                          console.log(updatedPrice, "UPDATED PRICE AFTER SAVING EDITED LINE");
-                          res.send(updatedPrice)
-                        })
-
-                      } else {
-                        console.log("cant find it");
-                      }
-                    })
-
-                    console.log(loopCount);
-
-                    if(!loopCount){
-                      console.log("running this part because loopCount = " + loopCount + " IN ADDEDPRICE slash ADDEDSIZE");
-                      db.product_price_size.insert({productid: req.params.id, priceid: addedPrice.id, sizeid: addedSize.id}, (err, addedPps) => {
-                        if(err){
-                          console.log(err);
-                          res.status(500).send(err);
-                        }
-                        console.log(addedPps, "added a new price then connected them!");
-                        res.send(addedPps)
-                      })
-                    }
-                  })
-                }
-              })
-            }
-          })
-
-          // db.product_price_size.insert({productid: req.params.id, sizeid: addedSize.id}, (err, pps) => {
-          //   if(err){
-          //     console.log(err);
-          //     res.status(500).send(err);
-          //   }
-          //   console.log(pps, "product_price_size");
-          // })
-        } else {
-          console.log("addedSize not inserted");
-
-        }
-      })
-    }
-
-
-
-  }) //end db.sizes.findOne
-})
-
-app.delete("/api/products/:id/sizeprice", (req, res) => {
-  console.log("delete triggered");
-  console.log(req.params.id);
-  console.log(req.body);
-  let index = req.body.index
-  db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], function(err, result){
-    if(err){
-      console.log(err);
-      res.status(500).send(err);
-    }
-
-    console.log(result, "loggig result");
-    result.forEach(function(r, i){
-      if(index === i){
-        console.log(r.id, "r.id");
-        console.log(r, "index === i in forEach loop");
-        db.product_price_size.destroy({id: r.id}, (err, destroyedPps) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
-          console.log(destroyedPps, "destroyedPps data");
-          res.send(destroyedPps)
-        })
-      }
-    })
-  })
-})
 
 // NOT MVP
 // app.post("/api/users/:id");
@@ -759,28 +258,28 @@ app.post("/api/charge", function(req, res, next){
 })
 
 
-looper = (array, index, loopCount) => {
-
-  array.forEach(function(r, i){
-    if(index === i){
-      console.log(r, "found the correct index");
-      loopCount++
-
-      db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: foundSize.id }, function(err, updatedPrice){
-        if(err){
-          console.log(err);
-          res.status(500).send(err)
-        }
-
-        console.log(updatedPrice, "updated price after .save()");
-      })
-
-    } else {
-      console.log("cant find it");
-    }
-  })
-
-}
+// looper = (array, index, loopCount) => {
+//
+//   array.forEach(function(r, i){
+//     if(index === i){
+//       console.log(r, "found the correct index");
+//       loopCount++
+//
+//       db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: foundSize.id }, function(err, updatedPrice){
+//         if(err){
+//           console.log(err);
+//           res.status(500).send(err)
+//         }
+//
+//         console.log(updatedPrice, "updated price after .save()");
+//       })
+//
+//     } else {
+//       console.log("cant find it");
+//     }
+//   })
+//
+// }
 
 
 
