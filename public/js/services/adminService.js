@@ -48,7 +48,7 @@ angular.module("ccvApp").service("adminService", function($http){
   this.adminDeleteDetails = function(id, sizePriceDetails){
     return $http({
       method: "DELETE",
-      url: "api/admin/ products/" + id + "/sizeprice",
+      url: "api/admin/products/" + id + "/sizeprice",
       data: sizePriceDetails,
       headers: {"Content-Type": "application/json;charset=utf-8"}
     }).then(res => res.data);

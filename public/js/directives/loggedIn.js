@@ -1,4 +1,4 @@
-angular.module("ccvApp").directive("checkLoggedIn", function(mainService){
+angular.module("ccvApp").directive("checkLoggedIn", function(mainService, modalService){
 
   return {
     restrict: "AE",
@@ -19,10 +19,12 @@ angular.module("ccvApp").directive("checkLoggedIn", function(mainService){
         var modal = document.getElementById('my-modal');
 
         scope.showModal = function(){
+          console.log("shoing modal");
           scope.userModal = true;
         }
 
         scope.closeModal = function(){
+          console.log('closing modal');
           scope.userModal = false;
         }
 
@@ -32,6 +34,29 @@ angular.module("ccvApp").directive("checkLoggedIn", function(mainService){
             scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
           }
         }
+
+
+        scope.openModal =function(id, track, note){
+          console.log(track, "loggig");
+          console.log("openModal in controller");
+          console.log(id, track, note);
+              modalService.Open(id, track);
+          }
+
+        scope.closeMyModal = function(id){
+          console.log(id,"clicked button in loggied");
+          modalService.Close(id);
+        }
+
+        // $scope.completeOrder = function(id, track, note){
+        //   console.log(track, note);
+        //   modalService.Close(id);
+        //   console.log($scope.parentIndex, "logging parent");
+        //   $scope.getOpenOrders()
+        //   // console.log($scope.open);
+        //   // $scope.open.trackingNumber = "";
+        //   // console.log($scope.open.trackingNumber, "sam is kool");
+        // }
 
         getUsername();
     }

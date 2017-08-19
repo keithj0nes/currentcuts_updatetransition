@@ -1,22 +1,220 @@
 
-$primary-color: purple;
-$secondary-color: red;
-$accent-color: ;
-$light-gray: #f3f3f3;
-$charcoal: #a1a1a1;
-$add-to-cart-color: #3085d6;
+//style guide//
+//
+// $primary-color: #333333;      //dark dark gray
+// $secondary-color: #f1f1f1;    //light light gray
+// // $main-accent-color: #FFD200;  //athletic gold
+// $main-accent-color: #36558f;  //athletic gold
+//
+// $sub-accent-color: #4F6D7A;   //light blue charcoal
 
-.highlighted {
-  background: #bbb;
-}
+//style guide//
+
+$primary-color: #333333;      //dark dark gray
+$secondary-color: #f1f1f1;    //light light gray
+// $main-accent-color: #FFD200;  //athletic gold
+$main-accent-color: #605675;  //athletic gold
+// $sub-accent-color: #4F6D7A;   //light blue charcoal
+$sub-accent-color: #028090;   //light blue charcoal
+
+
 
 body {
-  // overflow: hidden; //stops scroll from moving above page in chrome/safari
-  background-color: $light-gray;
+  background-color: $secondary-color;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  color: $primary-color;
 
-  .minnie {
-    min-height: 80vh;
+  .sticky-footer {
+    flex: 1;
   }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+}
+
+
+.btn {
+  padding: 5px 10px;
+  // background-color: #fff;
+  background-color: $main-accent-color;
+  color: white;
+  font-weight: lighter;
+  border: 1px solid #000;
+  border-radius: 3px;
+  // box-shadow: 0px 0px 10px 1px;
+}
+
+.big-btn {
+  padding: 15px;
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.btn-facebook {
+  @extend .big-btn;
+  background-color: #4f6eae;
+  color: white;
+  // border: none;
+  // border-radius: 3px;
+  // padding: 15px;
+  // width: 100%;
+  // cursor: pointer;
+}
+
+.btn-stripe {
+@extend .btn-facebook;
+background-color: rgb(69, 69, 69);
+}
+
+.btn:hover {
+  background-color: $secondary-color;
+  cursor: pointer;
+}
+
+.btn:active {
+  background-color: #d9d9d9;
+}
+
+.btn-delete {
+  // border: 1px solid #000;
+  border: none;
+  padding: 1px 2px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  color: gray;
+}
+
+.display {
+  display: block;
+}
+
+.red {
+  color: #e76f51;
+  font-weight: bold;
+}
+
+.flleft {
+  float: left;
+}
+
+.flright {
+  float: right;
+}
+
+.hideMobile {
+  display: none;
+}
+
+hr {
+  border-color: $secondary-color;
+  border-top: none;
+  border-left: none;
+  margin: 15px 0;
+}
+
+hr.lastItem {
+  border-width: 5px;
+  border-color: $secondary-color;
+}
+
+.w25 {
+  width: 25%;
+}
+
+.w50 {
+  width: 50%;
+}
+
+.w75 {
+  width: 75%;
+}
+
+/* MODAL STYLES
+-------------------------------*/
+modal {
+    /* modals are hidden by default */
+    display: none;
+
+    .mymodal {
+        /* modal container fixed across whole screen */
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: 0 auto;
+        max-width: 500px;
+
+        /* z-index must be higher than .modal-background */
+        z-index: 1000;
+
+        /* enables scrolling for tall modals */
+        overflow: auto;
+
+        .modal-body {
+            padding: 20px;
+            background: #fff;
+            /* margin exposes part of the modal background */
+            margin: 40px;
+        }
+    }
+
+    .modal-background {
+        /* modal background fixed across whole screen */
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        /* semi-transparent black  */
+        background-color: #000;
+        opacity: 0.75;
+
+        /* z-index must be below .modal and above everything else  */
+        z-index: 900;
+    }
+}
+
+body.modal-open {
+    /* body overflow is hidden to hide main scrollbar when modal window is open */
+    overflow: hidden;
+}
+
+.display {
+  display: block;
+}
+
+.red {
+  color: #e76f51;
+  font-weight: bold;
+}
+
+.flleft {
+  float: left;
+}
+
+.flright {
+  float: right;
+}
+
+.hideMobile {
+  display: none;
+}
+.highlighted {
+  background: #bbb;
 }
 
 .center {
@@ -50,173 +248,67 @@ table tr:hover {
 }
 
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
-    .modal-content-product-added {
-      background-color: #fefefe;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 300px;
-      text-align: center;
-      position: relative;
+  .modal-content-product-added {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    text-align: center;
+    position: relative;
 
-      i {
-        font-size: 56px;
-        color: $add-to-cart-color;
-      }
-      .big-btn {
-        background-color: $add-to-cart-color;
-        color: #fff;
-      }
-
-      .big-btn:hover {
-        background-color: darken($add-to-cart-color, 10%);
-      }
+    i {
+      font-size: 56px;
+      color: $main-accent-color;
+    }
+    .big-btn {
+      background-color: $main-accent-color;
+      color: #fff;
     }
 
-    .close {
-        color: #aaaaaa;
-        position: absolute;
-        top: 0px;
-        right: 8px;
-        font-size: 28px;
-        font-weight: bold;
-        padding: 10px;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
+    .big-btn:hover {
+      background-color: darken($main-accent-color, 10%);
     }
   }
 
-
-  .display {
-    display: block;
+  .close {
+      color: #aaaaaa;
+      position: absolute;
+      top: 0px;
+      right: 8px;
+      font-size: 28px;
+      font-weight: bold;
+      padding: 10px;
   }
 
-
-
-h1,h2,h3,h4 {
-  font-weight: normal;
-}
-.name {
-  font-size: 22px;
-  color: $primary-color; }
-
-.genus {
-  color: $secondary-color; }
-
-.red {
-  color: red;
-  font-weight: bold;
+  .close:hover,
+  .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+  }
 }
 
-.btn {
-  padding: 5px 10px;
-  background-color: #fff;
-  border: 1px solid #000;
-  border-radius: 3px;
-  // box-shadow: 0px 0px 10px 1px;
-}
+  //
+  // .display {
+  //   display: block;
+  // }
 
-.big-btn {
-  padding: 15px;
-  width: 100%;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.btn-facebook {
-  @extend .big-btn;
-  background-color: #4f6eae;
-  color: white;
-  // border: none;
-  // border-radius: 3px;
-  // padding: 15px;
-  // width: 100%;
-  // cursor: pointer;
-}
-
-.btn-stripe {
-@extend .btn-facebook;
-background-color: rgb(69, 69, 69);
-}
-
-.btn:hover {
-  background-color: $light-gray;
-  cursor: pointer;
-}
-
-.btn:active {
-  background-color: #d9d9d9;
-}
-
-.btn-delete {
-  // border: 1px solid #000;
-  border: none;
-  padding: 1px 2px;
-  background-color: white;
-  cursor: pointer;
-}
-
-.btn-delete:hover {
-  color: gray;
-}
-
-.flleft {
-  float: left;
-}
-
-.flright {
-  float: right;
-}
-
-.hideMobile {
-  display: none;
-}
-
-hr {
-  border-color: $light-gray;
-  border-top: none;
-  border-left: none;
-  margin: 15px 0;
-}
-
-hr.lastItem {
-  border-width: 5px;
-  border-color: $light-gray;
-}
-
-.w25 {
-  width: 25%;
-  // background-color: red;
-}
-
-.w50 {
-  width: 50%;
-  // background: blue;
-}
-
-.w75 {
-  width: 75%;
-  // background: purple;
-}
-
+  // .hideMobile {
+  //   display: none;
+  // }
 .ship-truck {
   // background: red;
   padding-left: 7px;
@@ -243,7 +335,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid $light-gray;
+  border-bottom: 1px solid $secondary-color;
 
 /* =================== HAMBURGER MENU ================= */
 
@@ -347,7 +439,7 @@ nav {
       top: -5px;
       right: 20px;
       font-size: 14px;
-      background-color: red;
+      background-color: #e76f51;
       color: white;
       height: 20px;
       width: 20px;
@@ -377,7 +469,7 @@ nav {
   margin: 0 auto;
   padding: 15px 20px;
   background: white;
-  border-bottom: 1px solid $light-gray;
+  border-bottom: 1px solid $secondary-color;
 }
 
 .search-box-container {
@@ -1011,7 +1103,7 @@ footer {
   }
 
 
-  .modal {
+  // .modal {
       // display: none; /* Hidden by default */
       // position: fixed; /* Stay in place */
       // z-index: 1; /* Sit on top */
@@ -1028,7 +1120,7 @@ footer {
         background-color: #fefefe;
         // margin: auto;
         position: absolute;
-        right: 60px;
+        right: 0px;
         top: 75px;
         padding: 20px;
         border: 1px solid #888;
@@ -1066,13 +1158,13 @@ footer {
       //     text-decoration: none;
       //     cursor: pointer;
       // }
-  }
-
-
-
-  // .display {
-  //   display: block;
   // }
+
+
+
+  .display {
+    display: block;
+  }
 
 
   nav {

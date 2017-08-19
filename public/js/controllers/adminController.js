@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("adminController", function($scope, adminService){
+angular.module("ccvApp").controller("adminController", function($scope, adminService, modalService){
 
   //admin globals
   $scope.products = [];
@@ -7,7 +7,34 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.showExtraDetails = false;
   $scope.selected = null; //highlights selected product
   $scope.readyToSendTracking = false;
+  $scope.modalShown = false;
+  $scope.modalShown1 = false;
 
+  var hello = function(){
+    console.log("saying hello");
+  }
+
+  $scope.openModal =function(id, track, note){
+    console.log(track, "loggig");
+    console.log("openModal in controller");
+    console.log(id, track, note);
+        modalService.Open(id, track);
+    }
+
+  $scope.closeMyModal = function(id){
+    console.log("clicked button in controllers");
+    modalService.Close(id);
+  }
+
+  $scope.completeOrder = function(id, track, note){
+    console.log(track, note);
+    modalService.Close(id);
+    console.log($scope.parentIndex, "logging parent");
+    $scope.getOpenOrders()
+    // console.log($scope.open);
+    // $scope.open.trackingNumber = "";
+    // console.log($scope.open.trackingNumber, "sam is kool");
+  }
 
   var getAllProducts = function(){
     adminService.adminGetAllProducts().then(function(response){
@@ -303,7 +330,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     adminService.adminGetOpenOrders().then((res)=>{
       console.log(res, "res in adminGetOpenOrders");
       $scope.openOrders = res.mainOrder;
-
+      console.log($scope.openOrders, "loo[penorders]");
       $scope.openOrdersDetails = res.mainOrder.subOrder;
 
     })

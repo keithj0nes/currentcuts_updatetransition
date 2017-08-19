@@ -6,6 +6,9 @@
     <title>Current Cuts Vinyl</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
     <link rel="stylesheet" href="./dist/styles.css" media="screen" title="no title">
 </head>
 
@@ -45,11 +48,44 @@
         <!-- desktop -->
         <!-- need to style -->
         <i class="material-icons hideMobile" ui-sref="userfavorites">favorite_border</i>
-        <a ng-if="username" class="login hideMobile" ng-click="showModal()">{{username}}</a>
-        <a ng-if="!username" ui-sref="login" class="login hideMobile">Login</a>
+        <a ng-if="username" class="login hideMobile" ng-click="openModal('user-account-modal')">{{username}}</a>
+        <a ng-if="!username" class="login hideMobile" ng-click="openModal('user-login-modal')">Login</a>
+
+        <modal id="user-login-modal">
+            <div class="mymodal">
+                <div class="modal-body">
+                  <span class="close" ng-click="closeMyModal('user-login-modal')">&times;</span>
+                  <div class="login-container" ng-if="!username" check-logged-in>
+                    <!-- <img src="img/logo.png" alt="currentcuts.com" ui-sref="home"> -->
+                    <h1>Please Login</h1>
+
+                    <form method="get" action="/auth/facebook">
+                      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+                    </form>
+
+                <br><br>
+                    <h1>New user?</h1>
+                    <!-- <h4>Sign up with Facebook</h4> -->
+                    <form method="get" action="/auth/facebook">
+                      <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
+                    </form>
+                  </div>
+                    <!-- <button class="btn" ng-click="closeMyModal('user-login-modal');" ui-sref="accountsettings">Account Settings</button>
+                    <br><br>
+
+                    <button class="btn" ng-click="closeMyModal('user-login-modal');" ui-sref="orderhistory">Order History</button>
+                    <br><br>
+
+                    <form action="/api/user/logout" method="get">
+                      <button type="submit" class="btn">Log Out</button>
+                    </form> -->
+                </div>
+            </div>
+            <div class="modal-background"></div>
+        </modal>
 
         <!-- modal still visible in mobile if scaled down from desktop view -->
-        <div class="modal" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
+        <!-- <div class="modal" id="my-modal" ng-model="myModal" ng-class="{'display': userModal}">
 
           <div class="modal-content-user">
             <span class="close" ng-click="closeModal()">&times;</span>
@@ -66,29 +102,29 @@
             </form>
           </div>
 
-        </div> <!-- end modal -->
-
-        <!-- <a ng-if="!username" ui-sref="login" class="login">Login</a>
-        <a ng-if="username" ui-sref="login" class="login">{{username}}</a>
-        <div  ng-if="username" class="login-container login-user-popup"> -->
-          <!-- <h1>Hi {{username}}</h1> -->
-          <!-- {{username}} -->
-
-          <!-- <button type="button" class="btn" name="button" disabled>Account Settings</button>
-
-          <br><br>
-
-          <button type="button" class="btn" name="button" ui-sref="orderhistory">Order History</button>
-
-          <br><br>
-
-          <form  action="/logout" method="get">
-            <button type="submit" class="btn" name="button">Log Out</button>
-          </form> -->
-
-        <!-- </div> -->
+        </div>--> <!-- end modal -->
 
 
+
+
+        <modal id="user-account-modal">
+            <div class="mymodal">
+                <div class="modal-body">
+                  <span class="close" ng-click="closeMyModal('user-account-modal')">&times;</span>
+
+                    <button class="btn" ng-click="closeMyModal('user-account-modal');" ui-sref="accountsettings">Account Settings</button>
+                    <br><br>
+
+                    <button class="btn" ng-click="closeMyModal('user-account-modal');" ui-sref="orderhistory">Order History</button>
+                    <br><br>
+
+                    <form action="/api/user/logout" method="get">
+                      <button type="submit" class="btn">Log Out</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-background"></div>
+        </modal>
 
       </check-logged-in>
 
@@ -123,12 +159,7 @@
 </header>
 
 <!-- min height div -->
-<div class="minnie">
-  <ui-view></ui-view>
-</div>
-
-<!-- <div ng-include="'img/dog1.svg'" style="fill: red; background: blue;"></div> -->
-
+  <ui-view class="sticky-footer"></ui-view>
 
 
 <footer>
@@ -152,6 +183,7 @@
     <script src="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="./dist/js/bundle.js"></script>
 
     <script>

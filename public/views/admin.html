@@ -22,7 +22,7 @@
 
   <!-- OPEN ORDERS SECTION -->
   <div ng-if="showOpenOrders" >
-    <div ng-repeat="open in openOrders track by $index" class="open-order">
+    <div ng-repeat="open in openOrders track by $index" ng-init="parentIndex = $index" class="open-order">
 
       <div class="open-order-left">
         <div class="open-order-top">
@@ -38,6 +38,7 @@
 
           <div class="">
             Total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
+            indexOf {{parentIndex}}
           </div>
 
         </div>
@@ -54,7 +55,8 @@
 
             <div class="open-order-item-details-hilite">
               Size - {{deets.height}}H x {{deets.width}}W inches <br/>
-              Color - {{deets.color}}
+              Color - {{deets.color}} <br>
+              index - {{$index}}
             </div>
 
             <br />
@@ -100,12 +102,40 @@
           </div>
 
           <form ng-show="readyToSendTracking">
-            <input type="text" name="" placeholder="Tracking Number">
+            <input type="text" name="" placeholder="Tracking Number" ng-model="trackingNumber">
 
-            <textarea name="name" placeholder="Note To Buyer"></textarea>
+            <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
 
-            <button class="btn">Send Confirmation</button>
-            <button class="btn" ng-click="readyToSendTracking = false;">Cancel</button>
+            <button class="btn" ng-click="openModal('send-tracking-modal', trackingNumber)">Send Confirmation</button>
+            <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
+            <!-- <button class="btn" ng-click="readyToSendTracking = false;">Cancel</button> -->
+
+
+            <!-- <modal id="send-tracking-modal-{{$index}}">
+                <div class="mymodal">
+                    <div class="modal-body">
+                        <h1>Review Tracking</h1>
+                        <p>
+                            {{open.trackingNumber}}
+                          $parent.$index  {{$parent.$index}} <br>
+                          parentIndex  {{parentIndex}}
+                            <br>
+                            <br>
+                            {{open.noteToBuyer}}
+
+                            {{tracking}}
+                            <br>
+                            <br>
+                        </p>
+                        <button class="btn" ng-click="completeOrder('send-tracking-modal', open.trackingNumber, open.noteToBuyer);">completeOrder</button>
+
+                        <button class="btn" ng-click="closeMyModal('send-tracking-modal');">Cancel</button>
+                    </div>
+                </div>
+                <div class="modal-background"></div>
+            </modal> -->
+
+
           </form>
         </div>
 
@@ -119,6 +149,30 @@
       <br />
       <br />
     </div> <!-- end ng-repeat -->
+
+    <modal id="send-tracking-modal">
+        <div class="mymodal">
+            <div class="modal-body">
+                <h1>Review Tracking</h1>
+                <p>
+                    {{open.trackingNumber}}
+                  $parent.$index  {{$parent.$index}} <br>
+                  parentIndex  {{parentIndex}}
+                    <br>
+                    <br>
+                    {{open.noteToBuyer}}
+
+                    {{trackingNumber}}
+                    <br>
+                    <br>
+                </p>
+                <button class="btn" ng-click="completeOrder('send-tracking-modal', open.trackingNumber, open.noteToBuyer);">completeOrder</button>
+
+                <button class="btn" ng-click="closeMyModal('send-tracking-modal');">Cancel</button>
+            </div>
+        </div>
+        <div class="modal-background"></div>
+    </modal>
   </div>
 
   <!-- CLOSED ORDERS SECTION -->
@@ -244,5 +298,39 @@
   </div>
 </div>
 
+<!-- <modal-dialog show='modalShown' width='300px' height='500px' id="0">
+  <p>Modal Content Goes here<p>
+</modal-dialog>
+
+<modal-dialog show='modalShown1' width='600px' height='200px' id="1">
+  <p>here's a new modal<p>
+</modal-dialog> -->
+
+<!-- <modal id="custom-modal-1">
+    <div class="mymodal">
+        <div class="modal-body">
+            <h1>A Custom Modal!</h1>
+            <p>
+                Home page text:
+                {{note}}
+                {{id}}
+
+                {{tracking}}
+            </p>
+            <button ng-click="closeMyModal('custom-modal-1');">Close</button>
+        </div>
+    </div>
+    <div class="modal-background"></div>
+</modal>
+
+<modal id="custom-modal-2">
+  <div class="mymodal">
+    <div class="modal-body">
+      Here's a second modal
+      <button ng-click="closeMyModal('custom-modal-2');">Close 2</button>
+    </div>
+  </div>
+  <div class="modal-background"></div>
+</modal> -->
 
 </main>
