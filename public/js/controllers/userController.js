@@ -73,21 +73,21 @@ if($state.params.orderid){
 
 //modal to confirm account update successfull
 
-  var modal = document.getElementById('modalz');
-
-  $scope.closeAccountModal = function(){
-    $scope.updateSuccess = false;
-    console.log($scope.updateSuccess, "close");
-  }
-
-  window.onclick = function(e) {
-    console.log(e.target, "logging target");
-    if (e.target == modal) {
-      $scope.updateSuccess = false;
-      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-      console.log($scope.updateSuccess, "close window");
-    }
-  }
+  // var modal = document.getElementById('modalz');
+  //
+  // $scope.closeAccountModal = function(){
+  //   $scope.updateSuccess = false;
+  //   console.log($scope.updateSuccess, "close");
+  // }
+  // 
+  // window.onclick = function(e) {
+  //   console.log(e.target, "logging target");
+  //   if (e.target == modal) {
+  //     $scope.updateSuccess = false;
+  //     $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+  //     console.log($scope.updateSuccess, "close window");
+  //   }
+  // }
 
 
 

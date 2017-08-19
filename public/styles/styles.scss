@@ -76,7 +76,8 @@ background-color: rgb(69, 69, 69);
 }
 
 .btn:hover {
-  background-color: $secondary-color;
+  // background-color: $secondary-color;
+  background-color: darken($main-accent-color, 15%);
   cursor: pointer;
 }
 
@@ -148,43 +149,97 @@ modal {
     display: none;
 
     .mymodal {
-        /* modal container fixed across whole screen */
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: 0 auto;
-        max-width: 500px;
+      /* modal container fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0 auto;
+      width: 200px;
+      max-width: 500px;
 
-        /* z-index must be higher than .modal-background */
-        z-index: 1000;
+      /* z-index must be higher than .modal-background */
+      z-index: 1000;
 
-        /* enables scrolling for tall modals */
-        overflow: auto;
+      /* enables scrolling for tall modals */
+      overflow: auto;
+      margin-top: 80px;
 
-        .modal-body {
-            padding: 20px;
-            background: #fff;
-            /* margin exposes part of the modal background */
-            margin: 40px;
+      .modal-body {
+        padding: 20px;
+        background: #fff;
+        /* margin exposes part of the modal background */
+        margin: 0;
+
+        i {
+          font-size: 56px;
+          color: $main-accent-color;
         }
+      }
+    }
+
+
+
+    .user-moda {
+      position: absolute;
+      top: 85px;
+      right: 60px;
+      z-index: 1000;
+      width: 20%;
+      min-width: 260px;
+
+      .modal-body {
+        padding: 20px;
+        background: #fff;
+      }
+    }
+
+    .user-moda:before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      right: 36px;
+      height: 0;
+      width: 0;
+      border-bottom: solid 10px #fefefe;
+      border-left: solid 10px transparent;
+      border-right: solid 10px transparent;
+    }
+
+
+
+    .close {
+      color: #aaaaaa;
+      position: absolute;
+      top: 0px;
+      right: 8px;
+      font-size: 28px;
+      font-weight: bold;
+      padding: 10px;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .modal-background {
-        /* modal background fixed across whole screen */
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+      /* modal background fixed across whole screen */
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
 
-        /* semi-transparent black  */
-        background-color: #000;
-        opacity: 0.75;
+      /* semi-transparent black  */
+      background-color: #000;
+      opacity: 0.75;
 
-        /* z-index must be below .modal and above everything else  */
-        z-index: 900;
+      /* z-index must be below .modal and above everything else  */
+      z-index: 900;
     }
 }
 
@@ -273,6 +328,7 @@ table tr:hover {
       font-size: 56px;
       color: $main-accent-color;
     }
+
     .big-btn {
       background-color: $main-accent-color;
       color: #fff;
@@ -1117,11 +1173,12 @@ footer {
       // background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
       .modal-content-user {
-        background-color: #fefefe;
+        display: block;
+        background-color: pink;
         // margin: auto;
-        position: absolute;
-        right: 0px;
-        top: 75px;
+        // position: absolute;
+        // right: 0px;
+        // top: 75px;
         padding: 20px;
         border: 1px solid #888;
         width: 20%;

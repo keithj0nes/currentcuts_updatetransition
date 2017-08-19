@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService, $sce){
+angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService, modalService, $sce){
 
   $scope.addToCartModal = false;
   $scope.productQuantity = 1;
@@ -6,6 +6,29 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
 // console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
+
+
+  $scope.openModal =function(id, track, note){
+    console.log(track, "loggig");
+    console.log("openModal in controller");
+    console.log(id, track, note);
+        modalService.Open(id, track);
+    }
+
+  $scope.closeMyModal = function(id){
+    console.log("clicked button in controllers");
+    modalService.Close(id);
+  }
+
+  $scope.completeOrder = function(id, track, note){
+    console.log(track, note);
+    modalService.Close(id);
+    console.log($scope.parentIndex, "logging parent");
+    $scope.getOpenOrders()
+    // console.log($scope.open);
+    // $scope.open.trackingNumber = "";
+    // console.log($scope.open.trackingNumber, "sam is kool");
+  }
 
   var outlineCheckbox = false;
   var getProductById = function() {
@@ -103,6 +126,8 @@ console.log($scope.favorited);
         mainService.addProductsToCart(cartData);
 
         $scope.addToCartModal = true;
+
+        $scope.openModal('product-added-modal');
 
         $rootScope.$broadcast('cartCount')
     }

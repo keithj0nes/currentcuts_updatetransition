@@ -454,7 +454,7 @@ p {
   background-color: #454545; }
 
 .btn:hover, .empty-cart button:hover {
-  background-color: #f1f1f1;
+  background-color: #3c3649;
   cursor: pointer; }
 
 .btn:active, .empty-cart button:active {
@@ -517,16 +517,54 @@ modal {
     bottom: 0;
     left: 0;
     margin: 0 auto;
+    width: 200px;
     max-width: 500px;
     /* z-index must be higher than .modal-background */
     z-index: 1000;
     /* enables scrolling for tall modals */
-    overflow: auto; }
+    overflow: auto;
+    margin-top: 80px; }
     modal .mymodal .modal-body {
       padding: 20px;
       background: #fff;
       /* margin exposes part of the modal background */
-      margin: 40px; }
+      margin: 0; }
+      modal .mymodal .modal-body i {
+        font-size: 56px;
+        color: #605675; }
+  modal .user-moda {
+    position: absolute;
+    top: 85px;
+    right: 60px;
+    z-index: 1000;
+    width: 20%;
+    min-width: 260px; }
+    modal .user-moda .modal-body {
+      padding: 20px;
+      background: #fff; }
+  modal .user-moda:before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 36px;
+    height: 0;
+    width: 0;
+    border-bottom: solid 10px #fefefe;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent; }
+  modal .close {
+    color: #aaaaaa;
+    position: absolute;
+    top: 0px;
+    right: 8px;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px; }
+  modal .close:hover,
+  modal .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer; }
   modal .modal-background {
     /* modal background fixed across whole screen */
     position: fixed;
@@ -1116,10 +1154,8 @@ footer {
   .hideMobile {
     display: block; }
   .modal-content-user {
-    background-color: #fefefe;
-    position: absolute;
-    right: 0px;
-    top: 75px;
+    display: block;
+    background-color: pink;
     padding: 20px;
     border: 1px solid #888;
     width: 20%;

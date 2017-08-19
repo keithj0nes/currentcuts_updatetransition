@@ -5002,7 +5002,7 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 });
 "use strict";
 
-angular.module("ccvApp").controller("productController", function ($scope, $rootScope, $stateParams, mainService, $sce) {
+angular.module("ccvApp").controller("productController", function ($scope, $rootScope, $stateParams, mainService, modalService, $sce) {
 
   $scope.addToCartModal = false;
   $scope.productQuantity = 1;
@@ -5010,6 +5010,29 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
   // console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
+
+
+  $scope.openModal = function (id, track, note) {
+    console.log(track, "loggig");
+    console.log("openModal in controller");
+    console.log(id, track, note);
+    modalService.Open(id, track);
+  };
+
+  $scope.closeMyModal = function (id) {
+    console.log("clicked button in controllers");
+    modalService.Close(id);
+  };
+
+  $scope.completeOrder = function (id, track, note) {
+    console.log(track, note);
+    modalService.Close(id);
+    console.log($scope.parentIndex, "logging parent");
+    $scope.getOpenOrders();
+    // console.log($scope.open);
+    // $scope.open.trackingNumber = "";
+    // console.log($scope.open.trackingNumber, "sam is kool");
+  };
 
   var outlineCheckbox = false;
   var getProductById = function getProductById() {
@@ -5105,6 +5128,8 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       mainService.addProductsToCart(cartData);
 
       $scope.addToCartModal = true;
+
+      $scope.openModal('product-added-modal');
 
       $rootScope.$broadcast('cartCount');
     }
@@ -5233,21 +5258,22 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 
   //modal to confirm account update successfull
 
-  var modal = document.getElementById('modalz');
+  // var modal = document.getElementById('modalz');
+  //
+  // $scope.closeAccountModal = function(){
+  //   $scope.updateSuccess = false;
+  //   console.log($scope.updateSuccess, "close");
+  // }
+  // 
+  // window.onclick = function(e) {
+  //   console.log(e.target, "logging target");
+  //   if (e.target == modal) {
+  //     $scope.updateSuccess = false;
+  //     $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
+  //     console.log($scope.updateSuccess, "close window");
+  //   }
+  // }
 
-  $scope.closeAccountModal = function () {
-    $scope.updateSuccess = false;
-    console.log($scope.updateSuccess, "close");
-  };
-
-  window.onclick = function (e) {
-    console.log(e.target, "logging target");
-    if (e.target == modal) {
-      $scope.updateSuccess = false;
-      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-      console.log($scope.updateSuccess, "close window");
-    }
-  };
 });
 "use strict";
 
