@@ -78,5 +78,9 @@ angular.module("ccvApp").service("adminService", function($http){
     }).then(res => res.data);
   }
 
+  this.adminSendConfirmation = function(orderDetails){
+    console.log(orderDetails, "in service");
+  }
+
 
 })

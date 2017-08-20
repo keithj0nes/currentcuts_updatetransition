@@ -12,10 +12,8 @@ angular.module('ccvApp').factory('modalService', function(){
   return service;
 
   function Add(modal) {
-    console.log("herrrrreee");
       // add modal to array of active modals
       modals.push(modal);
-      // console.log(modals);
   }
 
   function Remove(id) {
@@ -26,9 +24,7 @@ angular.module('ccvApp').factory('modalService', function(){
 
   function Open(id) {
       // open modal specified by id
-      console.log("should be opening");
       var modal = _.findWhere(modals, { id: id });
-      console.log(modal, "modal");
       modal.open();
   }
 

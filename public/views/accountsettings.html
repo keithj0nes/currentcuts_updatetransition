@@ -1,29 +1,55 @@
-<h1>{{test}}</h1>
+<main>
 
-<div class="" check-logged-in>
-  <form class="" ng-submit="updateAccount(useremail)">
-    <input type="text" name="" ng-value="useremail" ng-model="useremail">
+  <h1>{{test}}</h1>
 
-    <button type="submit" name="button">Update Account</button>
-  </form>
-</div>
+  <div class="">
+    <form class="" ng-submit="updateAccount('account-settings-modal', useremail)">
+      <input type="text" name="" ng-value="useremail" ng-model="useremail">
 
-
-
-
-
-
-<div class="modal" ng-class="{'display': updateSuccess, 'noscroll': updateSuccess}" id="modalz">
-  <div class="modal-content-product-added">
-    <span class="close" ng-click="closeAccountModal()">&times;</span>
-    <i class="material-icons">check_circle</i>
-    <!-- <h3>Your account has been updated!</h3> -->
-    <h3>{{accountMessage}}</h3>
-    <hr>
-
-    <br><br>
-
-    <button type="button" class="big-btn" name="button" ng-click="closeAccountModal()">CLOSE</button>
-
+      <button type="submit" name="button">Update Account</button>
+    </form>
   </div>
-</div>
+
+
+
+
+
+
+  <!-- <div class="modal" ng-class="{'display': updateSuccess, 'noscroll': updateSuccess}" id="modalz">
+    <div class="modal-content-product-added">
+      <span class="close" ng-click="closeAccountModal()">&times;</span>
+      <i class="material-icons">check_circle</i>
+      <h3>{{accountMessage}}</h3>
+      <hr>
+
+      <br><br>
+
+      <button type="button" class="big-btn" name="button" ng-click="closeAccountModal()">CLOSE</button>
+
+    </div>
+  </div> -->
+
+
+
+  <modal id="account-settings-modal">
+      <div class="mymodal">
+          <div class="modal-body">
+
+            <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
+            <i class="material-icons">check_circle</i>
+
+              <!-- <h1>haha</h1> -->
+              <p>
+                {{accountMessage}}
+                <br>
+                <br>
+              </p>
+
+              <button class="btn" ng-click="closeMyModal('account-settings-modal');">Close</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
+
+
+</main>

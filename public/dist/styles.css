@@ -531,17 +531,17 @@ modal {
       modal .mymodal .modal-body i {
         font-size: 56px;
         color: #605675; }
-  modal .user-moda {
+  modal .user-modal {
     position: absolute;
     top: 85px;
     right: 60px;
     z-index: 1000;
     width: 20%;
     min-width: 260px; }
-    modal .user-moda .modal-body {
+    modal .user-modal .modal-body {
       padding: 20px;
       background: #fff; }
-  modal .user-moda:before {
+  modal .user-modal:before {
     content: '';
     position: absolute;
     bottom: 100%;

@@ -32,6 +32,7 @@ angular.module("ccvApp").directive('modal', function(modalService) {
          close: Close
      };
      modalService.Add(modal);
+     console.log(modal, "added to modalService");
 
      // remove self from modal service when directive is destroyed
      scope.$on('$destroy', function() {

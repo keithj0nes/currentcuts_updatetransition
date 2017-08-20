@@ -16,47 +16,15 @@ angular.module("ccvApp").directive("checkLoggedIn", function(mainService, modalS
         }
 
         // modal functionality when clicking username in desktop view
-        var modal = document.getElementById('my-modal');
-
-        scope.showModal = function(){
-          console.log("shoing modal");
-          scope.userModal = true;
-        }
-
-        scope.closeModal = function(){
-          console.log('closing modal');
-          scope.userModal = false;
-        }
-
-        window.onclick = function(e) {
-          if (e.target == modal) {
-            scope.userModal = false;
-            scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-          }
-        }
-
-
-        scope.openModal =function(id, track, note){
-          console.log(track, "loggig");
+        scope.openModal =function(id){
           console.log("openModal in controller");
-          console.log(id, track, note);
-              modalService.Open(id, track);
-          }
+          modalService.Open(id);
+        }
 
         scope.closeMyModal = function(id){
           console.log(id,"clicked button in loggied");
           modalService.Close(id);
         }
-
-        // $scope.completeOrder = function(id, track, note){
-        //   console.log(track, note);
-        //   modalService.Close(id);
-        //   console.log($scope.parentIndex, "logging parent");
-        //   $scope.getOpenOrders()
-        //   // console.log($scope.open);
-        //   // $scope.open.trackingNumber = "";
-        //   // console.log($scope.open.trackingNumber, "sam is kool");
-        // }
 
         getUsername();
     }

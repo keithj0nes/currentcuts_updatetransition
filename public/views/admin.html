@@ -1,67 +1,57 @@
 <main class="admin-main">
-  <!-- <div check-logged-in> -->
     <h1>Admin - {{username}}</h1>
 
-  <!-- </div> -->
 
   <button type="button" name="button" ng-click="showOrders = true; showProducts = false; showOpenOrders = true; getOpenOrders(); ">Show Orders</button>
   <button type="button" name="button" ng-click="showProducts = true; showOrders = false">Show Products</button>
 
 
-
 <!-- ORDERS SECTION -->
-<div ng-if="showOrders" class="admin-orders">
-  <h1>Orders Section</h1>
+  <div ng-if="showOrders" class="admin-orders">
+    <h1>Orders Section</h1>
 
-  <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false;">Show Open Orders</button>
-  <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false;">Show Completed Orders</button>
-  <br />
-  <br />
-  <br />
-  <br />
+    <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false;">Show Open Orders</button>
+    <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false;">Show Completed Orders</button>
+    <br />
+    <br />
+    <br />
+    <br />
 
-  <!-- OPEN ORDERS SECTION -->
-  <div ng-if="showOpenOrders" >
-    <div ng-repeat="open in openOrders track by $index" ng-init="parentIndex = $index" class="open-order">
-
-      <div class="open-order-left">
-        <div class="open-order-top">
-          <div class="">
-            usernamehere <br />
-            <span ng-if="open.useremail">{{open.useremail}}</span>
-            <span ng-if="open.guestemail">{{open.guestemail}}</span>
-          </div>
-
-          <div class="">
-            Ordered <br /> {{open.datesold | date}}
-          </div>
-
-          <div class="">
-            Total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
-            indexOf {{parentIndex}}
-          </div>
-
-        </div>
-
-
-        <div ng-repeat="deets in open.subOrder" class="open-order-item">
-
-          <div class="fakeimg">
-            <img ng-src="{{deets.img1}}" alt="{{deets.name}}" class="fakeimg">
-          </div>
-
-          <div class="open-order-item-details">
-            {{deets.name}}
-
-            <div class="open-order-item-details-hilite">
-              Size - {{deets.height}}H x {{deets.width}}W inches <br/>
-              Color - {{deets.color}} <br>
-              index - {{$index}}
+    <!-- OPEN ORDERS SECTION -->
+    <div ng-if="showOpenOrders" >
+      <div ng-repeat="open in openOrders track by $index" ng-init="parentIndex = $index" class="open-order">
+        <div class="open-order-left">
+          <div class="open-order-top">
+            <div class="">
+              usernamehere <br />
+              <span ng-if="open.useremail">{{open.useremail}}</span>
+              <span ng-if="open.guestemail">{{open.guestemail}}</span>
             </div>
 
-            <br />
+            <div class="">
+              Ordered <br /> {{open.datesold | date}}
+            </div>
 
+            <div class="">
+              Total <br /> {{(open.ordertotal * 1) + (open.shipping * 1) | currency}}
+            </div>
+          </div>
 
+          <div ng-repeat="deets in open.subOrder" class="open-order-item">
+
+            <div class="fakeimg">
+              <img ng-src="{{deets.img1}}" alt="{{deets.name}}" class="fakeimg">
+            </div>
+
+            <div class="open-order-item-details">
+              {{deets.name}}
+
+              <div class="open-order-item-details-hilite">
+                Size - {{deets.height}}H x {{deets.width}}W inches <br/>
+                Color - {{deets.color}} <br>
+              </div>
+
+              <br />
 
              <div class="open-order-item-details-bottom">
                <div class="">
@@ -73,216 +63,156 @@
                 {{deets.price | currency}}
                </div>
              </div>
-
+            </div>
           </div>
+        </div>
+
+        <div class="open-order-right">
+          <div class="open-order-top">
+            <div class="">
+              Order <br /> {{open.id}}
+            </div>
+
+            <div class="">
+              Shipping <br /> {{open.shipping | currency}}
+            </div>
+          </div>
+
+          <div class="open-order-shipping">
+
+            <div class="" ng-show="!readyToSendTracking">
+              address goes here
+
+              <button class="btn" ng-click="readyToSendTracking = true;">Ready To Ship</button>
+            </div>
+
+            <form ng-show="readyToSendTracking">
+              <input type="text" name="" placeholder="Tracking Number" ng-model="open.trackingNumber">
+
+              <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
+
+              <button class="btn" ng-click="openModal('review-tracking-modal', open.trackingNumber, open.noteToBuyer)">Send Confirmation</button>
+              <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
+
+            </form>
+          </div>
+
 
         </div>
 
 
 
-      </div>
-
-      <div class="open-order-right">
-        <div class="open-order-top">
-          <div class="">
-            Order <br /> {{open.id}}
-          </div>
-
-          <div class="">
-            Shipping <br /> {{open.shipping | currency}}
-          </div>
-        </div>
-
-        <div class="open-order-shipping">
-
-          <div class="" ng-show="!readyToSendTracking">
-            address goes here
-
-            <button class="btn" ng-click="readyToSendTracking = true;">Ready To Ship</button>
-          </div>
-
-          <form ng-show="readyToSendTracking">
-            <input type="text" name="" placeholder="Tracking Number" ng-model="open.trackingNumber">
-
-            <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
-
-            <button class="btn" ng-click="openModal('send-tracking-modal', open.trackingNumber, open.noteToBuyer, parentIndex)">Send Confirmation</button>
-            <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
-            <!-- <button class="btn" ng-click="readyToSendTracking = false;">Cancel</button> -->
 
 
-            <!-- <modal id="send-tracking-modal-{{$index}}">
-                <div class="mymodal">
-                    <div class="modal-body">
-                        <h1>Review Tracking</h1>
-                        <p>
-                            {{open.trackingNumber}}
-                          $parent.$index  {{$parent.$index}} <br>
-                          parentIndex  {{parentIndex}}
-                            <br>
-                            <br>
-                            {{open.noteToBuyer}}
-
-                            {{tracking}}
-                            <br>
-                            <br>
-                        </p>
-                        <button class="btn" ng-click="completeOrder('send-tracking-modal', open.trackingNumber, open.noteToBuyer);">completeOrder</button>
-
-                        <button class="btn" ng-click="closeMyModal('send-tracking-modal');">Cancel</button>
-                    </div>
-                </div>
-                <div class="modal-background"></div>
-            </modal> -->
+        <br />
+        <br />
+      </div> <!-- end ng-repeat -->
 
 
-          </form>
-        </div>
+    </div>
+
+    <!-- CLOSED ORDERS SECTION -->
+    <div ng-if="showClosedOrders">
+      <h1>HERE IS WHERE COMPLETED ORDERS WILL BE</h1>
+    </div>
 
 
-      </div>
 
-
-      <modal id="send-tracking-modal">
-          <div class="mymodal">
-              <div class="modal-body">
-                  <h1>Review Tracking</h1>
-                  <p>
-                    <div ng-repeat="o in confirmOrder">
-                      {{o.trackingNo}} <br>
-                      {{o.noteToBuyer}} <br>
-                    </div>
-                    <br>
-                    <br>
-                  </p>
-                  <button class="btn" ng-click="completeOrder('send-tracking-modal');">completeOrder</button>
-
-                  <button class="btn" ng-click="closeMyModal('send-tracking-modal');">Cancel</button>
-              </div>
-          </div>
-          <div class="modal-background"></div>
-      </modal>
-
-
-      <br />
-      <br />
-    </div> <!-- end ng-repeat -->
 
 
   </div>
-
-  <!-- CLOSED ORDERS SECTION -->
-  <div ng-if="showClosedOrders">
-    <h1>HERE IS WHERE COMPLETED ORDERS WILL BE</h1>
-  </div>
-
-
-
-
-
-</div>
 
 
 
 <!-- PRODUCTS SECTION -->
 
 
-<div ng-if="showProducts">
-  <div class="admin-items">
-    <div class="admin-filter">
-      <input type="text" placeholder="Search" ng-model="searchDB.name">
-    </div>
-    <div class="admin-products" ng-repeat="product in products | orderBy: 'id' | filter: searchDB" ng-click="editProducts(product, $index)" ng-class="{highlighted: $index == selected}">
-      <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
-      {{product.name}}
-      <div class="edit-buttons">
-        <!-- <button class="btn" ng-click="editProducts(product)" name="button">Edit</button> -->
-        <!-- <button class="btn" ng-click="delete(product)" name="button">Delete</button> -->
+  <div ng-if="showProducts">
+    <div class="admin-items">
+      <div class="admin-filter">
+        <input type="text" placeholder="Search" ng-model="searchDB.name">
+      </div>
+      <div class="admin-products" ng-repeat="product in products | orderBy: 'id' | filter: searchDB" ng-click="editProducts(product, $index)" ng-class="{highlighted: $index == selected}">
+        <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
+        {{product.name}}
+        <div class="edit-buttons">
+          <!-- <button class="btn" ng-click="editProducts(product)" name="button">Edit</button> -->
+          <!-- <button class="btn" ng-click="delete(product)" name="button">Delete</button> -->
+        </div>
       </div>
     </div>
-  </div>
 
-  <hr>
+    <hr>
 
-  <div class="admin-edit">
-    <h3>Name</h3>
-    <input type="text" name="" placeholder="Name" ng-model="productName">
+    <div class="admin-edit">
+      <h3>Name</h3>
+      <input type="text" name="" placeholder="Name" ng-model="productName">
 
-    <h3>Description</h3>
-    <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
+      <h3>Description</h3>
+      <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
 
-<!-- <div class="" style="clear: both">
+  <!-- <div class="" style="clear: both">
 
-</div> -->
-    <h3>Main Image</h3>
-    <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
+  </div> -->
+      <h3>Main Image</h3>
+      <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
 
-    <h3>Main Vector</h3>
-    <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
+      <h3>Main Vector</h3>
+      <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
 
-    <h3>Outline Vector</h3>
-    <input type="text" name="" placeholder="Image 3 URL" ng-model="productImgThree">
-      <br><br>
+      <h3>Outline Vector</h3>
+      <input type="text" name="" placeholder="Image 3 URL" ng-model="productImgThree">
+        <br><br>
 
+      <div ng-show="showExtraDetails">
+        <h3>Total Favorites</h3>
+        <p>{{productDetails.totalFavs[0].count}}</p>
 
-          <div ng-show="showExtraDetails">
-            <h3>Total Favorites</h3>
-            <p>{{productDetails.totalFavs[0].count}}</p>
-
-            <h3>Active - {{productActive}}</h3>
-            <input type="checkbox" name="" ng-model="productActive">
+        <h3>Active - {{productActive}}</h3>
+        <input type="checkbox" name="" ng-model="productActive">
 
 
-            <div ng-repeat="selected in defaultSelected track by $index">
-              <select ng-options="all as all.name for all in allCategories"  ng-model="selected">
-                <option value="">-- Category --</option>
-              </select>
+        <div ng-repeat="selected in defaultSelected track by $index">
+          <select ng-options="all as all.name for all in allCategories"  ng-model="selected">
+            <option value="">-- Category --</option>
+          </select>
 
-             <button type="button" name="button" ng-click="saveCategory($index, selected)">save</button>
-             <button  type="submit" ng-click="deleteCategory($index, selected)">X</button>
+         <button type="button" name="button" ng-click="saveCategory($index, selected)">save</button>
+         <button  type="submit" ng-click="deleteCategory($index, selected)">X</button>
 
-            </div>
+        </div>
 
-            <button type="button" name="button" ng-click="addNewCategory()">Add Cat</button>
+        <button type="button" name="button" ng-click="addNewCategory()">Add Cat</button>
 
+      <br>
+      <br>
 
+        <h3 style="display: inline-block; width: 60%;">Size</h3>
+        <h3 style="display: inline-block; width: 30%;">Price</h3>
 
-      <br><br>
-
-                <h3 style="display: inline-block; width: 60%;">Size</h3>
-                <h3 style="display: inline-block; width: 30%;">Price</h3>
-
-                <div ng-repeat="ps in productDetails.product track by $index">
-                  <div ng-hide="editing" class="">
-                    <span style="display: inline-block; width: 30%;">H - {{ps.height}}</span>
-                    <span style="display: inline-block; width: 30%;">W - {{ps.width}}</span>
-                    <span style="display: inline-block; width: 30%;">${{ps.price}}</span>
-                    <button ng-click="editing = true; editDisableBtn($index)" ng-hide="editing" name="button" >edit</button>
-                    <button  type="submit" ng-click="deleteDetails($index, ps)">X</button>
-
-                  </div>
-                  <form ng-show="editing" ng-submit="editing = false">
-                    <input type="text" step="any" style="width: 30%;" placeholder="height" ng-model="ps.height" />
-                    <input type="text" step="any" style="width: 30%;" placeholder="width" ng-model="ps.width" />
-                    <input type="text" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
-
-                    <button type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
-                    <button type="button" name="button" ng-click="editing = false; clearDisabled()">X</button>
-                  </form>
-
-                </div>
-
-                <button type="button" ng-click="addNewRow()">Add New Size</button>
-
-
+        <div ng-repeat="ps in productDetails.product track by $index">
+          <div ng-hide="editing">
+            <span style="display: inline-block; width: 30%;">H - {{ps.height}}</span>
+            <span style="display: inline-block; width: 30%;">W - {{ps.width}}</span>
+            <span style="display: inline-block; width: 30%;">${{ps.price}}</span>
+            <button ng-click="editing = true; editDisableBtn($index)" ng-hide="editing" name="button" >edit</button>
+            <button  type="submit" ng-click="deleteDetails($index, ps)">X</button>
           </div>
+          <form ng-show="editing" ng-submit="editing = false">
+            <input type="text" step="any" style="width: 30%;" placeholder="height" ng-model="ps.height" />
+            <input type="text" step="any" style="width: 30%;" placeholder="width" ng-model="ps.width" />
+            <input type="text" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
 
+            <button type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
+            <button type="button" name="button" ng-click="editing = false; clearDisabled()">X</button>
+          </form>
+        </div>
 
+        <button type="button" ng-click="addNewRow()">Add New Size</button>
 
-
+      </div>
 
       <span class="flright" ng-model="productId" ng-show="showExtraDetails">Product ID: {{productId}}</span>
-
 
       <div class="" style="text-align: center;">
         <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, productName, productDescription, productImgOne, productImgTwo, productImgThree, productActive)" ng-disabled="editDisable">Update</button>
@@ -290,43 +220,31 @@
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
         <button ng-show="showExtraDetails"class="btn" ng-click="delete(productId)" name="button" ng-disabled="editDisable">Delete</button>
       </div>
-
-  </div>
-</div>
-
-<!-- <modal-dialog show='modalShown' width='300px' height='500px' id="0">
-  <p>Modal Content Goes here<p>
-</modal-dialog>
-
-<modal-dialog show='modalShown1' width='600px' height='200px' id="1">
-  <p>here's a new modal<p>
-</modal-dialog> -->
-
-<!-- <modal id="custom-modal-1">
-    <div class="mymodal">
-        <div class="modal-body">
-            <h1>A Custom Modal!</h1>
-            <p>
-                Home page text:
-                {{note}}
-                {{id}}
-
-                {{tracking}}
-            </p>
-            <button ng-click="closeMyModal('custom-modal-1');">Close</button>
-        </div>
-    </div>
-    <div class="modal-background"></div>
-</modal>
-
-<modal id="custom-modal-2">
-  <div class="mymodal">
-    <div class="modal-body">
-      Here's a second modal
-      <button ng-click="closeMyModal('custom-modal-2');">Close 2</button>
     </div>
   </div>
-  <div class="modal-background"></div>
-</modal> -->
+
+
+
+
+
+  <modal id="review-tracking-modal">
+      <div class="mymodal">
+          <div class="modal-body">
+              <h1>Review Tracking</h1>
+              <p>
+                <div ng-repeat="o in confirmOrder">
+                  {{o.trackingNo}} <br>
+                  {{o.noteToBuyer}} <br>
+                </div>
+                <br>
+                <br>
+              </p>
+              <button class="btn" ng-click="completeOrder('review-tracking-modal');">completeOrder</button>
+
+              <button class="btn" ng-click="closeMyModal('review-tracking-modal');">Cancel</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
 
 </main>

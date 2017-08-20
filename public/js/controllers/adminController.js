@@ -10,15 +10,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
-  // $scope.confirmOrder = {};
-
-  var hello = function(){
-    console.log("saying hello");
-  }
-
-  $scope.openModal =function(id, track, note, index){
+  $scope.openModal =function(id, track, note){
     $scope.confirmOrder = [];
-    console.log(index);
     if(track && note){
       let confirmOrder = {
         trackingNo: track,
@@ -39,9 +32,11 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.completeOrder = function(id){
-    console.log($scope.confirmOrder, "confirming orderrrrrr");
+    adminService.adminSendConfirmation($scope.confirmOrder)
     modalService.Close(id);
     $scope.getOpenOrders()
+    $scope.readyToSendTracking = false;
+
   }
 
   var getAllProducts = function(){
