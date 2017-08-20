@@ -10,30 +10,38 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
+  // $scope.confirmOrder = {};
+
   var hello = function(){
     console.log("saying hello");
   }
 
-  $scope.openModal =function(id, track, note){
-    console.log(track, "loggig");
-    console.log("openModal in controller");
-    console.log(id, track, note);
-        modalService.Open(id, track);
+  $scope.openModal =function(id, track, note, index){
+    $scope.confirmOrder = [];
+    console.log(index);
+    if(track && note){
+      let confirmOrder = {
+        trackingNo: track,
+        noteToBuyer: note
+      }
+      $scope.confirmOrder.push(confirmOrder)
+      console.log(id, $scope.confirmOrder);
+          modalService.Open(id);
+    } else {
+      alert("one not selected")
     }
+
+  }
 
   $scope.closeMyModal = function(id){
     console.log("clicked button in controllers");
     modalService.Close(id);
   }
 
-  $scope.completeOrder = function(id, track, note){
-    console.log(track, note);
+  $scope.completeOrder = function(id){
+    console.log($scope.confirmOrder, "confirming orderrrrrr");
     modalService.Close(id);
-    console.log($scope.parentIndex, "logging parent");
     $scope.getOpenOrders()
-    // console.log($scope.open);
-    // $scope.open.trackingNumber = "";
-    // console.log($scope.open.trackingNumber, "sam is kool");
   }
 
   var getAllProducts = function(){

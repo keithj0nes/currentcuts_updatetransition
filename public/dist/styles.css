@@ -454,7 +454,7 @@ p {
   background-color: #454545; }
 
 .btn:hover, .empty-cart button:hover {
-  background-color: #3c3649;
+  background-color: #867a9d;
   cursor: pointer; }
 
 .btn:active, .empty-cart button:active {
@@ -517,7 +517,6 @@ modal {
     bottom: 0;
     left: 0;
     margin: 0 auto;
-    width: 200px;
     max-width: 500px;
     /* z-index must be higher than .modal-background */
     z-index: 1000;
