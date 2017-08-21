@@ -10,7 +10,7 @@
   <div ng-if="showOrders" class="admin-orders">
     <h1>Orders Section</h1>
 
-    <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false;">Show Open Orders</button>
+    <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false; getOpenOrders()">Show Open Orders</button>
     <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false;">Show Completed Orders</button>
     <br />
     <br />
@@ -23,9 +23,11 @@
         <div class="open-order-left">
           <div class="open-order-top">
             <div class="">
-              usernamehere <br />
-              <span ng-if="open.useremail">{{open.useremail}}</span>
-              <span ng-if="open.guestemail">{{open.guestemail}}</span>
+              <!-- usernamehere <br /> -->
+              <span ng-if="open.useremail">{{open.ufn}} {{open.uln}} <br> {{open.useremail}}</span>
+              <span ng-if="open.guestemail">Guest <br>
+                {{open.guestemail}}</span>
+
             </div>
 
             <div class="">
@@ -64,7 +66,7 @@
                </div>
              </div>
             </div>
-          </div>
+          </div> <!-- end ng-repeat -->
         </div>
 
         <div class="open-order-right">
@@ -81,7 +83,12 @@
           <div class="open-order-shipping">
 
             <div class="" ng-show="!readyToSendTracking">
-              address goes here
+              Ship to: <br>
+              {{open.firstname}} {{open.lastname}} <br>
+              {{open.address_one}}, <br>
+              <span ng-if="open.address_two">{{open.address_two}}, <br></span>
+              {{open.city}}, {{open.state}}, {{open.zipcode}} <br>
+
 
               <button class="btn" ng-click="readyToSendTracking = true;">Ready To Ship</button>
             </div>
@@ -91,7 +98,7 @@
 
               <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
 
-              <button class="btn" ng-click="openModal('review-tracking-modal', open.trackingNumber, open.noteToBuyer)">Send Confirmation</button>
+              <button class="btn" ng-click="openModal('review-tracking-modal', open.trackingNumber, open.noteToBuyer, parentIndex)">Send Confirmation</button>
               <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
 
             </form>
@@ -100,7 +107,25 @@
 
         </div>
 
+        <modal id="review-tracking-modal">
+            <div class="mymodal">
+                <div class="modal-body">
+                    <h1>Review Tracking</h1>
+                    <p>
+                      <div ng-repeat="o in confirmOrder">
+                        {{o.trackingNo}} <br>
+                        {{o.noteToBuyer}} <br>
+                      </div>
+                      <br>
+                      <br>
+                    </p>
+                    <button class="btn" ng-click="completeOrder(open.id, 'review-tracking-modal');">completeOrder</button>
 
+                    <button class="btn" ng-click="closeMyModal('review-tracking-modal');">Cancel</button>
+                </div>
+            </div>
+            <div class="modal-background"></div>
+        </modal>
 
 
 
@@ -227,7 +252,7 @@
 
 
 
-  <modal id="review-tracking-modal">
+  <!-- <modal id="review-tracking-modal">
       <div class="mymodal">
           <div class="modal-body">
               <h1>Review Tracking</h1>
@@ -245,6 +270,6 @@
           </div>
       </div>
       <div class="modal-background"></div>
-  </modal>
+  </modal> -->
 
 </main>

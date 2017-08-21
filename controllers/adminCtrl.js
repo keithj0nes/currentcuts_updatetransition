@@ -535,7 +535,7 @@ module.exports = {
   getOpenOrders: function(req, res){
     let openOrders = {};
 
-    db.run("select orders.id, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping, users.email as useremail, guest_users.email as guestemail from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join shipping on orders.shippingid = shipping.id where orders.completed = false;", [], function(err, mainOrders){
+    db.run("select orders.id, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = false order by datesold;", [], function(err, mainOrders){
       openOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
         db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
@@ -547,6 +547,42 @@ module.exports = {
         res.send(openOrders)
       }, 100);
     })
+  },
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  completeOrder: function(req, res){
+    console.log(req.params.index, "logging req.pareams.didd");
+    console.log(req.body[0], "logging boddddyyyy");
+
+    let b = req.body[0]
+    let timeNow = new Date();
+
+
+    db.run("select * from orders where completed = false order by datesold", [], function(err, openOrders){
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+      // console.log(openOrders, "logging open orders in completeOrder");
+
+      if(openOrders){
+        openOrders.forEach((item, idx) => {
+          console.log(idx, req.params.index);
+          if(b.index === idx){
+            console.log(item, "MATCH");
+            db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}, (err, updatedOrder)=>{
+              console.log(updatedOrder, "result");
+            })
+          } else {
+            console.log("no match :(");
+          }
+        })
+      }
+    })
+
+
+    res.send("welcome to home")
   }
 
 

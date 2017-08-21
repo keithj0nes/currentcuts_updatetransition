@@ -102,8 +102,8 @@ CREATE TABLE orderline (
 
 CREATE TABLE order_addresses (
   id SERIAL PRIMARY KEY,
-  firstName TEXT,
-  lastName TEXT,
+  firstname TEXT,
+  lastname TEXT,
   address_one TEXT,
   address_two TEXT,
   city TEXT,

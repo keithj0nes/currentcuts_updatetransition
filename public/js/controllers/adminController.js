@@ -10,12 +10,14 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
-  $scope.openModal =function(id, track, note){
+  $scope.openModal = function(id, track, note, index){
+    $scope.openOrderIndex = index;
     $scope.confirmOrder = [];
     if(track && note){
       let confirmOrder = {
         trackingNo: track,
-        noteToBuyer: note
+        noteToBuyer: note,
+        index: index
       }
       $scope.confirmOrder.push(confirmOrder)
       console.log(id, $scope.confirmOrder);
@@ -31,11 +33,16 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     modalService.Close(id);
   }
 
-  $scope.completeOrder = function(id){
-    adminService.adminSendConfirmation($scope.confirmOrder)
+  $scope.completeOrder = function(orderid, id){
+    console.log($scope.openOrderIndex, "modalIndex");
+    console.log(orderid, "order id");
+    adminService.adminSendConfirmation($scope.openOrderIndex,$scope.confirmOrder)
     modalService.Close(id);
-    $scope.getOpenOrders()
-    $scope.readyToSendTracking = false;
+
+    //set timeout to update db before calling getOpenOrders function
+    setTimeout(function(){
+      $scope.getOpenOrders();
+    },100)
 
   }
 
@@ -331,6 +338,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   $scope.getOpenOrders = function(){
     adminService.adminGetOpenOrders().then((res)=>{
+      $scope.readyToSendTracking = false;
+      
       console.log(res, "res in adminGetOpenOrders");
       $scope.openOrders = res.mainOrder;
       console.log($scope.openOrders, "loo[penorders]");

@@ -211,6 +211,8 @@ app.put("/api/admin/products/:id/categories", adminCtrl.updateCategories);
 app.delete("/api/admin/products/:id", adminCtrl.deleteProductById);
 app.delete("/api/admin/products/:id/sizeprice", adminCtrl.deleteSizePrice);
 app.delete("/api/admin/products/:id/categories", adminCtrl.deleteCategories);
+
+app.put("/api/admin/orders/open/:index", adminCtrl.completeOrder);
 /////// ADMIN ///////
 
 
