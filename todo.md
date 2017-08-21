@@ -1,5 +1,9 @@
 # To Do list
 
+### Universal
+
+- [x] Streamline modals using directive - 8/20/17
+
 ### Admin Page
 
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
@@ -9,11 +13,14 @@
   - [ ] Allow tracking number to be entered once completed
   - [ ] Use nodemailer to send follow up email to email associated with order
 
+- [ ] Create completed orders tab
+
 - [x] Product information 8/9/17
   - [x] Set categories to specific product 8/9/17
   - [x] Add sizes and prices to specific product 7/23/17
   - [x] Delete sizes and prices to specific product 7/24/17
   - [x] Set active / inactive to specific product 7/25/17
+
 
 
 ### Cart page
