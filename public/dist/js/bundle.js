@@ -4859,7 +4859,10 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
           }).then(function (response) {
             console.log(response, "response in cartController charge lololololol");
             $rootScope.cart = [];
-            $state.go('thankyou', { "orderid": response.data });
+            //set timeout so thankyou page loads after orderData is saved to backend
+            setTimeout(function () {
+              $state.go('thankyou', { "orderid": response.data });
+            }, 150);
             return $http.post('/api/email', orderData);
           });
         }
@@ -5177,6 +5180,7 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
 
 angular.module("ccvApp").controller("thankyouController", function ($scope, $rootScope, $state, mainService) {
 
+  // setTimeout(function(){
   mainService.getThankYouById($state.params.orderid).then(function (response) {
     if (response.length >= 1) {
       $rootScope.$broadcast('cartCount');
@@ -5188,6 +5192,8 @@ angular.module("ccvApp").controller("thankyouController", function ($scope, $roo
       $scope.thankyouResponse = false;
     }
   });
+  // }, 1000)
+
 });
 "use strict";
 

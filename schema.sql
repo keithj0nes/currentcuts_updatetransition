@@ -86,7 +86,8 @@ CREATE TABLE orders (
   dateSold TIMESTAMP,
   ordertotal DECIMAL(8,2),
   shippingid INTEGER REFERENCES shipping(id)
-  tyexpired BOOLEAN
+  tyexpired BOOLEAN,
+  orderaddresses_id INTEGER REFERENCES order_addresses(id)
 );
 
 CREATE TABLE orderline (

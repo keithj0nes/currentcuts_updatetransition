@@ -185,9 +185,9 @@ module.exports = {
     let orderTotal = 0;
 
     if(!b.user.address2){
-      b.user.address2 = " ";
+      b.user.address2alt = " ";
     } else {
-      b.user.address2 = b.user.address2 + ", ";
+      b.user.address2alt = b.user.address2 + ", ";
     }
 
     if(!b.order.note){
@@ -203,7 +203,7 @@ module.exports = {
 
     //Create email HTML
     //req.user.firstname replace this with b.user.recNameLast below
-    let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2 + b.user.city + ", " + b.user.state + ", " + b.user.zip
+    let text = "Hi " + b.user.recNameFirst + "! " + "<br> Thank you for your purchase <br> Details below: <br><br> <b>Shipping Address:</b> <br> " + b.user.recNameFirst + " " + b.user.recNameLast + "<br>" + b.user.address1 + ", " + b.user.address2alt + b.user.city + ", " + b.user.state + ", " + b.user.zip
 
     //loop through each product in product array and add it to the html email
     b.product.forEach(function(item){
@@ -241,36 +241,105 @@ module.exports = {
           res.send(err);
         }
 
-        //update shippingid in orders table
-        db.orders.update({id: order[0].id, shippingid: ship.id}, function(err, orderUpdate){
+        db.order_addresses.findOne({address_one: b.user.address1, address_one: b.user.address1, city: b.user.city, state: b.user.state, zipcode: b.user.zip}, (err, foundAddress) => {
           if(err){
             console.log(err);
             res.send(err)
           }
-          console.log(orderUpdate);
-          console.log("LOGGING ORDERUPDATE *********");
+          if(foundAddress){
+            console.log(foundAddress, "address was found!");
+
+            updateOrderSendConfirmationEmail(order, ship, foundAddress, b, text, transporter, req, res);
+
+          } else {
+            console.log("address wasn't found, adding now");
+            let addAddress = {};
+            addAddress = {
+              firstname: b.user.recNameFirst,
+              lastname: b.user.recNameLast,
+              address_one: b.user.address1,
+              address_two: b.user.address2,
+              city: b.user.city,
+              state: b.user.state,
+              zipcode: b.user.zip
+            }
+            console.log(addAddress);
+            db.order_addresses.insert(addAddress, (err, newAddress)=>{
+              if(err){
+                console.log(err);
+                res.send(err)
+              }
+              console.log(newAddress, "newAddress added");
+
+              updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, transporter, req, res);
+              //update shippingid in orders table
+              // db.orders.update({id: order[0].id, shippingid: ship.id, orderaddresses_id: newAddress.id, msg_to_seller: b.order.note}, function(err, orderUpdate){
+              //   if(err){
+              //     console.log(err);
+              //     res.send(err)
+              //   }
+              //   console.log(orderUpdate);
+              //   console.log("LOGGING ORDERUPDATE *********");
+              //
+              //
+              // })
+              //
+              // //create email
+              // var mailOptions = {
+              //   from: 'currentcutstest@gmail.com',                  // sender address
+              //   // to: b.email,                                        // list of receivers
+              //   bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+              //   subject: 'Order Confirmation - ' + order[0].id,     // Subject line
+              //   // text: text //,                                   // plaintext body
+              //   html: text                                          // html body
+              // };
+              //
+              // //send email
+              // transporter.sendMail(mailOptions, function(error, info){
+              //   if(error){
+              //       console.log(error);
+              //       res.json({yo: 'error'});
+              //   }else{
+              //       console.log('Message sent: ' + info.response);
+              //       res.json({yo: info.response});
+              //   };
+              // });
+            })
+          }
         })
 
-        //create email
-        var mailOptions = {
-          from: 'currentcutstest@gmail.com',                  // sender address
-          // to: b.email,                                        // list of receivers
-          bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-          subject: 'Order Confirmation - ' + order[0].id,     // Subject line
-          // text: text //,                                   // plaintext body
-          html: text                                          // html body
-        };
-
-        //send email
-        transporter.sendMail(mailOptions, function(error, info){
-          if(error){
-              console.log(error);
-              res.json({yo: 'error'});
-          }else{
-              console.log('Message sent: ' + info.response);
-              res.json({yo: info.response});
-          };
-        });
+        // //update shippingid in orders table
+        // db.orders.update({id: order[0].id, shippingid: ship.id}, function(err, orderUpdate){
+        //   if(err){
+        //     console.log(err);
+        //     res.send(err)
+        //   }
+        //   console.log(orderUpdate);
+        //   console.log("LOGGING ORDERUPDATE *********");
+        //
+        //
+        // })
+        //
+        // //create email
+        // var mailOptions = {
+        //   from: 'currentcutstest@gmail.com',                  // sender address
+        //   // to: b.email,                                        // list of receivers
+        //   bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+        //   subject: 'Order Confirmation - ' + order[0].id,     // Subject line
+        //   // text: text //,                                   // plaintext body
+        //   html: text                                          // html body
+        // };
+        //
+        // //send email
+        // transporter.sendMail(mailOptions, function(error, info){
+        //   if(error){
+        //       console.log(error);
+        //       res.json({yo: 'error'});
+        //   }else{
+        //       console.log('Message sent: ' + info.response);
+        //       res.json({yo: info.response});
+        //   };
+        // });
       })
     })
   } //end mail function
@@ -291,7 +360,8 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     userid: reqUserId,
     datesold: timeNow,
     ordertotal: cartTotal,
-    guestuserid: guestUserResult
+    guestuserid: guestUserResult,
+    completed: false
   }, function(err, order){
     if(err){
       console.log(err);
@@ -302,25 +372,23 @@ function insertOrder(reqUserId, guestUserResult, req, res){
         console.log(product, "result in forEach");
         // console.log(index, "index in forEach");
 
-        ///////////////// not working because letmatches regex is only getting last number before H and first number after x
         // let matches = product.productSize.match(/(\d+)H x (\d+)/);
         let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
 
         let number1 = Number(matches[1]);
         let number2 = Number(matches[2]);
-        let obj = {
+        let heightwidth = {
           height: number1,
           width: number2
         }
 
-        console.log(obj, "logging object being sent to db.sizes.findOne");
 
         let myPrice = product.productPrice;
         let myProductId = product.productId;
         let myProductQ = product.productQuantity;
         let myProductColor = product.productColor;
 
-        db.sizes.findOne(obj, function(err, sResult){
+        db.sizes.findOne(heightwidth, function(err, sResult){
           if(err){
             console.log(err);
             res.status(500).send(err)
@@ -368,3 +436,46 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     }
   }) //end db.orders.insert
 } //end insertOrder function
+
+
+
+
+
+
+
+
+
+function updateOrderSendConfirmationEmail(order, ship, address, b, text, transporter, req, res){
+  console.log("updating orders table now");
+  db.orders.update({id: order[0].id, shippingid: ship.id, orderaddresses_id: address.id, msg_to_seller: b.order.note}, function(err, orderUpdate){
+    if(err){
+      console.log(err);
+      res.send(err)
+    }
+    console.log(orderUpdate);
+    console.log("LOGGING ORDERUPDATE *********");
+
+
+  })
+
+  //create email
+  var mailOptions = {
+    from: 'currentcutstest@gmail.com',                  // sender address
+    // to: b.email,                                        // list of receivers
+    bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+    subject: 'Order Confirmation - ' + order[0].id,     // Subject line
+    // text: text //,                                   // plaintext body
+    html: text                                          // html body
+  };
+
+  //send email
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+        res.json({yo: 'error'});
+    }else{
+        console.log('Message sent: ' + info.response);
+        res.json({yo: info.response});
+    };
+  });
+} //end updateOrders function

@@ -211,7 +211,10 @@ getProductsInCart();
         }).then(function (response) {
           console.log(response, "response in cartController charge lololololol");
           $rootScope.cart = [];
-          $state.go('thankyou', {"orderid": response.data});
+          //set timeout so thankyou page loads after orderData is saved to backend
+          setTimeout(function(){
+            $state.go('thankyou', {"orderid": response.data});
+          }, 150)
           return $http.post('/api/email', orderData);
         })
       }

@@ -42,17 +42,13 @@ app.use(passport.session());
 
 isAuthenticated = (req, res, next) => {
   if(req.user){
-    // console.log("req.user true");
     if(req.user.admin){
-      // console.log("req.user.admin true");
       req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
       return next()
     }
     req.reqUser = {reqUser: true};
-    // console.log("no admin");
     return next();
   } else {
-    // console.log("sending no user lol");
     res.send({reqUser: false})
   }
 }
@@ -159,21 +155,25 @@ app.post("/api/email", mainCtrl.mail);
 
 app.get("/api/order/:id/thankyou", function(req, res, next){
   /////// NEED TO SET SOME SORT OF EXPIRATION
-  db.get_thank_you_by_id([req.params.id], function(err, order){
-    if(err){
-      console.log(err);
-      res.status(500).send(err)
-    }
-    // change tyexpired to true after 5 seconds, returning nothing to the front end
-    setTimeout(function(){
-      db.orders.update({id: req.params.id, tyexpired: true}, function(err, newOrder){
-        console.log(newOrder, "tyexpired has been updated to true");
-      })
-    }, 5000);
+ console.log("firing thank you now");
+  // setTimeout(function(){
+    db.get_thank_you_by_id([req.params.id], function(err, order){
+      if(err){
+        console.log(err);
+        res.status(500).send(err)
+      }
+      // change tyexpired to true after 5 seconds, returning nothing to the front end
+      setTimeout(function(){
+        db.orders.update({id: req.params.id, tyexpired: true}, function(err, newOrder){
+          console.log(newOrder, "tyexpired has been updated to true");
+        })
+      }, 5000);
 
-    console.log(order, "logging order in thankyou");
-    res.send(order)
-  })
+      console.log(order, "logging order in thankyou");
+      res.send(order)
+    })
+  // }, 1000)
+
 })
 
 //CART
@@ -187,17 +187,14 @@ app.put("/api/cart", (req, res, next) => {
 })
 
 
-//PRODUCTS
 
-
+/////// PRODUCTS ///////
 app.get("/api/products", mainCtrl.getAllProducts);
 app.get("/api/products/:id", mainCtrl.getProductById);
 app.get("/api/products/:id/details", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);
 app.get("/api/products/category/:id", mainCtrl.getProductByCategory);
-
-
-
+/////// PRODUCTS ///////
 
 
 /////// ADMIN ///////
@@ -214,6 +211,7 @@ app.put("/api/admin/products/:id/categories", adminCtrl.updateCategories);
 app.delete("/api/admin/products/:id", adminCtrl.deleteProductById);
 app.delete("/api/admin/products/:id/sizeprice", adminCtrl.deleteSizePrice);
 app.delete("/api/admin/products/:id/categories", adminCtrl.deleteCategories);
+/////// ADMIN ///////
 
 
 
@@ -256,31 +254,6 @@ app.post("/api/charge", function(req, res, next){
   });
 
 })
-
-
-// looper = (array, index, loopCount) => {
-//
-//   array.forEach(function(r, i){
-//     if(index === i){
-//       console.log(r, "found the correct index");
-//       loopCount++
-//
-//       db.product_price_size.save({id: r.id, priceid: foundPrice.id, sizeid: foundSize.id }, function(err, updatedPrice){
-//         if(err){
-//           console.log(err);
-//           res.status(500).send(err)
-//         }
-//
-//         console.log(updatedPrice, "updated price after .save()");
-//       })
-//
-//     } else {
-//       console.log("cant find it");
-//     }
-//   })
-//
-// }
-
 
 
 //listening
