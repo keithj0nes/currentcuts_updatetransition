@@ -572,20 +572,36 @@ module.exports = {
           if(b.index === idx){
             console.log(item, "MATCH");
             db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}, (err, updatedOrder)=>{
-              console.log(updatedOrder, "result");
+              // console.log(updatedOrder, "result");
+              db.order_addresses.findOne({id: updatedOrder.orderaddresses_id}, (err, foundAddress)=>{
+                // console.log(foundAddress, "found address");
+                if(updatedOrder.userid){
+                  // console.log("signed in user");
+                  db.users.findOne({id: updatedOrder.userid}, (err, foundUser)=>{
+                    sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res);
+                  })
+                } else if(updatedOrder.guestuserid){
+                  // console.log("guest user");
+                  db.guest_users.findOne({id: updatedOrder.guestuserid}, (err, foundGuestUser)=>{
+                    // console.log(foundGuestUser.email);
+                    sendTrackingEmail(b, foundAddress, updatedOrder, foundGuestUser, nodemailer, config, req, res);
+                  })
+                }
+              })
             })
-          } else {
-            console.log("no match :(");
-          }
-        })
-      }
+          } // end if b.index === idx
+        }) //end forEach
+      } else {
+        console.log(openOrders, openOrders.length, "openOrders length");
+      }//end else openOrders
     })
 
 
-    res.send("welcome to home")
+    res.send({orderCompleted: true})
   }
 
 
+} //end module.exports
 
 
 
@@ -593,4 +609,45 @@ module.exports = {
 
 
 
+function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res){
+  if(!foundAddress.address_two){
+    foundAddress.address_two_alt = "<br>";
+  } else {
+    foundAddress.address_two_alt = foundAddress.address_two + " <br>";
+  }
+
+  let text = "Your order has been shipped! <br><br> USPS Tracking # " + b.trackingNo + "<br> <br> Ship To: <br>" + foundAddress.firstname + " " + foundAddress.lastname + "<br>" + foundAddress.address_one + " " + foundAddress.address_two_alt + foundAddress.city + ", " + foundAddress.state + ", " + foundAddress.zipcode + "<br><br> Your Note: '" + updatedOrder.msg_to_seller + "' <br> Our Note: '" + updatedOrder.msg_to_buyer + "' <br><br> Thanks! ";
+
+
+  text += "<br><br><br>mail should be: " + foundUser.email;
+
+  let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    secure: true,
+    auth: {
+        user: config.nodemailerAuth.username, // Your email id
+        pass: config.nodemailerAuth.pass // Your password
+    }
+  });
+
+  //create email
+  var mailOptions = {
+    from: 'currentcutstest@gmail.com',                  // sender address
+    // to: b.email,                                        // list of receivers
+    bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+    subject: 'Your Order is on its way! USPS Tacking -' + b.trackingNo,     // Subject line
+    // text: text //,                                   // plaintext body
+    html: text                                          // html body
+  };
+
+  //send email
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+        res.json({yo: 'error'});
+    }else{
+        console.log('Message sent: ' + info.response);
+        res.json({yo: info.response});
+    };
+  });
 }
