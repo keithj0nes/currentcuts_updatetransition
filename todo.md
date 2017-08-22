@@ -2,6 +2,7 @@
 
 ### Universal
 
+- [ ] replace db.run functions with sql files in server.js
 - [x] Streamline modals using directive - 8/20/17
 
 ### Admin Page
