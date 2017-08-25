@@ -11,14 +11,17 @@
     <h1>Orders Section</h1>
 
     <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false; getOpenOrders()">Show Open Orders</button>
-    <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false;">Show Completed Orders</button>
+    <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false; getClosedOrders()">Show Completed Orders</button>
     <br />
     <br />
     <br />
     <br />
 
     <!-- OPEN ORDERS SECTION -->
-    <div ng-if="showOpenOrders" >
+    <div ng-if="showOpenOrders">
+      <div ng-if="openOrdersEmpty">
+        <p>There are no open orders currently</p>
+      </div>
       <div ng-repeat="open in openOrders track by $index" ng-init="parentIndex = $index" class="open-order">
         <div class="open-order-left">
           <div class="open-order-top">
@@ -72,24 +75,34 @@
         <div class="open-order-right">
           <div class="open-order-top">
             <div class="">
-              Order <br /> {{open.id}}
+              Shipping <br /> {{open.shipping | currency}}
             </div>
 
             <div class="">
-              Shipping <br /> {{open.shipping | currency}}
+              Order <br /> {{open.id}}
             </div>
           </div>
 
           <div class="open-order-shipping">
 
             <div class="" ng-show="!readyToSendTracking">
-              Ship to: <br>
-              {{open.firstname}} {{open.lastname}} <br>
-              {{open.address_one}}, <br>
-              <span ng-if="open.address_two">{{open.address_two}}, <br></span>
-              {{open.city}}, {{open.state}}, {{open.zipcode}} <br>
+
+              <div class="">
+                Ship to: <br>
+                {{open.firstname}} {{open.lastname}} <br>
+                {{open.address_one}}, <br>
+                <span ng-if="open.address_two">{{open.address_two}}, <br></span>
+                {{open.city}}, {{open.state}}, {{open.zipcode}} <br>
+              </div>
+
+              <div class="">
+                Note From Buyer:
+
+                {{open.msg_to_seller}}
+              </div>
 
 
+<br>
               <button class="btn" ng-click="readyToSendTracking = true;">Ready To Ship</button>
             </div>
 
@@ -138,7 +151,140 @@
 
     <!-- CLOSED ORDERS SECTION -->
     <div ng-if="showClosedOrders">
-      <h1>HERE IS WHERE COMPLETED ORDERS WILL BE</h1>
+      <div ng-if="closedOrdersEmpty">
+        <p>There are no completed orders currently</p>
+      </div>
+      <div ng-repeat="closed in closedOrders track by $index" ng-init="parentIndex = $index" class="open-order">
+        <div class="open-order-left">
+          <div class="open-order-top">
+            <div class="">
+              <!-- usernamehere <br /> -->
+              <span ng-if="closed.useremail">{{closed.ufn}} {{closed.uln}} <br> {{closed.useremail}}</span>
+              <span ng-if="closed.guestemail">Guest <br>
+                {{closed.guestemail}}</span>
+            </div>
+
+            <div class="">
+              Ordered <br /> {{closed.datesold | date}}
+            </div>
+
+            <div class="">
+              Total <br /> {{(closed.ordertotal * 1) + (closed.shipping * 1) | currency}}
+            </div>
+          </div>
+
+          <div ng-repeat="deets in closed.subOrder" class="open-order-item">
+
+            <div class="fakeimg">
+              <img ng-src="{{deets.img1}}" alt="{{deets.name}}" class="fakeimg">
+            </div>
+
+            <div class="open-order-item-details">
+              {{deets.name}}
+
+              <div class="open-order-item-details-hilite">
+                Size - {{deets.height}}H x {{deets.width}}W inches <br/>
+                Color - {{deets.color}} <br>
+              </div>
+
+              <br />
+
+             <div class="open-order-item-details-bottom">
+               <div class="">
+                Quantity <br />
+                {{deets.quantsold}}
+               </div>
+               <div class="">
+                Price <br />
+                {{deets.price | currency}}
+               </div>
+             </div>
+            </div>
+          </div> <!-- end ng-repeat -->
+        </div>
+
+        <div class="open-order-right">
+          <div class="open-order-top">
+            <div class="">
+              Shipping <br /> {{closed.shipping | currency}}
+            </div>
+
+            <div class="">
+              Order <br /> {{closed.id}}
+            </div>
+          </div>
+
+          <div class="open-order-shipping">
+
+            <div class="">
+              <a href="https://www.google.com/search?q={{closed.tracking}}" target="_blank">{{closed.tracking}}</a>
+              <br>
+              Notification sent {{closed.datecompleted | date}}
+
+              <hr style="display: block; border-top: 1px solid #333;"/>
+              jaja
+              <div class="">
+                Shipped to: <br>
+                {{closed.firstname}} {{closed.lastname}} <br>
+                {{closed.address_one}}, <br>
+                <span ng-if="open.address_two">{{closed.address_two}}, <br></span>
+                {{closed.city}}, {{closed.state}}, {{closed.zipcode}} <br>
+              </div>
+
+              <div class="">
+                Note From Buyer:
+
+                {{closed.msg_to_seller}}
+                <br>
+                Note To Buyer:
+
+                {{closed.msg_to_buyer}}
+              </div>
+
+<br>
+
+              <button class="btn" ng-click="openModal('resend-tracking-modal')" disabled="true">Resend Confirmation Email</button>
+            </div>
+
+            <!-- <form ng-show="readyToSendTracking">
+              <input type="text" name="" placeholder="Tracking Number" ng-model="open.trackingNumber">
+
+              <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
+
+              <button class="btn" ng-click="openModal('review-tracking-modal', open.trackingNumber, open.noteToBuyer, parentIndex)">Send Confirmation</button>
+              <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
+
+            </form> -->
+          </div>
+
+
+        </div>
+
+        <modal id="resend-tracking-modal">
+            <div class="mymodal">
+                <div class="modal-body">
+                    <h1>Resend Confirmation Email</h1>
+                    <p>
+                      <!-- <div ng-repeat="o in confirmOrder">
+                        {{o.trackingNo}} <br>
+                        {{o.noteToBuyer}} <br>
+                      </div> -->
+                      <br>
+                      <br>
+                    </p>
+                    <button class="btn" ng-click="completeOrder(open.id, 'resend-tracking-modal');">completeOrder</button>
+
+                    <button class="btn" ng-click="closeMyModal('resend-tracking-modal');">Cancel</button>
+                </div>
+            </div>
+            <div class="modal-background"></div>
+        </modal>
+
+
+
+        <br />
+        <br />
+      </div> <!-- end ng-repeat -->
     </div>
 
 
@@ -160,6 +306,8 @@
       <div class="admin-products" ng-repeat="product in products | orderBy: 'id' | filter: searchDB" ng-click="editProducts(product, $index)" ng-class="{highlighted: $index == selected}">
         <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
         {{product.name}}
+        <hr style="display: inline-block;border-top: 1px solid red;"/>
+
         <div class="edit-buttons">
           <!-- <button class="btn" ng-click="editProducts(product)" name="button">Edit</button> -->
           <!-- <button class="btn" ng-click="delete(product)" name="button">Delete</button> -->

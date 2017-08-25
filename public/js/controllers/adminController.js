@@ -13,18 +13,24 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.openModal = function(id, track, note, index){
     $scope.openOrderIndex = index;
     $scope.confirmOrder = [];
-    if(track && note){
-      let confirmOrder = {
-        trackingNo: track,
-        noteToBuyer: note,
-        index: index
+    if(id === "review-tracking-modal"){
+      console.log("reviewing!!!");
+      if(track && note){
+        let confirmOrder = {
+          trackingNo: track,
+          noteToBuyer: note,
+          index: index
+        }
+        $scope.confirmOrder.push(confirmOrder)
+        console.log(id, $scope.confirmOrder);
+            modalService.Open(id);
+      } else {
+        alert("one not selected")
       }
-      $scope.confirmOrder.push(confirmOrder)
-      console.log(id, $scope.confirmOrder);
-          modalService.Open(id);
-    } else {
-      alert("one not selected")
+    } else if(id === "resend-tracking-modal"){
+      console.log(id, "resend-tracking-modal");
     }
+
 
   }
 
@@ -337,14 +343,32 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   ///////////////////////////////////////////////////////////////////
 
   $scope.getOpenOrders = function(){
-    adminService.adminGetOpenOrders().then((res)=>{
+    adminService.adminGetOpenOrders().then((res) => {
       $scope.readyToSendTracking = false;
-      
+
+      console.log(res.mainOrder.length);
+      if(res.mainOrder.length <= 0){
+        console.log("no length");
+        $scope.openOrdersEmpty = true;
+      }
+
       console.log(res, "res in adminGetOpenOrders");
       $scope.openOrders = res.mainOrder;
       console.log($scope.openOrders, "loo[penorders]");
       $scope.openOrdersDetails = res.mainOrder.subOrder;
 
+    })
+  }
+
+  $scope.getClosedOrders = function(){
+    adminService.adminGetClosedOrders().then((res) => {
+      if(res.mainOrder.length <= 0){
+        console.log("no length");
+        $scope.closedOrdersEmpty = true;
+      }
+      console.log(res, "res in adminGetClosedOrders");
+      $scope.closedOrders = res.mainOrder;
+      $scope.closedOrdersDetails = res.mainOrder.subOrder;
     })
   }
 

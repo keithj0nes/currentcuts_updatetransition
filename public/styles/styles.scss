@@ -51,6 +51,16 @@ p {
   // box-shadow: 0px 0px 10px 1px;
 }
 
+.btn:disabled {
+  background-color: lightgray;
+  color: darkgray;
+}
+
+.btn:hover:disabled {
+  background-color: lightgray;
+  cursor: not-allowed;
+}
+
 .big-btn {
   padding: 15px;
   width: 100%;
@@ -938,7 +948,7 @@ footer {
       display: flex;
 
       .open-order-left {
-        width: 66.6%;
+        width: 60%;
 
 
         .open-order-item {
@@ -974,7 +984,7 @@ footer {
       }
 
       .open-order-right {
-        width: 33.3%;
+        width: 40%;
         border-left: 1px solid pink;
 
         .open-order-shipping {
@@ -1001,7 +1011,7 @@ footer {
       .open-order-top {
         display: flex;
         justify-content: space-between;
-        background: lightgray;
+        background: #f5f5f1;
         padding: 10px;
       }
     }

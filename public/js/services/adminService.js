@@ -78,9 +78,16 @@ angular.module("ccvApp").service("adminService", function($http){
     }).then(res => res.data);
   }
 
+  this.adminGetClosedOrders = function(){
+    console.log("getting here");
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/closed"
+    }).then(res => res.data);
+  }
+
   this.adminSendConfirmation = function(index, orderDetails){
     console.log(index, orderDetails, "in service");
-
     return $http({
       method: "PUT",
       url: "/api/admin/orders/open/" + index,

@@ -4336,705 +4336,6 @@ angular.module("ccvApp").directive("shiptime", function ($interval) {
 });
 "use strict";
 
-angular.module("ccvApp").directive("adminAuth", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService) {
-
-      mainService.getAuth().then(function (response) {
-        console.log(response);
-        if (response.reqUserAdmin === true) {
-          $scope.auth = true;
-        }
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkitemsincart", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService, $rootScope) {
-
-      var getNumber = function getNumber() {
-        mainService.getProductsInCart().then(function (response) {
-          var cartTotalItems = 0;
-          for (var i = 0; i < response.length; i++) {
-            cartTotalItems += Number(response[i].productQuantity);
-          }
-          $scope.itemsInCart = cartTotalItems;
-        });
-      };
-
-      getNumber();
-
-      $scope.$on('cartCount', function () {
-        getNumber();
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modalService) {
-
-  return {
-    restrict: "AE",
-    link: function link(scope, elem, attr) {
-      var getUsername = function getUsername() {
-        mainService.getUsername().then(function (response) {
-          console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
-          scope.username = response.firstname;
-          scope.useremail = response.email;
-          // if(scope.username){
-          //   scope.usernameFirst = scope.username.charAt(0);
-          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
-          // }
-        });
-      };
-
-      // modal functionality when clicking username in desktop view
-      scope.openModal = function (id) {
-        console.log("openModal in controller");
-        modalService.Open(id);
-      };
-
-      scope.closeMyModal = function (id) {
-        console.log(id, "clicked button in loggied");
-        modalService.Close(id);
-      };
-
-      getUsername();
-    }
-  };
-});
-'use strict';
-
-angular.module("ccvApp").directive('modal', function (modalService) {
-
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: false,
-    template: '<ng-transclude></ng-transclude>',
-    link: function link(scope, element, attrs) {
-
-      if (!attrs.id) {
-        console.error('modal must have an id');
-        return;
-      }
-      // move element to bottom of page (just before </body>) so it can be displayed above everything else
-      element.appendTo('body');
-      // close modal on background click
-      element.on('click', function (e) {
-        var target = $(e.target);
-        if (!target.closest('.modal-body').length) {
-          scope.$evalAsync(Close);
-        }
-      });
-
-      // add self (this modal instance) to the modal service so it's accessible from controllers
-      var modal = {
-        id: attrs.id,
-        open: Open,
-        close: Close
-      };
-      modalService.Add(modal);
-
-      // remove self from modal service when directive is destroyed
-      scope.$on('$destroy', function () {
-        modalService.Remove(attrs.id);
-        element.remove();
-      });
-
-      // open modal
-      function Open() {
-        element.show();
-        $('body').addClass('modal-open');
-      }
-
-      // close modal
-      function Close() {
-        element.hide();
-        $('body').removeClass('modal-open');
-      }
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("shipDate", function () {
-
-  return {
-    restrict: "AE",
-    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
-    link: function link(scope, elem, attr) {
-      scope.daystoship = moment().add(3, "days").format('MMMM Do');
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
-
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
-  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-
-
-  return {
-    restrict: "AE",
-    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
-    scope: {
-      totalPrice: '='
-    },
-    link: function link(scope, elem, attr) {
-
-      var orderData = {
-        order: {
-          number: 5624
-        },
-        email: "currentcutstest@gmail.com",
-        user: {
-          //   name: "Martin",
-          //   address: "1234 s 10th st.",
-          //   zip: "91482",
-          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
-        },
-        product: [] //{
-        //   pName: "Wanderlust",
-        //   pColor: "Red",
-        //   pHeight: 6,
-        //   pWidth: 12,
-        //   pPrice: 15,
-        //   pQuantity: 2
-        // }
-      };
-
-      // setTimeout(function () {
-      //   var hello = mainService.addShippingInfo()
-      //   console.log(hello);
-      //
-      // }, 2000);
-
-      // setTimeout(function () {
-      // scope.value = $rootScope.$on.details
-      // console.log(scope.value, "scopedotvalue");
-      // }, 2000);
-
-
-      $('.btn-stripe').on('click', orderData, function (e) {
-
-        // $rootScope.fun()
-        // console.log($rootScope.fun());
-
-        scope.value = $rootScope.details;
-        console.log(scope.value, "scopedotvalue");
-        if ($rootScope.note) {
-          console.log($rootScope.note.note, "rootScope.no.note");
-          orderData.order.note = $rootScope.note.note;
-        }
-        orderData.user = scope.value;
-        orderData.product = [];
-
-        mainService.getProductsInCart().then(function (response) {
-          console.log(response);
-          response.forEach(function (item, i) {
-            console.log(item, "item being logged");
-            orderData.product.push(item);
-          });
-        });
-        console.log(orderData, "orderdata logged");
-        // Open Checkout with further options:
-        // console.log(e.data, "USER DATA STRIPE CLICK");
-        if (!scope.value) {
-          alert("please enter shipping info");
-        } else {
-          var handler = StripeCheckout.configure({
-            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-            locale: 'auto',
-            token: function token(_token) {
-              // You can access the token ID with `token.id`.
-              // Get the token ID to your server-side code for use.
-
-              $http.post('/api/charge', {
-                stripeToken: _token.id,
-                price: stripeTotal,
-                email: _token.email,
-                stripeTokenCard: _token.card
-              }).then(function (response) {
-                $rootScope.cart = [];
-                $state.go('home');
-                return $http.post('/api/email', orderData);
-              });
-            }
-          });
-          var stripeTotal = scope.totalPrice * 100;
-
-          handler.open({
-            name: 'Current Cuts Vinyl',
-            description: 'Decal purchase',
-            amount: stripeTotal
-          });
-          e.preventDefault();
-        }
-      });
-
-      // Close Checkout on page navigation:
-      //       // $(window).on('popstate', function() {
-      //       //   handler.close();
-      //       //   $state.go('mainProducts');
-      //       // });
-    }
-  };
-});
-
-// angular.module('capriccio')
-//   .directive('stripeButton', function ($http, $state, $rootScope) {
-//     return {
-//       restrict: 'E',
-//       template: '<button id="stripePayButton">Pay Now</button>',
-//       scope: {
-//         totalPrice: '='
-//       },
-//       link: function (scope, element, attrs) {
-//         var totalOrderPrice = scope.totalPrice;
-//         var handler = StripeCheckout.configure({
-//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
-//           image: 'assetts/img/thumb-100.png',
-//           locale: 'auto',
-//           token: function(token) {
-//           // You can access the token ID with `token.id`.
-//           // Get the token ID to your server-side code for use.
-//             $http.post('/api/charge', {
-//               stripeToken: token.id,
-//               price: totalOrderPrice,
-//               email: token.email,
-//               stripeTokenCard: token.card
-//             }).then(function (response) {
-//               $rootScope.userCart = [];
-//               $state.go('mainProducts');
-//             })
-//           }
-//         })
-//         $('#stripePayButton').on('click', function(e) {
-//           // Open Checkout with further options:
-//           var stripeTotal = scope.totalPrice * 100;
-//
-//           handler.open({
-//             name: 'Capriccio',
-//             description: 'Music purchase',
-//             amount: stripeTotal
-//           });
-//           e.preventDefault();
-//         });
-//
-//       // Close Checkout on page navigation:
-//       // $(window).on('popstate', function() {
-//       //   handler.close();
-//       //   $state.go('mainProducts');
-//       // });
-//       }
-//     }
-//   });
-"use strict";
-
-angular.module("ccvApp").service("adminService", function ($http) {
-
-  this.adminGetAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminAddProduct = function (productAdd) {
-    return $http({
-      method: "POST",
-      url: "/api/admin/products",
-      data: productAdd
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProduct = function (id, productUpdate) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id,
-      data: productUpdate
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteProduct = function (productId) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + productId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminEditProducts = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products/" + id + "/details"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteDetails = function (id, sizePriceDetails) {
-    return $http({
-      method: "DELETE",
-      url: "api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSaveCategory = function (updateCat, productId) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + productId + "/categories",
-      data: updateCat
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteCategory = function (categoryDetails, id) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + id + "/categories",
-      data: categoryDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetOpenOrders = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/open"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSendConfirmation = function (index, orderDetails) {
-    console.log(index, orderDetails, "in service");
-
-    return $http({
-      method: "PUT",
-      url: "/api/admin/orders/open/" + index,
-      data: orderDetails
-    }).then(function (res) {
-      console.log(res.data, "HAHA");
-    });
-  };
-});
-"use strict";
-
-angular.module("ccvApp").service("mainService", function ($http) {
-
-  this.getAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/products"
-    }).then(function (response) {
-      console.log(response.data, "getAllProducts");
-      return response.data;
-    });
-  };
-
-  this.getProductById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductById2 = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id + "/details"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductByName = function (name) {
-    console.log(name, "searched letters in service");
-    return $http({
-      method: "GET",
-      url: "/api/search/" + name
-    }).then(function (response) {
-      console.log(response.data, "search by name in service");
-      return response.data;
-    });
-  };
-
-  this.getAuth = function () {
-    console.log("getAuth running");
-    return $http({
-      method: "GET",
-      url: "/api/checkauth"
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  this.getUsername = function () {
-    return $http({
-      method: "GET",
-      url: "/api/currentuser"
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
-  //
-  //   const cartData = {
-  //     productSize: productSize,
-  //     productColor: productColor,
-  //     productQuantity: productQuantity,
-  //     productName: productName,
-  //     productPrice: productPrice,
-  //     productImage: productImage,
-  //     productId: productId,
-  //     productOutline: productOutline
-  //   }
-  //   // console.log(cartData);
-  //   return $http({
-  //     method: "POST",
-  //     url: "/api/cart",
-  //     data: cartData
-  //   }).success(function(){
-  //     console.log("Item Added!");
-  //   })
-  // }
-
-  this.addProductsToCart = function (cartData) {
-    return $http({
-      method: "POST",
-      url: "/api/cart",
-      data: cartData
-    }).success(function () {
-      console.log("Item Added!");
-    });
-  };
-
-  this.updateProductsInCart = function (cartData) {
-    return $http({
-      method: "PUT",
-      url: "/api/cart",
-      data: cartData
-    }).then(function (res) {
-      console.log(res, "in service");
-      return res.data;
-    });
-  };
-
-  this.getProductsInCart = function () {
-    return $http({
-      method: "GET",
-      url: "/api/cart"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.deleteProductsInCart = function (item) {
-
-    console.log(item, "In service");
-    return $http({
-      method: "DELETE",
-      url: "/api/cart/" + item
-    }).then(function (response) {
-      return response;
-    });
-  };
-  //not being used anywhere
-  // this.logout = function(){
-  //   return ({
-  //     method: "GET",
-  //     url: "/api/user/logout"
-  //   }).success(function(){
-  //   })
-  // }
-
-  this.getOrderHistory = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders"
-    }).then(function (response) {
-      console.log(response, "reponse in srvice");
-      return response.data;
-    });
-  };
-
-  this.getOrderById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders/" + id
-    }).then(function (response) {
-      // console.log(response, "getOrderById service");
-      return response.data;
-    });
-  };
-
-  this.getThankYouById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/order/" + id + "/thankyou"
-    }).then(function (response) {
-      console.log(response);
-      return response.data;
-    });
-  };
-
-  this.addShippingInfo = function (details) {
-    console.log(details, "in service");
-    return details;
-  };
-
-  this.updateAccount = function (newEmail) {
-
-    return $http({
-      method: "PUT",
-      url: "/api/user/email",
-      data: newEmail
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.addFavorite = function (productId) {
-    var product = {
-      productId: productId
-    };
-    return $http({
-      method: "POST",
-      url: "/api/user/favorites",
-      data: product
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.getFavorites = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/favorites"
-    }).then(function (res) {
-      console.log(res, "getFavorites in service");
-      return res.data;
-    });
-  };
-
-  this.getProductByCategory = function (catId) {
-    // console.log(catId);
-    return $http({
-      method: "GET",
-      url: "/api/products/category/" + catId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  // this.cartStorage = [1,2,3];
-  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
-  //
-  // this.getCartStorage = () => {
-  //   console.log(this.cartStorage, "loggin cart storage service");
-  //   console.log(this.sum, "sum in service");
-  //   return this.sum;
-  // }
-
-});
-'use strict';
-
-angular.module('ccvApp').factory('modalService', function () {
-
-    var modals = []; // array of modals on the page
-    var service = {};
-
-    service.Add = Add;
-    service.Remove = Remove;
-    service.Open = Open;
-    service.Close = Close;
-
-    return service;
-
-    function Add(modal) {
-        // add modal to array of active modals
-        modals.push(modal);
-    }
-
-    function Remove(id) {
-        // remove modal from array of active modals
-        var modalToRemove = _.findWhere(modals, { id: id });
-        modals = _.without(modals, modalToRemove);
-    }
-
-    function Open(id) {
-        // open modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.open();
-    }
-
-    function Close(id) {
-        // close modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.close();
-    }
-
-    function myFindWhere(array, criteria) {
-        return array.find(function (item) {
-            return Object.keys(criteria).every(function (key) {
-                return item[key] === criteria[key];
-            });
-        });
-    }
-});
-"use strict";
-
-angular.module("ccvApp").service("productService", function ($http) {});
-"use strict";
-
 angular.module("ccvApp").controller("adminController", function ($scope, adminService, modalService) {
 
   //admin globals
@@ -5050,17 +4351,22 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   $scope.openModal = function (id, track, note, index) {
     $scope.openOrderIndex = index;
     $scope.confirmOrder = [];
-    if (track && note) {
-      var confirmOrder = {
-        trackingNo: track,
-        noteToBuyer: note,
-        index: index
-      };
-      $scope.confirmOrder.push(confirmOrder);
-      console.log(id, $scope.confirmOrder);
-      modalService.Open(id);
-    } else {
-      alert("one not selected");
+    if (id === "review-tracking-modal") {
+      console.log("reviewing!!!");
+      if (track && note) {
+        var confirmOrder = {
+          trackingNo: track,
+          noteToBuyer: note,
+          index: index
+        };
+        $scope.confirmOrder.push(confirmOrder);
+        console.log(id, $scope.confirmOrder);
+        modalService.Open(id);
+      } else {
+        alert("one not selected");
+      }
+    } else if (id === "resend-tracking-modal") {
+      console.log(id, "resend-tracking-modal");
     }
   };
 
@@ -5356,10 +4662,28 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     adminService.adminGetOpenOrders().then(function (res) {
       $scope.readyToSendTracking = false;
 
+      console.log(res.mainOrder.length);
+      if (res.mainOrder.length <= 0) {
+        console.log("no length");
+        $scope.openOrdersEmpty = true;
+      }
+
       console.log(res, "res in adminGetOpenOrders");
       $scope.openOrders = res.mainOrder;
       console.log($scope.openOrders, "loo[penorders]");
       $scope.openOrdersDetails = res.mainOrder.subOrder;
+    });
+  };
+
+  $scope.getClosedOrders = function () {
+    adminService.adminGetClosedOrders().then(function (res) {
+      if (res.mainOrder.length <= 0) {
+        console.log("no length");
+        $scope.closedOrdersEmpty = true;
+      }
+      console.log(res, "res in adminGetClosedOrders");
+      $scope.closedOrders = res.mainOrder;
+      $scope.closedOrdersDetails = res.mainOrder.subOrder;
     });
   };
 });
@@ -5977,4 +5301,712 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
     getOrderHistory();
   }
 });
+"use strict";
+
+angular.module("ccvApp").directive("adminAuth", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService) {
+
+      mainService.getAuth().then(function (response) {
+        console.log(response);
+        if (response.reqUserAdmin === true) {
+          $scope.auth = true;
+        }
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkitemsincart", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService, $rootScope) {
+
+      var getNumber = function getNumber() {
+        mainService.getProductsInCart().then(function (response) {
+          var cartTotalItems = 0;
+          for (var i = 0; i < response.length; i++) {
+            cartTotalItems += Number(response[i].productQuantity);
+          }
+          $scope.itemsInCart = cartTotalItems;
+        });
+      };
+
+      getNumber();
+
+      $scope.$on('cartCount', function () {
+        getNumber();
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modalService) {
+
+  return {
+    restrict: "AE",
+    link: function link(scope, elem, attr) {
+      var getUsername = function getUsername() {
+        mainService.getUsername().then(function (response) {
+          console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
+          scope.username = response.firstname;
+          scope.useremail = response.email;
+          // if(scope.username){
+          //   scope.usernameFirst = scope.username.charAt(0);
+          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
+          // }
+        });
+      };
+
+      // modal functionality when clicking username in desktop view
+      scope.openModal = function (id) {
+        console.log("openModal in controller");
+        modalService.Open(id);
+      };
+
+      scope.closeMyModal = function (id) {
+        console.log(id, "clicked button in loggied");
+        modalService.Close(id);
+      };
+
+      getUsername();
+    }
+  };
+});
+'use strict';
+
+angular.module("ccvApp").directive('modal', function (modalService) {
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: false,
+    template: '<ng-transclude></ng-transclude>',
+    link: function link(scope, element, attrs) {
+
+      if (!attrs.id) {
+        console.error('modal must have an id');
+        return;
+      }
+      // move element to bottom of page (just before </body>) so it can be displayed above everything else
+      element.appendTo('body');
+      // close modal on background click
+      element.on('click', function (e) {
+        var target = $(e.target);
+        if (!target.closest('.modal-body').length) {
+          scope.$evalAsync(Close);
+        }
+      });
+
+      // add self (this modal instance) to the modal service so it's accessible from controllers
+      var modal = {
+        id: attrs.id,
+        open: Open,
+        close: Close
+      };
+      modalService.Add(modal);
+
+      // remove self from modal service when directive is destroyed
+      scope.$on('$destroy', function () {
+        modalService.Remove(attrs.id);
+        element.remove();
+      });
+
+      // open modal
+      function Open() {
+        element.show();
+        $('body').addClass('modal-open');
+      }
+
+      // close modal
+      function Close() {
+        element.hide();
+        $('body').removeClass('modal-open');
+      }
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("shipDate", function () {
+
+  return {
+    restrict: "AE",
+    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
+    link: function link(scope, elem, attr) {
+      scope.daystoship = moment().add(3, "days").format('MMMM Do');
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
+
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
+  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+
+
+  return {
+    restrict: "AE",
+    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
+    scope: {
+      totalPrice: '='
+    },
+    link: function link(scope, elem, attr) {
+
+      var orderData = {
+        order: {
+          number: 5624
+        },
+        email: "currentcutstest@gmail.com",
+        user: {
+          //   name: "Martin",
+          //   address: "1234 s 10th st.",
+          //   zip: "91482",
+          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: [] //{
+        //   pName: "Wanderlust",
+        //   pColor: "Red",
+        //   pHeight: 6,
+        //   pWidth: 12,
+        //   pPrice: 15,
+        //   pQuantity: 2
+        // }
+      };
+
+      // setTimeout(function () {
+      //   var hello = mainService.addShippingInfo()
+      //   console.log(hello);
+      //
+      // }, 2000);
+
+      // setTimeout(function () {
+      // scope.value = $rootScope.$on.details
+      // console.log(scope.value, "scopedotvalue");
+      // }, 2000);
+
+
+      $('.btn-stripe').on('click', orderData, function (e) {
+
+        // $rootScope.fun()
+        // console.log($rootScope.fun());
+
+        scope.value = $rootScope.details;
+        console.log(scope.value, "scopedotvalue");
+        if ($rootScope.note) {
+          console.log($rootScope.note.note, "rootScope.no.note");
+          orderData.order.note = $rootScope.note.note;
+        }
+        orderData.user = scope.value;
+        orderData.product = [];
+
+        mainService.getProductsInCart().then(function (response) {
+          console.log(response);
+          response.forEach(function (item, i) {
+            console.log(item, "item being logged");
+            orderData.product.push(item);
+          });
+        });
+        console.log(orderData, "orderdata logged");
+        // Open Checkout with further options:
+        // console.log(e.data, "USER DATA STRIPE CLICK");
+        if (!scope.value) {
+          alert("please enter shipping info");
+        } else {
+          var handler = StripeCheckout.configure({
+            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            token: function token(_token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+
+              $http.post('/api/charge', {
+                stripeToken: _token.id,
+                price: stripeTotal,
+                email: _token.email,
+                stripeTokenCard: _token.card
+              }).then(function (response) {
+                $rootScope.cart = [];
+                $state.go('home');
+                return $http.post('/api/email', orderData);
+              });
+            }
+          });
+          var stripeTotal = scope.totalPrice * 100;
+
+          handler.open({
+            name: 'Current Cuts Vinyl',
+            description: 'Decal purchase',
+            amount: stripeTotal
+          });
+          e.preventDefault();
+        }
+      });
+
+      // Close Checkout on page navigation:
+      //       // $(window).on('popstate', function() {
+      //       //   handler.close();
+      //       //   $state.go('mainProducts');
+      //       // });
+    }
+  };
+});
+
+// angular.module('capriccio')
+//   .directive('stripeButton', function ($http, $state, $rootScope) {
+//     return {
+//       restrict: 'E',
+//       template: '<button id="stripePayButton">Pay Now</button>',
+//       scope: {
+//         totalPrice: '='
+//       },
+//       link: function (scope, element, attrs) {
+//         var totalOrderPrice = scope.totalPrice;
+//         var handler = StripeCheckout.configure({
+//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
+//           image: 'assetts/img/thumb-100.png',
+//           locale: 'auto',
+//           token: function(token) {
+//           // You can access the token ID with `token.id`.
+//           // Get the token ID to your server-side code for use.
+//             $http.post('/api/charge', {
+//               stripeToken: token.id,
+//               price: totalOrderPrice,
+//               email: token.email,
+//               stripeTokenCard: token.card
+//             }).then(function (response) {
+//               $rootScope.userCart = [];
+//               $state.go('mainProducts');
+//             })
+//           }
+//         })
+//         $('#stripePayButton').on('click', function(e) {
+//           // Open Checkout with further options:
+//           var stripeTotal = scope.totalPrice * 100;
+//
+//           handler.open({
+//             name: 'Capriccio',
+//             description: 'Music purchase',
+//             amount: stripeTotal
+//           });
+//           e.preventDefault();
+//         });
+//
+//       // Close Checkout on page navigation:
+//       // $(window).on('popstate', function() {
+//       //   handler.close();
+//       //   $state.go('mainProducts');
+//       // });
+//       }
+//     }
+//   });
+"use strict";
+
+angular.module("ccvApp").service("adminService", function ($http) {
+
+  this.adminGetAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminAddProduct = function (productAdd) {
+    return $http({
+      method: "POST",
+      url: "/api/admin/products",
+      data: productAdd
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProduct = function (id, productUpdate) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id,
+      data: productUpdate
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteProduct = function (productId) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + productId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminEditProducts = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products/" + id + "/details"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteDetails = function (id, sizePriceDetails) {
+    return $http({
+      method: "DELETE",
+      url: "api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSaveCategory = function (updateCat, productId) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + productId + "/categories",
+      data: updateCat
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteCategory = function (categoryDetails, id) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + id + "/categories",
+      data: categoryDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOpenOrders = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/open"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetClosedOrders = function () {
+    console.log("getting here");
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/closed"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSendConfirmation = function (index, orderDetails) {
+    console.log(index, orderDetails, "in service");
+    return $http({
+      method: "PUT",
+      url: "/api/admin/orders/open/" + index,
+      data: orderDetails
+    }).then(function (res) {
+      console.log(res.data, "HAHA");
+    });
+  };
+});
+"use strict";
+
+angular.module("ccvApp").service("mainService", function ($http) {
+
+  this.getAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products"
+    }).then(function (response) {
+      console.log(response.data, "getAllProducts");
+      return response.data;
+    });
+  };
+
+  this.getProductById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductById2 = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id + "/details"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductByName = function (name) {
+    console.log(name, "searched letters in service");
+    return $http({
+      method: "GET",
+      url: "/api/search/" + name
+    }).then(function (response) {
+      console.log(response.data, "search by name in service");
+      return response.data;
+    });
+  };
+
+  this.getAuth = function () {
+    console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/api/checkauth"
+    }).then(function (response) {
+      return response.data;
+    });
+  };
+
+  this.getUsername = function () {
+    return $http({
+      method: "GET",
+      url: "/api/currentuser"
+    }).then(function (response) {
+      return response.data;
+    });
+  };
+
+  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
+  //
+  //   const cartData = {
+  //     productSize: productSize,
+  //     productColor: productColor,
+  //     productQuantity: productQuantity,
+  //     productName: productName,
+  //     productPrice: productPrice,
+  //     productImage: productImage,
+  //     productId: productId,
+  //     productOutline: productOutline
+  //   }
+  //   // console.log(cartData);
+  //   return $http({
+  //     method: "POST",
+  //     url: "/api/cart",
+  //     data: cartData
+  //   }).success(function(){
+  //     console.log("Item Added!");
+  //   })
+  // }
+
+  this.addProductsToCart = function (cartData) {
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function () {
+      console.log("Item Added!");
+    });
+  };
+
+  this.updateProductsInCart = function (cartData) {
+    return $http({
+      method: "PUT",
+      url: "/api/cart",
+      data: cartData
+    }).then(function (res) {
+      console.log(res, "in service");
+      return res.data;
+    });
+  };
+
+  this.getProductsInCart = function () {
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.deleteProductsInCart = function (item) {
+
+    console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function (response) {
+      return response;
+    });
+  };
+  //not being used anywhere
+  // this.logout = function(){
+  //   return ({
+  //     method: "GET",
+  //     url: "/api/user/logout"
+  //   }).success(function(){
+  //   })
+  // }
+
+  this.getOrderHistory = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders"
+    }).then(function (response) {
+      console.log(response, "reponse in srvice");
+      return response.data;
+    });
+  };
+
+  this.getOrderById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders/" + id
+    }).then(function (response) {
+      // console.log(response, "getOrderById service");
+      return response.data;
+    });
+  };
+
+  this.getThankYouById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id + "/thankyou"
+    }).then(function (response) {
+      console.log(response);
+      return response.data;
+    });
+  };
+
+  this.addShippingInfo = function (details) {
+    console.log(details, "in service");
+    return details;
+  };
+
+  this.updateAccount = function (newEmail) {
+
+    return $http({
+      method: "PUT",
+      url: "/api/user/email",
+      data: newEmail
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
+  };
+
+  this.addFavorite = function (productId) {
+    var product = {
+      productId: productId
+    };
+    return $http({
+      method: "POST",
+      url: "/api/user/favorites",
+      data: product
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
+  };
+
+  this.getFavorites = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/favorites"
+    }).then(function (res) {
+      console.log(res, "getFavorites in service");
+      return res.data;
+    });
+  };
+
+  this.getProductByCategory = function (catId) {
+    // console.log(catId);
+    return $http({
+      method: "GET",
+      url: "/api/products/category/" + catId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  // this.cartStorage = [1,2,3];
+  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
+  //
+  // this.getCartStorage = () => {
+  //   console.log(this.cartStorage, "loggin cart storage service");
+  //   console.log(this.sum, "sum in service");
+  //   return this.sum;
+  // }
+
+});
+'use strict';
+
+angular.module('ccvApp').factory('modalService', function () {
+
+    var modals = []; // array of modals on the page
+    var service = {};
+
+    service.Add = Add;
+    service.Remove = Remove;
+    service.Open = Open;
+    service.Close = Close;
+
+    return service;
+
+    function Add(modal) {
+        // add modal to array of active modals
+        modals.push(modal);
+    }
+
+    function Remove(id) {
+        // remove modal from array of active modals
+        var modalToRemove = _.findWhere(modals, { id: id });
+        modals = _.without(modals, modalToRemove);
+    }
+
+    function Open(id) {
+        // open modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.open();
+    }
+
+    function Close(id) {
+        // close modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.close();
+    }
+
+    function myFindWhere(array, criteria) {
+        return array.find(function (item) {
+            return Object.keys(criteria).every(function (key) {
+                return item[key] === criteria[key];
+            });
+        });
+    }
+});
+"use strict";
+
+angular.module("ccvApp").service("productService", function ($http) {});
 //# sourceMappingURL=bundle.js.map
