@@ -18,6 +18,38 @@ $main-accent-color: #605675;  //athletic gold
 $sub-accent-color: #028090;   //light blue charcoal
 
 
+// spinner function
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.update-cart-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  font-size: 26px;
+}
+
+.update-cart-btn:hover {
+  cursor: pointer;
+}
+
+//add this class on click of update-cart-btn
+.update-cart-btn-spin {
+  -webkit-animation: spinner 0.4s linear; /* Safari 4+ */
+  -moz-animation:    spinner 0.4s linear; /* Fx 5+ */
+  -o-animation:      spinner 0.4s linear; /* Opera 12+ */
+  animation:         spinner 0.4s linear; /* IE 10+, Fx 29+ */
+}
+
+
 
 body {
   background-color: $secondary-color;
@@ -1376,52 +1408,54 @@ footer {
 
     .cart-user-d {
 
-        .cart-product-info-d,
-        .cart-product-qty-d,
-        .cart-product-itemtotal-d {
-          display: flex;
-          justify-content: space-between;
+      .cart-product-info-d,
+      .cart-product-qty-d,
+      .cart-product-itemtotal-d {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .cart-product-info-container-d {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .d {
+          display: inline-flex;
+          align-items: center;
+
+          img {
+            height: 50px;
+            padding-right: 10px;
+          }
         }
 
-        .cart-product-info-container-d {
+        .cart-product-qty-d {
           display: flex;
-          justify-content: space-between;
+          align-items: center;
 
-          .d {
-            display: inline-flex;
-            align-items: center;
-
-            img {
-              height: 50px;
-              padding-right: 10px;
-            }
+          input {
+            height: 40px;
+            // padding: 7px;
+            width: 70px;
+            margin: 0 auto;
+            text-align: center;
           }
+        }
 
-          .cart-product-qty-d {
+        .cart-product-itemtotal-d {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
 
-            input {
-              padding: 7px;
-              width: 35px;
-              margin: 0 auto;
-              text-align: center;
-            }
-           }
-
-           .cart-product-itemtotal-d {
-             text-align: center;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             position: relative;
-
-             .btn-delete {
-               position: absolute;
-               top: 12px;
-               right: 40px;
-             }
-           }
-         }
-
+          .btn-delete {
+            position: absolute;
+            top: 0px;
+            right: 40px;
+          }
+        }
+      }
     }
 
     // .hideDesktop {

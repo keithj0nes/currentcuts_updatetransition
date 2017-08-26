@@ -416,6 +416,33 @@ template {
 [hidden] {
   display: none; }
 
+@keyframes spinner {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(-360deg); } }
+
+.update-cart-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 30px;
+  font-size: 26px; }
+
+.update-cart-btn:hover {
+  cursor: pointer; }
+
+.update-cart-btn-spin {
+  -webkit-animation: spinner 0.4s linear;
+  /* Safari 4+ */
+  -moz-animation: spinner 0.4s linear;
+  /* Fx 5+ */
+  -o-animation: spinner 0.4s linear;
+  /* Opera 12+ */
+  animation: spinner 0.4s linear;
+  /* IE 10+, Fx 29+ */ }
+
 body {
   background-color: #f1f1f1;
   display: flex;
@@ -1260,27 +1287,30 @@ footer {
       justify-content: space-between; }
     .cart-main .cart-user-d .cart-product-info-container-d {
       display: flex;
-      justify-content: space-between; }
+      justify-content: space-between;
+      align-items: center; }
       .cart-main .cart-user-d .cart-product-info-container-d .d {
         display: inline-flex;
         align-items: center; }
         .cart-main .cart-user-d .cart-product-info-container-d .d img {
           height: 50px;
           padding-right: 10px; }
-      .cart-main .cart-user-d .cart-product-info-container-d .cart-product-qty-d input {
-        padding: 7px;
-        width: 35px;
-        margin: 0 auto;
-        text-align: center; }
+      .cart-main .cart-user-d .cart-product-info-container-d .cart-product-qty-d {
+        display: flex;
+        align-items: center; }
+        .cart-main .cart-user-d .cart-product-info-container-d .cart-product-qty-d input {
+          height: 40px;
+          width: 70px;
+          margin: 0 auto;
+          text-align: center; }
       .cart-main .cart-user-d .cart-product-info-container-d .cart-product-itemtotal-d {
-        text-align: center;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative; }
         .cart-main .cart-user-d .cart-product-info-container-d .cart-product-itemtotal-d .btn-delete {
           position: absolute;
-          top: 12px;
+          top: 0px;
           right: 40px; }
     .cart-main .total-disc-ship .d div {
       text-align: center; }

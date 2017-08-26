@@ -116,8 +116,13 @@
 
         <div class="cart-product-qty-d pad w25">
             <input type="text" id="itemincartid_{{$index}}" value="{{item.productQuantity}}">
-            <button type="button" ng-click="updateCart($index)">UD</button>
+            <!-- <button type="button" ng-click="updateCart($index)">UD</button> -->
+            <i class="material-icons update-cart-btn" ng-class="{'update-cart-btn-spin': spinIndex === $index}" ng-click="updateCart($index);">cached</i>
+            <!-- <button type="button"><i class="material-icons update-cart-btn" ng-class="{'update-cart-btn-spin': spinIndex === $index}" ng-click="updateCart($index);">cached</i></button> -->
+
         </div>
+
+
 
         <div class="cart-product-itemtotal-d pad w25 center">
             {{item.productPrice * item.productQuantity | currency}}

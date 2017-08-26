@@ -662,7 +662,7 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
     from: 'currentcutstest@gmail.com',                  // sender address
     // to: b.email,                                        // list of receivers
     bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-    subject: 'Your Order is on its way! USPS Tacking -' + b.trackingNo,     // Subject line
+    subject: 'Your Order is on its way! USPS Tacking - ' + b.trackingNo,     // Subject line
     // text: text //,                                   // plaintext body
     html: text                                          // html body
   };

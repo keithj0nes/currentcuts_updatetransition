@@ -4689,7 +4689,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 });
 "use strict";
 
-angular.module("ccvApp").controller("cartController", function ($scope, $http, $state, $rootScope, mainService) {
+angular.module("ccvApp").controller("cartController", function ($scope, $http, $state, $rootScope, mainService, $timeout) {
 
   $scope.guestistrue = false;
   $scope.cartTotal = 0;
@@ -4716,11 +4716,21 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
 
   $scope.updateCart = function (index) {
     var value = document.getElementById("itemincartid_" + index).value;
-    $scope.cart[index].productQuantity = value;
-    mainService.updateProductsInCart($scope.cart).then(function (response) {
-      getProductsInCart();
-      $rootScope.$broadcast('cartCount');
-    });
+    if (value === "0" || value === 0 || value === "") {
+      swal("enter a price");
+    } else {
+      $scope.cart[index].productQuantity = value;
+      mainService.updateProductsInCart($scope.cart).then(function (response) {
+        getProductsInCart();
+        $rootScope.$broadcast('cartCount');
+      });
+
+      $scope.spinIndex = index;
+
+      $timeout(function () {
+        $scope.spinIndex = false;
+      }, 500);
+    }
   };
 
   function calculate(cart) {
