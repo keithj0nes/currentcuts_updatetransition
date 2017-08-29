@@ -1,14 +1,8 @@
 
 
-<main class="search-main">
+<main class="search-main main-margin">
 
   <h1>{{title}}</h1>
-
-  <!-- <div ng-if="!category">
-    <p style="text-align: center;">Sorry, we could not find any results for "{{searchTerm}}".</p>
-
-  </div> -->
-
 
   <div ng-if="!bottomLevel" class="searched-products">
     <div class="product-main" ng-repeat="categories in subCategories | orderBy: 'id'">

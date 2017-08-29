@@ -1,14 +1,6 @@
-<main class="cart-main">
+<main class="cart-main main-margin">
 
 <!-- MOBILE VIEW ONLY -->
-
-  <!-- <div class="" ng-if="!somethingInCart">
-    <h2 class="pad">Sorry, looks like there's nothing in your cart. Add a product to view your cart.</h2>
-  </div>
-
-  <div class="" ng-if="somethingInCart">
-    Looks like there's an item in your cart, YAY!
-  </div> -->
 
 
   <div class="cart-user-m hideDesktop">
@@ -18,13 +10,13 @@
     <hr>
 
     <div class="empty-cart" ng-if="!somethingInCart">
-      <p class="">Looks like there's nothing in your cart. Let's get this thing filled up!</p>
+      <p class="pad">Looks like there's nothing in your cart. Let's get this thing filled up!</p>
 
-      <button type="button" ui-sref="home">SHOP FOR DEALS!</button>
+      <button type="button" class="btn" ui-sref="home">SHOP FOR DEALS!</button>
     </div>
 
-    <div class="" ng-if="somethingInCart">
-      <div class="" ng-repeat="item in cart">    <!-- START SINGLE ITEM IN CART -->
+    <div ng-if="somethingInCart">
+      <div ng-repeat="item in cart">    <!-- START SINGLE ITEM IN CART -->
 
         <div class="cart-product-info-m pad">
 
@@ -82,13 +74,11 @@
     <hr>
 
     <div class="empty-cart" ng-if="!somethingInCart">
-      <p class="">Looks like there's nothing in your cart. Let's get this thing filled up!</p>
-
-      <button type="button" ui-sref="home">SHOP FOR DEALS!</button>
-
+      <p>Looks like there's nothing in your cart. Let's get this thing filled up!</p>
+      <button type="button" class="btn" ui-sref="home">SHOP FOR DEALS!</button>
     </div>
 
-    <div class="" ng-repeat="item in cart track by $index">
+    <div ng-repeat="item in cart track by $index">
 
 
       <div class="cart-product-info-d pad" > <!-- ng-repeat items in cart -->
@@ -124,12 +114,9 @@
 
 
 
-        <div class="cart-product-itemtotal-d pad w25 center">
+        <div class="cart-product-itemtotal-d pad w25 center" style="background-color: red;">
             {{item.productPrice * item.productQuantity | currency}}
-
-            <!-- <button class="btn" ng-click="cartDelete($index)" name="button">Delete</button> -->
             <button class="btn-delete" ng-click="cartDelete($index)" name="button">x</button>
-
         </div>
       </div>
       <hr class="lastItem">
@@ -166,31 +153,22 @@
 
   <div class="" ng-if="somethingInCart">
 
-    <div class="total-disc-ship pad">
+    <div class="total-disc-ship ">
 
       <div class="d">
-        <div class="w75 aleft">
+        <div class="w75 aleft pad">
           Total
         </div>
-        <div class="w25">
+        <div class="w25 pad">
           {{cartTotal | currency}}
         </div>
       </div>
 
-      <!-- <div class="d">
-        <div class="w75 aleft">
-          Discount
-        </div>
-        <div class="w25">
-          $0.00
-        </div>
-      </div> -->
-
       <div class="d">
-        <div class="w75 aleft">
+        <div class="w75 aleft pad">
           Shipping
         </div>
-        <div class="w25">
+        <div class="w25 pad" style="background: pink;">
           {{shippingCost | currency}}
         </div>
       </div>
@@ -199,10 +177,10 @@
 
       <div class="order-total">
         <div class="d">
-          <div class="w75 aleft">
+          <div class="w75 aleft pad">
             <strong>Order Total</strong>
           </div>
-          <div class="w25">
+          <div class="w25 pad">
             <strong>{{orderTotal | currency}}</strong>
           </div>
         </div>
@@ -210,7 +188,7 @@
       </div>
 
       <hr class="lastItem">
-      <div class="">
+      <div class="pad">
         <ship-date></ship-date>
         <!-- <button type="button" ng-click="updateCart()">Update Cart</button> -->
       </div>

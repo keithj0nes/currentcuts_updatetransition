@@ -1,7 +1,10 @@
+<main class="favorites-main main-margin">
 
 
-<div ng-repeat="fav in favorites">
-  <img ng-src="{{fav.img1}}" />
-  <h2>{{fav.name}}</h2>
-  <button ui-sref="products({id:fav.id})">CLICK HERE</button>
-</div>
+
+  <div ng-repeat="fav in favorites">
+    <img ng-src="{{fav.img1}}" />
+    <h2>{{fav.name}}</h2>
+    <button ui-sref="products({id:fav.id})">CLICK HERE</button>
+  </div>
+</main>

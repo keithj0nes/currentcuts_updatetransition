@@ -160,6 +160,13 @@ background-color: rgb(69, 69, 69);
   display: none;
 }
 
+//adds margin around mian divs
+.main-margin {
+  margin: 15px;
+}
+
+
+
 hr {
   border-color: $secondary-color;
   border-top: none;
@@ -647,10 +654,14 @@ footer {
                   HOME PAGE
 ============================================ */
 
+
 .product-main {
-  width: 90%;
+  // width: 90%;
+  // width: 95%;
+  // padding: 20px;
   background: #fff;
-  margin: 5% auto;
+  margin-bottom: 15px;
+  // margin: 20px auto;
 
   .product-img {
     width: 100%;
@@ -660,7 +671,6 @@ footer {
 
     img {
       display: block;
-      margin: 0 auto;
       width: 100%;
       height: auto;
       margin: -16% auto;        //'crops' image to make narrow
@@ -709,7 +719,7 @@ footer {
 ============================================ */
 
 .product-single {
-
+  margin-top: 15px;
   width: 100%;
   background-color: #fff;
 
@@ -847,31 +857,39 @@ footer {
 
 .empty-cart {
   text-align: center;
+
   p {
-    padding: 10px 0 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
   }
 
   button {
-    @extend .btn;
+    // @extend .btn;
     padding: 20px 40px;
   }
 }
+
 .cart-main {
   background-color: #fff;
   padding: 20px 10px;
-  margin: 10px;
+  // // margin: 10px;
+  // width: 95%;
+  // margin: 2.5% auto;
 
   .cart-user-m {
 
     .cart-product-info-m {
       display: flex;
       align-items: center;
-      // background: red;
       position: relative;
 
       .cart-product-info-container-m {
         display: flex;
         align-items: center;
+        white-space: nowrap;
+        overflow: scroll;
+        text-overflow: ellipsis;
+        width: 85%;
 
         img {
           height: 50px;
@@ -1141,7 +1159,7 @@ footer {
   // flex-direction: column;
   // align-items: center;
   // justify-content: space-around;
-  padding: 20px 10px;
+  // padding: 20px 10px;
 
   .login-container, .loginsuccess-container {
     text-align: center;
@@ -1165,7 +1183,7 @@ footer {
 
 
 .orderhistory-main {
-  padding: 20px;
+  // padding: 20px;
 
   .orderhistory-container {
     background: #fff;
@@ -1194,7 +1212,6 @@ footer {
 ============================================ */
 
 .orderdetails-main {
-  padding: 20px;
 
   .orderdetails-container {
     background: white;
@@ -1424,18 +1441,8 @@ footer {
                     CART PAGE
   ============================================ */
   .pad {
-
+    padding: 0;
   }
-
-  // .w50 {
-  //   width: 50%;
-  // }
-  //
-  // .w25 {
-  //   width: 25%;
-  // }
-
-
 
   .cart-main {
     max-width: 800px;

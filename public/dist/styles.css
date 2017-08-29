@@ -458,7 +458,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
   font-family: "Open Sans", sans-serif; }
 
-.btn, .empty-cart button {
+.btn {
   padding: 5px 10px;
   background-color: #605675;
   color: white;
@@ -466,11 +466,11 @@ p {
   border: 1px solid #000;
   border-radius: 3px; }
 
-.btn:disabled, .empty-cart button:disabled {
+.btn:disabled {
   background-color: lightgray;
   color: darkgray; }
 
-.btn:hover:disabled, .empty-cart button:hover:disabled {
+.btn:hover:disabled {
   background-color: lightgray;
   cursor: not-allowed; }
 
@@ -488,11 +488,11 @@ p {
 .btn-stripe {
   background-color: #454545; }
 
-.btn:hover, .empty-cart button:hover {
+.btn:hover {
   background-color: #867a9d;
   cursor: pointer; }
 
-.btn:active, .empty-cart button:active {
+.btn:active {
   background-color: #d9d9d9; }
 
 .btn-delete {
@@ -519,6 +519,9 @@ p {
 
 .hideMobile {
   display: none; }
+
+.main-margin {
+  margin: 15px; }
 
 hr {
   border-color: #f1f1f1;
@@ -820,7 +823,7 @@ nav {
     width: 70%;
     padding: 7px 15px;
     font-size: 20px; }
-  .search-box-container button.btn, .search-box-container .empty-cart button, .empty-cart .search-box-container button {
+  .search-box-container button.btn {
     font-size: 20px;
     min-width: 20%; }
 
@@ -865,16 +868,14 @@ footer {
                   HOME PAGE
 ============================================ */
 .product-main {
-  width: 90%;
   background: #fff;
-  margin: 5% auto; }
+  margin-bottom: 15px; }
   .product-main .product-img {
     width: 100%;
     position: relative;
     overflow: hidden; }
     .product-main .product-img img {
       display: block;
-      margin: 0 auto;
       width: 100%;
       height: auto;
       margin: -16% auto;
@@ -905,6 +906,7 @@ footer {
                 PRODUCT PAGE
 ============================================ */
 .product-single {
+  margin-top: 15px;
   width: 100%;
   background-color: #fff; }
   .product-single img {
@@ -942,7 +944,7 @@ footer {
       text-align: center;
       margin: 0 10px 10px 0;
       border: 1px solid gray; }
-    .product-single .details .btn, .product-single .details .empty-cart button, .empty-cart .product-single .details button {
+    .product-single .details .btn {
       font-size: 20px;
       width: 65%;
       padding: 10px;
@@ -997,21 +999,25 @@ footer {
 .empty-cart {
   text-align: center; }
   .empty-cart p {
-    padding: 10px 0 20px; }
+    padding-top: 10px;
+    padding-bottom: 20px; }
   .empty-cart button {
     padding: 20px 40px; }
 
 .cart-main {
   background-color: #fff;
-  padding: 20px 10px;
-  margin: 10px; }
+  padding: 20px 10px; }
   .cart-main .cart-user-m .cart-product-info-m {
     display: flex;
     align-items: center;
     position: relative; }
     .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m {
       display: flex;
-      align-items: center; }
+      align-items: center;
+      white-space: nowrap;
+      overflow: scroll;
+      text-overflow: ellipsis;
+      width: 85%; }
       .cart-main .cart-user-m .cart-product-info-m .cart-product-info-container-m img {
         height: 50px;
         padding-right: 10px; }
@@ -1156,52 +1162,47 @@ footer {
 /* ============================================
                   LOGIN PAGE
 ============================================ */
-.login-main, .loginsuccess-main {
-  padding: 20px 10px; }
-  .login-main .login-container, .login-main .loginsuccess-container, .loginsuccess-main .login-container, .loginsuccess-main .loginsuccess-container {
-    text-align: center;
-    background-color: #fff;
-    padding: 10px 20px 20px 20px; }
-    .login-main .login-container h4, .login-main .loginsuccess-container h4, .loginsuccess-main .login-container h4, .loginsuccess-main .loginsuccess-container h4 {
-      margin-bottom: 20px; }
-  .login-main img, .loginsuccess-main img {
-    width: 350px; }
+.login-main .login-container, .login-main .loginsuccess-container, .loginsuccess-main .login-container, .loginsuccess-main .loginsuccess-container {
+  text-align: center;
+  background-color: #fff;
+  padding: 10px 20px 20px 20px; }
+  .login-main .login-container h4, .login-main .loginsuccess-container h4, .loginsuccess-main .login-container h4, .loginsuccess-main .loginsuccess-container h4 {
+    margin-bottom: 20px; }
+
+.login-main img, .loginsuccess-main img {
+  width: 350px; }
 
 /* ============================================
               ORDER HISTORY PAGE
 ============================================ */
-.orderhistory-main {
-  padding: 20px; }
-  .orderhistory-main .orderhistory-container {
-    background: #fff;
-    padding: 20px 0; }
-    .orderhistory-main .orderhistory-container h1 {
+.orderhistory-main .orderhistory-container {
+  background: #fff;
+  padding: 20px 0; }
+  .orderhistory-main .orderhistory-container h1 {
+    text-align: center; }
+  .orderhistory-main .orderhistory-container table {
+    width: 100% !important;
+    max-width: 600px;
+    margin: 0 auto; }
+    .orderhistory-main .orderhistory-container table tr {
       text-align: center; }
-    .orderhistory-main .orderhistory-container table {
-      width: 100% !important;
-      max-width: 600px;
-      margin: 0 auto; }
-      .orderhistory-main .orderhistory-container table tr {
-        text-align: center; }
 
 /* ============================================
               ORDER DETAILS PAGE
 ============================================ */
-.orderdetails-main {
-  padding: 20px; }
-  .orderdetails-main .orderdetails-container {
-    background: white;
-    padding: 20px 0; }
-    .orderdetails-main .orderdetails-container p {
-      padding: 20px; }
-    .orderdetails-main .orderdetails-container .table-overflow {
-      overflow: scroll; }
-      .orderdetails-main .orderdetails-container .table-overflow table {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto; }
-        .orderdetails-main .orderdetails-container .table-overflow table tr {
-          text-align: center; }
+.orderdetails-main .orderdetails-container {
+  background: white;
+  padding: 20px 0; }
+  .orderdetails-main .orderdetails-container p {
+    padding: 20px; }
+  .orderdetails-main .orderdetails-container .table-overflow {
+    overflow: scroll; }
+    .orderdetails-main .orderdetails-container .table-overflow table {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto; }
+      .orderdetails-main .orderdetails-container .table-overflow table tr {
+        text-align: center; }
 
 @media only screen and (min-width: 768px) {
   .hideDesktop {
@@ -1298,6 +1299,8 @@ footer {
   /* ============================================
                     CART PAGE
   ============================================ */
+  .pad {
+    padding: 0; }
   .cart-main {
     max-width: 800px;
     margin: 20px auto; }
@@ -1435,7 +1438,7 @@ footer {
         text-align: center;
         margin: 0 10px 10px 0;
         border: 1px solid gray; }
-      .product-single .details .btn, .product-single .details .empty-cart button, .empty-cart .product-single .details button {
+      .product-single .details .btn {
         font-size: 20px;
         width: 65%;
         padding: 10px;
