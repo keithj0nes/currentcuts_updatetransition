@@ -553,24 +553,18 @@ module.exports = {
 
   getClosedOrders: function(req, res){
 
-    console.log("hahahah");
     let closedOrders = {};
 
     db.run("select orders.id, orders.userid, orders.tracking, orders.datecompleted, orders.msg_to_buyer, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = true order by datecompleted desc;", [], (err, mainOrders) => {
-      console.log(mainOrders, "mainOrders");
       closedOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
-        console.log(main, "main");
         db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
           closedOrders.mainOrder[index].subOrder = subOrder;
-
-          console.log(closedOrders, "closedOrders object");
 
         })
 
       })
       setTimeout(()=>{
-        console.log("sending res.send");
         res.send(closedOrders)
       }, 100);
     })
@@ -625,6 +619,12 @@ module.exports = {
 
 
     res.send({orderCompleted: true})
+  },
+
+  getOrderCount: function(req, res){
+    db.run("select (select COUNT(*) from orders where completed = false) AS opencount, (select COUNT(*) from orders where completed = true) AS closedcount", (err, orderCount) => {
+      res.send(orderCount)
+    })
   }
 
 

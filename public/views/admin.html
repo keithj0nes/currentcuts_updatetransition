@@ -2,11 +2,11 @@
     <h1>Admin - {{username}}</h1>
 
     <div class="admin-tabs">
-      <input type="radio" id="orders1"class="btn" name="admintab" ng-click="getOpenOrders()" checked>
-      <label for="orders1">Open</label>
+      <input type="radio" id="orders1"class="btn" name="admintab" ng-click="getOpenOrders()" ng-checked="tabopen">
+      <label for="orders1">Open {{openCount}}</label>
 
-      <input type="radio" id="orders2" class="btn" name="admintab" ng-click="getClosedOrders()">
-      <label for="orders2">Completed</label>
+      <input type="radio" id="orders2" class="btn" name="admintab" ng-click="getClosedOrders()" ng-checked="tabclosed">
+      <label for="orders2">Completed {{closedCount}}</label>
 
       <input type="radio" id="allprod" class="btn" name="admintab" ng-click="getAllProducts()">
       <label for="allprod">Products</label>

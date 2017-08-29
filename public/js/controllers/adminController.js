@@ -348,22 +348,36 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
+  let getOrderCount = function(){
+    adminService.adminGetOrderCount().then((res) => {
+      console.log(res, "logging res in controller haha");
+      $scope.openCount = res[0].opencount;
+      $scope.closedCount = res[0].closedcount;
+
+      if($scope.openCount === "0"){
+        console.log("setting to closed orders");
+        $scope.getClosedOrders();
+      } else {
+        console.log("open orders!");
+        $scope.getOpenOrders();
+      }
+    })
+  }
+
   $scope.getOpenOrders = function(){
     adminService.adminGetOpenOrders().then((res) => {
       $scope.showOpenOrders = true;
       $scope.showProducts = false;
       $scope.showClosedOrders = false;
+      $scope.tabopen = true;
+      $scope.tabclosed = false;
 
-      console.log(res.mainOrder.length);
       if(res.mainOrder.length <= 0){
-        console.log("no length");
         $scope.openOrdersEmpty = true;
+      } else {
+        $scope.openOrders = res.mainOrder;
+        $scope.openOrdersDetails = res.mainOrder.subOrder;
       }
-
-      console.log(res, "res in adminGetOpenOrders");
-      $scope.openOrders = res.mainOrder;
-      console.log($scope.openOrders, "loo[penorders]");
-      $scope.openOrdersDetails = res.mainOrder.subOrder;
 
     })
   }
@@ -373,6 +387,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.showClosedOrders = true;
       $scope.showProducts = false;
       $scope.showOpenOrders = false;
+      $scope.tabopen = false;
+      $scope.tabclosed = true;
 
       if(res.mainOrder.length <= 0){
         console.log("no length");
@@ -384,7 +400,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     })
   }
 
-  $scope.getOpenOrders();
-
+  getOrderCount();
 
 })

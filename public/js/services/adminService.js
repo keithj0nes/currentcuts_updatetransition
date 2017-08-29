@@ -92,11 +92,14 @@ angular.module("ccvApp").service("adminService", function($http){
       method: "PUT",
       url: "/api/admin/orders/open/" + index,
       data: orderDetails
-    }).then((res)=>{
-      console.log(res.data, "HAHA");
-    })
-
+    }).then(res => res.data)
   }
 
+  this.adminGetOrderCount = function(){
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/count"
+    }).then(res => res.data)
+  }
 
 })

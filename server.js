@@ -202,6 +202,7 @@ app.get("/api/admin/products", adminCtrl.getAllAdminProducts);
 app.get("/api/admin/products/:id/details", adminCtrl.getProductDetails);
 app.get("/api/admin/orders/open", adminCtrl.getOpenOrders);
 app.get("/api/admin/orders/closed", adminCtrl.getClosedOrders);
+app.get("/api/admin/orders/count", adminCtrl.getOrderCount);
 
 
 app.post("/api/admin/products", adminCtrl.addProductToDB);

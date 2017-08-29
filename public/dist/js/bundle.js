@@ -4665,22 +4665,36 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
+  var getOrderCount = function getOrderCount() {
+    adminService.adminGetOrderCount().then(function (res) {
+      console.log(res, "logging res in controller haha");
+      $scope.openCount = res[0].opencount;
+      $scope.closedCount = res[0].closedcount;
+
+      if ($scope.openCount === "0") {
+        console.log("setting to closed orders");
+        $scope.getClosedOrders();
+      } else {
+        console.log("open orders!");
+        $scope.getOpenOrders();
+      }
+    });
+  };
+
   $scope.getOpenOrders = function () {
     adminService.adminGetOpenOrders().then(function (res) {
       $scope.showOpenOrders = true;
       $scope.showProducts = false;
       $scope.showClosedOrders = false;
+      $scope.tabopen = true;
+      $scope.tabclosed = false;
 
-      console.log(res.mainOrder.length);
       if (res.mainOrder.length <= 0) {
-        console.log("no length");
         $scope.openOrdersEmpty = true;
+      } else {
+        $scope.openOrders = res.mainOrder;
+        $scope.openOrdersDetails = res.mainOrder.subOrder;
       }
-
-      console.log(res, "res in adminGetOpenOrders");
-      $scope.openOrders = res.mainOrder;
-      console.log($scope.openOrders, "loo[penorders]");
-      $scope.openOrdersDetails = res.mainOrder.subOrder;
     });
   };
 
@@ -4689,6 +4703,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.showClosedOrders = true;
       $scope.showProducts = false;
       $scope.showOpenOrders = false;
+      $scope.tabopen = false;
+      $scope.tabclosed = true;
 
       if (res.mainOrder.length <= 0) {
         console.log("no length");
@@ -4700,7 +4716,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     });
   };
 
-  $scope.getOpenOrders();
+  getOrderCount();
 });
 "use strict";
 
@@ -5755,7 +5771,16 @@ angular.module("ccvApp").service("adminService", function ($http) {
       url: "/api/admin/orders/open/" + index,
       data: orderDetails
     }).then(function (res) {
-      console.log(res.data, "HAHA");
+      return res.data;
+    });
+  };
+
+  this.adminGetOrderCount = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/count"
+    }).then(function (res) {
+      return res.data;
     });
   };
 });
