@@ -1,26 +1,22 @@
 <main class="admin-main">
     <h1>Admin - {{username}}</h1>
 
+    <div class="admin-tabs">
+      <input type="radio" id="orders1"class="btn" name="admintab" ng-click="getOpenOrders()" checked>
+      <label for="orders1">Open</label>
 
-  <button type="button" name="button" ng-click="showOrders = true; showProducts = false; showOpenOrders = true; getOpenOrders(); ">Show Orders</button>
-  <button type="button" name="button" ng-click="showProducts = true; showOrders = false">Show Products</button>
+      <input type="radio" id="orders2" class="btn" name="admintab" ng-click="getClosedOrders()">
+      <label for="orders2">Completed</label>
 
+      <input type="radio" id="allprod" class="btn" name="admintab" ng-click="getAllProducts()">
+      <label for="allprod">Products</label>
 
-<!-- ORDERS SECTION -->
-  <div ng-if="showOrders" class="admin-orders">
-    <h1>Orders Section</h1>
-
-    <button type="button" name="button" ng-click="showOpenOrders = true; showClosedOrders = false; getOpenOrders()">Show Open Orders</button>
-    <button type="button" name="button" ng-click="showClosedOrders = true; showOpenOrders = false; getClosedOrders()">Show Completed Orders</button>
-    <br />
-    <br />
-    <br />
-    <br />
+    </div>
 
     <!-- OPEN ORDERS SECTION -->
-    <div ng-if="showOpenOrders">
-      <div ng-if="openOrdersEmpty">
-        <p>There are no open orders currently</p>
+    <div ng-if="showOpenOrders" class="admin-orders">
+      <div ng-if="openOrdersEmpty" class="open-order-empty">
+        <p>There are currently no open orders</p>
       </div>
       <div ng-repeat="open in openOrders track by $index" ng-init="parentIndex = $index" class="open-order">
         <div class="open-order-left">
@@ -150,7 +146,7 @@
     </div>
 
     <!-- CLOSED ORDERS SECTION -->
-    <div ng-if="showClosedOrders">
+    <div ng-if="showClosedOrders" class="admin-orders">
       <div ng-if="closedOrdersEmpty">
         <p>There are no completed orders currently</p>
       </div>
@@ -291,7 +287,7 @@
 
 
 
-  </div>
+  <!-- </div> -->
 
 
 

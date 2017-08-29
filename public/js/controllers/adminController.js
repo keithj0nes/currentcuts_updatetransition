@@ -52,14 +52,20 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   }
 
-  var getAllProducts = function(){
+  $scope.getAllProducts = function(){
     adminService.adminGetAllProducts().then(function(response){
       // console.log(response);
+      $scope.showProducts = true;
+      $scope.showClosedOrders = false;
+      $scope.showOpenOrders = false;
+
       $scope.products = response;
+
+      console.log("getting all products");
     })
   }
 
-  getAllProducts();
+  // getAllProducts();
 
 
   var getProductDetails = function(prodId){
@@ -338,13 +344,15 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
-                      // OPEN ORDERS SECTION //
+                         // ORDERS SECTION //
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
   $scope.getOpenOrders = function(){
     adminService.adminGetOpenOrders().then((res) => {
-      $scope.readyToSendTracking = false;
+      $scope.showOpenOrders = true;
+      $scope.showProducts = false;
+      $scope.showClosedOrders = false;
 
       console.log(res.mainOrder.length);
       if(res.mainOrder.length <= 0){
@@ -362,6 +370,10 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   $scope.getClosedOrders = function(){
     adminService.adminGetClosedOrders().then((res) => {
+      $scope.showClosedOrders = true;
+      $scope.showProducts = false;
+      $scope.showOpenOrders = false;
+
       if(res.mainOrder.length <= 0){
         console.log("no length");
         $scope.closedOrdersEmpty = true;
@@ -371,6 +383,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     })
   }
+
+  $scope.getOpenOrders();
 
 
 })

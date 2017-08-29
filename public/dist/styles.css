@@ -1061,10 +1061,31 @@ footer {
   padding: 10px; }
   .admin-main h1 {
     text-align: center; }
+  .admin-main .admin-tabs {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    width: 95%;
+    margin: -1px auto 40px; }
+    .admin-main .admin-tabs input {
+      display: none; }
+    .admin-main .admin-tabs label {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 0 0 -1px;
+      text-align: center;
+      border: 1px solid transparent; }
+    .admin-main .admin-tabs label:hover {
+      cursor: pointer;
+      color: gray; }
+    .admin-main .admin-tabs input:checked + label {
+      border: 1px solid #ccc;
+      border-bottom: 1px solid #f1f1f1; }
   .admin-main .admin-orders {
     margin: 0 auto;
     min-width: 600px;
     max-width: 1000px; }
+    .admin-main .admin-orders .open-order-empty {
+      text-align: center; }
     .admin-main .admin-orders .open-order {
       border: 1px solid gray;
       border-radius: 5px;
@@ -1336,6 +1357,8 @@ footer {
   /* ============================================
                     ADMIN PAGE
   ============================================ */
+  .admin-main .admin-tabs label {
+    padding: 15px 25px; }
   .admin-main .admin-items {
     float: left;
     width: 49%; }

@@ -4387,14 +4387,21 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     }, 100);
   };
 
-  var getAllProducts = function getAllProducts() {
+  $scope.getAllProducts = function () {
     adminService.adminGetAllProducts().then(function (response) {
       // console.log(response);
+      $scope.showProducts = true;
+      $scope.showClosedOrders = false;
+      $scope.showOpenOrders = false;
+
       $scope.products = response;
+
+      console.log("getting all products");
     });
   };
 
-  getAllProducts();
+  // getAllProducts();
+
 
   var getProductDetails = function getProductDetails(prodId) {
     adminService.adminEditProducts(prodId).then(function (res) {
@@ -4654,13 +4661,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
-  // OPEN ORDERS SECTION //
+  // ORDERS SECTION //
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
 
   $scope.getOpenOrders = function () {
     adminService.adminGetOpenOrders().then(function (res) {
-      $scope.readyToSendTracking = false;
+      $scope.showOpenOrders = true;
+      $scope.showProducts = false;
+      $scope.showClosedOrders = false;
 
       console.log(res.mainOrder.length);
       if (res.mainOrder.length <= 0) {
@@ -4677,6 +4686,10 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
   $scope.getClosedOrders = function () {
     adminService.adminGetClosedOrders().then(function (res) {
+      $scope.showClosedOrders = true;
+      $scope.showProducts = false;
+      $scope.showOpenOrders = false;
+
       if (res.mainOrder.length <= 0) {
         console.log("no length");
         $scope.closedOrdersEmpty = true;
@@ -4686,6 +4699,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     });
   };
+
+  $scope.getOpenOrders();
 });
 "use strict";
 

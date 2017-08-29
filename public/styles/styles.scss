@@ -967,10 +967,45 @@ footer {
     text-align: center;
   }
 
+  .admin-tabs {
+    // margin-bottom: 40px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    width: 95%;
+    margin: -1px auto 40px;
+
+    input {
+      display: none;
+    }
+
+    label {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 0 0 -1px;
+      text-align: center;
+      border: 1px solid transparent;
+    }
+
+    label:hover {
+      cursor: pointer;
+      color: gray;
+    }
+
+    input:checked + label {
+      border: 1px solid #ccc;
+      border-bottom: 1px solid $secondary-color;
+    }
+  }
+
+
   .admin-orders {
     margin: 0 auto;
     min-width: 600px;
     max-width: 1000px;
+
+    .open-order-empty {
+      text-align: center;
+    }
 
     .open-order {
       border: 1px solid gray;
@@ -1529,6 +1564,12 @@ footer {
   ============================================ */
 
   .admin-main {
+
+    .admin-tabs {
+      label {
+        padding: 15px 25px;
+      }
+    }
 
     .admin-items {
       float:left;
