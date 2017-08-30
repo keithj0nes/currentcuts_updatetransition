@@ -9,7 +9,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
-    <link rel="stylesheet" href="./dist/styles.950e322e.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.013e0dd1.css" media="screen" title="no title">
 </head>
 
 <body>
@@ -92,14 +92,15 @@
           <div class="modal-background"></div>
         </modal>
 
+        <i class="material-icons scale-nav" ui-sref="cart">shopping_cart</i>
+        <checkitemsincart>
+          <div ng-if="itemsInCart" class="cart-amount" ui-sref="cart" >
+            {{itemsInCart}}
+          </div>
+        </checkitemsincart>
       </check-logged-in>
 
-      <i class="material-icons scale-nav" ui-sref="cart">shopping_cart</i>
-      <checkitemsincart>
-        <div ng-if="itemsInCart" class="cart-amount" ui-sref="cart" >
-          {{itemsInCart}}
-        </div>
-      </checkitemsincart>
+
 
     </div>
 

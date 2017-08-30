@@ -4336,6 +4336,413 @@ angular.module("ccvApp").directive("shiptime", function ($interval) {
 });
 "use strict";
 
+angular.module("ccvApp").service("adminService", function ($http) {
+
+  this.adminGetAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminAddProduct = function (productAdd) {
+    return $http({
+      method: "POST",
+      url: "/api/admin/products",
+      data: productAdd
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProduct = function (id, productUpdate) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id,
+      data: productUpdate
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteProduct = function (productId) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + productId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminEditProducts = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products/" + id + "/details"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteDetails = function (id, sizePriceDetails) {
+    return $http({
+      method: "DELETE",
+      url: "api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSaveCategory = function (updateCat, productId) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + productId + "/categories",
+      data: updateCat
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteCategory = function (categoryDetails, id) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + id + "/categories",
+      data: categoryDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOpenOrders = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/open"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetClosedOrders = function () {
+    console.log("getting here");
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/closed"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSendConfirmation = function (index, orderDetails) {
+    console.log(index, orderDetails, "in service");
+    return $http({
+      method: "PUT",
+      url: "/api/admin/orders/open/" + index,
+      data: orderDetails
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOrderCount = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/count"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+});
+"use strict";
+
+angular.module("ccvApp").service("mainService", function ($http) {
+
+  this.getAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products"
+    }).then(function (response) {
+      console.log(response.data, "getAllProducts");
+      return response.data;
+    });
+  };
+
+  this.getProductById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductById2 = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id + "/details"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductByName = function (name) {
+    console.log(name, "searched letters in service");
+    return $http({
+      method: "GET",
+      url: "/api/search/" + name
+    }).then(function (response) {
+      console.log(response.data, "search by name in service");
+      return response.data;
+    });
+  };
+
+  this.getAuth = function () {
+    console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/api/checkauth"
+    }).then(function (response) {
+      return response.data;
+    });
+  };
+
+  this.getUsername = function () {
+    return $http({
+      method: "GET",
+      url: "/api/currentuser"
+    }).then(function (response) {
+      return response.data;
+    });
+  };
+
+  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
+  //
+  //   const cartData = {
+  //     productSize: productSize,
+  //     productColor: productColor,
+  //     productQuantity: productQuantity,
+  //     productName: productName,
+  //     productPrice: productPrice,
+  //     productImage: productImage,
+  //     productId: productId,
+  //     productOutline: productOutline
+  //   }
+  //   // console.log(cartData);
+  //   return $http({
+  //     method: "POST",
+  //     url: "/api/cart",
+  //     data: cartData
+  //   }).success(function(){
+  //     console.log("Item Added!");
+  //   })
+  // }
+
+  this.addProductsToCart = function (cartData) {
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function () {
+      console.log("Item Added!");
+    });
+  };
+
+  this.updateProductsInCart = function (cartData) {
+    return $http({
+      method: "PUT",
+      url: "/api/cart",
+      data: cartData
+    }).then(function (res) {
+      console.log(res, "in service");
+      return res.data;
+    });
+  };
+
+  this.getProductsInCart = function () {
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function (response) {
+      // console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.deleteProductsInCart = function (item) {
+
+    console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function (response) {
+      return response;
+    });
+  };
+  //not being used anywhere
+  // this.logout = function(){
+  //   return ({
+  //     method: "GET",
+  //     url: "/api/user/logout"
+  //   }).success(function(){
+  //   })
+  // }
+
+  this.getOrderHistory = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders"
+    }).then(function (response) {
+      console.log(response, "reponse in srvice");
+      return response.data;
+    });
+  };
+
+  this.getOrderById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders/" + id
+    }).then(function (response) {
+      // console.log(response, "getOrderById service");
+      return response.data;
+    });
+  };
+
+  this.getThankYouById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/order/" + id + "/thankyou"
+    }).then(function (response) {
+      console.log(response);
+      return response.data;
+    });
+  };
+
+  this.addShippingInfo = function (details) {
+    console.log(details, "in service");
+    return details;
+  };
+
+  this.updateAccount = function (newEmail) {
+
+    return $http({
+      method: "PUT",
+      url: "/api/user/email",
+      data: newEmail
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
+  };
+
+  this.addFavorite = function (productId) {
+    var product = {
+      productId: productId
+    };
+    return $http({
+      method: "POST",
+      url: "/api/user/favorites",
+      data: product
+    }).then(function (res) {
+      console.log(res);
+      return res.data;
+    });
+  };
+
+  this.getFavorites = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/favorites"
+    }).then(function (res) {
+      console.log(res, "getFavorites in service");
+      return res.data;
+    });
+  };
+
+  this.getProductByCategory = function (catId) {
+    // console.log(catId);
+    return $http({
+      method: "GET",
+      url: "/api/products/category/" + catId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  // this.cartStorage = [1,2,3];
+  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
+  //
+  // this.getCartStorage = () => {
+  //   console.log(this.cartStorage, "loggin cart storage service");
+  //   console.log(this.sum, "sum in service");
+  //   return this.sum;
+  // }
+
+});
+'use strict';
+
+angular.module('ccvApp').factory('modalService', function () {
+
+    var modals = []; // array of modals on the page
+    var service = {};
+
+    service.Add = Add;
+    service.Remove = Remove;
+    service.Open = Open;
+    service.Close = Close;
+
+    return service;
+
+    function Add(modal) {
+        // add modal to array of active modals
+        modals.push(modal);
+    }
+
+    function Remove(id) {
+        // remove modal from array of active modals
+        var modalToRemove = _.findWhere(modals, { id: id });
+        modals = _.without(modals, modalToRemove);
+    }
+
+    function Open(id) {
+        // open modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.open();
+    }
+
+    function Close(id) {
+        // close modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.close();
+    }
+
+    function myFindWhere(array, criteria) {
+        return array.find(function (item) {
+            return Object.keys(criteria).every(function (key) {
+                return item[key] === criteria[key];
+            });
+        });
+    }
+});
+"use strict";
+
+angular.module("ccvApp").service("productService", function ($http) {});
+"use strict";
+
 angular.module("ccvApp").controller("adminController", function ($scope, adminService, modalService) {
 
   //admin globals
@@ -4769,16 +5176,16 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     var shipping = 0;
 
     for (var i = 0; i < cart.length; i++) {
-      total += parseInt(cart[i].productPrice) * parseInt(cart[i].productQuantity);
+      total += Number(cart[i].productPrice) * Number(cart[i].productQuantity);
     }
     console.log(total, "calculate total");
 
     //shipping prices marked here - based on order total
     if (total >= 1 && total <= 20) {
       shipping = 3;
-    } else if (total >= 21 && total <= 40) {
+    } else if (total > 20 && total <= 40) {
       shipping = 4;
-    } else if (total >= 41) {
+    } else if (total > 40) {
       shipping = 5;
     }
     return {
@@ -5342,413 +5749,6 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
     getOrderHistory();
   }
 });
-"use strict";
-
-angular.module("ccvApp").service("adminService", function ($http) {
-
-  this.adminGetAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminAddProduct = function (productAdd) {
-    return $http({
-      method: "POST",
-      url: "/api/admin/products",
-      data: productAdd
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProduct = function (id, productUpdate) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id,
-      data: productUpdate
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteProduct = function (productId) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + productId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminEditProducts = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products/" + id + "/details"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteDetails = function (id, sizePriceDetails) {
-    return $http({
-      method: "DELETE",
-      url: "api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSaveCategory = function (updateCat, productId) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + productId + "/categories",
-      data: updateCat
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteCategory = function (categoryDetails, id) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + id + "/categories",
-      data: categoryDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetOpenOrders = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/open"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetClosedOrders = function () {
-    console.log("getting here");
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/closed"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSendConfirmation = function (index, orderDetails) {
-    console.log(index, orderDetails, "in service");
-    return $http({
-      method: "PUT",
-      url: "/api/admin/orders/open/" + index,
-      data: orderDetails
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetOrderCount = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/count"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-});
-"use strict";
-
-angular.module("ccvApp").service("mainService", function ($http) {
-
-  this.getAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/products"
-    }).then(function (response) {
-      console.log(response.data, "getAllProducts");
-      return response.data;
-    });
-  };
-
-  this.getProductById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductById2 = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id + "/details"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductByName = function (name) {
-    console.log(name, "searched letters in service");
-    return $http({
-      method: "GET",
-      url: "/api/search/" + name
-    }).then(function (response) {
-      console.log(response.data, "search by name in service");
-      return response.data;
-    });
-  };
-
-  this.getAuth = function () {
-    console.log("getAuth running");
-    return $http({
-      method: "GET",
-      url: "/api/checkauth"
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  this.getUsername = function () {
-    return $http({
-      method: "GET",
-      url: "/api/currentuser"
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
-  //
-  //   const cartData = {
-  //     productSize: productSize,
-  //     productColor: productColor,
-  //     productQuantity: productQuantity,
-  //     productName: productName,
-  //     productPrice: productPrice,
-  //     productImage: productImage,
-  //     productId: productId,
-  //     productOutline: productOutline
-  //   }
-  //   // console.log(cartData);
-  //   return $http({
-  //     method: "POST",
-  //     url: "/api/cart",
-  //     data: cartData
-  //   }).success(function(){
-  //     console.log("Item Added!");
-  //   })
-  // }
-
-  this.addProductsToCart = function (cartData) {
-    return $http({
-      method: "POST",
-      url: "/api/cart",
-      data: cartData
-    }).success(function () {
-      console.log("Item Added!");
-    });
-  };
-
-  this.updateProductsInCart = function (cartData) {
-    return $http({
-      method: "PUT",
-      url: "/api/cart",
-      data: cartData
-    }).then(function (res) {
-      console.log(res, "in service");
-      return res.data;
-    });
-  };
-
-  this.getProductsInCart = function () {
-    return $http({
-      method: "GET",
-      url: "/api/cart"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.deleteProductsInCart = function (item) {
-
-    console.log(item, "In service");
-    return $http({
-      method: "DELETE",
-      url: "/api/cart/" + item
-    }).then(function (response) {
-      return response;
-    });
-  };
-  //not being used anywhere
-  // this.logout = function(){
-  //   return ({
-  //     method: "GET",
-  //     url: "/api/user/logout"
-  //   }).success(function(){
-  //   })
-  // }
-
-  this.getOrderHistory = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders"
-    }).then(function (response) {
-      console.log(response, "reponse in srvice");
-      return response.data;
-    });
-  };
-
-  this.getOrderById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders/" + id
-    }).then(function (response) {
-      // console.log(response, "getOrderById service");
-      return response.data;
-    });
-  };
-
-  this.getThankYouById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/order/" + id + "/thankyou"
-    }).then(function (response) {
-      console.log(response);
-      return response.data;
-    });
-  };
-
-  this.addShippingInfo = function (details) {
-    console.log(details, "in service");
-    return details;
-  };
-
-  this.updateAccount = function (newEmail) {
-
-    return $http({
-      method: "PUT",
-      url: "/api/user/email",
-      data: newEmail
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.addFavorite = function (productId) {
-    var product = {
-      productId: productId
-    };
-    return $http({
-      method: "POST",
-      url: "/api/user/favorites",
-      data: product
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.getFavorites = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/favorites"
-    }).then(function (res) {
-      console.log(res, "getFavorites in service");
-      return res.data;
-    });
-  };
-
-  this.getProductByCategory = function (catId) {
-    // console.log(catId);
-    return $http({
-      method: "GET",
-      url: "/api/products/category/" + catId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  // this.cartStorage = [1,2,3];
-  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
-  //
-  // this.getCartStorage = () => {
-  //   console.log(this.cartStorage, "loggin cart storage service");
-  //   console.log(this.sum, "sum in service");
-  //   return this.sum;
-  // }
-
-});
-'use strict';
-
-angular.module('ccvApp').factory('modalService', function () {
-
-    var modals = []; // array of modals on the page
-    var service = {};
-
-    service.Add = Add;
-    service.Remove = Remove;
-    service.Open = Open;
-    service.Close = Close;
-
-    return service;
-
-    function Add(modal) {
-        // add modal to array of active modals
-        modals.push(modal);
-    }
-
-    function Remove(id) {
-        // remove modal from array of active modals
-        var modalToRemove = _.findWhere(modals, { id: id });
-        modals = _.without(modals, modalToRemove);
-    }
-
-    function Open(id) {
-        // open modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.open();
-    }
-
-    function Close(id) {
-        // close modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.close();
-    }
-
-    function myFindWhere(array, criteria) {
-        return array.find(function (item) {
-            return Object.keys(criteria).every(function (key) {
-                return item[key] === criteria[key];
-            });
-        });
-    }
-});
-"use strict";
-
-angular.module("ccvApp").service("productService", function ($http) {});
 "use strict";
 
 angular.module("ccvApp").directive("adminAuth", function () {

@@ -92,14 +92,15 @@
           <div class="modal-background"></div>
         </modal>
 
+        <i class="material-icons scale-nav" ui-sref="cart">shopping_cart</i>
+        <checkitemsincart>
+          <div ng-if="itemsInCart" class="cart-amount" ui-sref="cart" >
+            {{itemsInCart}}
+          </div>
+        </checkitemsincart>
       </check-logged-in>
 
-      <i class="material-icons scale-nav" ui-sref="cart">shopping_cart</i>
-      <checkitemsincart>
-        <div ng-if="itemsInCart" class="cart-amount" ui-sref="cart" >
-          {{itemsInCart}}
-        </div>
-      </checkitemsincart>
+
 
     </div>
 

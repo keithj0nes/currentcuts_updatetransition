@@ -53,16 +53,16 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     var shipping = 0;
 
     for (var i = 0; i < cart.length; i++) {
-      total += (parseInt(cart[i].productPrice) * parseInt(cart[i].productQuantity));
+      total += (Number(cart[i].productPrice) * Number(cart[i].productQuantity));
     }
     console.log(total, "calculate total");
 
     //shipping prices marked here - based on order total
          if (total >= 1 && total <= 20 ){
            shipping = 3;
-         } else if (total >= 21 && total <= 40){
+         } else if (total > 20 && total <= 40){
            shipping = 4;
-         } else if (total >= 41){
+         } else if (total > 40){
            shipping = 5;
          }
     return {

@@ -96,7 +96,7 @@
 
       <hr>
 
-      <div class="cart-product-info-container-d pad" >
+      <div class="cart-product-info-container-d pad">
         <div class="d w50">
           <img ng-src="{{item.productImage}}" alt="">
           <p>{{item.productPrice | currency}} |  {{item.productName}}<br>
@@ -104,7 +104,7 @@
 
         </div>
 
-        <div class="cart-product-qty-d pad w25">
+        <div class="cart-product-qty-d w25">
             <input type="text" id="itemincartid_{{$index}}" value="{{item.productQuantity}}">
             <!-- <button type="button" ng-click="updateCart($index)">UD</button> -->
             <i class="material-icons update-cart-btn" ng-class="{'update-cart-btn-spin': spinIndex === $index}" ng-click="updateCart($index);">cached</i>
@@ -114,7 +114,7 @@
 
 
 
-        <div class="cart-product-itemtotal-d pad w25 center" style="background-color: red;">
+        <div class="cart-product-itemtotal-d w25 center">
             {{item.productPrice * item.productQuantity | currency}}
             <button class="btn-delete" ng-click="cartDelete($index)" name="button">x</button>
         </div>
@@ -155,20 +155,20 @@
 
     <div class="total-disc-ship ">
 
-      <div class="d">
-        <div class="w75 aleft pad">
+      <div class="d pad">
+        <div class="w75 aleft">
           Total
         </div>
-        <div class="w25 pad">
+        <div class="w25">
           {{cartTotal | currency}}
         </div>
       </div>
 
-      <div class="d">
-        <div class="w75 aleft pad">
+      <div class="d pad">
+        <div class="w75 aleft">
           Shipping
         </div>
-        <div class="w25 pad" style="background: pink;">
+        <div class="w25">
           {{shippingCost | currency}}
         </div>
       </div>
@@ -177,10 +177,10 @@
 
       <div class="order-total">
         <div class="d">
-          <div class="w75 aleft pad">
+          <div class="w75 aleft">
             <strong>Order Total</strong>
           </div>
-          <div class="w25 pad">
+          <div class="w25">
             <strong>{{orderTotal | currency}}</strong>
           </div>
         </div>
