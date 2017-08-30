@@ -2,9 +2,31 @@
 
 
 
-  <div ng-repeat="fav in favorites">
+  <!-- <div ng-repeat="fav in favorites">
     <img ng-src="{{fav.img1}}" />
     <h2>{{fav.name}}</h2>
     <button ui-sref="products({id:fav.id})">CLICK HERE</button>
+  </div> -->
+
+  <h1 class="center">My favorites</h1>
+
+
+
+<div class="favorited-products">
+  <div class="product-main" ng-repeat="fav in favorites">
+    <div class="product-img">
+      <img class="crop" ui-sref="products({id:fav.id})" ng-src="{{fav.img1}}" alt="">
+    </div>
+    <div class="product-info">
+      <div class="product-info-left">
+        <h2 class="desc">{{fav.name}}</h2>
+        <p class="price">From <span class="red">${{fav.price}}</span></p>
+      </div>
+      <div class="product-info-right;">
+        <button class="btn" name="button" ui-sref="products({id:fav.id})">View Product</button>
+      </div>
+    </div>
   </div>
+</div>
+
 </main>

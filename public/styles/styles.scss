@@ -1323,6 +1323,22 @@ footer {
   }
 
   /* ============================================
+                  FAVORITES PAGE
+  ============================================ */
+
+  .favorited-products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .product-main {
+      width: 46%;
+      background: #fff;
+      margin: 0 auto 2.8% ;
+    }
+  }
+
+  /* ============================================
                   PRODUCT PAGE
   ============================================ */
 
@@ -1338,6 +1354,7 @@ footer {
       width: 100%;
     }
   }
+
 
   /* ============================================
                     CART PAGE
@@ -1550,6 +1567,18 @@ footer {
       width: 30%;
       background: #fff;
     }
+  }
+}
+
+/* ============================================
+                FAVORITES PAGE
+============================================ */
+
+.favorited-products {
+
+  .product-main {
+    width: 30%;
+    background: #fff;
   }
 }
 

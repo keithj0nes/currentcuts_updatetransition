@@ -1221,6 +1221,17 @@ footer {
       background: #fff;
       margin: 0 auto 2.8%; }
   /* ============================================
+                  FAVORITES PAGE
+  ============================================ */
+  .favorited-products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; }
+    .favorited-products .product-main {
+      width: 46%;
+      background: #fff;
+      margin: 0 auto 2.8%; }
+  /* ============================================
                   PRODUCT PAGE
   ============================================ */
   .product-single {
@@ -1327,6 +1338,12 @@ footer {
                   SEARCH PAGE
   ============================================ */
   .search-main .searched-products .product-main {
+    width: 30%;
+    background: #fff; }
+  /* ============================================
+                FAVORITES PAGE
+============================================ */
+  .favorited-products .product-main {
     width: 30%;
     background: #fff; }
   /* ============================================
