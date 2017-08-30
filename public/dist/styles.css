@@ -571,8 +571,8 @@ modal {
         color: #605675; }
   modal .user-modal {
     position: absolute;
-    top: 85px;
-    right: 60px;
+    top: 75px;
+    right: 110px;
     z-index: 1000;
     width: 20%;
     min-width: 260px; }
@@ -664,57 +664,6 @@ table tr {
 table tr:hover {
   background-color: #e6e6e6; }
 
-.modal {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
-  padding-top: 100px;
-  /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%;
-  /* Full width */
-  height: 100%;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: black;
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */ }
-  .modal .modal-content-product-added {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 300px;
-    text-align: center;
-    position: relative; }
-    .modal .modal-content-product-added i {
-      font-size: 56px;
-      color: #605675; }
-    .modal .modal-content-product-added .big-btn, .modal .modal-content-product-added .btn-facebook, .modal .modal-content-product-added .btn-stripe, .modal .modal-content-product-added .cart-main .checkout form.address-form button, .cart-main .checkout form.address-form .modal .modal-content-product-added button {
-      background-color: #605675;
-      color: #fff; }
-    .modal .modal-content-product-added .big-btn:hover, .modal .modal-content-product-added .btn-facebook:hover, .modal .modal-content-product-added .btn-stripe:hover, .modal .modal-content-product-added .cart-main .checkout form.address-form button:hover, .cart-main .checkout form.address-form .modal .modal-content-product-added button:hover {
-      background-color: #484058; }
-  .modal .close {
-    color: #aaaaaa;
-    position: absolute;
-    top: 0px;
-    right: 8px;
-    font-size: 28px;
-    font-weight: bold;
-    padding: 10px; }
-  .modal .close:hover,
-  .modal .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer; }
-
 .ship-truck {
   padding-left: 7px;
   -moz-transform: scaleX(-1);
@@ -763,7 +712,7 @@ nav {
       -webkit-transform: rotate(45deg) translate(-8px, -8px);
       transform: rotate(45deg) translate(-8px, -8px); }
     nav .ham-search-container .search-icon {
-      font-size: 36px;
+      font-size: 32px;
       cursor: pointer; }
   nav .logo {
     text-align: center;
@@ -785,7 +734,7 @@ nav {
     nav .login-cart-container a:hover {
       border-bottom: 1px solid black; }
     nav .login-cart-container i {
-      font-size: 36px;
+      font-size: 32px;
       cursor: pointer; }
     nav .login-cart-container .cart-amount {
       position: absolute;
@@ -796,8 +745,9 @@ nav {
       color: white;
       height: 20px;
       width: 20px;
-      text-align: center;
-      line-height: 21px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 50%;
       cursor: pointer; }
     nav .login-cart-container .login-user-popup {
@@ -1203,24 +1153,6 @@ footer {
     display: none; }
   .hideMobile {
     display: block; }
-  .modal-content-user {
-    display: block;
-    background-color: pink;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 20%;
-    min-width: 260px;
-    text-align: center; }
-  .modal-content-user:before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    right: 32px;
-    height: 0;
-    width: 0;
-    border-bottom: solid 10px #fefefe;
-    border-left: solid 10px transparent;
-    border-right: solid 10px transparent; }
   .display {
     display: block; }
   nav .scale-nav {
@@ -1235,8 +1167,14 @@ footer {
   nav .logo img {
     height: 40px;
     cursor: pointer; }
-  nav .login-cart-container {
-    background: pink; }
+  nav .login-cart-container .checkloggedin {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 10px; }
+    nav .login-cart-container .checkloggedin i {
+      margin: 0 14px; }
+    nav .login-cart-container .checkloggedin .cart-amount {
+      right: 24px; }
   .main-nav {
     width: 100%;
     height: auto;

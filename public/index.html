@@ -33,23 +33,18 @@
 
     <div class="login-cart-container w25">
 
-      <check-logged-in>
+      <check-logged-in class="checkloggedin">
 
 
-        <!-- mobile -->
-        <!-- <a ng-if="username" ui-sref="login" class="login hideDesktop">{{usernameFirst}}</a>
-        <a ng-if="!username" ui-sref="login" class="login hideDesktop">L</a> -->
-        <i class="material-icons hideDesktop scale-nav" ui-sref="userfavorites">favorite_border</i>
+        <!-- MOBILE -->
         <i class="material-icons hideDesktop scale-nav" ui-sref="login">person</i>
+        <i class="material-icons hideDesktop scale-nav" ui-sref="userfavorites">favorite_border</i>
 
 
-
-
-        <!-- desktop -->
-        <!-- need to style -->
-        <i class="material-icons hideMobile" ui-sref="userfavorites">favorite_border</i>
+        <!-- DESKTOP -->
         <a ng-if="username" class="login hideMobile" ng-click="openModal('user-account-modal')">{{username}}</a>
         <a ng-if="!username" class="login hideMobile" ng-click="openModal('user-login-modal')">Login</a>
+        <i class="material-icons hideMobile" ui-sref="userfavorites">favorite_border</i>
 
         <modal id="user-login-modal">
             <div class="mymodal">

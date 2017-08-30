@@ -232,8 +232,8 @@ modal {
 
     .user-modal {
       position: absolute;
-      top: 85px;
-      right: 60px;
+      top: 75px;
+      right: 110px;
       z-index: 1000;
       width: 20%;
       min-width: 260px;
@@ -290,7 +290,7 @@ modal {
       /* z-index must be below .modal and above everything else  */
       z-index: 900;
     }
-}
+} // end modal
 
 body.modal-open {
     /* body overflow is hidden to hide main scrollbar when modal window is open */
@@ -351,71 +351,7 @@ table tr:hover {
   // background-color: #f1f1f1;
 }
 
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-
-  .modal-content-product-added {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 300px;
-    text-align: center;
-    position: relative;
-
-    i {
-      font-size: 56px;
-      color: $main-accent-color;
-    }
-
-    .big-btn {
-      background-color: $main-accent-color;
-      color: #fff;
-    }
-
-    .big-btn:hover {
-      background-color: darken($main-accent-color, 10%);
-    }
-  }
-
-  .close {
-      color: #aaaaaa;
-      position: absolute;
-      top: 0px;
-      right: 8px;
-      font-size: 28px;
-      font-weight: bold;
-      padding: 10px;
-  }
-
-  .close:hover,
-  .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
-  }
-}
-
-  //
-  // .display {
-  //   display: block;
-  // }
-
-  // .hideMobile {
-  //   display: none;
-  // }
 .ship-truck {
-  // background: red;
   padding-left: 7px;
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
@@ -482,7 +418,7 @@ nav {
     }
 
     .search-icon {
-      font-size: 36px;
+      font-size: 32px;
       // padding-left: 10px;
       cursor: pointer;
       // transform: scale(0.8);
@@ -522,7 +458,7 @@ nav {
     }
 
     i {
-      font-size: 36px;
+      font-size: 32px;
       cursor: pointer;
     }
 
@@ -535,8 +471,9 @@ nav {
       color: white;
       height: 20px;
       width: 20px;
-      text-align: center;
-      line-height: 21px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 50%;
       cursor: pointer;
     }
@@ -1240,28 +1177,28 @@ footer {
     display: block;
   }
 
-      .modal-content-user {
-        display: block;
-        background-color: pink;
-
-        padding: 20px;
-        border: 1px solid #888;
-        width: 20%;
-        min-width: 260px;
-        text-align: center;
-      }
-
-      .modal-content-user:before {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        right: 32px;
-        height: 0;
-        width: 0;
-        border-bottom: solid 10px #fefefe;
-        border-left: solid 10px transparent;
-        border-right: solid 10px transparent;
-      }
+      // .modal-content-user {
+      //   display: block;
+      //   background-color: pink;
+      //
+      //   padding: 20px;
+      //   border: 1px solid #888;
+      //   width: 20%;
+      //   min-width: 260px;
+      //   text-align: center;
+      // }
+      //
+      // .modal-content-user:before {
+      //   content: '';
+      //   position: absolute;
+      //   bottom: 100%;
+      //   right: 32px;
+      //   height: 0;
+      //   width: 0;
+      //   border-bottom: solid 10px #fefefe;
+      //   border-left: solid 10px transparent;
+      //   border-right: solid 10px transparent;
+      // }
 
 
 
@@ -1301,17 +1238,20 @@ footer {
     }
 
     .login-cart-container {
-      // visibility: visible;
-      background: pink;
-      // text-align: right;
-      // justify-content: flex-end;
 
+      .checkloggedin {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 10px;
 
-      // a:first-child {
-      //   visibility: visible;
-      // }
+        i {
+          margin: 0 14px;
+        }
 
-      // display: flex;
+        .cart-amount {
+          right: 24px;
+        }
+      }
     }
   }
   .main-nav {
