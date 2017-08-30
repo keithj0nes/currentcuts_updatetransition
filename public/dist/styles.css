@@ -829,18 +829,22 @@ footer {
       cursor: pointer; }
   .product-main .product-info {
     padding: 15px 20px;
-    position: relative; }
-    .product-main .product-info h2.desc {
-      font-size: 16px;
-      color: #000;
-      margin-bottom: 5px; }
-    .product-main .product-info p.price {
-      font-size: 14px;
-      color: #888888; }
-    .product-main .product-info .atc-home {
-      position: absolute;
-      right: 20px;
-      top: 20px; }
+    display: flex;
+    justify-content: space-between; }
+    .product-main .product-info .product-info-left {
+      width: 63%; }
+      .product-main .product-info .product-info-left h2.desc {
+        font-size: 16px;
+        color: #000;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      .product-main .product-info .product-info-left p.price {
+        font-size: 14px;
+        color: #888888; }
+    .product-main .product-info .product-info-right {
+      width: 37%; }
 
 /* ============================================
                   SEARCH PAGE

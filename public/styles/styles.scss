@@ -604,24 +604,32 @@ footer {
 
   .product-info {
     padding: 15px 20px;
-    position: relative;
+    display: flex;
+    justify-content: space-between;
 
-    h2.desc {
-      font-size: 16px;
-      color: #000;
-      margin-bottom: 5px;
+    .product-info-left {
+      width: 63%;
+
+      h2.desc {
+        font-size: 16px;
+        color: #000;
+        margin-bottom: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p.price {
+        font-size: 14px;
+        color: #888888;
+      }
     }
 
-    p.price {
-      font-size: 14px;
-      color: #888888;
+    .product-info-right {
+      width: 37%;
     }
 
-    .atc-home {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-    }
+
   }
 }
 
