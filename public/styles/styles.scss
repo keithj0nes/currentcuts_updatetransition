@@ -57,6 +57,8 @@ body {
   min-height: 100vh;
   flex-direction: column;
   color: $primary-color;
+  font-family: "Open Sans", sans-serif;
+
 
   .sticky-footer {
     flex: 1;
@@ -67,20 +69,20 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
 
-p {
+input, textarea, select {
   font-family: "Open Sans", sans-serif;
 }
 
 
+
+
 .btn {
   padding: 5px 10px;
-  // background-color: #fff;
   background-color: $main-accent-color;
   color: white;
   font-weight: lighter;
   border: 1px solid #000;
   border-radius: 3px;
-  // box-shadow: 0px 0px 10px 1px;
 }
 
 .btn:disabled {
@@ -141,6 +143,13 @@ background-color: rgb(69, 69, 69);
 
 .display {
   display: block;
+}
+.errordisplay {
+  display: inline-block;
+}
+
+.none {
+  display: none;
 }
 
 .red {

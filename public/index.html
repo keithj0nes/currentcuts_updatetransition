@@ -110,12 +110,12 @@
     <ul class="main-nav">
       <li><a ui-sref="category({catname:'adventure'})">Adventure</a></li>
       <li><a ui-sref="category({catname:'sports'})">Sports</a></li>
-      <li><a href="#">Schools</a></li>
+      <li><a ui-sref="category({catname:'schools'})">Schools</a></li>
       <!-- <li><a href="#">Shop</a></li> -->
       <!-- <li></li> -->
       <!-- <li><a href="#">Shop</a></li> -->
       <!-- <li><a href="#">Shop</a></li> -->
-      <li><a href="#">About</a></li>
+      <!-- <li><a href="#">About</a></li> -->
       <li><a ui-sref="contact">Contact</a></li>
     </ul>
 </header>
@@ -130,6 +130,7 @@
       <li><a ui-sref="home">Home</a></li>
       <li><a ui-sref="login">Login</a></li>
       <li><a ui-sref="cart">Cart</a></li>
+      <li><a ui-sref="contact">Contact</a></li>
         <!-- if admin, show admin link -->
       <admin-auth>
         <li ng-if="auth"><a ui-sref="admin">Admin</a></li>
