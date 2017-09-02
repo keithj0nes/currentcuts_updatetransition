@@ -2,6 +2,20 @@
 
 <main class="contact-main main-margin">
 
-  <h2 class="center">Contact Us</h2>
+  <h1 class="center">Contact Us</h1>
+
+  <p>If you have questions about your order, or are looking to get a bulk order, please fill out the form below.</p>
+
+<form class="contact-form">
+  <input type="text" placeholder="First Name *" ng-model="contactNameFirst" required>
+  <input type="text" placeholder="Last Name *" ng-model="contactNameLast" required>
+  <input type="email" placeholder="Email *" ng-model="contactEmail" required>
+  <input type="text" placeholder="Subject *" ng-model="contactSubject">
+  <textarea placeholder="Message *"></textarea>
+
+  <button type="button" class="big-btn btn">Submit</button>
+</form>
+
+
 
 </main>
