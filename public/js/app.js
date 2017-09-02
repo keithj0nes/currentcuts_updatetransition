@@ -90,11 +90,11 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/categories.html",
       controller: "categoryController"
     })
-    // .state("subcategory", {
-    //   url: "/categories/:catname2",
-    //   templateUrl: "views/categories.html",
-    //   controller: "categoryController"
-    // })
+    .state("contact", {
+      url: "/contact",
+      templateUrl: "views/contact.html",
+      controller: "contactController"
+    })
 
     $urlRouterProvider
   .otherwise("/");
