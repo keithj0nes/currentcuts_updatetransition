@@ -416,7 +416,7 @@ template {
 [hidden] {
   display: none; }
 
-@keyframes spinner {
+@keyframes spinner-cc {
   from {
     transform: rotate(0deg); }
   to {
@@ -434,13 +434,13 @@ template {
   cursor: pointer; }
 
 .update-cart-btn-spin {
-  -webkit-animation: spinner 0.4s linear;
+  -webkit-animation: spinner-cc 0.4s linear;
   /* Safari 4+ */
-  -moz-animation: spinner 0.4s linear;
+  -moz-animation: spinner-cc 0.4s linear;
   /* Fx 5+ */
-  -o-animation: spinner 0.4s linear;
+  -o-animation: spinner-cc 0.4s linear;
   /* Opera 12+ */
-  animation: spinner 0.4s linear;
+  animation: spinner-cc 0.4s linear;
   /* IE 10+, Fx 29+ */ }
 
 body {
@@ -1169,19 +1169,26 @@ footer {
     padding: 10px 0; }
   .contact-main form.contact-form {
     padding: 40px 0; }
+    .contact-main form.contact-form label {
+      display: inline-block;
+      margin-top: 10px; }
     .contact-main form.contact-form input {
       padding: 10px;
       margin: 10px auto;
       width: 100%;
       border: 1px solid #aaa;
-      background-color: #fafafa; }
+      background-color: #fafafa;
+      font-size: 14px;
+      line-height: normal; }
     .contact-main form.contact-form textarea {
       width: 100%;
       height: 100px;
       padding: 10px;
       margin: 10px 0 50px;
       border: 1px solid #aaa;
-      background-color: #fafafa; }
+      background-color: #fafafa;
+      font-size: 14px;
+      line-height: normal; }
 
 @media only screen and (min-width: 768px) {
   .hideDesktop {

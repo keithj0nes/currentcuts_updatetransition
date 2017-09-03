@@ -8,22 +8,24 @@
 
 <form class="contact-form" ng-submit="contactFormSubmit(contactNameFirst, contactNameLast, contactEmail, contactSubject, contactMessage)">
   <label ng-class="{red: contactNameFirstR}">First Name * <span ng-class="{none: !contactNameFirstR, errordisplay: contactNameFirstR}">- First Name is required</span></label>
-  <input type="text" ng-model="contactNameFirst" ng-click="clearInput('contactNameFirst')">
+  <input type="text" ng-model="contactNameFirst" ng-focus="clearInput('contactNameFirst')">
 
   <label>Last Name</label>
   <input type="text" ng-model="contactNameLast" >
 
   <label ng-class="{red: contactEmailR}">Email * <span ng-class="{none: !contactEmailR, errordisplay: contactEmailR}">- Email is required</span></label>
-  <input type="email" ng-model="contactEmail" ng-click="clearInput('contactEmail')">
+  <input type="email" ng-model="contactEmail" ng-focus="clearInput('contactEmail')">
 
   <label ng-class="{red: contactSubjectR}">Subject * <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- Subject is required</span></label>
-  <input type="text" ng-model="contactSubject" ng-click="clearInput('contactSubject')">
+  <input type="text" ng-model="contactSubject" ng-focus="clearInput('contactSubject')">
 
   <label ng-class="{red: contactMessageR}">Message * <span ng-class="{none: !contactMessageR, errordisplay: contactMessageR}">- Message is required</span></label>
-  <textarea ng-model="contactMessage" ng-click="clearInput('contactMessage')"></textarea>
+  <textarea ng-model="contactMessage" ng-focus="clearInput('contactMessage')"></textarea>
 
-  <button type="submit" class="big-btn btn">Submit</button>
+  <button type="submit" ng-click="clickedd = true"class="big-btn btn">Submit</button>
 </form>
+
+
 
 <!-- <form class="contact-form">
   <label>First Name *</label>
@@ -44,3 +46,11 @@
 
 
 </main>
+
+
+<!-- LOADER FOR WHEN EMAIL IS SENT -->
+<!-- <div class="loader-background" ng-class="{'display':clickedd}"> -->
+  <!-- <div class="loader" ng-class="{'display':clickedd}">
+
+  </div> -->
+<!-- </div> -->

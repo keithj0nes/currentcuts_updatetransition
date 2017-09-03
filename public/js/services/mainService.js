@@ -231,6 +231,14 @@ angular.module("ccvApp").service("mainService", function($http){
   //   return this.sum;
   // }
 
+  this.sendContactEmail = function(contactData){
+    console.log(contactData, "contactData in service");
+    return $http({
+      method: "POST",
+      url: "/api/contact",
+      data: contactData
+    }).then(res => res.data);
+  }
 
 
 })

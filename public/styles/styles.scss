@@ -19,7 +19,7 @@ $sub-accent-color: #028090;   //light blue charcoal
 
 
 // spinner function
-@keyframes spinner {
+@keyframes spinner-cc {
   from {
     transform: rotate(0deg);
   }
@@ -27,6 +27,56 @@ $sub-accent-color: #028090;   //light blue charcoal
     transform: rotate(-360deg);
   }
 }
+//LOADER FOR WHEN CONTACT EMAIL IS SENT
+// @keyframes spinner-c {
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }
+//
+// .loader {
+//   display: none;
+//   position: absolute;
+//
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   margin: auto auto;
+//   // top:50%;
+//   // left:50%;
+//   // right: 60px;
+//   // bottom: 60px;
+//   border: 16px solid #f3f3f3;
+//   border-radius: 50%;
+//   border-top: 16px solid #3498db;
+//   width: 120px;
+//   height: 120px;
+//   -webkit-animation: spinner-c 2s linear infinite;
+//   animation: spinner-c 2s linear infinite;
+//
+// }
+//
+// .loader-background {
+//   /* modal background fixed across whole screen */
+//   display: none;
+//
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//
+//   /* semi-transparent black  */
+//   background-color: #000;
+//   opacity: 0.75;
+//
+//   /* z-index must be below .modal and above everything else  */
+//   z-index: 900;
+// }
 
 .update-cart-btn {
   display: flex;
@@ -43,10 +93,10 @@ $sub-accent-color: #028090;   //light blue charcoal
 
 //add this class on click of update-cart-btn
 .update-cart-btn-spin {
-  -webkit-animation: spinner 0.4s linear; /* Safari 4+ */
-  -moz-animation:    spinner 0.4s linear; /* Fx 5+ */
-  -o-animation:      spinner 0.4s linear; /* Opera 12+ */
-  animation:         spinner 0.4s linear; /* IE 10+, Fx 29+ */
+  -webkit-animation: spinner-cc 0.4s linear; /* Safari 4+ */
+  -moz-animation:    spinner-cc 0.4s linear; /* Fx 5+ */
+  -o-animation:      spinner-cc 0.4s linear; /* Opera 12+ */
+  animation:         spinner-cc 0.4s linear; /* IE 10+, Fx 29+ */
 }
 
 
@@ -1197,12 +1247,19 @@ footer {
   form.contact-form {
     padding: 40px 0;
 
+    label {
+      display: inline-block;
+      margin-top: 10px;
+
+    }
     input {
       padding: 10px;
       margin: 10px auto;
       width: 100%;
       border: 1px solid #aaa;
       background-color: #fafafa;
+      font-size: 14px;
+      line-height: normal;
     }
 
     textarea {
@@ -1212,8 +1269,9 @@ footer {
       margin: 10px 0 50px;
       border: 1px solid #aaa;
       background-color: #fafafa;
+      font-size: 14px;
+      line-height: normal;
     }
-
   }
 }
 

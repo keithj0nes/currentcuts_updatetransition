@@ -186,6 +186,9 @@ app.put("/api/cart", (req, res, next) => {
   res.send(req.session.cart);
 })
 
+/////// CONTACT ///////
+app.post("/api/contact", mainCtrl.sendContactEmail)
+/////// CONTACT ///////
 
 
 /////// PRODUCTS ///////
@@ -203,7 +206,6 @@ app.get("/api/admin/products/:id/details", adminCtrl.getProductDetails);
 app.get("/api/admin/orders/open", adminCtrl.getOpenOrders);
 app.get("/api/admin/orders/closed", adminCtrl.getClosedOrders);
 app.get("/api/admin/orders/count", adminCtrl.getOrderCount);
-
 
 app.post("/api/admin/products", adminCtrl.addProductToDB);
 

@@ -1,8 +1,7 @@
-angular.module("ccvApp").controller("contactController", function($scope){
+angular.module("ccvApp").controller("contactController", function($scope, mainService){
 
 
   $scope.clearInput = function(model){
-    console.log(model);
     switch (model) {
       case 'contactNameFirst': $scope.contactNameFirstR = false; break;
       case 'contactEmail': $scope.contactEmailR = false; break;
@@ -38,7 +37,6 @@ angular.module("ccvApp").controller("contactController", function($scope){
         subject,
         message
       }
-      console.log(contactData);
 
      //clear form after submit to backend
       $scope.contactNameFirst = "";
@@ -47,9 +45,17 @@ angular.module("ccvApp").controller("contactController", function($scope){
       $scope.contactSubject = "";
       $scope.contactMessage = "";
 
-      setTimeout(function(){
-        alert("SUCCESS!");
-      },100)
+      //ADD A TIMER
+      // swal("sending...");
+
+      mainService.sendContactEmail(contactData).then((res) => {
+        console.log(res, "res in controller");
+        if(res.yo !== 'error'){
+          swal("Your email has been sent!")
+        } else {
+          swal("An error has occured", "please try sending your request again")
+        }
+      })
     }
   }
 })
