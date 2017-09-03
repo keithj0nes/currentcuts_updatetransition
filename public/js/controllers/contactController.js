@@ -1,5 +1,14 @@
-angular.module("ccvApp").controller("contactController", function($scope, mainService){
+angular.module("ccvApp").controller("contactController", function($scope, $timeout, mainService, modalService){
 
+
+
+  $scope.openModal =function(id){
+    modalService.Open(id);
+  }
+
+  $scope.closeModal = function(id){
+    modalService.Close(id);
+  }
 
   $scope.clearInput = function(model){
     switch (model) {
@@ -12,6 +21,7 @@ angular.module("ccvApp").controller("contactController", function($scope, mainSe
 
 
   $scope.contactFormSubmit = function(fname, lname, email, subject, message){
+
 
     $scope.contactNameFirstR = false;
     $scope.contactEmailR = false;
@@ -27,35 +37,38 @@ angular.module("ccvApp").controller("contactController", function($scope, mainSe
        $scope.contactEmailR === true ||
        $scope.contactSubjectR === true ||
        $scope.contactMessageR === true){
-         console.log("not storing data yet");
     } else {
 
-      const contactData = {
-        fname,
-        lname,
-        email,
-        subject,
-        message
-      }
+      $scope.loaderActive = true;
 
-     //clear form after submit to backend
-      $scope.contactNameFirst = "";
-      $scope.contactNameLast = "";
-      $scope.contactEmail = "";
-      $scope.contactSubject = "";
-      $scope.contactMessage = "";
-
-      //ADD A TIMER
-      // swal("sending...");
+      //create contact form object to send to service
+      const contactData = {fname, lname, email, subject, message};
 
       mainService.sendContactEmail(contactData).then((res) => {
-        console.log(res, "res in controller");
-        if(res.yo !== 'error'){
-          swal("Your email has been sent!")
-        } else {
-          swal("An error has occured", "please try sending your request again")
-        }
+
+
+        $scope.loaderActive = false;
+
+        //timeout allows loader to stop before modal pops up, showing white screen for x time
+        $timeout(function(){
+          $scope.openModal('contact-email-modal');
+          if(res.yo !== 'error'){
+            $scope.modalMessage = "Your email has been sent!";
+
+            //clear form after submit returns successful
+            $scope.contactNameFirst = "";
+            $scope.contactNameLast = "";
+            $scope.contactEmail = "";
+            $scope.contactSubject = "";
+            $scope.contactMessage = "";
+          } else {
+            $scope.modalMessage = "An error has occured, please try sending your request again";
+          }
+        },100)
+
       })
     }
   }
+
+
 })

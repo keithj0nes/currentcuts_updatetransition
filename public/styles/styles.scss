@@ -28,55 +28,62 @@ $sub-accent-color: #028090;   //light blue charcoal
   }
 }
 //LOADER FOR WHEN CONTACT EMAIL IS SENT
-// @keyframes spinner-c {
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(360deg);
-//   }
-// }
-//
-// .loader {
-//   display: none;
-//   position: absolute;
-//
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   margin: auto auto;
-//   // top:50%;
-//   // left:50%;
-//   // right: 60px;
-//   // bottom: 60px;
-//   border: 16px solid #f3f3f3;
-//   border-radius: 50%;
-//   border-top: 16px solid #3498db;
-//   width: 120px;
-//   height: 120px;
-//   -webkit-animation: spinner-c 2s linear infinite;
-//   animation: spinner-c 2s linear infinite;
-//
-// }
-//
-// .loader-background {
-//   /* modal background fixed across whole screen */
-//   display: none;
-//
-//   position: fixed;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-//
-//   /* semi-transparent black  */
-//   background-color: #000;
-//   opacity: 0.75;
-//
-//   /* z-index must be below .modal and above everything else  */
-//   z-index: 900;
-// }
+@keyframes spinner-c {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  // display: none;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto auto;
+  opacity: 1;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid $main-accent-color;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spinner-c 2s linear infinite;
+  animation: spinner-c 2s linear infinite;
+  z-index: 910;
+
+}
+
+.loader-parent {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.loader-background {
+  /* modal background fixed across whole screen */
+  // display: none;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.75;
+
+  /* z-index must be below .modal and above everything else  */
+  z-index: 900;
+}
 
 .update-cart-btn {
   display: flex;
