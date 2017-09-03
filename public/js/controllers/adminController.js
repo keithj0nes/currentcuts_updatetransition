@@ -372,11 +372,20 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.tabopen = true;
       $scope.tabclosed = false;
 
+      console.log(res, "logging res");
+
       if(res.mainOrder.length <= 0){
         $scope.openOrdersEmpty = true;
+        $scope.openOrders = res.mainOrder;
+        console.log($scope.openOrders, "logging with KEITH");
+        $scope.openCount--;
+        $scope.closedCount++;
+
+
       } else {
         $scope.openOrders = res.mainOrder;
         $scope.openOrdersDetails = res.mainOrder.subOrder;
+        console.log($scope.openOrders, "logging with sam");
       }
 
     })
@@ -389,6 +398,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.showOpenOrders = false;
       $scope.tabopen = false;
       $scope.tabclosed = true;
+
 
       if(res.mainOrder.length <= 0){
         console.log("no length");
