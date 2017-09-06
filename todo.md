@@ -2,19 +2,20 @@
 
 ### Universal
 
-- [ ] replace db.run functions with sql files in server.js
+- [ ] Replace db.run functions with sql files in server.js
 - [x] Streamline modals using directive - 8/20/17
+- [x] Create Contact page with full form validation 9/3/17
 
 ### Admin Page
 
 - [ ] USPS developer - allow shipping labels to be purchased through admin page
 
-- [ ] Create current orders tab
-  - [ ] Set datecompleted timestamp once completed is checked true
-  - [ ] Allow tracking number to be entered once completed
-  - [ ] Use nodemailer to send follow up email to email associated with order
+- [x] Create current orders tab 8/22/17
+  - [x] Set datecompleted timestamp once completed is checked true 8/22/17
+  - [x] Allow tracking number to be entered once completed 8/22/17
+  - [x] Use nodemailer to send follow up email to email associated with order 8/22/17
 
-- [ ] Create completed orders tab
+- [x] Create completed orders tab 8/22/17
 
 - [x] Product information 8/9/17
   - [x] Set categories to specific product 8/9/17
@@ -73,7 +74,7 @@
 
 - [ ] Add new order id column to Orders table to display unique order id.
 
-- [ ] Create Categories table and Product_Category joiner table
+- [x] Create Categories table and Product_Category joiner table 8/9/17
 
 - [x] Create table to allow for different product **prices** 4/3/17
 
