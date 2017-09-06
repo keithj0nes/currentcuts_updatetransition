@@ -131,7 +131,15 @@ input, textarea, select {
 }
 
 
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 
+input[type=number] {
+    -moz-appearance:textfield;
+}
 
 .btn {
   padding: 5px 10px;
@@ -948,7 +956,17 @@ footer {
 
     form.address-form {
 
-      input {
+      select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        display: block;
+        border-radius: 0;
+        position: relative;
+      }
+
+
+      input, select {
         padding: 10px;
         margin: 5px auto;
         width: 100%;

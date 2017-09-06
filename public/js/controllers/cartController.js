@@ -131,9 +131,32 @@ getProductsInCart();
     $scope.shipNote = $rootScope.note.note;
   }
 
+  ///////////
+  ///////////
+  ///////////
+  ///////////
+  // FINISH SWITCH CASE
+  ///////////
+  ///////////
+  ///////////
+
+  $scope.clearInput = function(model){
+    switch(model){
+      case 'cartEmail': $scope.cartEmailR = false; break;
+
+      case 'cartNameFirst': $scope.cartNameFirstR = false; break;
+      case 'contactSubject': $scope.contactSubjectR = false; break;
+      case 'contactMessage': $scope.contactMessageR = false; break;
+    }
+  }
+
   $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
     let email = document.getElementById('userEmail').value;
+    var isValidZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(shipZip);
 
+    console.log(isValidZip, "isValidZip");
+
+    console.log(shipState, "HAHAHAHA");
     $scope.cartEmailR = false;
     $scope.cartNameFirstR = false;
     $scope.cartNameLastR = false;
@@ -141,6 +164,7 @@ getProductsInCart();
     $scope.cartCityR = false;
     $scope.cartStateR = false;
     $scope.cartZipR = false;
+    // $scope.cartZipValidR = false;
 
     if(!email){$scope.cartEmailR = true;}
     if(!shipNameFirst){$scope.cartNameFirstR = true;}
@@ -149,14 +173,17 @@ getProductsInCart();
     if(!shipCity){$scope.cartCityR = true;}
     if(!shipState){$scope.cartStateR = true;}
     if(!shipZip){$scope.cartZipR = true;}
+    if(!isValidZip){$scope.cartZipR = true;}
 
 
 
-
-    if($scope.contactNameFirstR === true ||
-       $scope.contactEmailR === true ||
-       $scope.contactSubjectR === true ||
-       $scope.contactMessageR === true){
+    if($scope.cartEmailR === true ||
+       $scope.cartNameFirstR === true ||
+       $scope.cartNameLastR === true ||
+       $scope.cartAddressR === true ||
+       $scope.cartCityR === true ||
+       $scope.cartStateR === true ||
+       $scope.cartZipR === true){
          alert("FALSE");
     }
 
