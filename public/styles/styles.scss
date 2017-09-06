@@ -1564,12 +1564,12 @@ footer {
       justify-content: space-between;
 
 
-      // div {
-      //   text-align: center;
-      // }
+      div {
+        text-align: left;
+      }
 
       .checkout-left, .checkout-right {
-        text-align: center;
+        // text-align: center;
         width: 50%;
       }
 

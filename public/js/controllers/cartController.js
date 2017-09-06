@@ -132,11 +132,33 @@ getProductsInCart();
   }
 
   $scope.stripeBtn = function(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote){
+    let email = document.getElementById('userEmail').value;
 
-    //
-    // if(!shipNameFirst){
-    //   swal("please enter your name")
-    // }
+    $scope.cartEmailR = false;
+    $scope.cartNameFirstR = false;
+    $scope.cartNameLastR = false;
+    $scope.cartAddressR = false;
+    $scope.cartCityR = false;
+    $scope.cartStateR = false;
+    $scope.cartZipR = false;
+
+    if(!email){$scope.cartEmailR = true;}
+    if(!shipNameFirst){$scope.cartNameFirstR = true;}
+    if(!shipNameLast){$scope.cartNameLastR = true;}
+    if(!shipAddress){$scope.cartAddressR = true;}
+    if(!shipCity){$scope.cartCityR = true;}
+    if(!shipState){$scope.cartStateR = true;}
+    if(!shipZip){$scope.cartZipR = true;}
+
+
+
+
+    if($scope.contactNameFirstR === true ||
+       $scope.contactEmailR === true ||
+       $scope.contactSubjectR === true ||
+       $scope.contactMessageR === true){
+         alert("FALSE");
+    }
 
     let orderData = {
       order: {
@@ -163,7 +185,9 @@ getProductsInCart();
 
     //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
     $rootScope.email = {
-      email: document.getElementById('userEmail').value
+      email: email
+      // email: document.getElementById('userEmail').value
+
     }
 
     // console.log($rootScope.details, "scopedetailsbeinglogged");

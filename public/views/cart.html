@@ -224,14 +224,30 @@
               <hr>
               <div class="checkout-left-inner">
                 <!-- <input type="text" placeholder="Email Address *" ng-model="shipEmail" value="useremail" required> -->
-                <input type="email" id="userEmail" placeholder="Email Address *" ng-value="useremail" required>
-                <input type="text" placeholder="First Name *" ng-model="shipNameFirst" required>
-                <input type="text" placeholder="Last Name *" ng-model="shipNameLast" required>
-                <input type="text" placeholder="Address *" ng-model="shipAddress" required>
-                <input type="text" placeholder="Address 2" ng-model="shipAddress2">
-                <input type="text" placeholder="City *" ng-model="shipCity" required>
-                <input type="text" placeholder="State *" ng-model="shipState" required>
-                <input type="number" placeholder="Zip Code *" ng-model="shipZip" required>
+                <label ng-class="{red: cartEmailR}">Email * <span ng-class="{none: !cartEmailR, errordisplay: carttEmailR}">- Email is required</span></label>
+                <input type="email" id="userEmail"  ng-value="useremail" >
+
+                <label ng-class="{red: cartNameFirstR}">First Name * <span ng-class="{none: !cartNameFirstR, errordisplay: cartNameFirstR}">- First Name is required</span></label>
+                <input type="text" ng-model="shipNameFirst" >
+
+                <label ng-class="{red: cartNameLastR}">Last Name * <span ng-class="{none: !cartNameLastR, errordisplay: cartNameLastR}">- Last Name is required</span></label>
+                <input type="text" ng-model="shipNameLast" >
+
+                <label ng-class="{red: cartAddressR}">Address * <span ng-class="{none: !cartAddressR, errordisplay: cartAddressR}">- Address is required</span></label>
+                <input type="text" ng-model="shipAddress" >
+
+                <label>Address 2</label>
+                <input type="text" ng-model="shipAddress2">
+
+                <label ng-class="{red: cartCityR}">City * <span ng-class="{none: !cartCityR, errordisplay: cartCityR}">- City is required</span></label>
+                <input type="text" ng-model="shipCity" >
+
+                <label ng-class="{red: cartStateR}">State Name * <span ng-class="{none: !cartStateR, errordisplay: cartStateR}">- State is required</span></label>
+                <input type="text" ng-model="shipState" >
+
+                <label ng-class="{red: cartZipR}">Zip Code * <span ng-class="{none: !cartZipR, errordisplay: cartZipR}">- Zip Code is required</span></label>
+                <input type="number" ng-model="shipZip" >
+
 
                 <hr class='lastItem hideDesktop'>
 
@@ -242,8 +258,9 @@
               <h2 class="pad">Payment Method</h2>
               <hr>
               <div class="checkout-right-inner">
+                <label>Optional Message</label>
 
-              <textarea name="name" ng-model="shipNote" placeholder="Optional message"></textarea>
+              <textarea name="name" ng-model="shipNote"></textarea>
                 <button type="submit" class="btn-stripe" >Complete Checkout</button>
                 <!-- <stripe-directive total-price="orderTotal"></stripe-directive> -->
                 <hr class='lastItem hideDesktop'>
