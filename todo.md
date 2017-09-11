@@ -30,7 +30,7 @@
 - [ ] Use Square to process payments
   - [ ] Create inline purchase option (instead of stripe popup)
 
-- [ ] Create form validity function - alert with inline styles (required tag not supported in all browsers)
+- [x] Create form validity function - alert with inline styles (required tag not supported in all browsers) 9/10/17
 
 - [x] Email alerts (to me and purchaser) once order is placed (nodemailer) 4/4/17
 
