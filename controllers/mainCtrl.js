@@ -122,6 +122,23 @@ module.exports = {
   },
 
   getProductsInCart: function(req, res, next){
+
+
+    // let sesscart = { productSize: '15.0H x 20.5W',
+    // productColor: 'Crimson Red',
+    // productQuantity: 1,
+    // productName: 'Wanderlust',
+    // productPrice: '20.99',
+    // productImage: 'https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg',
+    // productId: 2,
+    // productOutline: false }
+    //
+    // if(!req.session.cart){
+    //   req.session.cart = [];
+    //   req.session.cart.push(sesscart)
+    //
+    // }
+    // console.log(req.session.cart);
     res.send(req.session.cart);
   },
 
@@ -352,7 +369,7 @@ module.exports = {
     if(b.lname){
       b.lname = " " + b.lname;
     }
-    
+
     let text = "<strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
 
     //email styling example

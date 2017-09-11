@@ -503,6 +503,14 @@ h1, h2, h3, h4, h5, h6 {
 input, textarea, select {
   font-family: "Open Sans", sans-serif; }
 
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+input[type=number] {
+  -moz-appearance: textfield; }
+
 .btn {
   padding: 5px 10px;
   background-color: #605675;
@@ -1043,12 +1051,30 @@ footer {
       text-align: right; }
     .cart-main .total-disc-ship .d .aleft {
       text-align: left; }
-  .cart-main .checkout form.address-form input {
+  .cart-main .checkout form.address-form select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+    border-radius: 0;
+    position: relative; }
+  .cart-main .checkout form.address-form input[type="text"],
+  .cart-main .checkout form.address-form input[type="email"],
+  .cart-main .checkout form.address-form input[type="number"],
+  .cart-main .checkout form.address-form select {
     padding: 10px;
-    margin: 5px auto;
+    margin: 5px auto 20px;
     width: 100%;
     border: 1px solid #aaa;
     background-color: #fafafa; }
+  .cart-main .checkout form.address-form .same-as-shipping {
+    padding: 10px 0 15px;
+    text-align: center; }
+    .cart-main .checkout form.address-form .same-as-shipping input[type="checkbox"] + label {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 20px;
+      cursor: pointer; }
   .cart-main .checkout form.address-form button {
     margin-top: 10px; }
   .cart-main .checkout textarea {
@@ -1375,8 +1401,9 @@ footer {
     .cart-main form.address-form {
       display: flex;
       justify-content: space-between; }
+      .cart-main form.address-form div {
+        text-align: left; }
       .cart-main form.address-form .checkout-left, .cart-main form.address-form .checkout-right {
-        text-align: center;
         width: 50%; }
       .cart-main form.address-form .checkout-left .checkout-left-inner {
         margin-right: 10px; }

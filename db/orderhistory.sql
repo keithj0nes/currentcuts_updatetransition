@@ -7,7 +7,7 @@
 
 SELECT orders.id, orders.datesold, orders.ordertotal FROM orders
 JOIN users on orders.userId = users.id
-WHERE users.id = $1
+WHERE users.id = $1 order by id;
 
 -- select * from orders
 -- join users on orders.userid = users.id

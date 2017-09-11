@@ -229,7 +229,7 @@ getProductsInCart();
        $scope.billCityR === true ||
        $scope.billStateR === true ||
        $scope.billZipR === true){
-         alert("FALSE");
+         //errors will pop up
     } else {
 
       let orderData = {
@@ -240,9 +240,15 @@ getProductsInCart();
         isguestuser: $scope.guestistrue
       }
 
-      // let billingInfo = {
-      //
-      // }
+      let billingInfo = {
+        billNameFirst,
+        billNameLast,
+        billAddress,
+        billAddress2,
+        billCity,
+        billState,
+        billZip
+      }
 
       $rootScope.details = {
         recNameFirst: shipNameFirst,

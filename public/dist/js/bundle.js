@@ -4739,6 +4739,37 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     $scope.guestistrue = !$scope.guestistrue;
   };
 
+  $scope.sameAsShipping = function (checked, shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip) {
+    $scope.sameShip = {};
+
+    this.billNameFirst = "";
+    this.billNameLast = "";
+    this.billAddress = "";
+    this.billAddress2 = "";
+    this.billCity = "";
+    this.billState = "";
+    this.billZip = "";
+
+    if (checked) {
+      $scope.sameShip.shipNameFirst = shipNameFirst;
+      $scope.sameShip.shipNameLast = shipNameLast;
+      $scope.sameShip.shipAddress = shipAddress;
+      $scope.sameShip.shipAddress2 = shipAddress2;
+      $scope.sameShip.shipCity = shipCity;
+      $scope.sameShip.shipState = shipState;
+      $scope.sameShip.shipZip = shipZip;
+    } else {
+      $scope.sameShip = {};
+    }
+    this.billNameFirst = $scope.sameShip.shipNameFirst;
+    this.billNameLast = $scope.sameShip.shipNameLast;
+    this.billAddress = $scope.sameShip.shipAddress;
+    this.billAddress2 = $scope.sameShip.shipAddress2;
+    this.billCity = $scope.sameShip.shipCity;
+    this.billState = $scope.sameShip.shipState;
+    this.billZip = $scope.sameShip.shipZip;
+  };
+
   $scope.cartDelete = function (item) {
     mainService.deleteProductsInCart(item).then(function (response) {
       $scope.cart = response.data;
@@ -4848,113 +4879,216 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     $scope.shipNote = $rootScope.note.note;
   }
 
-  $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote) {
+  ///////////
+  ///////////
+  ///////////
+  ///////////
+  // FINISH SWITCH CASE
+  ///////////
+  ///////////
+  ///////////
 
-    //
-    // if(!shipNameFirst){
-    //   swal("please enter your name")
-    // }
+  $scope.clearInput = function (model) {
+    switch (model) {
+      case 'cartEmail':
+        $scope.cartEmailR = false;break;
 
-    var orderData = {
-      order: {},
-      user: {},
-      isguestuser: $scope.guestistrue
+      case 'cartNameFirst':
+        $scope.cartNameFirstR = false;break;
+      case 'contactSubject':
+        $scope.contactSubjectR = false;break;
+      case 'contactMessage':
+        $scope.contactMessageR = false;break;
+    }
+  };
 
-    };
+  $scope.stripeBtn = function (shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, billNameFirst, billNameLast, billAddress, billAddress2, billCity, billState, billZip) {
+    var email = document.getElementById('userEmail').value;
+    var validShipZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(shipZip);
+    var validBillZip = /(^\d{5}$)|(^\d{5}-\d{4}$)/.test(billZip);
 
-    $rootScope.details = {
-      recNameFirst: shipNameFirst,
-      recNameLast: shipNameLast,
-      address1: shipAddress,
-      address2: shipAddress2,
-      city: shipCity,
-      state: shipState,
-      zip: shipZip
-    };
+    $scope.cartEmailR = false;
+    $scope.cartNameFirstR = false;
+    $scope.cartNameLastR = false;
+    $scope.cartAddressR = false;
+    $scope.cartCityR = false;
+    $scope.cartStateR = false;
+    $scope.cartZipR = false;
+    $scope.billNameFirstR = false;
+    $scope.billNameLastR = false;
+    $scope.billAddressR = false;
+    $scope.billCityR = false;
+    $scope.billStateR = false;
+    $scope.billZipR = false;
 
-    $rootScope.note = {
-      note: shipNote
-    };
-
-    //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
-    $rootScope.email = {
-      email: document.getElementById('userEmail').value
-    };
-
-    // console.log($rootScope.details, "scopedetailsbeinglogged");
-
-    $scope.value = $rootScope.details;
-
-    if ($rootScope.note.note) {
-      // console.log($rootScope.note.note, "rootScope.no.note");
-      orderData.order.note = $rootScope.note.note;
+    if (!email) {
+      $scope.cartEmailR = true;
+    }
+    if (!shipNameFirst) {
+      $scope.cartNameFirstR = true;
+    }
+    if (!shipNameLast) {
+      $scope.cartNameLastR = true;
+    }
+    if (!shipAddress) {
+      $scope.cartAddressR = true;
+    }
+    if (!shipCity) {
+      $scope.cartCityR = true;
+    }
+    if (!shipState) {
+      $scope.cartStateR = true;
+    }
+    if (!shipZip) {
+      $scope.cartZipR = true;
+    }
+    if (!validShipZip) {
+      $scope.cartZipR = true;
+    }
+    if (!billNameFirst) {
+      $scope.billNameFirstR = true;
+    }
+    if (!billNameLast) {
+      $scope.billNameLastR = true;
+    }
+    if (!billAddress) {
+      $scope.billAddressR = true;
+    }
+    if (!billCity) {
+      $scope.billCityR = true;
+    }
+    if (!billState) {
+      $scope.billStateR = true;
+    }
+    if (!billZip) {
+      $scope.billZipR = true;
+    }
+    if (!validBillZip) {
+      $scope.billZipR = true;
     }
 
-    if ($rootScope.email.email) {
-      // console.log($rootScope.email.email, "rootScope.email");
-      orderData.email = $rootScope.email.email;
-    }
-
-    orderData.user = $scope.value;
-    orderData.product = [];
-    orderData.shipping = $rootScope.shippingCost2;
-    console.log(orderData.shipping, "orderData.shipping");
-
-    mainService.getProductsInCart().then(function (response) {
-      if (response) {
-        console.log(response);
-
-        response.forEach(function (item, i) {
-          console.log(item, "item being logged");
-          orderData.product.push(item);
-        });
-      }
-    });
-
-    console.log(orderData, "orderdata logged");
-    // Open Checkout with further options:
-    // console.log(e.data, "USER DATA STRIPE CLICK");
-    if (!$scope.value) {
-      alert("please enter shipping info");
+    if ($scope.cartEmailR === true || $scope.cartNameFirstR === true || $scope.cartNameLastR === true || $scope.cartAddressR === true || $scope.cartCityR === true || $scope.cartStateR === true || $scope.cartZipR === true || $scope.billNameFirstR === true || $scope.billNameLastR === true || $scope.billAddressR === true || $scope.billCityR === true || $scope.billStateR === true || $scope.billZipR === true) {
+      //errors will pop up
     } else {
-      var handler = StripeCheckout.configure({
-        key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-        locale: 'auto',
-        email: $rootScope.email.email,
-        allowRememberMe: false,
-        token: function token(_token) {
-          // You can access the token ID with `token.id`.
-          // Get the token ID to your server-side code for use.
-          var newCard = _token.card;
-          newCard.metadata = { guestUser: orderData.isguestuser };
+      var handler;
+      var stripeTotal;
 
-          $http.post('/api/charge', {
-            stripeToken: _token.id,
-            price: stripeTotal,
-            // email: token.email,
-            // email: "hello@hahaomg.com",
-            stripeTokenCard: newCard
-          }).then(function (response) {
-            console.log(response, "response in cartController charge lololololol");
-            $rootScope.cart = [];
-            //set timeout so thankyou page loads after orderData is saved to backend
-            setTimeout(function () {
-              $state.go('thankyou', { "orderid": response.data });
-            }, 150);
-            return $http.post('/api/email', orderData);
-          });
+      (function () {
+
+        var orderData = {
+          order: {},
+          user: {},
+          isguestuser: $scope.guestistrue
+        };
+
+        var billingInfo = {
+          billNameFirst: billNameFirst,
+          billNameLast: billNameLast,
+          billAddress: billAddress,
+          billAddress2: billAddress2,
+          billCity: billCity,
+          billState: billState,
+          billZip: billZip
+        };
+
+        $rootScope.details = {
+          recNameFirst: shipNameFirst,
+          recNameLast: shipNameLast,
+          address1: shipAddress,
+          address2: shipAddress2,
+          city: shipCity,
+          state: shipState,
+          zip: shipZip
+        };
+
+        $rootScope.note = {
+          note: shipNote
+        };
+
+        //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
+        $rootScope.email = {
+          email: email
+          // email: document.getElementById('userEmail').value
+
+        };
+
+        // console.log($rootScope.details, "scopedetailsbeinglogged");
+
+        $scope.value = $rootScope.details;
+
+        if ($rootScope.note.note) {
+          // console.log($rootScope.note.note, "rootScope.no.note");
+          orderData.order.note = $rootScope.note.note;
         }
-      });
-      var stripeTotal = $scope.orderTotal * 100;
 
-      handler.open({
-        name: 'Current Cuts Vinyl',
-        description: 'Decal purchase',
-        amount: stripeTotal
-      });
-      // e.preventDefault();
-    }
+        if ($rootScope.email.email) {
+          // console.log($rootScope.email.email, "rootScope.email");
+          orderData.email = $rootScope.email.email;
+        }
+
+        orderData.user = $scope.value;
+        orderData.product = [];
+        orderData.shipping = $rootScope.shippingCost2;
+        console.log(orderData.shipping, "orderData.shipping");
+
+        mainService.getProductsInCart().then(function (response) {
+          if (response) {
+            console.log(response);
+
+            response.forEach(function (item, i) {
+              console.log(item, "item being logged");
+              orderData.product.push(item);
+            });
+          }
+        });
+
+        console.log(orderData, "orderdata logged");
+        // Open Checkout with further options:
+        // console.log(e.data, "USER DATA STRIPE CLICK");
+        if (!$scope.value) {
+          alert("please enter shipping info");
+        } else {
+          handler = StripeCheckout.configure({
+            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            email: $rootScope.email.email,
+            allowRememberMe: false,
+            token: function token(_token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+              var newCard = _token.card;
+              newCard.metadata = { guestUser: orderData.isguestuser };
+
+              $http.post('/api/charge', {
+                stripeToken: _token.id,
+                price: stripeTotal,
+                // email: token.email,
+                // email: "hello@hahaomg.com",
+                stripeTokenCard: newCard
+              }).then(function (response) {
+                console.log(response, "response in cartController charge lololololol");
+                $rootScope.cart = [];
+                //set timeout so thankyou page loads after orderData is saved to backend
+                setTimeout(function () {
+                  $state.go('thankyou', { "orderid": response.data });
+                }, 150);
+                return $http.post('/api/email', orderData);
+              });
+            }
+          });
+          stripeTotal = $scope.orderTotal * 100;
+
+
+          handler.open({
+            name: 'Current Cuts Vinyl',
+            description: 'Decal purchase',
+            amount: stripeTotal
+          });
+          // e.preventDefault();
+        }
+      })();
+    };
   };
 });
 "use strict";
@@ -5476,24 +5610,17 @@ angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modal
     link: function link(scope, elem, attr) {
       var getUsername = function getUsername() {
         mainService.getUsername().then(function (response) {
-          console.log(response, "LOGINGLKJSDLKGJLKDGJLKDSGJLKDGJLKDGJDLSKGJ!!!!!!!!!");
           scope.username = response.firstname;
           scope.useremail = response.email;
-          // if(scope.username){
-          //   scope.usernameFirst = scope.username.charAt(0);
-          //   // console.log(scope.usernameFirst, "scope.usernameFirst");
-          // }
         });
       };
 
       // modal functionality when clicking username in desktop view
       scope.openModal = function (id) {
-        console.log("openModal in controller");
         modalService.Open(id);
       };
 
       scope.closeMyModal = function (id) {
-        console.log(id, "clicked button in loggied");
         modalService.Close(id);
       };
 
