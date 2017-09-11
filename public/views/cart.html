@@ -6,7 +6,6 @@
   <div class="cart-user-m hideDesktop">
 
     <h2 class="pad">Your Cart</h2>
-
     <hr>
 
     <div class="empty-cart" ng-if="!somethingInCart">
@@ -216,7 +215,7 @@
       <!--  If user is present, display shipping / stripe button  -->
 
         <div class="checkout" ng-if="username || guestistrue" check-logged-in>
-          <form class="address-form" ng-submit="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote)">
+          <form class="address-form" ng-submit="stripeBtn(shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip, shipNote, billNameFirst, billNameLast, billAddress, billAddress2, billCity, billState, billZip)">
 
             <div class="checkout-left">
 
@@ -224,27 +223,26 @@
               <hr>
               <div class="checkout-left-inner">
                 <!-- <input type="text" placeholder="Email Address *" ng-model="shipEmail" value="useremail" required> -->
-                <label ng-class="{red: cartEmailR}">Email * <span ng-class="{none: !cartEmailR, errordisplay: carttEmailR}">- Email is required</span></label>
-                <input type="email" id="userEmail"  ng-value="useremail" ng-focus="clearInput('cartEmail')">
+                <label for="ue" ng-class="{red: cartEmailR}">Email * <span ng-class="{none: !cartEmailR, errordisplay: carttEmailR}">- Email is required</span></label>
+                <input id="ue" type="email" id="userEmail"  ng-value="useremail" ng-focus="clearInput('cartEmail')">
 
-                <label ng-class="{red: cartNameFirstR}">First Name * <span ng-class="{none: !cartNameFirstR, errordisplay: cartNameFirstR}">- First Name is required</span></label>
-                <input type="text" ng-model="shipNameFirst" ng-focus="clearInput('cartNameFirst')">
+                <label for="snf" ng-class="{red: cartNameFirstR}">First Name * <span ng-class="{none: !cartNameFirstR, errordisplay: cartNameFirstR}">- First Name is required</span></label>
+                <input id="snf" type="text" ng-model="shipNameFirst" ng-focus="clearInput('cartNameFirst')">
 
-                <label ng-class="{red: cartNameLastR}">Last Name * <span ng-class="{none: !cartNameLastR, errordisplay: cartNameLastR}">- Last Name is required</span></label>
-                <input type="text" ng-model="shipNameLast" >
+                <label for="snl" ng-class="{red: cartNameLastR}">Last Name * <span ng-class="{none: !cartNameLastR, errordisplay: cartNameLastR}">- Last Name is required</span></label>
+                <input id="snl" type="text" ng-model="shipNameLast" >
 
-                <label ng-class="{red: cartAddressR}">Address * <span ng-class="{none: !cartAddressR, errordisplay: cartAddressR}">- Address is required</span></label>
-                <input type="text" ng-model="shipAddress" >
+                <label for="sa" ng-class="{red: cartAddressR}">Address * <span ng-class="{none: !cartAddressR, errordisplay: cartAddressR}">- Address is required</span></label>
+                <input id="sa" type="text" ng-model="shipAddress" >
 
-                <label>Address 2</label>
-                <input type="text" ng-model="shipAddress2">
+                <label for="sa2" >Address 2</label>
+                <input id="sa2" type="text" ng-model="shipAddress2">
 
-                <label ng-class="{red: cartCityR}">City * <span ng-class="{none: !cartCityR, errordisplay: cartCityR}">- City is required</span></label>
-                <input type="text" ng-model="shipCity" >
+                <label for="sc" ng-class="{red: cartCityR}">City * <span ng-class="{none: !cartCityR, errordisplay: cartCityR}">- City is required</span></label>
+                <input id="sc" type="text" ng-model="shipCity" >
 
-                <label ng-class="{red: cartStateR}">State Name * <span ng-class="{none: !cartStateR, errordisplay: cartStateR}">- State is required</span></label>
-                <!-- <input type="text" ng-model="shipState" > -->
-                <select ng-model="shipState">
+                <label for="ss" ng-class="{red: cartStateR}">State Name * <span ng-class="{none: !cartStateR, errordisplay: cartStateR}">- State is required</span></label>
+                <select id="ss" ng-model="shipState">
                   <option value="">Select State </option>
 
                 	<option value="AL">Alabama</option>
@@ -302,7 +300,7 @@
 
 
 
-                <label ng-class="{red: cartZipR}">Zip Code * <span ng-class="{none: !cartZipR, errordisplay: cartZipR}">- Zip Code is required</span></label>
+                <label for="sz" ng-class="{red: cartZipR}">Zip Code * <span ng-class="{none: !cartZipR, errordisplay: cartZipR}">- Zip Code is required</span></label>
                 <input type="number" ng-model="shipZip">
 
                 <p class="center hideMobile">* We do not store any billing or credit card information *</p>
@@ -320,29 +318,27 @@
                 <input type="email" id="userEmail"  ng-value="useremail" ng-focus="clearInput('cartEmail')"> -->
                 <div class="same-as-shipping">
                   <!-- <input id="same" style="vertical-align: middle;" type="checkbox" name="" value=""> -->
-                  <input id="same" type="checkbox" name="" value="">
+                  <input id="same" type="checkbox" ng-change="sameAsShipping(sameAsShip, shipNameFirst, shipNameLast, shipAddress, shipAddress2, shipCity, shipState, shipZip)" ng-model="sameAsShip">
                   <label for="same">Same as shipping</label>
-
                 </div>
 
-                <label ng-class="{red: cartNameFirstR}">First Name * <span ng-class="{none: !cartNameFirstR, errordisplay: cartNameFirstR}">- First Name is required</span></label>
-                <input type="text" ng-model="shipNameFirst" ng-focus="clearInput('cartNameFirst')">
+                <label for="bnf" ng-class="{red: billNameFirstR}">First Name * <span ng-class="{none: !billNameFirstR, errordisplay: billNameFirstR}">- First Name is required</span></label>
+                <input id="bnf" type="text" ng-model="billNameFirst" ng-focus="clearInput('billNameFirst')">
 
-                <label ng-class="{red: cartNameLastR}">Last Name * <span ng-class="{none: !cartNameLastR, errordisplay: cartNameLastR}">- Last Name is required</span></label>
-                <input type="text" ng-model="shipNameLast" >
+                <label for="bnl" ng-class="{red: billNameLastR}">Last Name * <span ng-class="{none: !billNameLastR, errordisplay: billNameLastR}">- Last Name is required</span></label>
+                <input id="bnl" type="text" ng-model="billNameLast" >
 
-                <label ng-class="{red: cartAddressR}">Address * <span ng-class="{none: !cartAddressR, errordisplay: cartAddressR}">- Address is required</span></label>
-                <input type="text" ng-model="shipAddress" >
+                <label for="ba" ng-class="{red: billAddressR}">Address * <span ng-class="{none: !billAddressR, errordisplay: billAddressR}">- Address is required</span></label>
+                <input id="ba" type="text" ng-model="billAddress" >
 
-                <label>Address 2</label>
-                <input type="text" ng-model="shipAddress2">
+                <label for="ba2">Address 2</label>
+                <input id="ba2" type="text" ng-model="billAddress2">
 
-                <label ng-class="{red: cartCityR}">City * <span ng-class="{none: !cartCityR, errordisplay: cartCityR}">- City is required</span></label>
-                <input type="text" ng-model="shipCity" >
+                <label for="bc" ng-class="{red: billCityR}">City * <span ng-class="{none: !billCityR, errordisplay: billCityR}">- City is required</span></label>
+                <input id="bc" type="text" ng-model="billCity" >
 
-                <label ng-class="{red: cartStateR}">State Name * <span ng-class="{none: !cartStateR, errordisplay: cartStateR}">- State is required</span></label>
-                <!-- <input type="text" ng-model="shipState" > -->
-                <select ng-model="shipState">
+                <label for="bs" ng-class="{red: billStateR}">State Name * <span ng-class="{none: !billStateR, errordisplay: billStateR}">- State is required</span></label>
+                <select id="bs" ng-model="billState">
                   <option value="">Select State </option>
 
                 	<option value="AL">Alabama</option>
@@ -400,24 +396,24 @@
 
 
 
-                <label ng-class="{red: cartZipR}">Zip Code * <span ng-class="{none: !cartZipR, errordisplay: cartZipR}">- Zip Code is required</span></label>
-                <input type="number" ng-model="shipZip">
+                <label for="bz" ng-class="{red: billZipR}">Zip Code * <span ng-class="{none: !billZipR, errordisplay: billZipR}">- Zip Code is required</span></label>
+                <input id="bz" type="number" ng-model="billZip">
 
 
                 <hr class='lastItem hideDesktop'>
 
             </div>
 
-            <h2 class="pad center">Payment Method</h2>
+            <h2 class="pad center">Payment</h2>
             <hr>
             <p class="center hideDesktop">* We do not store any billing or credit card information *</p>
             <br>
             <!-- <div class="checkout-right-inner"> -->
-              <label>Optional Message</label>
+            <label>Optional Message</label>
 
             <textarea name="name" ng-model="shipNote"></textarea>
-              <button type="submit" class="btn-stripe" >Complete Checkout</button>
-              <hr class='lastItem hideDesktop'>
+            <button type="submit" class="btn-stripe" >Complete Checkout</button>
+            <hr class='lastItem hideDesktop'>
 
 
             <!-- </div> -->
