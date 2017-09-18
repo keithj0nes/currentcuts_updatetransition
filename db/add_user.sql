@@ -1,5 +1,5 @@
-INSERT INTO users (firstname, lastname, email, password, facebookid, registered)
-VALUES ($1, $2, $3, null, $4, now());
+INSERT INTO users (firstname, lastname, email, facebookid, registered)
+VALUES ($1, $2, $3, $4, now());
 
 
 --

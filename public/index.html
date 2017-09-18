@@ -46,12 +46,20 @@
         <a ng-if="!username" class="login hideMobile" ng-click="openModal('user-login-modal')">Login</a>
         <i class="material-icons hideMobile" ui-sref="userfavorites">favorite_border</i>
 
-        <modal id="user-login-modal">
+        <modal id="user-login-modal" signup-login>
             <div class="mymodal">
                 <div class="modal-body">
                   <span class="close" ng-click="closeMyModal('user-login-modal')">&times;</span>
                   <div class="login-container" ng-if="!username" check-logged-in>
                     <h1>Please Login</h1>
+                    <form ng-submit="logIn(loginEmail, loginPassword)">
+
+                      <input type="text" ng-model="loginEmail" placeholder="email">
+                      <input type="text" ng-model="loginPassword" placeholder="password">
+
+                      <button type="submit">Submit</button>
+
+                    </form>
                     <form method="get" action="/auth/facebook">
                       <button type="submit" class="btn-facebook">Log In with Facebook</button>
                     </form>
@@ -59,6 +67,17 @@
                 <br><br>
                     <h1>New user?</h1>
                     <!-- <h4>Sign up with Facebook</h4> -->
+                    <form ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword)">
+
+                      <input type="text" ng-model="signupFirstname" placeholder="first name">
+                      <input type="text" ng-model="signupLastname" placeholder="last name">
+
+                      <input type="text" ng-model="signupEmail" placeholder="email">
+                      <input type="text" ng-model="signupPassword" placeholder="password">
+
+                      <button name="submit">Submit</button>
+
+                    </form>
                     <form method="get" action="/auth/facebook">
                       <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
                     </form>

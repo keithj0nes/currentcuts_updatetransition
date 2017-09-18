@@ -5,8 +5,12 @@ const cors = require("cors");
 const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
+const moment = require('moment');
 const nodemailer = require("nodemailer");
+const bcrypt = require('bcrypt');
 const FacebookStrategy = require("passport-facebook").Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const flash = require('connect-flash');
 var stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
 
 
@@ -39,6 +43,62 @@ app.use(cors());
 app.use(express.static(__dirname + "/public"));    //current file directory + /public folder
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+
+  // {
+  //   "firstname": "adam",
+  //   "lastname": "common",
+  //   "email": "ac@ac.com",
+  //   "password": "heyman"
+  // }
+
+// app.post('/api/haha', (req, res) => {
+//   let newUser = {
+//     firstname: 'adam',
+//     lastname: 'common',
+//     // email: 'ac@ac.com',
+//     email: 'jr@email.com',
+//     password: 'heyman'
+//   }
+//
+//   console.log(newUser);
+//   let newUserwoPass = {
+//     firstname: 'adam',
+//     lastname: 'common',
+//     // email: 'ac@ac.com',
+//     email: 'jr@email.com',
+//   }
+//   db.users.findOne({email: newUser.email}, function(err, foundUser) {
+//     console.log(foundUser, "foundUser");
+//
+//     if(!foundUser){
+//       db.users.insert(newUserwoPass, function(err, insertedUser){
+//         console.log(insertedUser, "insertedUser");
+//       })
+//     }
+//   })
+//
+//   // bcrypt.hash('myPassword', 10, function(err, hash) {
+//   // // Store hash in database
+//   // console.log(hash, "logging hash");
+//   // res.send('successful')
+// });
+
+// app.get('/api/haha', (req, res) => {
+//
+//   // bcrypt.compare('myPasswodd', '$2a$10$MvP22pQfFLVF8nA7KKeCv.r6tuQ5ADgFpP7X7W/DlvVMHnk3/dF7u', function(err, result) {
+//   //   console.log(result, "logging res");
+//   // if(res) {
+//   //  // Passwords match
+//   // } else {
+//   //  // Passwords don't match
+//   // }
+//   //
+//   // res.send('successful')
+//   //
+//   // });
+// })
+
 
 isAuthenticated = (req, res, next) => {
   if(req.user){
@@ -108,6 +168,73 @@ passport.use(new FacebookStrategy({
   }
 ));
 
+passport.use('local-login', new LocalStrategy({
+  usernameField : 'email',
+  passwordField : 'password',
+  passReqToCallback : true
+},
+  function(req, email, password, done) {
+console.log("getting here");
+    db.users.findOne({ email: email }, function(err, user) {
+      if (err) { return done(err); }
+      console.log(user);
+      if (!user) {
+        console.log("no user");
+        //       db.users.insert(newUserwoPass, function(err, insertedUser){
+        //         console.log(insertedUser, "insertedUser");
+        //       })
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (user.password !== bcrp) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
+
+passport.use('local-signup', new LocalStrategy({
+  usernameField : 'email',
+  passwordField : 'password',
+  passReqToCallback : true
+},
+  function(req, email, password, done) {
+console.log("getting HURRR");
+console.log(password, 'haha');
+console.log(email, 'email haha');
+console.log(req.body, 'req.params');
+console.log(moment().format(), "moment");
+let r = req.body;
+    db.users.findOne({ email: email }, function(err, user) {
+      if (err) { return done(err); }
+      console.log(user);
+      if (user) {
+        console.log("user is found");
+
+        return done(null, false);
+
+      } else {
+        console.log("no user found");
+
+        let newHash = ""
+        bcrypt.hash(password, 10, function(err, hash) {
+          console.log(hash, "logging hash");
+          newHash = hash
+
+          db.users.insert({firstname: r.firstname, lastname: r.lastname, email: req.body.email, pass_hash: hash, registered: moment().format()}, (err, newUser) => {
+            if(err){
+              console.log(err);
+            }
+            console.log(newUser, "NEW USER ADED");
+            return done(null, newUser)
+          })
+        });
+      }
+    });
+  }
+));
+
 passport.serializeUser(function(user, done) {
   // console.log(user, "loggin user in serializeUser");
     done(null, user);
@@ -123,9 +250,46 @@ passport.deserializeUser(function(user, done) {
 
 //FACEBOOK OAUTH
 app.get("/auth/facebook", passport.authenticate('facebook', { scope: 'email'}));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", {
-failureRedirect: '/#/', successRedirect:'/#/login-success'
-}))
+app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: '/#/', successRedirect:'/#/login-success'}))
+
+
+
+app.post('/auth/haha',
+  passport.authenticate('local-login', { successRedirect: '/#/products/1',
+                                   failureRedirect: '/#/login',
+                                    failureFlash : true
+                                  })
+);
+
+// app.post('/auth/signup',
+//   passport.authenticate('local-signup', { successRedirect: '/#/cart',
+//                                    failureRedirect: '/#/login',
+//                                   })
+// );
+
+app.post('/auth/signup', function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    console.log(err, "logging err");
+    console.log(user, "logging user");
+    console.log(info, "logging info");
+
+
+    // Generate a JSON response reflecting authentication status
+    if (! user) {
+      return res.send({ success : false, message : 'authentication failed' });
+    }
+
+    req.login(user, loginErr => {
+      if (loginErr) {
+        return next(loginErr);
+      }
+      return res.send({ success : true, message : 'authentication succeeded' });
+    });
+  })(req, res, next);
+});
 
 //USERS
 app.put("/api/user/email", isAuthenticated, usersCtrl.updateEmail);
