@@ -50,37 +50,65 @@
             <div class="mymodal">
                 <div class="modal-body">
                   <span class="close" ng-click="closeMyModal('user-login-modal')">&times;</span>
-                  <div class="login-container" ng-if="!username" check-logged-in>
+                  <!-- <div class="login-container" ng-if="!username" check-logged-in> -->
+                  <div class="login-container" ng-show="existingUserLogin">
+
                     <h1>Please Login</h1>
-                    <form ng-submit="logIn(loginEmail, loginPassword)">
+
+                    <form method="get" action="/auth/facebook">
+                      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+                    </form>
+                    <br>
+                    or
+                    <br><br>
+                    <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword)">
 
                       <input type="text" ng-model="loginEmail" placeholder="email">
                       <input type="text" ng-model="loginPassword" placeholder="password">
 
-                      <button type="submit">Submit</button>
-
-                    </form>
-                    <form method="get" action="/auth/facebook">
-                      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+                      <button type="submit" class="big-btn btn">Submit</button>
+                      <p ng-click="existingUserLogin = false" class="center">Need an account? Click here</p>
                     </form>
 
-                <br><br>
+
+
+                  </div>
+
+                <div class="login-container" ng-hide="existingUserLogin">
+
                     <h1>New user?</h1>
                     <!-- <h4>Sign up with Facebook</h4> -->
-                    <form ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword)">
+                    <p>{{signupMessage}}</p>
 
-                      <input type="text" ng-model="signupFirstname" placeholder="first name">
-                      <input type="text" ng-model="signupLastname" placeholder="last name">
-
-                      <input type="text" ng-model="signupEmail" placeholder="email">
-                      <input type="text" ng-model="signupPassword" placeholder="password">
-
-                      <button name="submit">Submit</button>
-
-                    </form>
                     <form method="get" action="/auth/facebook">
                       <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
                     </form>
+                    <br>
+                    or
+                    <br><br>
+                    <form class="login-modal" ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword, signupConfirmPassword)">
+                      <label ng-class="{red: signupFirstnameR}">First Name * <span ng-class="{none: !signupFirstnameR, errordisplay: signupFirstnameR}">- required</span></label>
+                      <input type="text" ng-model="signupFirstname">
+
+                      <label ng-class="{red: signupLastnameR}">Last Name * <span ng-class="{none: !signupLastnameR, errordisplay: signupLastnameR}">- required</span></label>
+                      <input type="text" ng-model="signupLastname">
+
+                      <label ng-class="{red: signupEmailR}">Email * <span ng-class="{none: !signupEmailR, errordisplay: signupEmailR}">- required</span></label>
+                      <input type="text" ng-model="signupEmail">
+
+                      <label ng-class="{red: signupPasswordR}">Create Password * <span ng-class="{none: !signupPasswordR, errordisplay: signupPasswordR}">- required</span></label>
+                      <input type="text" ng-model="signupPassword">
+
+                      <label ng-class="{red: signupConfirmPassR}">Confirm Password * <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
+                      <input type="text" ng-model="signupConfirmPassword">
+
+                      <button name="submit" class="big-btn">Submit</button>
+
+                      <p ng-click="existingUserLogin = true" class="center">Already a member? Click here</p>
+
+                    </form>
+
+
                   </div>
                 </div>
             </div>

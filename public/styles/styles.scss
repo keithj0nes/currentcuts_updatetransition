@@ -1318,6 +1318,26 @@ footer {
   }
 }
 
+
+
+form.login-modal {
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  select {
+    padding: 10px;
+    margin: 5px auto 20px;;
+    width: 100%;
+    border: 1px solid #aaa;
+    background-color: #fafafa;
+  }
+
+}
+
+
+
+
 @media only screen and (min-width: 768px) {
 
 

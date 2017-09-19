@@ -240,5 +240,23 @@ angular.module("ccvApp").service("mainService", function($http){
     }).then(res => res.data);
   }
 
+  this.existingLogIn = function(existingUser){
+    console.log(existingUser);
+    // return $http({
+    //   method: "POST",
+    //   url: "/api/contact",
+    //   data: existingUser
+    // }).then(res => res.data);
+  }
+
+  this.newUserSignUp = function(newUser){
+    console.log(newUser);
+    return $http({
+      method: "POST",
+      url: "/auth/signup",
+      data: newUser
+    }).then(res => res.data);
+  }
+
 
 })

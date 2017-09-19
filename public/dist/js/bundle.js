@@ -5926,6 +5926,26 @@ angular.module("ccvApp").service("mainService", function ($http) {
       return res.data;
     });
   };
+
+  this.existingLogIn = function (existingUser) {
+    console.log(existingUser);
+    // return $http({
+    //   method: "POST",
+    //   url: "/api/contact",
+    //   data: existingUser
+    // }).then(res => res.data);
+  };
+
+  this.newUserSignUp = function (newUser) {
+    console.log(newUser);
+    return $http({
+      method: "POST",
+      url: "/auth/signup",
+      data: newUser
+    }).then(function (res) {
+      return res.data;
+    });
+  };
 });
 'use strict';
 
@@ -6042,6 +6062,10 @@ angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modal
       };
 
       getUsername();
+
+      scope.$on('signupSuccess', function () {
+        getUsername();
+      });
     }
   };
 });
@@ -6116,14 +6140,60 @@ angular.module("ccvApp").directive("signupLogin", function () {
 
   return {
     restrict: "AE",
-    controller: function controller($scope, mainService) {
+    controller: function controller($scope, $rootScope, mainService) {
 
-      $scope.signUp = function (firstname, lastname, email, password) {
-        console.log(firstname, lastname, email, password);
+      $scope.existingUserLogin = true;
+
+      $scope.signUp = function (firstname, lastname, email, password, confirmPassword) {
+        var newUser = { firstname: firstname, lastname: lastname, email: email, password: password };
+        // console.log(newUser);
+        $scope.signupFirstnameR = false;
+        $scope.signupLastnameR = false;
+        $scope.signupEmailR = false;
+        $scope.signupPasswordR = false;
+        $scope.signupConfirmPassR = false;
+
+        if (!firstname) {
+          $scope.signupFirstnameR = true;
+        }
+        if (!lastname) {
+          $scope.signupLastnameR = true;
+        }
+        if (!email) {
+          $scope.signupEmailR = true;
+        }
+        if (!password) {
+          $scope.signupPasswordR = true;
+        }
+        if (!confirmPassword) {
+          $scope.signupConfirmPassR = true;
+        }
+
+        if (email) {
+          mainService.newUserSignUp(newUser).then(function (res) {
+            console.log(res, "response in newUserSignUp");
+
+            if (res.success === false) {
+              $scope.signupMessage = "Email is already being used";
+            }
+
+            if (res.success === true) {
+              $scope.signupMessage = "Your account has been created!";
+              $rootScope.$broadcast('signupSuccess');
+            }
+          });
+        }
       };
 
       $scope.logIn = function (email, password) {
-        console.log(email, password);
+
+        var existingUser = { email: email, password: password };
+
+        mainService.existingLogIn(existingUser).then(function (res) {
+          console.log(res, "response in existingLogIn");
+        });
+
+        // console.log(existingUser);
       };
     }
   };

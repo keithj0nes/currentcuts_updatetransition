@@ -1260,6 +1260,16 @@ footer {
       font-size: 14px;
       line-height: normal; }
 
+form.login-modal input[type="text"],
+form.login-modal input[type="email"],
+form.login-modal input[type="number"],
+form.login-modal select {
+  padding: 10px;
+  margin: 5px auto 20px;
+  width: 100%;
+  border: 1px solid #aaa;
+  background-color: #fafafa; }
+
 @media only screen and (min-width: 768px) {
   .hideDesktop {
     display: none; }

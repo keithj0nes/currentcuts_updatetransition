@@ -21,6 +21,10 @@ angular.module("ccvApp").directive("checkLoggedIn", function(mainService, modalS
         }
 
         getUsername();
+
+        scope.$on('signupSuccess', function(){
+          getUsername();
+        })
     }
   }
 
