@@ -2,13 +2,20 @@ angular.module("ccvApp").directive("signupLogin", function(){
 
   return {
     restrict: "AE",
-    controller: function($scope, $rootScope, mainService){
+    controller: function($scope, $rootScope, mainService, modalService){
+
+      $scope.openModal =function(id){
+        modalService.Open(id);
+      }
+
+      $scope.closeMyModal = function(id){
+        modalService.Close(id);
+      }
 
       $scope.existingUserLogin = true;
 
       $scope.signUp = function(firstname, lastname, email, password, confirmPassword){
         const newUser = {firstname, lastname, email, password};
-        // console.log(newUser);
         $scope.signupFirstnameR = false;
         $scope.signupLastnameR = false;
         $scope.signupEmailR = false;
@@ -27,11 +34,12 @@ angular.module("ccvApp").directive("signupLogin", function(){
             console.log(res, "response in newUserSignUp");
 
             if(res.success === false){
-              $scope.signupMessage = "Email is already being used"
+              $scope.signupMessage = res.message;
             }
 
             if(res.success === true){
-              $scope.signupMessage = "Your account has been created!"
+              // $scope.signupMessage = "Your account has been created!"
+              $scope.closeMyModal('user-login-modal');
               $rootScope.$broadcast('signupSuccess')
             }
           })
@@ -46,6 +54,16 @@ angular.module("ccvApp").directive("signupLogin", function(){
 
         mainService.existingLogIn(existingUser).then((res) => {
           console.log(res, "response in existingLogIn");
+
+          if(res.success === false){
+            $scope.loginMessage = res.message;
+          }
+
+          if(res.success === true){
+            // $scope.signupMessage = "Your account has been created!"
+            $scope.closeMyModal('user-login-modal');
+            $rootScope.$broadcast('signupSuccess')
+          }
         })
 
         // console.log(existingUser);

@@ -242,11 +242,11 @@ angular.module("ccvApp").service("mainService", function($http){
 
   this.existingLogIn = function(existingUser){
     console.log(existingUser);
-    // return $http({
-    //   method: "POST",
-    //   url: "/api/contact",
-    //   data: existingUser
-    // }).then(res => res.data);
+    return $http({
+      method: "POST",
+      url: "/auth/login",
+      data: existingUser
+    }).then(res => res.data);
   }
 
   this.newUserSignUp = function(newUser){

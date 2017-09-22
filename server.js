@@ -174,21 +174,35 @@ passport.use('local-login', new LocalStrategy({
   passReqToCallback : true
 },
   function(req, email, password, done) {
-console.log("getting here");
+console.log("getting HURRR");
+console.log(password, 'haha');
     db.users.findOne({ email: email }, function(err, user) {
       if (err) { return done(err); }
-      console.log(user);
+      console.log(user, "login user passprot");
       if (!user) {
         console.log("no user");
-        //       db.users.insert(newUserwoPass, function(err, insertedUser){
-        //         console.log(insertedUser, "insertedUser");
-        //       })
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (user.password !== bcrp) {
-        return done(null, false, { message: 'Incorrect password.' });
+
+      if(user.facebookid){
+        console.log('getting here');
+        return done(null, false, { message: 'This email has already been signed up through Facebook. Please login with Facebook to continue' });
+
       }
-      return done(null, user);
+      console.log("user.password", user.pass_hash);
+      console.log("password", password);
+      bcrypt.compare(password, user.pass_hash, (err, comparedValue) => {
+        console.log(comparedValue, "comparedValue");
+        if(comparedValue === false || comparedValue === undefined || comparedValue === null){
+          console.log("password Incorrect - false user");
+
+          return done(null, false, { message: 'Incorrect password.' });
+        } else {
+          console.log("returning user true");
+          return done(null, user);
+        }
+
+      })
     });
   }
 ));
@@ -212,7 +226,12 @@ let r = req.body;
       if (user) {
         console.log("user is found");
 
-        return done(null, false);
+        if (user.facebookid){
+          console.log("fbid found");
+          return done(null, false, {message: 'This email has already been signed up through Facebook. Please login with Facebook to continue'})
+        }
+
+        return done(null, false, {message: 'Email is already being used'});
 
       } else {
         console.log("no user found");
@@ -254,18 +273,30 @@ app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRe
 
 
 
-app.post('/auth/haha',
-  passport.authenticate('local-login', { successRedirect: '/#/products/1',
-                                   failureRedirect: '/#/login',
-                                    failureFlash : true
-                                  })
-);
+app.post('/auth/login', function(req, res, next){
+  passport.authenticate('local-login', function(err, user, info){
+    console.log('haha');
+    if (err){
+      console.log(err, "getting herrrr");
+      return next(err);
+    }
 
-// app.post('/auth/signup',
-//   passport.authenticate('local-signup', { successRedirect: '/#/cart',
-//                                    failureRedirect: '/#/login',
-//                                   })
-// );
+    console.log(info, "info");
+    // Generate a JSON response reflecting authentication status
+    if (!user) {
+      return res.send({ success : false, message : info.message });
+    }
+
+    req.login(user, loginErr => {
+      if (loginErr) {
+        return next(loginErr);
+      }
+      return res.send({ success : true, message : 'authentication succeeded' });
+    });
+
+  })(req, res, next)
+
+});
 
 app.post('/auth/signup', function(req, res, next) {
   passport.authenticate('local-signup', function(err, user, info) {
@@ -279,7 +310,7 @@ app.post('/auth/signup', function(req, res, next) {
 
     // Generate a JSON response reflecting authentication status
     if (! user) {
-      return res.send({ success : false, message : 'authentication failed' });
+      return res.send({ success : false, message : info.message });
     }
 
     req.login(user, loginErr => {
