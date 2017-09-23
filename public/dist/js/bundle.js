@@ -5703,7 +5703,9 @@ angular.module("ccvApp").directive("signupLogin", function () {
 
   return {
     restrict: "AE",
-    controller: function controller($scope, $rootScope, mainService, modalService) {
+    controller: function controller($scope, $rootScope, $state, mainService, modalService) {
+
+      // console.log($scope.view);
 
       $scope.openModal = function (id) {
         modalService.Open(id);
@@ -5756,8 +5758,9 @@ angular.module("ccvApp").directive("signupLogin", function () {
         }
       };
 
-      $scope.logIn = function (email, password) {
+      $scope.logIn = function (email, password, mobile) {
 
+        console.log(mobile);
         var existingUser = { email: email, password: password };
 
         mainService.existingLogIn(existingUser).then(function (res) {
@@ -5769,7 +5772,11 @@ angular.module("ccvApp").directive("signupLogin", function () {
 
           if (res.success === true) {
             // $scope.signupMessage = "Your account has been created!"
-            $scope.closeMyModal('user-login-modal');
+            if (mobile) {
+              $state.go('loginsuccess');
+            } else {
+              $scope.closeMyModal('user-login-modal');
+            }
             $rootScope.$broadcast('signupSuccess');
           }
         });
