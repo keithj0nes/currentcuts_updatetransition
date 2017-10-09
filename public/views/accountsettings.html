@@ -3,10 +3,30 @@
   <h1>{{test}}</h1>
 
   <div class="">
-    <form class="" ng-submit="updateAccount('account-settings-modal', useremail)">
+    <!-- <form class="" ng-submit="updateAccount('account-settings-modal', useremail)">
       <input type="text" name="" ng-value="useremail" ng-model="useremail">
 
       <button type="submit" name="button">Update Account</button>
+    </form> -->
+
+    <form class="contact-form" ng-submit="updateAccount(contactNameFirst, contactNameLast, contactEmail, contactSubject, contactMessage)">
+      <label ng-class="{red: contactNameFirstR}">First Name <span ng-class="{none: !contactNameFirstR, errordisplay: contactNameFirstR}">- REQUIRED</span></label>
+      <input type="text" ng-model="userName" ng-focus="clearInput('contactNameFirst')">
+<br>
+      <label>Last Name</label>
+      <input type="text" ng-model="contactNameLast" >
+<br>
+      <label ng-class="{red: contactEmailR}">Email <span ng-class="{none: !contactEmailR, errordisplay: contactEmailR}">- REQUIRED</span></label>
+      <input type="text" ng-value="userEmail" ng-model="useremail">
+<br>
+      <label ng-class="{red: contactSubjectR}">Subject <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
+      <input type="text" ng-model="contactSubject" ng-focus="clearInput('contactSubject')">
+<br>
+      <label ng-class="{red: contactMessageR}">Message <span ng-class="{none: !contactMessageR, errordisplay: contactMessageR}">- REQUIRED</span></label>
+      <textarea ng-model="contactMessage" ng-focus="clearInput('contactMessage')"></textarea>
+
+<br>
+      <button type="submit" class="btn">Submit</button>
     </form>
   </div>
 

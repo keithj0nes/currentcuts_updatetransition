@@ -78,7 +78,7 @@ angular.module("ccvApp", ["ui.router"])
     .state("accountsettings", {
       url: "/user/account",
       templateUrl: "views/accountsettings.html",
-      controller: "userController"
+      controller: "accountController"
     })
     .state("userfavorites", {
       url: "/user/favorites",
