@@ -8,24 +8,37 @@
 
       <button type="submit" name="button">Update Account</button>
     </form> -->
-
-    <form class="contact-form" ng-submit="updateAccount(contactNameFirst, contactNameLast, contactEmail, contactSubject, contactMessage)">
+ <h2>Basic</h2>
+    <form class="contact-form" ng-submit="updateAccount('account-settings-modal', userName, userNameLast, userEmail, currentPass, newPass, confirmPass)">
       <label ng-class="{red: contactNameFirstR}">First Name <span ng-class="{none: !contactNameFirstR, errordisplay: contactNameFirstR}">- REQUIRED</span></label>
-      <input type="text" ng-model="userName" ng-focus="clearInput('contactNameFirst')">
+      <input type="text" ng-model="userName">
 <br>
       <label>Last Name</label>
-      <input type="text" ng-model="contactNameLast" >
+      <input type="text" ng-model="userNameLast" >
 <br>
       <label ng-class="{red: contactEmailR}">Email <span ng-class="{none: !contactEmailR, errordisplay: contactEmailR}">- REQUIRED</span></label>
-      <input type="text" ng-value="userEmail" ng-model="useremail">
+      <input type="text" ng-model="userEmail">
 <br>
-      <label ng-class="{red: contactSubjectR}">Subject <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
-      <input type="text" ng-model="contactSubject" ng-focus="clearInput('contactSubject')">
-<br>
-      <label ng-class="{red: contactMessageR}">Message <span ng-class="{none: !contactMessageR, errordisplay: contactMessageR}">- REQUIRED</span></label>
-      <textarea ng-model="contactMessage" ng-focus="clearInput('contactMessage')"></textarea>
 
+<hr style="border-top: 1px solid black;">
+
+<h2>Password</h2>
+      <div class="" ng-if="facebookUser">
+        <h1>you're a facebook user, you cannot change your password</h1>
+      </div>
+      <div class="" ng-if="!facebookUser">
+        <label ng-class="{red: contactSubjectR}">Current Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
+        <input type="text" ng-model="currentPass">
 <br>
+        <label ng-class="{red: contactSubjectR}">New Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
+        <input type="text" ng-model="newPass">
+<br>
+        <label ng-class="{red: contactSubjectR}">Confirm Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
+        <input type="text" ng-model="confirmPass">
+<br>
+<br>
+
+      </div>
       <button type="submit" class="btn">Submit</button>
     </form>
   </div>

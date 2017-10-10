@@ -378,8 +378,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
         $scope.openOrdersEmpty = true;
         $scope.openOrders = res.mainOrder;
         console.log($scope.openOrders, "logging with KEITH");
-        $scope.openCount--;
-        $scope.closedCount++;
+        // $scope.openCount--;
+        // $scope.closedCount++;
 
 
       } else {
