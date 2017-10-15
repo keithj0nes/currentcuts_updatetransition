@@ -1,5 +1,6 @@
 const app = require("../server.js");
 const db = app.get('db');
+const bcrypt = require('bcrypt')
 
 module.exports = {
 
@@ -50,7 +51,7 @@ module.exports = {
   //     }
   //   })
   // },
-  updateEmail: function(req, res){
+  updateBasicAccount: function(req, res){
 
     db.users.findOne({id: req.user.id}, (err, currentUser) => {
         if(err){
@@ -83,6 +84,31 @@ module.exports = {
         })
     })
 
+  },
+
+  updatePass: function(req, res){
+    console.log(req.body, "logging body of password hahaah");
+
+    bcrypt.compare(req.body.currentPass, req.user.pass_hash, (err, comparedValue) => {
+      console.log(comparedValue, "do passwords match");
+      if(comparedValue === false || comparedValue === undefined || comparedValue === null){
+        console.log("passwords DONT match!!!");
+        res.send({passwordUpdated: false, passwordMatch: false})
+      } else {
+        console.log("passwords DO match, update new password!");
+
+        bcrypt.hash(req.body.newPass, 10, (err, hash) => {
+          console.log(hash, "logging hash");
+          console.log(req.user.pass_hash, "lloggin pass_hash");
+
+          db.users.update({id: req.user.id, pass_hash: hash}, (err, updatedUser) => {
+            console.log(updatedUser, "logging updated userrr");
+            res.send({passwordUpdated: true})
+          })
+
+        })
+      }
+    })
   },
 
   updateFavorite: function(req, res){

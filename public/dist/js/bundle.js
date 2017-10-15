@@ -4339,6 +4339,9 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
 
   $scope.test = "testing123";
 
+  var errIcon = "error";
+  var sucIcon = "check_circle";
+
   $scope.openModal = function (id) {
     modalService.Open(id);
   };
@@ -4368,6 +4371,39 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
 
       modalService.Open(id);
     });
+  };
+
+  $scope.updatePass = function (id, currentPass, newPass, confirmPass) {
+    var updatePass = {
+      currentPass: currentPass, newPass: newPass
+    };
+    if (newPass !== confirmPass) {
+      // alert("passwords don't match")
+      $scope.messageIcon = errIcon;
+      $scope.accountMessage = "New passwords don't match";
+      modalService.Open(id);
+    } else {
+      // console.log(updatePass, "newPass");
+      mainService.updatePass(updatePass).then(function (res) {
+        console.log(res, "new pass");
+        if (res.passwordUpdated === true) {
+          $scope.messageIcon = sucIcon;
+          $scope.accountMessage = "Your password has been updated!";
+
+          $scope.currentPass = "";
+          $scope.newPass = "";
+          $scope.confirmPass = "";
+        } else if (res.passwordUpdated === false && res.passwordMatch === false) {
+          $scope.messageIcon = errIcon;
+          $scope.accountMessage = "Your current password couldn't be found";
+        }
+
+        // switch(res){
+        //   case res.passwordUpdated: $scope.accountMessage = "updated!"; break;
+        // }
+        modalService.Open(id);
+      });
+    }
   };
 
   mainService.getUsername().then(function (res) {
@@ -6312,7 +6348,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
 
     return $http({
       method: "PUT",
-      url: "/api/user/email",
+      url: "/api/user/account",
       data: newEmail
     }).then(function (res) {
       console.log(res);
@@ -6391,6 +6427,17 @@ angular.module("ccvApp").service("mainService", function ($http) {
       method: "POST",
       url: "/auth/signup",
       data: newUser
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.updatePass = function (newPass) {
+    console.log(newPass, "new pass in mainService");
+    return $http({
+      method: "PUT",
+      url: "/api/user/account/pass",
+      data: newPass
     }).then(function (res) {
       return res.data;
     });

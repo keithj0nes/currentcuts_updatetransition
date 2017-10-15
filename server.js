@@ -323,7 +323,8 @@ app.post('/auth/signup', function(req, res, next) {
 });
 
 //USERS
-app.put("/api/user/email", isAuthenticated, usersCtrl.updateEmail);
+app.put("/api/user/account", isAuthenticated, usersCtrl.updateBasicAccount);
+app.put("/api/user/account/pass", isAuthenticated, usersCtrl.updatePass);
 app.post("/api/user/favorites", isAuthenticated, usersCtrl.updateFavorite);
 app.get("/api/user/favorites", isAuthenticated, usersCtrl.getFavorites);
 app.get("/api/user/orders", isAuthenticated, usersCtrl.getOrderHistory);

@@ -9,7 +9,7 @@
       <button type="submit" name="button">Update Account</button>
     </form> -->
  <h2>Basic</h2>
-    <form class="contact-form" ng-submit="updateAccount('account-settings-modal', userName, userNameLast, userEmail, currentPass, newPass, confirmPass)">
+    <form class="contact-form" ng-submit="updateAccount('account-settings-modal', userName, userNameLast, userEmail)">
       <label ng-class="{red: contactNameFirstR}">First Name <span ng-class="{none: !contactNameFirstR, errordisplay: contactNameFirstR}">- REQUIRED</span></label>
       <input type="text" ng-model="userName">
 <br>
@@ -19,14 +19,19 @@
       <label ng-class="{red: contactEmailR}">Email <span ng-class="{none: !contactEmailR, errordisplay: contactEmailR}">- REQUIRED</span></label>
       <input type="text" ng-model="userEmail">
 <br>
+<button type="submit" class="btn">Submit</button>
+</form>
 
 <hr style="border-top: 1px solid black;">
 
 <h2>Password</h2>
-      <div class="" ng-if="facebookUser">
-        <h1>you're a facebook user, you cannot change your password</h1>
-      </div>
-      <div class="" ng-if="!facebookUser">
+    <div class="" ng-show="facebookUser">
+      <h1>you're a facebook user, you cannot change your password</h1>
+    </div>
+
+    <div class="" ng-hide="facebookUser">
+      <form class="contact-form" ng-submit="updatePass('account-settings-modal', currentPass, newPass, confirmPass)">
+
         <label ng-class="{red: contactSubjectR}">Current Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
         <input type="text" ng-model="currentPass">
 <br>
@@ -38,15 +43,12 @@
 <br>
 <br>
 
-      </div>
-      <button type="submit" class="btn">Submit</button>
-    </form>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+
   </div>
-
-
-
-
-
 
   <!-- <div class="modal" ng-class="{'display': updateSuccess, 'noscroll': updateSuccess}" id="modalz">
     <div class="modal-content-product-added">
@@ -69,7 +71,7 @@
           <div class="modal-body">
 
             <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
-            <i class="material-icons">check_circle</i>
+            <i class="material-icons">{{messageIcon}}</i>
 
               <!-- <h1>haha</h1> -->
               <p>

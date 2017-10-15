@@ -178,7 +178,7 @@ angular.module("ccvApp").service("mainService", function($http){
 
     return $http({
       method: "PUT",
-      url: "/api/user/email",
+      url: "/api/user/account",
       data: newEmail
     }).then((res) => {
       console.log(res);
@@ -255,6 +255,15 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "POST",
       url: "/auth/signup",
       data: newUser
+    }).then(res => res.data);
+  }
+
+  this.updatePass = function(newPass){
+    console.log(newPass, "new pass in mainService");
+    return $http({
+      method: "PUT",
+      url: "/api/user/account/pass",
+      data: newPass
     }).then(res => res.data);
   }
 

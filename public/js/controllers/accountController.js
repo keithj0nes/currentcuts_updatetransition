@@ -2,6 +2,9 @@ angular.module("ccvApp").controller("accountController", function($scope, $rootS
 
   $scope.test = "testing123"
 
+  let errIcon = "error";
+  let sucIcon = "check_circle";
+
   $scope.openModal = function(id){
     modalService.Open(id);
   }
@@ -34,6 +37,42 @@ angular.module("ccvApp").controller("accountController", function($scope, $rootS
     })
 
   }
+
+  $scope.updatePass = function(id, currentPass, newPass, confirmPass){
+      let updatePass = {
+        currentPass, newPass
+      }
+      if(newPass !== confirmPass){
+        // alert("passwords don't match")
+        $scope.messageIcon = errIcon;
+        $scope.accountMessage = "New passwords don't match";
+        modalService.Open(id);
+
+      } else {
+        // console.log(updatePass, "newPass");
+        mainService.updatePass(updatePass).then((res) => {
+          console.log(res, "new pass");
+          if(res.passwordUpdated === true){
+            $scope.messageIcon = sucIcon;
+            $scope.accountMessage = "Your password has been updated!";
+
+            $scope.currentPass = "";
+            $scope.newPass = "";
+            $scope.confirmPass = "";
+          } else if (res.passwordUpdated === false && res.passwordMatch === false){
+            $scope.messageIcon = errIcon;
+            $scope.accountMessage = "Your current password couldn't be found"
+          }
+
+          // switch(res){
+          //   case res.passwordUpdated: $scope.accountMessage = "updated!"; break;
+          // }
+          modalService.Open(id);
+        })
+      }
+  }
+
+
 
   mainService.getUsername().then(function(res){
     console.log(res);
