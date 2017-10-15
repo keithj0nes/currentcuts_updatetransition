@@ -24,64 +24,45 @@ module.exports = {
       if(req.user.facebookid){
         isFBuser = true;
       }
-
       res.status(200).send({firstname:req.user.firstname, lastname:req.user.lastname, email:req.user.email, isFBuser: isFBuser});
     } else {
       res.send({reqUser: false})
     }
   },
 
-  // updateEmail: function(req, res){
-  //   db.users.findOne({email: req.body.email}, (err, findEmail) => {
-  //     if(err){
-  //       console.log(err);
-  //       res.status(500).send(err);
-  //     }
-  //     if(findEmail){
-  //       res.send({success: false})
-  //     } else {
-  //       db.users.update({id: req.user.id, email: req.body.email}, function(err, user){
-  //         if(err){
-  //           console.log(err);
-  //           res.status(500).send(err)
-  //         }
-  //         req.user.email = user.email;
-  //         res.send({success: true})
-  //       })
-  //     }
-  //   })
-  // },
   updateBasicAccount: function(req, res){
-
-    db.users.findOne({id: req.user.id}, (err, currentUser) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err);
+    db.users.findOne({email: req.body.email}, (err, findEmail) => {
+      if(err){
+        console.log(err);
+        res.status(500).send(err);
+      }
+      if(findEmail){
+        if(findEmail.email != req.user.email){
+          res.send({success: false})
+        } else {
+          db.users.update({id: req.user.id, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname}, function(err, user){
+            if(err){
+              console.log(err);
+              res.status(500).send(err)
+            }
+            req.user.email = user.email;
+            req.user.firstname = user.firstname;
+            req.user.lastname = user.lastname;
+            res.send({success: true})
+          })
         }
-        db.users.findOne({email: req.body.email}, (err, findEmail) => {
+      } else {
+        db.users.update({id: req.user.id, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname}, function(err, user){
           if(err){
             console.log(err);
-            res.status(500).send(err);
+            res.status(500).send(err)
           }
-          if(findEmail){
-            db.users.update({id: req.user.id, firstname: req.body.firstname, lastname: req.body.lastname}, (err, updatedUser) => {
-              req.user.firstname = updatedUser.firstname;
-              req.user.lastname = updatedUser.lastname;
-              res.send({success: false})
-            })
-          } else {
-            db.users.update({id: req.user.id, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname}, function(err, user){
-              if(err){
-                console.log(err);
-                res.status(500).send(err)
-              }
-              req.user.email = user.email;
-              req.user.firstname = user.firstname;
-              req.user.lastname = user.lastname;
-              res.send({success: true})
-            })
-          }
+          req.user.email = user.email;
+          req.user.firstname = user.firstname;
+          req.user.lastname = user.lastname;
+          res.send({success: true})
         })
+      }
     })
 
   },
@@ -103,6 +84,7 @@ module.exports = {
 
           db.users.update({id: req.user.id, pass_hash: hash}, (err, updatedUser) => {
             console.log(updatedUser, "logging updated userrr");
+            req.user.pass_hash = hash;
             res.send({passwordUpdated: true})
           })
 

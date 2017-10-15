@@ -4361,10 +4361,10 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
 
       console.log(response, "logging response");
       if (response.success === true) {
-        $scope.updateSuccess = true;
+        $scope.messageIcon = sucIcon;
         $scope.accountMessage = "Your account has been updated!";
       } else {
-        $scope.updateSuccess = true;
+        $scope.messageIcon = errIcon;
         $scope.accountMessage = "Sorry, that email already exists";
       }
       $rootScope.$broadcast('signupSuccess');
@@ -4381,7 +4381,7 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
       // alert("passwords don't match")
       $scope.messageIcon = errIcon;
       $scope.accountMessage = "New passwords don't match";
-      modalService.Open(id);
+      // modalService.Open(id);
     } else {
       // console.log(updatePass, "newPass");
       mainService.updatePass(updatePass).then(function (res) {
@@ -4395,15 +4395,16 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
           $scope.confirmPass = "";
         } else if (res.passwordUpdated === false && res.passwordMatch === false) {
           $scope.messageIcon = errIcon;
-          $scope.accountMessage = "Your current password couldn't be found";
+          $scope.accountMessage = "Your current password is incorrect";
         }
 
         // switch(res){
         //   case res.passwordUpdated: $scope.accountMessage = "updated!"; break;
         // }
-        modalService.Open(id);
+        // modalService.Open(id);
       });
     }
+    modalService.Open(id);
   };
 
   mainService.getUsername().then(function (res) {

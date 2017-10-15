@@ -1,70 +1,40 @@
 <main class="accountsettings-main main-margin">
 
-  <h1>{{test}}</h1>
+  <h1 class="center">Account</h1>
 
   <div class="">
-    <!-- <form class="" ng-submit="updateAccount('account-settings-modal', useremail)">
-      <input type="text" name="" ng-value="useremail" ng-model="useremail">
 
-      <button type="submit" name="button">Update Account</button>
-    </form> -->
- <h2>Basic</h2>
+    <h2 class="center">Basic</h2>
     <form class="contact-form" ng-submit="updateAccount('account-settings-modal', userName, userNameLast, userEmail)">
       <label ng-class="{red: contactNameFirstR}">First Name <span ng-class="{none: !contactNameFirstR, errordisplay: contactNameFirstR}">- REQUIRED</span></label>
       <input type="text" ng-model="userName">
-<br>
       <label>Last Name</label>
       <input type="text" ng-model="userNameLast" >
-<br>
       <label ng-class="{red: contactEmailR}">Email <span ng-class="{none: !contactEmailR, errordisplay: contactEmailR}">- REQUIRED</span></label>
       <input type="text" ng-model="userEmail">
-<br>
-<button type="submit" class="btn">Submit</button>
-</form>
+      <button type="submit" class="big-btn btn">Submit</button>
+    </form>
 
-<hr style="border-top: 1px solid black;">
+    <!-- <hr style="border-top: 1px solid black;"> -->
+    <hr>
 
-<h2>Password</h2>
+    <h2 class="center">Password</h2>
     <div class="" ng-show="facebookUser">
-      <h1>you're a facebook user, you cannot change your password</h1>
+      <p class="center">Since you logged in with Facebook, you do not have a password to change with us</p>
     </div>
 
     <div class="" ng-hide="facebookUser">
       <form class="contact-form" ng-submit="updatePass('account-settings-modal', currentPass, newPass, confirmPass)">
-
         <label ng-class="{red: contactSubjectR}">Current Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
         <input type="text" ng-model="currentPass">
-<br>
         <label ng-class="{red: contactSubjectR}">New Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
         <input type="text" ng-model="newPass">
-<br>
         <label ng-class="{red: contactSubjectR}">Confirm Password <span ng-class="{none: !contactSubjectR, errordisplay: contactSubjectR}">- REQUIRED</span></label>
         <input type="text" ng-model="confirmPass">
-<br>
-<br>
-
-        <button type="submit" class="btn">Submit</button>
+        <button type="submit" class="big-btn btn">Submit</button>
       </form>
     </div>
-
-
   </div>
-
-  <!-- <div class="modal" ng-class="{'display': updateSuccess, 'noscroll': updateSuccess}" id="modalz">
-    <div class="modal-content-product-added">
-      <span class="close" ng-click="closeAccountModal()">&times;</span>
-      <i class="material-icons">check_circle</i>
-      <h3>{{accountMessage}}</h3>
-      <hr>
-
-      <br><br>
-
-      <button type="button" class="big-btn" name="button" ng-click="closeAccountModal()">CLOSE</button>
-
-    </div>
-  </div> -->
-
-
 
   <modal id="account-settings-modal">
       <div class="mymodal">
@@ -73,7 +43,6 @@
             <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
             <i class="material-icons">{{messageIcon}}</i>
 
-              <!-- <h1>haha</h1> -->
               <p>
                 {{accountMessage}}
                 <br>
