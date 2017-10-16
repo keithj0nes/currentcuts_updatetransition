@@ -5,8 +5,6 @@ angular.module("ccvApp").directive("signupLogin", function(){
     controller: function($scope, $rootScope, $state, mainService, modalService){
 
 
-      // console.log($scope.view);
-
       $scope.openModal =function(id){
         modalService.Open(id);
       }
@@ -24,6 +22,7 @@ angular.module("ccvApp").directive("signupLogin", function(){
         $scope.signupEmailR = false;
         $scope.signupPasswordR = false;
         $scope.signupConfirmPassR = false;
+          $scope.passwordMatchMessage = "";
 
 
         if(!firstname){$scope.signupFirstnameR = true;}
@@ -32,7 +31,11 @@ angular.module("ccvApp").directive("signupLogin", function(){
         if(!password){$scope.signupPasswordR = true;}
         if(!confirmPassword){$scope.signupConfirmPassR = true;}
 
-        if(email){
+        if(password !== confirmPassword){
+          $scope.passwordMatchMessage = "Passwords do not match"
+        } else if(email){
+
+          console.log("getting here");
           mainService.newUserSignUp(newUser).then((res) => {
             console.log(res, "response in newUserSignUp");
 
@@ -47,33 +50,40 @@ angular.module("ccvApp").directive("signupLogin", function(){
             }
           })
         }
-
-
       }
 
       $scope.logIn = function(email, password, mobile){
 
+        $scope.loginEmailR = false;
+        $scope.loginPasswordR = false;
         console.log(mobile);
-        const existingUser = {email, password};
 
-        mainService.existingLogIn(existingUser).then((res) => {
-          console.log(res, "response in existingLogIn");
+        if(!email){$scope.loginEmailR = true;}
+        if(!password){$scope.loginPasswordR = true;}
 
-          if(res.success === false){
-            $scope.loginMessage = res.message;
-          }
+        if(email && password){
+          const existingUser = {email, password};
 
-          if(res.success === true){
-            // $scope.signupMessage = "Your account has been created!"
-            if(mobile){
-              $state.go('loginsuccess')
-            } else {
-              $scope.closeMyModal('user-login-modal');
+          mainService.existingLogIn(existingUser).then((res) => {
+            console.log(res, "response in existingLogIn");
 
+            if(res.success === false){
+              $scope.loginMessage = res.message;
             }
-            $rootScope.$broadcast('signupSuccess')
-          }
-        })
+
+            if(res.success === true){
+              // $scope.signupMessage = "Your account has been created!"
+              if(mobile){
+                $state.go('loginsuccess')
+              } else {
+                $scope.closeMyModal('user-login-modal');
+
+              }
+              $rootScope.$broadcast('signupSuccess')
+            }
+          })
+        }
+
 
         // console.log(existingUser);
       }

@@ -35,19 +35,24 @@
 <signup-login ng-if="!username" check-logged-in>
   <div class="login-container" ng-show="existingUserLogin">
 
-    <h1>Please Login</h1>
-    <p>{{loginMessage}}</p>
+    <h1 class="center">Login</h1>
+
 
     <form method="get" action="/auth/facebook">
       <button type="submit" class="btn-facebook">Log In with Facebook</button>
     </form>
-    <br>
-    or
-    <br><br>
-    <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword, 'mobile')">
 
-      <input type="text" ng-model="loginEmail" placeholder="email">
-      <input type="text" ng-model="loginPassword" placeholder="password">
+    <div class="or-box">
+      <div class="or-dash"></div>OR<div class="or-dash"></div>
+    </div>
+
+    <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword, 'mobile')">
+      <label ng-class="{red: loginEmailR}">Email * <span ng-class="{none: !loginEmailR, errordisplay: loginEmailR}">- required</span></label>
+      <input type="text" ng-model="loginEmail">
+
+      <label ng-class="{red: loginPasswordR}">Password * <span ng-class="{none: !loginPasswordR, errordisplay: loginPasswordR}">- required</span></label>
+      <input type="text" ng-model="loginPassword">
+      <p class="red center message">{{loginMessage}}</p>
 
       <button type="submit" class="big-btn btn">Submit</button>
       <p ng-click="existingUserLogin = false" class="center">Need an account? Click here</p>
@@ -59,16 +64,15 @@
 
 <div class="login-container" ng-hide="existingUserLogin">
 
-    <h1>New user?</h1>
-    <!-- <h4>Sign up with Facebook</h4> -->
-    <p>{{signupMessage}}</p>
+  <h1 class="center">Sign Up</h1>
 
     <form method="get" action="/auth/facebook">
       <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
     </form>
-    <br>
-    or
-    <br><br>
+    <div class="or-box">
+      <div class="or-dash"></div>OR<div class="or-dash"></div>
+    </div>
+
     <form class="login-modal" ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword, signupConfirmPassword, 'mobile')">
       <label ng-class="{red: signupFirstnameR}">First Name * <span ng-class="{none: !signupFirstnameR, errordisplay: signupFirstnameR}">- required</span></label>
       <input type="text" ng-model="signupFirstname">
@@ -85,7 +89,10 @@
       <label ng-class="{red: signupConfirmPassR}">Confirm Password * <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
       <input type="text" ng-model="signupConfirmPassword">
 
-      <button name="submit" class="big-btn">Submit</button>
+      <p class="red center message">{{passwordMatchMessage}}</p>
+      <p class="red center message">{{signupMessage}}</p>
+
+      <button name="submit" class="big-btn btn">Submit</button>
 
       <p ng-click="existingUserLogin = true" class="center">Already a member? Click here</p>
 
