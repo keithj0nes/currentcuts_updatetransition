@@ -1,6 +1,6 @@
 angular.module("ccvApp").controller("userController", function($scope, $rootScope, $state, mainService, modalService){
 
-  $scope.updateSuccess = false;
+  $scope.previousOrders = true;
 
   $scope.openModal = function(id){
     console.log(id, "openModal in user");
@@ -17,31 +17,11 @@ angular.module("ccvApp").controller("userController", function($scope, $rootScop
       $scope.history = response;
       if(response.reqUser === false){
         $state.go("login");
+      } else if(response.length === 0){
+        $scope.previousOrders = false;
       }
     })
   }
-
-  $scope.updateAccount = function(id, userEmail){
-    let newEmail = {
-      email: userEmail
-    }
-
-    mainService.updateAccount(newEmail).then(function(response){
-      if(response.success === true){
-        $scope.updateSuccess = true;
-        $scope.accountMessage = "Your account has been updated!"
-      } else {
-        $scope.updateSuccess = true;
-        $scope.accountMessage = "Sorry, that email already exists"
-      }
-      modalService.Open(id);
-
-    })
-
-  }
-
-
-
 
 
 

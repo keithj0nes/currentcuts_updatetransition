@@ -2,6 +2,7 @@ angular.module("ccvApp").controller("searchController", function($scope, $stateP
 
 
   var searchTerm = $stateParams.search;
+  console.log($stateParams);
 
   mainService.getProductByName(searchTerm).then(function(response){
     $scope.searchProducts = response;

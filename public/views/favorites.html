@@ -12,7 +12,7 @@
 
 
 
-<div class="favorited-products">
+<div class="favorited-products" ng-show="favorites">
   <div class="product-main" ng-repeat="fav in favorites">
     <div class="product-img">
       <img class="crop" ui-sref="products({id:fav.id})" ng-src="{{fav.img1}}" alt="">
@@ -27,6 +27,10 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="center" ng-hide="favorites">
+  Like a product and it will show up here!
 </div>
 
 </main>

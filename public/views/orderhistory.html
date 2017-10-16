@@ -3,7 +3,7 @@
   <div class="orderhistory-container">
 
     <h1>My Orders</h1>
-    <table>
+    <table ng-show="previousOrders">
       <th>Order #</th><th>Date</th><th>Order Total</th><th></th>
       <tr ng-repeat="orders in history">
         <td>{{orders.id}}</td>
@@ -13,6 +13,7 @@
       </tr>
     </table>
 
+    <p ng-hide="previousOrders" class="center">You do not have any orders</p>
   </div>
 
 </main>

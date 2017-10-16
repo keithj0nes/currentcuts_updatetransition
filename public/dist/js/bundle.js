@@ -5357,8 +5357,13 @@ angular.module("ccvApp").controller("favoriteController", function ($scope, $sta
 
   var getFavorites = function getFavorites() {
     mainService.getFavorites().then(function (res) {
+      console.log(res);
+      console.log(res.length);
+
       if (res.reqUser === false) {
         $state.go("login");
+      } else if (res.length === 0) {
+        $scope.favorites = false;
       } else {
         $scope.favorites = res;
       }
@@ -5540,6 +5545,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 angular.module("ccvApp").controller("searchController", function ($scope, $stateParams, mainService) {
 
   var searchTerm = $stateParams.search;
+  console.log($stateParams);
 
   mainService.getProductByName(searchTerm).then(function (response) {
     $scope.searchProducts = response;
@@ -5576,7 +5582,7 @@ angular.module("ccvApp").controller("thankyouController", function ($scope, $roo
 
 angular.module("ccvApp").controller("userController", function ($scope, $rootScope, $state, mainService, modalService) {
 
-  $scope.updateSuccess = false;
+  $scope.previousOrders = true;
 
   $scope.openModal = function (id) {
     console.log(id, "openModal in user");
@@ -5593,24 +5599,9 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
       $scope.history = response;
       if (response.reqUser === false) {
         $state.go("login");
+      } else if (response.length === 0) {
+        $scope.previousOrders = false;
       }
-    });
-  };
-
-  $scope.updateAccount = function (id, userEmail) {
-    var newEmail = {
-      email: userEmail
-    };
-
-    mainService.updateAccount(newEmail).then(function (response) {
-      if (response.success === true) {
-        $scope.updateSuccess = true;
-        $scope.accountMessage = "Your account has been updated!";
-      } else {
-        $scope.updateSuccess = true;
-        $scope.accountMessage = "Sorry, that email already exists";
-      }
-      modalService.Open(id);
     });
   };
 
@@ -6390,15 +6381,6 @@ angular.module("ccvApp").service("mainService", function ($http) {
       return res.data;
     });
   };
-
-  // this.cartStorage = [1,2,3];
-  // this.sum = this.cartStorage.reduce(function(a, b) { return a + b; }, 0);
-  //
-  // this.getCartStorage = () => {
-  //   console.log(this.cartStorage, "loggin cart storage service");
-  //   console.log(this.sum, "sum in service");
-  //   return this.sum;
-  // }
 
   this.sendContactEmail = function (contactData) {
     console.log(contactData, "contactData in service");
