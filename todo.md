@@ -52,11 +52,17 @@
 
 - [ ] Create log in with Twitter
 
-- [ ] Once using Passport LocalAuth, confirm hash and salting of passwords
-
 - [ ] Allow users to delete their accounts
 
 - [ ] Sign up with Twitter/Google/Facebook pulls guest orders specified with email
+
+- [x] Allow users to update their accounts 10/15/17
+  - [x] Basic account 10/9/17
+  - [x] Pass 10/15/17
+
+- [x] Allow users to create account or log in 9/23/17
+
+- [x] Once using Passport LocalAuth, confirm hash and salting of passwords 9/18/17
 
 - [x] Allow users to like/favorite products 7/12/17
   - [x] Show total likes/favorites on product page 7/12/17
