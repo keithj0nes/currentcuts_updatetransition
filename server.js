@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
+const jwt = require('jsonwebtoken');
 var stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
 
 
@@ -331,6 +332,63 @@ app.get("/api/user/orders", isAuthenticated, usersCtrl.getOrderHistory);
 app.get("/api/user/orders/:id", isAuthenticated, usersCtrl.getOrderHistoryById);
 app.get('/api/user/logout', isAuthenticated, usersCtrl.logout);
 
+
+let transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  secure: true,
+  auth: {
+      user: config.nodemailerAuth.username, // Your email id
+      pass: config.nodemailerAuth.pass // Your password
+  }
+});
+
+app.put("/api/user/resetpassword", function(req, res){
+
+  console.log(req.body, "loggin req.body");
+  db.users.findOne({email: req.body.email}, (err, user) => {
+    if(err){console.log(err); res.status(500).send(err)}
+
+    console.log(user, "logging user");
+    if(!user){
+      res.send({success: false, message: "Email was not found"})
+    } else if(user.facebookid){
+      res.send({success: false, message: "Facebook users cannot reset password, please log in with Facebook"})
+    } else {
+      let rtoken = jwt.sign({email: user.email}, 'secret', {expiresIn: "1h"});
+      console.log(rtoken, "logging rtoken");
+
+      db.users.update({id: user.id, resettoken: rtoken}, (err, newUser) => {
+        console.log(newUser, "new user");
+
+        let text = "Hello " + user.firstname + ', <br><br> Please reset your password by clicking the link below: <br><br><a href="http://localhost:3010/#/passwordreset/' + newUser.resettoken +'">RESET PASSWORD</a>'
+
+        var mailOptions = {
+          from: 'currentcutstest@gmail.com',                  // sender address
+          // to: b.email,                                        // list of receivers
+          bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+          subject: 'Reset your password',     // Subject line
+          // text: text //,                                   // plaintext body
+          html: text                                          // html body
+        };
+
+        //send email
+        transporter.sendMail(mailOptions, function(error, info){
+          if(error){
+              console.log(error);
+              res.json({yo: 'error'});
+          }else{
+              console.log('Message sent: ' + info.response);
+              res.json({yo: info.response});
+          };
+        });
+        res.send({success: true, message: "An email has been sent"})
+
+      })
+
+    }
+  })
+
+})
 // app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/checkauth", isAuthenticated, function(req, res){
   console.log(req.reqUserAdmin, "ypu");

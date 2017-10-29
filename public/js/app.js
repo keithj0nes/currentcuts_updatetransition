@@ -95,7 +95,12 @@ angular.module("ccvApp", ["ui.router"])
       templateUrl: "views/contact.html",
       controller: "contactController"
     })
+    .state("passwordreset", {
+      url: "/passwordreset/:token",
+      templateUrl: "views/passwordreset.html",
+      controller: "passwordCtrl"
+    })
 
     $urlRouterProvider
-  .otherwise("/");
+  .otherwise("/contact");
 })
