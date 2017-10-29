@@ -10,6 +10,45 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
+
+//   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
+//     var doc = new jsPDF({
+//  orientation: 'p',
+//  unit: 'mm',
+//  format: 'letter',
+// })
+//
+//     var obj = {
+//       ufn, uln, useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller
+//     }
+//
+// var newarr = JSON.stringify(subOrder)
+// console.log(newarr, "new are");
+//     doc.text(105, 20, 'Thank you!', null, null, 'center');
+//     doc.text(105, 30, 'Order Id - ' + id, null, null, 'center');
+//
+//
+//     doc.text("Ship To", 10, 50)
+//     doc.text(firstname + " " + lastname, 10, 60)
+//     doc.text(address_one, 10, 70)
+//     if(address_two){
+//       doc.text(address_two, 10, 80)
+//     }
+//     doc.text(city + " " + state + " " + zipcode, 10, 90)
+//
+//     // doc.text(useremail, 10, 60)
+//     // doc.text()
+//
+//     doc.text(newarr, 10, 200)
+//     // doc.text(guestemail, 10, 10)
+//
+//     // doc.autoPrint()
+// 
+//     doc.save('Packlist Order ID: ' + id + ".pdf")
+//     console.log('firing');
+//     console.log(obj);
+//   }
+
   $scope.openModal = function(id, track, note, index){
     $scope.openOrderIndex = index;
     $scope.confirmOrder = [];

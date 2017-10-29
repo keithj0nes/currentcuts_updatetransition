@@ -210,6 +210,9 @@
             </div>
           </div>
 
+
+
+
           <div class="open-order-shipping">
 
             <div class="">
@@ -226,31 +229,24 @@
                 <span ng-if="open.address_two">{{closed.address_two}}, <br></span>
                 {{closed.city}}, {{closed.state}}, {{closed.zipcode}} <br>
               </div>
-
+              <br>
               <div class="">
-                Note From Buyer:
+                Your Note:<br>
 
                 {{closed.msg_to_seller}}
-                <br>
-                Note To Buyer:
+                <br><br>
+                Our Note:<br>
 
                 {{closed.msg_to_buyer}}
               </div>
+
+<!-- SAVING TO TEST LATER -->
+              <!-- <button ng-click="testPDF(closed.ufn, closed.uln, closed.useremail, closed.guestemail, closed.datesold, closed.ordertotal, closed.shipping, closed.subOrder, closed.shipping, closed.id, closed.tracking, closed.datecompleted, closed.firstname, closed.lastname, closed.address_one, closed.address_two, closed.city, closed.state, closed.zipcode, closed.msg_to_buyer, closed.msg_to_seller)">CLICK ME</button> -->
 
 <br>
 
               <!-- <button class="btn" ng-click="openModal('resend-tracking-modal')" disabled="true">Resend Confirmation Email</button> -->
             </div>
-
-            <!-- <form ng-show="readyToSendTracking">
-              <input type="text" name="" placeholder="Tracking Number" ng-model="open.trackingNumber">
-
-              <textarea name="name" placeholder="Note To Buyer" ng-model="open.noteToBuyer"></textarea>
-
-              <button class="btn" ng-click="openModal('review-tracking-modal', open.trackingNumber, open.noteToBuyer, parentIndex)">Send Confirmation</button>
-              <button class="btn" ng-click="readyToSendTracking = false">Cancel</button>
-
-            </form> -->
           </div>
 
 

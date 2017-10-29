@@ -41,15 +41,16 @@
           <div class="modal-body">
 
             <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
-            <i class="material-icons">{{messageIcon}}</i>
-
-              <p>
+            <i class="material-icons center" style="display: block;">{{messageIcon}}</i>
+<br><br>
+              <p class="center">
                 {{accountMessage}}
-                <br>
-                <br>
-              </p>
 
-              <button class="btn" ng-click="closeMyModal('account-settings-modal');">Close</button>
+              </p>
+              <br>
+              <br>
+              <br>
+              <button class="big-btn btn" ng-click="closeMyModal('account-settings-modal');">Close</button>
           </div>
       </div>
       <div class="modal-background"></div>
