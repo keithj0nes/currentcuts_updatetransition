@@ -389,6 +389,73 @@ app.put("/api/user/resetpassword", function(req, res){
   })
 
 })
+
+app.get("/api/user/resetpassword/:token", function(req, res){
+
+  console.log(req.params.token, "req.params.token");
+  let token = req.params.token;
+
+  db.users.findOne({resettoken: token}, (err, user) => {
+
+    jwt.verify(token, 'secret', (err, decoded)=>{
+      if(err){
+        console.log("falure");
+        res.send({success: false, message: 'Invalid token'})
+      } else {
+        console.log("SUCCESSSSSSSS");
+        res.send({success: true, user: user})
+      }
+    })
+
+  })
+
+})
+
+app.put("/api/user/savepassword/:token", function(req, res){
+
+  //user token instead of email?
+
+  // db.users.findOne({email: req.body.email}, (err, user) => {
+  db.users.findOne({resettoken: req.params.token}, (err, user) => {
+
+    if(req.body.password == null || req.body.password == "") {
+      res.send({success: false, message: "Password not provied"});
+    } else {
+      bcrypt.hash(req.body.password, 10, (err, hash) => {
+        db.users.update({id: user.id, resettoken: null, pass_hash: hash}, (err, updatedUser) => {
+
+
+          var mailOptions = {
+            from: 'Current Cuts Admin, currentcutstest@gmail.com',                  // sender address
+            // to: b.email,                                        // list of receivers
+            bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+            subject: 'Your password has been reset',     // Subject line
+            // text: text //,                                   // plaintext body
+            html: "Hello " + user.firstname + ', <br><br> Your password has been successfully reset! <br><br>'
+          };
+
+          //send email
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+                res.json({yo: 'error'});
+            }else{
+                console.log('Message sent: ' + info.response);
+                res.json({yo: info.response});
+            };
+          });
+
+
+          res.send({success: true, message: "Your password has been updated"})
+        })
+      })
+    }
+
+  })
+})
+
+
+
 // app.get("/api/checkauth", usersCtrl.loggedIn);
 app.get("/api/checkauth", isAuthenticated, function(req, res){
   console.log(req.reqUserAdmin, "ypu");
