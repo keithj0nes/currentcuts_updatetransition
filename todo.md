@@ -56,6 +56,8 @@
 
 - [ ] Sign up with Twitter/Google/Facebook pulls guest orders specified with email
 
+- [x] Reset password link sent to email with JWT token 10/30/17
+
 - [x] Allow users to update their accounts 10/15/17
   - [x] Basic account 10/9/17
   - [x] Pass 10/15/17
