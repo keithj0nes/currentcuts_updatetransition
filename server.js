@@ -396,16 +396,21 @@ app.get("/api/user/resetpassword/:token", function(req, res){
   let token = req.params.token;
 
   db.users.findOne({resettoken: token}, (err, user) => {
+    console.log(user);
+    if(user){
+      jwt.verify(token, 'secret', (err, decoded) => {
+        if(err){
+          console.log("falure");
+          res.send({success: false, message: 'Invalid token'})
+        } else {
+          console.log("SUCCESSSSSSSS");
+          res.send({success: true, user: user})
+        }
+      })
+    } else {
+      res.send({success: false, message: 'Token not found'})
+    }
 
-    jwt.verify(token, 'secret', (err, decoded)=>{
-      if(err){
-        console.log("falure");
-        res.send({success: false, message: 'Invalid token'})
-      } else {
-        console.log("SUCCESSSSSSSS");
-        res.send({success: true, user: user})
-      }
-    })
 
   })
 
@@ -415,12 +420,13 @@ app.put("/api/user/savepassword/:token", function(req, res){
 
   //user token instead of email?
   // db.users.findOne({email: req.body.email}, (err, user) => {
+  console.log(req.body, "reqbody");
   db.users.findOne({resettoken: req.params.token}, (err, user) => {
 
-    if(req.body.password == null || req.body.password == "") {
+    if(req.body.pass == null || req.body.pass == "") {
       res.send({success: false, message: "Password not provied"});
     } else {
-      bcrypt.hash(req.body.password, 10, (err, hash) => {
+      bcrypt.hash(req.body.pass, 10, (err, hash) => {
         db.users.update({id: user.id, resettoken: null, pass_hash: hash}, (err, updatedUser) => {
 
 

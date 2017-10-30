@@ -272,5 +272,14 @@ angular.module("ccvApp").service("mainService", function($http){
     }).then(res => res.data)
   }
 
+  this.saveNewPassword = function(token, pass){
+    console.log(pass);
+    return $http({
+      method: "PUT",
+      url: "/api/user/savepassword/" + token,
+      data: pass
+    }).then(res => res.data);
+  }
+
 
 })

@@ -1,4 +1,4 @@
-angular.module("ccvApp").controller("passwordCtrl", function($scope, $stateParams, mainService){
+angular.module("ccvApp").controller("passwordCtrl", function($scope, $state, $stateParams, $timeout, mainService){
   console.log($stateParams, "logging stateParams");
   $scope.invalidToken = false;
 
@@ -14,7 +14,17 @@ angular.module("ccvApp").controller("passwordCtrl", function($scope, $stateParam
     if(pass !== confirmPass){
       $scope.resetMessage = "Passwords do not match";
     } else if(pass && confirmPass) {
-      $scope.resetMessage = "HAHA YES!"
+      $scope.resetMessage = "HAHA YES!";
+      mainService.saveNewPassword($stateParams.token, {pass}).then((res) => {
+        console.log(res, "loged");
+        if(res.success === true){
+          $scope.resetMessage = res.message += "! Redirecting..."
+
+          $timeout(()=>{
+            $state.go("login");
+          }, 1500);
+        }
+      })
     }
   }
 

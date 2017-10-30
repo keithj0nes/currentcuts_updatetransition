@@ -102,5 +102,5 @@ angular.module("ccvApp", ["ui.router"])
     })
 
     $urlRouterProvider
-  .otherwise("/contact");
+  .otherwise("/");
 })

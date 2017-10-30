@@ -78,7 +78,7 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
     controller: "passwordCtrl"
   });
 
-  $urlRouterProvider.otherwise("/contact");
+  $urlRouterProvider.otherwise("/");
 });
 // //! moment.js
 // //! version : 2.15.2
@@ -5430,7 +5430,7 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 });
 "use strict";
 
-angular.module("ccvApp").controller("passwordCtrl", function ($scope, $stateParams, mainService) {
+angular.module("ccvApp").controller("passwordCtrl", function ($scope, $state, $stateParams, $timeout, mainService) {
   console.log($stateParams, "logging stateParams");
   $scope.invalidToken = false;
 
@@ -5450,6 +5450,16 @@ angular.module("ccvApp").controller("passwordCtrl", function ($scope, $statePara
       $scope.resetMessage = "Passwords do not match";
     } else if (pass && confirmPass) {
       $scope.resetMessage = "HAHA YES!";
+      mainService.saveNewPassword($stateParams.token, { pass: pass }).then(function (res) {
+        console.log(res, "loged");
+        if (res.success === true) {
+          $scope.resetMessage = res.message += "! Redirecting...";
+
+          $timeout(function () {
+            $state.go("login");
+          }, 1500);
+        }
+      });
     }
   };
 
@@ -6548,6 +6558,17 @@ angular.module("ccvApp").service("mainService", function ($http) {
     return $http({
       method: "GET",
       url: "/api/user/resetpassword/" + token
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.saveNewPassword = function (token, pass) {
+    console.log(pass);
+    return $http({
+      method: "PUT",
+      url: "/api/user/savepassword/" + token,
+      data: pass
     }).then(function (res) {
       return res.data;
     });
