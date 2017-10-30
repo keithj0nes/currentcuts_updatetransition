@@ -51,7 +51,7 @@
                 <div class="modal-body">
                   <span class="close" ng-click="closeMyModal('user-login-modal')">&times;</span>
                   <!-- <div class="login-container" ng-if="!username" check-logged-in> -->
-                  <div class="login-container" ng-show="existingUserLogin">
+                  <div class="login-container" ng-show="existingUserLogin" ng-hide="forgotPassword">
 
                     <h1 class="center">Login</h1>
 
@@ -73,6 +73,8 @@
                       <p class="red center message">{{loginMessage}}</p>
 
                       <button type="submit" class="big-btn btn">Submit</button>
+                      <p ng-click="forgotPassword = true" class="center">Forgot password? Click here</p>
+
                       <p ng-click="existingUserLogin = false" class="center">Need an account? Click here</p>
                     </form>
 
@@ -80,7 +82,7 @@
 
                   </div>
 
-                <div class="login-container" ng-hide="existingUserLogin">
+                <div class="login-container" ng-hide="existingUserLogin || forgotPassword">
 
                     <h1 class="center">Sign Up</h1>
 
@@ -124,6 +126,22 @@
 
                     </form>
 
+
+                  </div>
+
+                  <div ng-hide="existingUserLogin || !existingUserLogin" ng-show="forgotPassword">
+                    <h1 class="center">Forgot Password</h1>
+                    <p class="center">Enter your email to receive a reset link</p>
+                    <form class="login-modal" ng-submit="resetPassword(resetPassEmail)">
+
+                      <label ng-class="{red: resetEmailR}">Email <span ng-class="{none: !resetEmailR, errordisplay: resetEmailR}">- required</span></label>
+                      <input type="text" ng-model="resetPassEmail">
+
+                      <p class="red center message">{{resetMessage}}</p>
+
+                      <button class="btn big-btn">Submit</button>
+                    </form>
+                    <p ng-click="existingUserLogin = true; forgotPassword = false" class="center" >Cancel</p>
 
                   </div>
                 </div>

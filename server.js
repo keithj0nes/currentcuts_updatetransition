@@ -414,7 +414,6 @@ app.get("/api/user/resetpassword/:token", function(req, res){
 app.put("/api/user/savepassword/:token", function(req, res){
 
   //user token instead of email?
-
   // db.users.findOne({email: req.body.email}, (err, user) => {
   db.users.findOne({resettoken: req.params.token}, (err, user) => {
 

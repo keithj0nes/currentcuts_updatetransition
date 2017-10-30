@@ -22,7 +22,7 @@ angular.module("ccvApp").directive("signupLogin", function(){
         $scope.signupEmailR = false;
         $scope.signupPasswordR = false;
         $scope.signupConfirmPassR = false;
-          $scope.passwordMatchMessage = "";
+        $scope.passwordMatchMessage = "";
 
 
         if(!firstname){$scope.signupFirstnameR = true;}
@@ -86,6 +86,23 @@ angular.module("ccvApp").directive("signupLogin", function(){
 
 
         // console.log(existingUser);
+      }
+
+
+      $scope.resetPassword = function(email){
+        $scope.resetMessage = false;
+        console.log(email, "email");
+        $scope.resetEmailR = false;
+        if(!email){
+          $scope.resetEmailR = true;
+        } else {
+          let emailobj = {
+            email
+          }
+          mainService.resetPasswordEmail(emailobj)
+          $scope.resetMessage = "email sent"
+        }
+
       }
 
     }
