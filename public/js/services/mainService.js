@@ -258,7 +258,18 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.resetPasswordEmail = function(email){
-    console.log(email, "email in service");
+    return $http({
+      method: "PUT",
+      url: "/api/user/resetpassword",
+      data: email
+    }).then(res => res.data);
+  }
+
+  this.confirmPassResetToken = function(token){
+    return $http({
+      method: "GET",
+      url: "/api/user/resetpassword/" + token
+    }).then(res => res.data)
   }
 
 

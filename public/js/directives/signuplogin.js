@@ -2,7 +2,7 @@ angular.module("ccvApp").directive("signupLogin", function(){
 
   return {
     restrict: "AE",
-    controller: function($scope, $rootScope, $state, mainService, modalService){
+    controller: function($scope, $rootScope, $state, mainService, modalService, $timeout){
 
 
       $scope.openModal =function(id){
@@ -90,8 +90,7 @@ angular.module("ccvApp").directive("signupLogin", function(){
 
 
       $scope.resetPassword = function(email){
-        $scope.resetMessage = false;
-        console.log(email, "email");
+        $scope.resetMessage = "";
         $scope.resetEmailR = false;
         if(!email){
           $scope.resetEmailR = true;
@@ -99,8 +98,9 @@ angular.module("ccvApp").directive("signupLogin", function(){
           let emailobj = {
             email
           }
-          mainService.resetPasswordEmail(emailobj)
-          $scope.resetMessage = "email sent"
+          mainService.resetPasswordEmail(emailobj).then((res) => {
+            $scope.resetMessage = res.message;
+          })
         }
 
       }

@@ -5430,8 +5430,39 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 });
 "use strict";
 
-angular.module("ccvApp").controller("passwordCtrl", function ($scope, $stateParams) {
+angular.module("ccvApp").controller("passwordCtrl", function ($scope, $stateParams, mainService) {
   console.log($stateParams, "logging stateParams");
+  $scope.invalidToken = false;
+
+  $scope.submitReset = function (pass, confirmPass) {
+    $scope.resetMessage = "";
+    $scope.resetNewPassR = false;
+    $scope.resetNewPassConfirmR = false;
+
+    if (!pass) {
+      $scope.resetNewPassR = true;
+    }
+    if (!confirmPass) {
+      $scope.resetNewPassConfirmR = true;
+    }
+
+    if (pass !== confirmPass) {
+      $scope.resetMessage = "Passwords do not match";
+    } else if (pass && confirmPass) {
+      $scope.resetMessage = "HAHA YES!";
+    }
+  };
+
+  if ($stateParams.token) {
+    mainService.confirmPassResetToken($stateParams.token).then(function (res) {
+      console.log(res, "logging result in toekn");
+      if (res.success === false) {
+        $scope.invalidToken = true;
+      }
+    });
+  } else {
+    $scope.invalidToken = true;
+  }
 });
 "use strict";
 
@@ -5829,7 +5860,7 @@ angular.module("ccvApp").directive("signupLogin", function () {
 
   return {
     restrict: "AE",
-    controller: function controller($scope, $rootScope, $state, mainService, modalService) {
+    controller: function controller($scope, $rootScope, $state, mainService, modalService, $timeout) {
 
       $scope.openModal = function (id) {
         modalService.Open(id);
@@ -5926,8 +5957,7 @@ angular.module("ccvApp").directive("signupLogin", function () {
       };
 
       $scope.resetPassword = function (email) {
-        $scope.resetMessage = false;
-        console.log(email, "email");
+        $scope.resetMessage = "";
         $scope.resetEmailR = false;
         if (!email) {
           $scope.resetEmailR = true;
@@ -5935,8 +5965,9 @@ angular.module("ccvApp").directive("signupLogin", function () {
           var emailobj = {
             email: email
           };
-          mainService.resetPasswordEmail(emailobj);
-          $scope.resetMessage = "email sent";
+          mainService.resetPasswordEmail(emailobj).then(function (res) {
+            $scope.resetMessage = res.message;
+          });
         }
       };
     }
@@ -6504,7 +6535,22 @@ angular.module("ccvApp").service("mainService", function ($http) {
   };
 
   this.resetPasswordEmail = function (email) {
-    console.log(email, "email in service");
+    return $http({
+      method: "PUT",
+      url: "/api/user/resetpassword",
+      data: email
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.confirmPassResetToken = function (token) {
+    return $http({
+      method: "GET",
+      url: "/api/user/resetpassword/" + token
+    }).then(function (res) {
+      return res.data;
+    });
   };
 });
 'use strict';
