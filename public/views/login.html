@@ -1,155 +1,112 @@
 <main class="login-main main-margin">
 
+  <signup-login ng-if="!username" check-logged-in>
+    <div class="login-container" ng-show="existingUserLogin" ng-hide="forgotPassword">
 
-  <!-- <div class="login-container" ng-if="!username" check-logged-in>
-    <h1>Please Login</h1>
-
-    <form method="get" action="/auth/facebook">
-      <button type="submit" class="btn-facebook">Log In with Facebook</button>
-    </form>
-
-<br><br>
-    <h1>New user?</h1>
-    <form method="get" action="/auth/facebook">
-      <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
-    </form>
-  </div>
-
-  <div class="login-container" ng-if="username" check-logged-in>
-    <h1>Hi {{username}}</h1>
-
-    <button type="button" class="btn" ui-sref="accountsettings">Account Settings</button>
-
-    <br><br>
-
-    <button type="button" class="btn" name="button" ui-sref="orderhistory">Order History</button>
-
-    <br><br>
-
-    <form  action="/api/user/logout" method="get">
-      <button type="submit" class="btn" name="button">Log Out</button>
-    </form>
-
-  </div> -->
-
-
-
-
-
-
-
-<signup-login ng-if="!username" check-logged-in>
-  <div class="login-container" ng-show="existingUserLogin" ng-hide="forgotPassword">
-
-    <h1 class="center">Login</h1>
-
-    <form method="get" action="/auth/facebook">
-      <button type="submit" class="btn-facebook">Log In with Facebook</button>
-    </form>
-
-    <div class="or-box">
-      <div class="or-dash"></div>OR<div class="or-dash"></div>
-    </div>
-
-    <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword)">
-      <label ng-class="{red: loginEmailR}">Email * <span ng-class="{none: !loginEmailR, errordisplay: loginEmailR}">- required</span></label>
-      <input type="text" ng-model="loginEmail">
-
-      <label ng-class="{red: loginPasswordR}">Password * <span ng-class="{none: !loginPasswordR, errordisplay: loginPasswordR}">- required</span></label>
-      <input type="text" ng-model="loginPassword">
-
-      <p class="red center message">{{loginMessage}}</p>
-
-      <button type="submit" class="big-btn btn">Submit</button>
-      <p ng-click="forgotPassword = true" class="center">Forgot password? Click here</p>
-
-      <p ng-click="existingUserLogin = false" class="center">Need an account? Click here</p>
-    </form>
-
-
-  </div>
-
-  <div class="login-container" ng-hide="existingUserLogin || forgotPassword">
-
-      <h1 class="center">Sign Up</h1>
+      <h1 class="center">Login</h1>
 
       <form method="get" action="/auth/facebook">
-        <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
+        <button type="submit" class="btn-facebook">Log In with Facebook</button>
       </form>
 
       <div class="or-box">
         <div class="or-dash"></div>OR<div class="or-dash"></div>
       </div>
 
-      <form class="login-modal" ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword, signupConfirmPassword)">
-      <div class="">
-        <div class="h">
-          <label ng-class="{red: signupFirstnameR}">First Name * <span ng-class="{none: !signupFirstnameR, errordisplay: signupFirstnameR}">- required</span></label>
-          <input id="fname"type="text" ng-model="signupFirstname">
+      <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword)">
+        <label ng-class="{red: loginEmailR}">Email <span ng-class="{none: !loginEmailR, errordisplay: loginEmailR}">- required</span></label>
+        <input type="text" ng-model="loginEmail">
+
+        <label ng-class="{red: loginPasswordR}">Password <span ng-class="{none: !loginPasswordR, errordisplay: loginPasswordR}">- required</span></label>
+        <input type="password" ng-model="loginPassword">
+
+        <p class="red center message">{{loginMessage}}</p>
+
+        <button type="submit" class="big-btn btn">Submit</button>
+        <p ng-click="forgotPassword = true" class="center pointer">Forgot password?</p>
+
+        <p ng-click="existingUserLogin = false" class="center pointer">Need an account?</p>
+      </form>
+
+    </div>
+
+    <div class="login-container" ng-hide="existingUserLogin || forgotPassword">
+
+        <h1 class="center">Sign Up</h1>
+
+        <form method="get" action="/auth/facebook">
+          <button type="submit" class="btn-facebook">Sign Up with Facebook</button>
+        </form>
+
+        <div class="or-box">
+          <div class="or-dash"></div>OR<div class="or-dash"></div>
         </div>
 
-        <div class="h">
-          <label ng-class="{red: signupLastnameR}">Last Name * <span ng-class="{none: !signupLastnameR, errordisplay: signupLastnameR}">- required</span></label>
-          <input id="lname"type="text" ng-model="signupLastname">
+        <form class="login-modal" ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword, signupConfirmPassword)">
+        <div class="split">
+          <div class="h">
+            <label ng-class="{red: signupFirstnameR}">First Name <span ng-class="{none: !signupFirstnameR, errordisplay: signupFirstnameR}">- required</span></label>
+            <input id="fname"type="text" ng-model="signupFirstname">
+          </div>
+
+          <div class="h">
+            <label ng-class="{red: signupLastnameR}">Last Name <span ng-class="{none: !signupLastnameR, errordisplay: signupLastnameR}">- required</span></label>
+            <input id="lname"type="text" ng-model="signupLastname">
+          </div>
         </div>
+          <label ng-class="{red: signupEmailR}">Email <span ng-class="{none: !signupEmailR, errordisplay: signupEmailR}">- required</span></label>
+          <input type="text" ng-model="signupEmail">
+
+          <label ng-class="{red: signupPasswordR}">Create Password <span ng-class="{none: !signupPasswordR, errordisplay: signupPasswordR}">- required</span></label>
+          <input type="password" ng-model="signupPassword">
+
+          <label ng-class="{red: signupConfirmPassR}">Confirm Password <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
+          <input type="password" ng-model="signupConfirmPassword">
+
+          <p class="red center message">{{signupMessage}}</p>
+
+          <button name="submit" class="big-btn btn">Submit</button>
+
+          <p ng-click="existingUserLogin = true" class="center pointer" >Already a member?</p>
+
+        </form>
+
 
       </div>
-        <label ng-class="{red: signupEmailR}">Email * <span ng-class="{none: !signupEmailR, errordisplay: signupEmailR}">- required</span></label>
-        <input type="text" ng-model="signupEmail">
 
-        <label ng-class="{red: signupPasswordR}">Create Password * <span ng-class="{none: !signupPasswordR, errordisplay: signupPasswordR}">- required</span></label>
-        <input type="text" ng-model="signupPassword">
+      <div class="login-container" ng-hide="existingUserLogin || !existingUserLogin" ng-show="forgotPassword">
+        <h1 class="center">Forgot Password</h1>
+        <form class="login-modal" ng-submit="resetPassword(resetPassEmail)">
+          <p class="center message">Enter your email to receive a reset link</p>
 
-        <label ng-class="{red: signupConfirmPassR}">Confirm Password * <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
-        <input type="text" ng-model="signupConfirmPassword">
+          <label ng-class="{red: resetEmailR}">Email <span ng-class="{none: !resetEmailR, errordisplay: resetEmailR}">- required</span></label>
+          <input type="text" ng-model="resetPassEmail">
 
-        <p class="red center message">{{passwordMatchMessage}}</p>
-        <p class="red center message">{{signupMessage}}</p>
+          <p class="red center message">{{resetMessage}}</p>
+
+          <button class="btn big-btn">Submit</button>
+
+          <p ng-click="existingUserLogin = true; forgotPassword = false" class="center pointer" >Cancel</p>
+        </form>
+
+      </div>
+
+  </signup-login>
+
+  <div class="login-container" ng-if="username" check-logged-in>
+    <h1>Hi {{username}}</h1>
+
+    <button type="button" class="btn big-btn" ui-sref="accountsettings">Account Settings</button>
 
 
-        <button name="submit" class="big-btn btn">Submit</button>
-
-        <p ng-click="existingUserLogin = true" class="center" >Already a member? Click here</p>
-
-      </form>
+    <button type="button" class="btn big-btn" name="button" ui-sref="orderhistory">Order History</button>
 
 
-    </div>
+    <form  action="/api/user/logout" method="get">
+      <button type="submit" class="btn big-btn" name="button">Log Out</button>
+    </form>
 
-    <div class="login-container" ng-hide="existingUserLogin || !existingUserLogin" ng-show="forgotPassword">
-      <h1 class="center">Forgot Password</h1>
-      <p class="center">Enter your email to receive a reset link</p>
-      <form class="login-modal" ng-submit="resetPassword(resetPassEmail)">
-
-        <label ng-class="{red: resetEmailR}">Email <span ng-class="{none: !resetEmailR, errordisplay: resetEmailR}">- required</span></label>
-        <input type="text" ng-model="resetPassEmail">
-
-        <p class="red center message">{{resetMessage}}</p>
-
-        <button class="btn big-btn">Submit</button>
-      </form>
-      <p ng-click="existingUserLogin = true; forgotPassword = false" class="center" >Cancel</p>
-
-    </div>
-
-</signup-login>
-
-<div class="login-container" ng-if="username" check-logged-in>
-  <h1>Hi {{username}}</h1>
-
-  <button type="button" class="btn" ui-sref="accountsettings">Account Settings</button>
-
-  <br><br>
-
-  <button type="button" class="btn" name="button" ui-sref="orderhistory">Order History</button>
-
-  <br><br>
-
-  <form  action="/api/user/logout" method="get">
-    <button type="submit" class="btn" name="button">Log Out</button>
-  </form>
-
-</div>
+  </div>
 
 
 

@@ -1200,12 +1200,20 @@ footer {
 /* ============================================
                   LOGIN PAGE
 ============================================ */
+.pointer {
+  cursor: pointer; }
+
+.pointer:hover {
+  color: #999999; }
+
 .login-main .login-container, .login-main .loginsuccess-container, .loginsuccess-main .login-container, .loginsuccess-main .loginsuccess-container {
   text-align: center;
   background-color: #fff;
   padding: 10px 20px 20px 20px; }
-  .login-main .login-container h4, .login-main .loginsuccess-container h4, .loginsuccess-main .login-container h4, .loginsuccess-main .loginsuccess-container h4 {
-    margin-bottom: 20px; }
+  .login-main .login-container h2, .login-main .loginsuccess-container h2, .loginsuccess-main .login-container h2, .loginsuccess-main .loginsuccess-container h2 {
+    margin: 20px; }
+  .login-main .login-container button, .login-main .loginsuccess-container button, .loginsuccess-main .login-container button, .loginsuccess-main .loginsuccess-container button {
+    margin: 10px 0; }
 
 .login-main img, .loginsuccess-main img {
   width: 350px; }
@@ -1276,6 +1284,7 @@ footer {
 form.login-modal input[type="text"],
 form.login-modal input[type="email"],
 form.login-modal input[type="number"],
+form.login-modal input[type="password"],
 form.login-modal select {
   padding: 10px;
   margin: 5px auto 20px;
@@ -1283,20 +1292,20 @@ form.login-modal select {
   border: 1px solid #aaa;
   background-color: #fafafa; }
 
-form.login-modal div {
+form.login-modal .split {
   display: flex; }
-  form.login-modal div .h {
+  form.login-modal .split .h {
     width: 50%;
     display: block; }
-  form.login-modal div .h:first-child {
+  form.login-modal .split .h:first-child {
     margin-right: 10px; }
-  form.login-modal div .h:last-child {
+  form.login-modal .split .h:last-child {
     margin-left: 10px; }
 
 form.login-modal .message {
   margin-bottom: 15px; }
 
-form.login-modal p:last-child {
+form.login-modal p {
   margin-top: 15px; }
 
 /* ============================================

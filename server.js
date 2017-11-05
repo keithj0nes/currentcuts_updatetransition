@@ -175,34 +175,23 @@ passport.use('local-login', new LocalStrategy({
   passReqToCallback : true
 },
   function(req, email, password, done) {
-console.log("getting HURRR");
-console.log(password, 'haha');
     db.users.findOne({ email: email }, function(err, user) {
       if (err) { return done(err); }
-      console.log(user, "login user passprot");
       if (!user) {
-        console.log("no user");
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect email or password' });
       }
 
       if(user.facebookid){
-        console.log('getting here');
         return done(null, false, { message: 'This email has already been signed up through Facebook. Please login with Facebook to continue' });
 
       }
-      console.log("user.password", user.pass_hash);
-      console.log("password", password);
       bcrypt.compare(password, user.pass_hash, (err, comparedValue) => {
-        console.log(comparedValue, "comparedValue");
         if(comparedValue === false || comparedValue === undefined || comparedValue === null){
-          console.log("password Incorrect - false user");
 
-          return done(null, false, { message: 'Incorrect password.' });
+          return done(null, false, { message: 'Incorrect email or password' });
         } else {
-          console.log("returning user true");
           return done(null, user);
         }
-
       })
     });
   }
@@ -215,38 +204,20 @@ passport.use('local-signup', new LocalStrategy({
   passReqToCallback : true
 },
   function(req, email, password, done) {
-console.log("getting HURRR");
-console.log(password, 'haha');
-console.log(email, 'email haha');
-console.log(req.body, 'req.params');
-console.log(moment().format(), "moment");
-let r = req.body;
+
+    let r = req.body;
     db.users.findOne({ email: email }, function(err, user) {
       if (err) { return done(err); }
-      console.log(user);
       if (user) {
-        console.log("user is found");
-
         if (user.facebookid){
-          console.log("fbid found");
           return done(null, false, {message: 'This email has already been signed up through Facebook. Please login with Facebook to continue'})
         }
-
         return done(null, false, {message: 'Email is already being used'});
-
       } else {
-        console.log("no user found");
-
-        let newHash = ""
         bcrypt.hash(password, 10, function(err, hash) {
-          console.log(hash, "logging hash");
-          newHash = hash
-
           db.users.insert({firstname: r.firstname, lastname: r.lastname, email: req.body.email, pass_hash: hash, registered: moment().format()}, (err, newUser) => {
             if(err){
-              console.log(err);
             }
-            console.log(newUser, "NEW USER ADED");
             return done(null, newUser)
           })
         });
@@ -256,12 +227,10 @@ let r = req.body;
 ));
 
 passport.serializeUser(function(user, done) {
-  // console.log(user, "loggin user in serializeUser");
     done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-  // console.log(user, "logging user in deserializeUser");
     if(user[0]) {
       user = user[0];
     }

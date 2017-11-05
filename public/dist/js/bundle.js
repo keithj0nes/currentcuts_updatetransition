@@ -5871,6 +5871,7 @@ angular.module("ccvApp").directive("signupLogin", function () {
   return {
     restrict: "AE",
     controller: function controller($scope, $rootScope, $state, mainService, modalService, $timeout) {
+      var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
       $scope.openModal = function (id) {
         modalService.Open(id);
@@ -5908,62 +5909,57 @@ angular.module("ccvApp").directive("signupLogin", function () {
         }
 
         if (password !== confirmPassword) {
-          $scope.passwordMatchMessage = "Passwords do not match";
+          $scope.signupMessage = "Passwords do not match";
         } else if (email) {
-
-          console.log("getting here");
-          mainService.newUserSignUp(newUser).then(function (res) {
-            console.log(res, "response in newUserSignUp");
-
-            if (res.success === false) {
-              $scope.signupMessage = res.message;
-            }
-
-            if (res.success === true) {
-              // $scope.signupMessage = "Your account has been created!"
-              $scope.closeMyModal('user-login-modal');
-              $rootScope.$broadcast('signupSuccess');
-            }
-          });
+          if (emailRegex.test(email) && firstname && lastname) {
+            mainService.newUserSignUp(newUser).then(function (res) {
+              if (res.success === false) {
+                $scope.signupMessage = res.message;
+              } else if (res.success === true) {
+                // $scope.signupMessage = "Your account has been created!"
+                $scope.closeMyModal('user-login-modal');
+                $rootScope.$broadcast('signupSuccess');
+              }
+            });
+          } else if (!firstname || !lastname) {
+            $scope.signupMessage = "";
+          } else {
+            $scope.signupMessage = "Please enter a valid email";
+          }
         }
       };
 
       $scope.logIn = function (email, password, mobile) {
-
         $scope.loginEmailR = false;
         $scope.loginPasswordR = false;
-        console.log(mobile);
 
-        if (!email) {
-          $scope.loginEmailR = true;
-        }
         if (!password) {
           $scope.loginPasswordR = true;
         }
 
-        if (email && password) {
-          var existingUser = { email: email, password: password };
+        if (!email) {
+          $scope.loginEmailR = true;
+        } else if (emailRegex.test(email)) {
+          if (email && password) {
+            var existingUser = { email: email, password: password };
 
-          mainService.existingLogIn(existingUser).then(function (res) {
-            console.log(res, "response in existingLogIn");
-
-            if (res.success === false) {
-              $scope.loginMessage = res.message;
-            }
-
-            if (res.success === true) {
-              // $scope.signupMessage = "Your account has been created!"
-              if (mobile) {
-                $state.go('loginsuccess');
-              } else {
-                $scope.closeMyModal('user-login-modal');
+            mainService.existingLogIn(existingUser).then(function (res) {
+              if (res.success === false) {
+                $scope.loginMessage = res.message;
+              } else if (res.success === true) {
+                // $scope.signupMessage = "Your account has been created!"
+                if (mobile) {
+                  $state.go('loginsuccess');
+                } else {
+                  $scope.closeMyModal('user-login-modal');
+                }
+                $rootScope.$broadcast('signupSuccess');
               }
-              $rootScope.$broadcast('signupSuccess');
-            }
-          });
+            });
+          }
+        } else {
+          $scope.loginMessage = "Please enter a valid email";
         }
-
-        // console.log(existingUser);
       };
 
       $scope.resetPassword = function (email) {
@@ -5971,13 +5967,15 @@ angular.module("ccvApp").directive("signupLogin", function () {
         $scope.resetEmailR = false;
         if (!email) {
           $scope.resetEmailR = true;
-        } else {
+        } else if (emailRegex.test(email)) {
           var emailobj = {
             email: email
           };
           mainService.resetPasswordEmail(emailobj).then(function (res) {
             $scope.resetMessage = res.message;
           });
+        } else {
+          $scope.resetMessage = "Please enter a valid email";
         }
       };
     }

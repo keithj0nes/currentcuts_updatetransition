@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Current Cuts Vinyl</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-    <link rel="stylesheet" href="./dist/styles.6423163b.css" media="screen" title="no title">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="./dist/styles.fe50b37d.css" media="screen" title="no title">
 
 </head>
 
@@ -66,18 +66,18 @@
                     </div>
 
                     <form class="login-modal" ng-submit="logIn(loginEmail, loginPassword)">
-                      <label ng-class="{red: loginEmailR}">Email * <span ng-class="{none: !loginEmailR, errordisplay: loginEmailR}">- required</span></label>
+                      <label ng-class="{red: loginEmailR}">Email <span ng-class="{none: !loginEmailR, errordisplay: loginEmailR}">- required</span></label>
                       <input type="text" ng-model="loginEmail">
 
-                      <label ng-class="{red: loginPasswordR}">Password * <span ng-class="{none: !loginPasswordR, errordisplay: loginPasswordR}">- required</span></label>
-                      <input type="text" ng-model="loginPassword">
+                      <label ng-class="{red: loginPasswordR}">Password <span ng-class="{none: !loginPasswordR, errordisplay: loginPasswordR}">- required</span></label>
+                      <input type="password" ng-model="loginPassword">
 
                       <p class="red center message">{{loginMessage}}</p>
 
                       <button type="submit" class="big-btn btn">Submit</button>
-                      <p ng-click="forgotPassword = true" class="center">Forgot password? Click here</p>
+                      <p ng-click="forgotPassword = true" class="center pointer">Forgot password?</p>
 
-                      <p ng-click="existingUserLogin = false" class="center">Need an account? Click here</p>
+                      <p ng-click="existingUserLogin = false" class="center pointer">Need an account?</p>
                     </form>
 
 
@@ -118,13 +118,11 @@
                       <label ng-class="{red: signupConfirmPassR}">Confirm Password * <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
                       <input type="text" ng-model="signupConfirmPassword">
 
-                      <p class="red center message">{{passwordMatchMessage}}</p>
                       <p class="red center message">{{signupMessage}}</p>
-
 
                       <button name="submit" class="big-btn btn">Submit</button>
 
-                      <p ng-click="existingUserLogin = true" class="center" >Already a member? Click here</p>
+                      <p ng-click="existingUserLogin = true" class="center pointer" >Already a member?</p>
 
                     </form>
 
@@ -133,7 +131,7 @@
 
                   <div ng-hide="existingUserLogin || !existingUserLogin" ng-show="forgotPassword">
                     <h1 class="center">Forgot Password</h1>
-                    <p class="center">Enter your email to receive a reset link</p>
+                    <p class="center message">Enter your email to receive a reset link</p>
                     <form class="login-modal" ng-submit="resetPassword(resetPassEmail)">
 
                       <label ng-class="{red: resetEmailR}">Email <span ng-class="{none: !resetEmailR, errordisplay: resetEmailR}">- required</span></label>
@@ -142,8 +140,10 @@
                       <p class="red center message">{{resetMessage}}</p>
 
                       <button class="btn big-btn">Submit</button>
+
+                      <p ng-click="existingUserLogin = true; forgotPassword = false" class="center pointer" >Cancel</p>
+
                     </form>
-                    <p ng-click="existingUserLogin = true; forgotPassword = false" class="center" >Cancel</p>
 
                   </div>
                 </div>
@@ -154,16 +154,16 @@
         <modal id="user-account-modal">
           <div class="user-modal">
             <div class="modal-body">
-              <span class="close" ng-click="closeMyModal('user-account-modal')">&times;</span>
+              <span  class="close" ng-click="closeMyModal('user-account-modal')">&times;</span>
 
-              <button class="btn" ng-click="closeMyModal('user-account-modal');" ui-sref="accountsettings">Account Settings</button>
+              <button style="margin-top: 30px;"class="btn big-btn" ng-click="closeMyModal('user-account-modal');" ui-sref="accountsettings">Account Settings</button>
               <br><br>
 
-              <button class="btn" ng-click="closeMyModal('user-account-modal');" ui-sref="orderhistory">Order History</button>
+              <button class="btn big-btn" ng-click="closeMyModal('user-account-modal');" ui-sref="orderhistory">Order History</button>
               <br><br>
 
               <form action="/api/user/logout" method="get">
-                <button type="submit" class="btn">Log Out</button>
+                <button type="submit" class="btn big-btn">Log Out</button>
               </form>
             </div>
           </div>
