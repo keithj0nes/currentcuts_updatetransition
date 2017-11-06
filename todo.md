@@ -1,7 +1,8 @@
 # To Do list
 
 ### Universal
-
+- [ ] Style nodemailer emails
+- [ ] Style order details and order confirmation
 - [ ] Replace db.run functions with sql files in server.js
 - [x] Streamline modals using directive - 8/20/17
 - [x] Create Contact page with full form validation 9/3/17
