@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="./dist/styles.fe50b37d.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.e0e5ff37.css" media="screen" title="no title">
 
 </head>
 
@@ -97,7 +97,7 @@
                     </div>
 
                     <form class="login-modal" ng-submit="signUp(signupFirstname, signupLastname, signupEmail, signupPassword, signupConfirmPassword)">
-                    <div class="">
+                    <div class="split">
                       <div class="h">
                         <label ng-class="{red: signupFirstnameR}">First Name * <span ng-class="{none: !signupFirstnameR, errordisplay: signupFirstnameR}">- required</span></label>
                         <input id="fname"type="text" ng-model="signupFirstname">
@@ -113,10 +113,10 @@
                       <input type="text" ng-model="signupEmail">
 
                       <label ng-class="{red: signupPasswordR}">Create Password * <span ng-class="{none: !signupPasswordR, errordisplay: signupPasswordR}">- required</span></label>
-                      <input type="text" ng-model="signupPassword">
+                      <input type="password" ng-model="signupPassword">
 
                       <label ng-class="{red: signupConfirmPassR}">Confirm Password * <span ng-class="{none: !signupConfirmPassR, errordisplay: signupConfirmPassR}">- required</span></label>
-                      <input type="text" ng-model="signupConfirmPassword">
+                      <input type="password" ng-model="signupConfirmPassword">
 
                       <p class="red center message">{{signupMessage}}</p>
 

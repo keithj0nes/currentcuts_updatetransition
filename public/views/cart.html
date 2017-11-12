@@ -196,14 +196,30 @@
 
 
       <!--  If user is not present, display login with facebook button  -->
-        <div class="" ng-if="!username && !guestistrue" check-logged-in>  <!--ng show and hide-->
-          <form method="get" action="/auth/facebook">
-            <button type="submit" class="btn-facebook">Log In with Facebook to Checkout</button>
-          </form>
+        <div class="login-or-guest" ng-if="!username && !guestistrue" check-logged-in>  <!--ng show and hide-->
+          <div class="cart-login-left">
+            <form method="get" action="/auth/facebook">
+              <button type="submit" class="btn-facebook">Log In with Facebook to Checkout</button>
+            </form>
+            <!-- <hr class="hideDesktop"> -->
+            <form>
+              <button class="btn big-btn" ui-sref="login">Log In / Sign Up</button>
+            </form>
+          </div>
 
-          <form ng-submit="guestUser()">
-            <button type="submit" class="btn-facebook" style="margin-top: 20px;">Checkout as guest</button>
-          </form>
+          <div class="cart-login-center">
+            <div class="or-box-cart">
+              <div class="or-dash-cart"></div>OR<div class="or-dash-cart"></div>
+            </div>
+          </div>
+
+          <div class="cart-login-right">
+
+            <form ng-submit="guestUser()">
+              <button type="submit" class="btn big-btn">Checkout as guest</button>
+            </form>
+
+          </div>
 
 
           <hr>
@@ -301,7 +317,7 @@
 
 
                 <label for="sz" ng-class="{red: cartZipR}">Zip Code * <span ng-class="{none: !cartZipR, errordisplay: cartZipR}">- Zip Code is required</span></label>
-                <input type="number" ng-model="shipZip">
+                <input type="tel" pattern="[0-9]{5}" ng-model="shipZip" title="5 digit zip code">
 
                 <p class="center hideMobile">* We do not store any billing or credit card information *</p>
                 <hr class='lastItem hideDesktop'>
@@ -397,7 +413,7 @@
 
 
                 <label for="bz" ng-class="{red: billZipR}">Zip Code * <span ng-class="{none: !billZipR, errordisplay: billZipR}">- Zip Code is required</span></label>
-                <input id="bz" type="number" ng-model="billZip">
+                <input id="bz" type="tel" pattern="[0-9]{5}" ng-model="billZip" title="5 digit zip code">
 
 
                 <hr class='lastItem hideDesktop'>
@@ -428,7 +444,7 @@
 
 
 
-
+</div>
     </div>
   </div>
 

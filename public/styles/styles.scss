@@ -967,6 +967,38 @@ footer {
     }
   }
 
+  .login-or-guest {
+    button {
+      width: 100%;
+    }
+
+    .cart-login-left {
+
+      .btn:first-child {
+        margin-top: 20px;
+      }
+    }
+
+    .cart-login-center {
+
+      .or-box-cart {
+        width: 100%;
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .or-dash-cart {
+          width: 100%;
+          height: 2px;
+          margin: 0 20px;
+          background: $secondary-color;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
   .checkout {
 
     form.address-form {
@@ -987,6 +1019,7 @@ footer {
       input[type="text"],
       input[type="email"],
       input[type="number"],
+      input[type="tel"],
       select {
         padding: 10px;
         margin: 5px auto 20px;;
@@ -1681,6 +1714,45 @@ form.login-modal {
       }
     }
 
+
+    .login-or-guest {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 150px;
+
+      .cart-login-left {
+        width: 46%;
+
+      }
+      .cart-login-center {
+        height: 100%;
+        width: 8%;
+
+        .or-box-cart {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+
+          .or-dash-cart {
+            width: 2px;
+            height: 100%;
+            margin: 10px 0;
+            background: $secondary-color;
+            display: inline-block;
+          }
+        }
+      }
+      .cart-login-right {
+        width: 46%;
+
+      }
+    }
+
     // .hideDesktop {
     //   display: none;
     // }
@@ -1698,10 +1770,6 @@ form.login-modal {
           padding-right: 80px;
         }
       }
-      .btn-facebook {
-        width: 50%;
-      }
-
 
 
       form {
