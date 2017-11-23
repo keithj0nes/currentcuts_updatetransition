@@ -1264,8 +1264,47 @@ footer {
       width: 100%;
       max-width: 600px;
       margin: 0 auto; }
+      .orderdetails-main .orderdetails-container .table-overflow table th {
+        border-color: red; }
       .orderdetails-main .orderdetails-container .table-overflow table tr {
         text-align: center; }
+
+.orderdetails-main .orderdetails-container {
+  background: #fff;
+  margin: 0 auto; }
+  .orderdetails-main .orderdetails-container .order-info-shipping .order-box {
+    padding: 20px;
+    border-radius: 6px; }
+    .orderdetails-main .orderdetails-container .order-info-shipping .order-box ul {
+      margin: 10px 0; }
+  .orderdetails-main .orderdetails-container .orderdetails-items {
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 20px; }
+    .orderdetails-main .orderdetails-container .orderdetails-items hr {
+      margin: 6px 0; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table p {
+      padding: 0; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .w20 {
+      width: 15%; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .w10 {
+      width: 10%; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .ta-right {
+      text-align: right; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .item-table-headers {
+      display: flex;
+      justify-content: space-between; }
+      .orderdetails-main .orderdetails-container .orderdetails-items .item-table .item-table-headers h3 {
+        font-style: italic; }
+      .orderdetails-main .orderdetails-container .orderdetails-items .item-table .item-table-headers h3:first-child {
+        width: 60%; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .item-table-row {
+      display: flex;
+      justify-content: space-between; }
+      .orderdetails-main .orderdetails-container .orderdetails-items .item-table .item-table-row p:first-child {
+        width: 60%; }
+    .orderdetails-main .orderdetails-container .orderdetails-items .item-table .totals span {
+      display: inline-block; }
 
 /* ============================================
                 CONTACT PAGE
@@ -1556,6 +1595,30 @@ form.login-modal p {
     text-align: center;
     background-color: #fff;
     padding: 10px 20px 20px 20px; }
+  /* ============================================
+                ORDER DETAILS PAGE
+  ============================================ */
+  .orderdetails-container .order-info-shipping {
+    display: flex;
+    justify-content: space-around;
+    width: 900px;
+    margin: 0 auto; }
+    .orderdetails-container .order-info-shipping .order-box {
+      width: 400px;
+      margin: 0 auto; }
+      .orderdetails-container .order-info-shipping .order-box ul {
+        margin: 10px 0; }
+  .orderdetails-container .orderdetails-items .item-table {
+    max-width: 900px;
+    margin: 0 auto; }
+    .orderdetails-container .orderdetails-items .item-table .w20 {
+      width: 12%; }
+    .orderdetails-container .orderdetails-items .item-table .w10 {
+      width: 6%; }
+    .orderdetails-container .orderdetails-items .item-table .item-table-headers h3:first-child {
+      width: 70%; }
+    .orderdetails-container .orderdetails-items .item-table .item-table-row p:first-child {
+      width: 70%; }
   /* ============================================
                   CONTACT PAGE
   ============================================ */
