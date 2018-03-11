@@ -20,13 +20,22 @@ const app = module.exports = express();
 // var userSchema
 
 //sync to database
-var conn = massive.connectSync({
-  connectionString : "postgres://postgres:@localhost/ccv"
-  // connectionString: config.psqlConnString
-});
+// var conn = massive.connectSync({
+//   connectionString : "postgres://postgres:@localhost/ccv"
+//   // connectionString: config.psqlConnString
+// });
 
-app.set('db', conn); // add your connection to express
-var db = app.get('db'); // declare a db object for requests
+// app.set('db', conn); // add your connection to express
+// var db = app.get('db'); // declare a db object for requests
+let db = null;
+const connectionInfo = "postgres://postgres:@localhost/ccv"
+massive(connectionInfo).then(instance => {
+  app.set('db', instance); // add your connection to express
+  db = app.get('db'); // declare a db object for requests
+
+  // console.log(db, 'db');
+  // console.log(db, 'app newwww');
+});
 
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
@@ -488,6 +497,21 @@ app.post("/api/contact", mainCtrl.sendContactEmail)
 
 /////// PRODUCTS ///////
 app.get("/api/products", mainCtrl.getAllProducts);
+
+// app.get("/api/products", function(req, res, next){
+//   try {
+//     db.get_all_products([]).then(products => {
+//       console.log("products shown");
+//       return res.send(products)
+//     })
+//   }
+//   catch(err){
+//     console.log(err, 'err');
+//     return res.status(500).send(err)
+//   }
+// });
+
+
 app.get("/api/products/:id", mainCtrl.getProductById);
 app.get("/api/products/:id/details", mainCtrl.getProductById2);
 app.get("/api/search/:name", mainCtrl.getProductByName);

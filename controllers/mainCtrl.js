@@ -1,80 +1,94 @@
 const app = require("../server.js");
-const db = app.get('db');
+// const db = app.get('db');  // Must create in each function
 const nodemailer = require("nodemailer");
 const config = require("../config.js");
 const userCtrl = require("./usersCtrl.js")
 
-
+// console.log(db, "dddd");
 module.exports = {
 
 //get
   getAllProducts: function(req, res, next){
-    db.get_all_products([], function(err, products){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      console.log("products shown");
-      return res.send(products)
-    })
+    const db = app.get('db');
+    try {
+      db.get_all_products([]).then(products => {
+        console.log("products shown");
+        return res.send(products)
+      })
+    }
+    catch(err){
+      console.log(err);
+      return res.status(500).send(err)
+    }
   },
 
   getProductById: function(req, res, next){
-    db.get_product_by_id([req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      console.log("Specific item");
-      return res.send(product)
-
-    })
+    const db = app.get('db');
+    try {
+      db.get_product_by_id([req.params.id]).then((product)=> {
+        return res.send(product)
+      })
+    }
+    catch(err){
+      console.log(err);
+      return res.status(500).send(err)
+    }
 
   },
 
   getProductById2: function(req, res, next){
+    const db = app.get('db');
     console.log(req.params.id, "req.params.id");
     var wholeProduct = {};
-    db.get_product_by_id_details([req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      console.log("getProductById2");
-      wholeProduct.product = product;
 
-      db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err);
-        }
-
-        wholeProduct.totalFavs = totalFavs;
-
-        if(req.user){
-          db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
-
-            if(found){
-              wholeProduct.favFound = true;
-              // console.log(wholeProduct, "holdprodcut");
-              res.send(wholeProduct)
-
-            } else {
-              // no favorite found
-              res.send(wholeProduct)
-            }
-          })
-        } else {
-          res.send(wholeProduct)
-        }
+    try {
+      db.get_product_by_id_details([req.params.id]).then(product => {
+        console.log(product, 'getProductById2');
       })
-
-    })
-
+    }
+    // db.get_product_by_id_details([req.params.id], function(err, product){
+    //   if(err){
+    //     console.log(err);
+    //     return res.status(500).send(err)
+    //   }
+    //   console.log("getProductById2");
+    //   wholeProduct.product = product;
+    //
+    //   db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
+    //     if(err){
+    //       console.log(err);
+    //       res.status(500).send(err);
+    //     }
+    //
+    //     wholeProduct.totalFavs = totalFavs;
+    //
+    //     if(req.user){
+    //       db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
+    //         if(err){
+    //           console.log(err);
+    //           res.status(500).send(err);
+    //         }
+    //
+    //         if(found){
+    //           wholeProduct.favFound = true;
+    //           // console.log(wholeProduct, "holdprodcut");
+    //           res.send(wholeProduct)
+    //
+    //         } else {
+    //           // no favorite found
+    //           res.send(wholeProduct)
+    //         }
+    //       })
+    //     } else {
+    //       res.send(wholeProduct)
+    //     }
+    //   })
+    //
+    // })
+    catch(err) {
+      console.log(err);
+      return res.status(500).send(err)
+    }
   },
 
   //simple search
