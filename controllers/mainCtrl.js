@@ -4,7 +4,6 @@ const nodemailer = require("nodemailer");
 const config = require("../config.js");
 const userCtrl = require("./usersCtrl.js")
 
-// console.log(db, "dddd");
 module.exports = {
 
 //get
@@ -39,53 +38,46 @@ module.exports = {
   getProductById2: function(req, res, next){
     const db = app.get('db');
     console.log(req.params.id, "req.params.id");
-    var wholeProduct = {};
 
     try {
+      let wholeProduct = {};
+
       db.get_product_by_id_details([req.params.id]).then(product => {
         console.log(product, 'getProductById2');
+        wholeProduct.product = product;
+
+        try {
+          db.query("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id]).then(totalFavs => {
+            wholeProduct.totalFavs = totalFavs;
+
+            if(req.user){
+              try {
+                db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}).then(found => {
+                  if(found){
+                    wholeProduct.favFound = true;
+                    res.send(wholeProduct)
+                  } else {
+                    // no favorite found
+                    res.send(wholeProduct)
+                  }
+                })
+              }
+              catch(err){
+                console.log(err);
+                return res.status(500).send(err)
+              }
+            } else {
+              res.send(wholeProduct);
+            }
+          })
+        }
+        catch(err){
+          console.log(err);
+          return res.status(500).send(err)
+        }
       })
     }
-    // db.get_product_by_id_details([req.params.id], function(err, product){
-    //   if(err){
-    //     console.log(err);
-    //     return res.status(500).send(err)
-    //   }
-    //   console.log("getProductById2");
-    //   wholeProduct.product = product;
-    //
-    //   db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
-    //     if(err){
-    //       console.log(err);
-    //       res.status(500).send(err);
-    //     }
-    //
-    //     wholeProduct.totalFavs = totalFavs;
-    //
-    //     if(req.user){
-    //       db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
-    //         if(err){
-    //           console.log(err);
-    //           res.status(500).send(err);
-    //         }
-    //
-    //         if(found){
-    //           wholeProduct.favFound = true;
-    //           // console.log(wholeProduct, "holdprodcut");
-    //           res.send(wholeProduct)
-    //
-    //         } else {
-    //           // no favorite found
-    //           res.send(wholeProduct)
-    //         }
-    //       })
-    //     } else {
-    //       res.send(wholeProduct)
-    //     }
-    //   })
-    //
-    // })
-    catch(err) {
+    catch(err){
       console.log(err);
       return res.status(500).send(err)
     }
@@ -93,36 +85,39 @@ module.exports = {
 
   //simple search
   getProductByName: function(req, res, next){
+    const db = app.get('db');
     const searchTerm = "%" + req.params.name + "%";
-    console.log(searchTerm);
-    db.get_product_by_name([searchTerm], function(err, product){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      console.log("Searched item", req.params.name);
-      return res.send(product)
-
-    })
-
+    console.log(searchTerm, "Searched item");
+    try {
+      db.get_product_by_name([searchTerm]).then(product => {
+        return res.send(product)
+      })
+    }
+    catch(err) {
+      return res.status(500).send(err)
+    }
   },
 
   getProductByCategory: function(req, res, next){
+    const db = app.get('db');
     console.log(req.params.id, "in cat id haha");
-
-    db.run("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id], function(err, categoryProducts){
-      console.log(categoryProducts, "catprod");
-      console.log(categoryProducts.length, "length");
-      if(categoryProducts.length <= 0){
-        console.log("no more results");
-        db.run("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id], function(err, categoryProductsDetails){
-          // console.log(categoryProductsDetails, "even more details!");
-          res.send({categoryProductsDetails: categoryProductsDetails, bottomlevel: true})
-        })
-      } else {
-        res.send(categoryProducts);
-      }
-    })
+    try {
+      db.query("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id]).then(categoryProducts => {
+        // console.log(categoryProducts, "catprod");
+        // console.log(categoryProducts.length, "length");
+        if(categoryProducts.length <= 0){
+          // console.log("no more results");
+          db.query("SELECT DISTINCT on (products.id) products.*, prices.price FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN product_category ON products.id = product_category.product_id INNER JOIN categories ON categories.id = product_category.category_id WHERE active = true AND (archived IS NULL OR archived = false) AND categories.name = $1 ORDER BY products.id, prices.price", [req.params.id]).then(categoryProductsDetails => {
+            return res.send({categoryProductsDetails: categoryProductsDetails, bottomlevel: true})
+          })
+        } else {
+          return res.send(categoryProducts);
+        }
+      })
+    }
+    catch(err){
+      return res.status(500).send(err)
+    }
   },
 
 
@@ -132,33 +127,16 @@ module.exports = {
       req.session.cart = [];
     }
     req.session.cart.push(req.body);
-    res.send("addProductsInCart");
+    return res.send("addProductsInCart");
   },
 
   getProductsInCart: function(req, res, next){
-
-
-    // let sesscart = { productSize: '15.0H x 20.5W',
-    // productColor: 'Crimson Red',
-    // productQuantity: 1,
-    // productName: 'Wanderlust',
-    // productPrice: '20.99',
-    // productImage: 'https://img0.etsystatic.com/134/0/9461344/il_570xN.895023586_r5dq.jpg',
-    // productId: 2,
-    // productOutline: false }
-    //
-    // if(!req.session.cart){
-    //   req.session.cart = [];
-    //   req.session.cart.push(sesscart)
-    //
-    // }
-    // console.log(req.session.cart);
-    res.send(req.session.cart);
+    return res.send(req.session.cart);
   },
 
   deleteProductsInCart: function(req, res, next){
     req.session.cart.splice(req.params.id, 1);
-    res.send(req.session.cart);
+    return res.send(req.session.cart);
   },
 
 
@@ -166,7 +144,6 @@ module.exports = {
 
 
   addOrder: function(req, res, charge){
-
     console.log(charge, "CHARGE MEEEEE");
     console.log(charge.metadata.guestUser)
     console.log(charge.source.name)
@@ -174,25 +151,26 @@ module.exports = {
     // if guestUser is present, save to guest_users table
     if(charge.metadata.guestUser === 'true'){
       console.log('LOGGING METADATA.GUESTUSER');
-
-      db.guest_users.findOne({email: charge.source.name}, (err, findGuser) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err)
-        }
-
-        if(findGuser){
-          insertOrder(null, findGuser.id, req, res)
-        } else {
-          db.guest_users.insert({email: charge.source.name}, (err, guser) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err)
+      try {
+        db.guest_users.findOne({email: charge.source.name}).then(findGuser => {
+          if(findGuser){
+            insertOrder(null, findGuser.id, req, res)
+          } else {
+            console.log('adding guessttt');
+            try {
+              db.guest_users.insert({email: charge.source.name}).then(guser => {
+                insertOrder(null, guser.id, req, res)
+              })
             }
-            insertOrder(null, guser.id, req, res)
-          })
-        }
-      })
+            catch(err){
+              return res.status(500).send(err);
+            }
+          }
+        })
+      }
+      catch(err){
+        return res.status(500).send(err);
+      }
 
     } else {
       // else registered user is present so save to users table
@@ -303,74 +281,9 @@ module.exports = {
               console.log(newAddress, "newAddress added");
 
               updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, transporter, req, res);
-              //update shippingid in orders table
-              // db.orders.update({id: order[0].id, shippingid: ship.id, orderaddresses_id: newAddress.id, msg_to_seller: b.order.note}, function(err, orderUpdate){
-              //   if(err){
-              //     console.log(err);
-              //     res.send(err)
-              //   }
-              //   console.log(orderUpdate);
-              //   console.log("LOGGING ORDERUPDATE *********");
-              //
-              //
-              // })
-              //
-              // //create email
-              // var mailOptions = {
-              //   from: 'currentcutstest@gmail.com',                  // sender address
-              //   // to: b.email,                                        // list of receivers
-              //   bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-              //   subject: 'Order Confirmation - ' + order[0].id,     // Subject line
-              //   // text: text //,                                   // plaintext body
-              //   html: text                                          // html body
-              // };
-              //
-              // //send email
-              // transporter.sendMail(mailOptions, function(error, info){
-              //   if(error){
-              //       console.log(error);
-              //       res.json({yo: 'error'});
-              //   }else{
-              //       console.log('Message sent: ' + info.response);
-              //       res.json({yo: info.response});
-              //   };
-              // });
             })
           }
         })
-
-        // //update shippingid in orders table
-        // db.orders.update({id: order[0].id, shippingid: ship.id}, function(err, orderUpdate){
-        //   if(err){
-        //     console.log(err);
-        //     res.send(err)
-        //   }
-        //   console.log(orderUpdate);
-        //   console.log("LOGGING ORDERUPDATE *********");
-        //
-        //
-        // })
-        //
-        // //create email
-        // var mailOptions = {
-        //   from: 'currentcutstest@gmail.com',                  // sender address
-        //   // to: b.email,                                        // list of receivers
-        //   bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-        //   subject: 'Order Confirmation - ' + order[0].id,     // Subject line
-        //   // text: text //,                                   // plaintext body
-        //   html: text                                          // html body
-        // };
-        //
-        // //send email
-        // transporter.sendMail(mailOptions, function(error, info){
-        //   if(error){
-        //       console.log(error);
-        //       res.json({yo: 'error'});
-        //   }else{
-        //       console.log('Message sent: ' + info.response);
-        //       res.json({yo: info.response});
-        //   };
-        // });
       })
     })
   }, //end mail function
@@ -440,85 +353,145 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     cartTotal += i.productQuantity * i.productPrice;
   })
 
-  db.orders.insert({
-    userid: reqUserId,
-    datesold: timeNow,
-    ordertotal: cartTotal,
-    guestuserid: guestUserResult,
-    completed: false
-  }, function(err, order){
-    if(err){
-      console.log(err);
-      res.status(500).send(err)
-    } else {
-      // console.log("this should be good");
+  try {
+    db.orders.insert({
+      userid: reqUserId,
+      datesold: timeNow,
+      ordertotal: cartTotal,
+      guestuserid: guestUserResult,
+      completed: false
+    }).then(order => {
+
       req.session.cart.forEach(function(product, index){
         console.log(product, "result in forEach");
-        // console.log(index, "index in forEach");
-
-        // let matches = product.productSize.match(/(\d+)H x (\d+)/);
         let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
-
         let number1 = Number(matches[1]);
         let number2 = Number(matches[2]);
         let heightwidth = {
           height: number1,
           width: number2
         }
-
-
         let myPrice = product.productPrice;
         let myProductId = product.productId;
         let myProductQ = product.productQuantity;
         let myProductColor = product.productColor;
 
-        db.sizes.findOne(heightwidth, function(err, sResult){
-          if(err){
-            console.log(err);
-            res.status(500).send(err)
-          }
-            // console.log(sResult, "result in finding sizes");
+        try {
+          db.sizes.findOne(heightwidth).then(sResult => {
             let sizesid = sResult.id;
+            db.prices.findOne({price: myPrice}).then(pResult => {
+              let pricesid = pResult.id
 
-            db.prices.findOne({price: myPrice}, function(err, pResult){
-              if(err){
-                console.log(err);
-                res.status(500).send(err)
-              }
-                // console.log(pResult, "result in finding prices");
-                let pricesid = pResult.id
-
-                // console.log(number1, "FIRST NUMBER");
-                // console.log(number2, "SECOND VALUE");
-                // console.log(order.id, "HERE IS ORDER.ID");
-                db.orderline.insert({
-                  orderid: order.id,
-                  productid: myProductId,
-                  quantsold: myProductQ,
-                  sizeid: sizesid,
-                  priceid: pricesid,
-                  color: myProductColor
-                }, function(err, orderline){
-                  if(err){
-                    console.log(err);
-                    res.status(500).send(err);
-                  }
-                  // console.log(orderline, "orderline");
-                }) //end db.orderline.insert
+              // console.log(number1, "FIRST NUMBER");
+              // console.log(number2, "SECOND VALUE");
+              // console.log(order.id, "HERE IS ORDER.ID");
+              db.orderline.insert({
+                orderid: order.id,
+                productid: myProductId,
+                quantsold: myProductQ,
+                sizeid: sizesid,
+                priceid: pricesid,
+                color: myProductColor
+              }).then(orderline=>{
+                console.log(orderline, "orderline");
+              }) //end db.orderline.insert
 
             }) //end db.prices.findOne
 
-        }) //end db.sizes.findOne
+          }) //end db.sizes.findOne
+          req.session.cart = [];
+          res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
+        }
+        catch(err){
+          return res.status(500).send(err)
+        }
+      })
+    })
+  }
 
-      }) // end forEach
 
-      // console.log(req.session.cart, "req.session.cart");
-      // console.log(charge, "LOGGING CHARGE");
-      req.session.cart = [];
-      res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
-      // console.log(charge, "charge sent");
-    }
-  }) //end db.orders.insert
+  catch(err){
+    return res.status(500).send(err);
+  }
+  // db.orders.insert({
+  //   userid: reqUserId,
+  //   datesold: timeNow,
+  //   ordertotal: cartTotal,
+  //   guestuserid: guestUserResult,
+  //   completed: false
+  // }, function(err, order){
+  //   if(err){
+  //     console.log(err);
+  //     res.status(500).send(err)
+  //   } else {
+  //     // console.log("this should be good");
+  //     req.session.cart.forEach(function(product, index){
+  //       console.log(product, "result in forEach");
+  //       // console.log(index, "index in forEach");
+  //
+  //       // let matches = product.productSize.match(/(\d+)H x (\d+)/);
+  //       let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
+  //
+  //       let number1 = Number(matches[1]);
+  //       let number2 = Number(matches[2]);
+  //       let heightwidth = {
+  //         height: number1,
+  //         width: number2
+  //       }
+  //
+  //
+  //       let myPrice = product.productPrice;
+  //       let myProductId = product.productId;
+  //       let myProductQ = product.productQuantity;
+  //       let myProductColor = product.productColor;
+  //
+  //       db.sizes.findOne(heightwidth, function(err, sResult){
+  //         if(err){
+  //           console.log(err);
+  //           res.status(500).send(err)
+  //         }
+  //           // console.log(sResult, "result in finding sizes");
+  //           let sizesid = sResult.id;
+  //
+  //           db.prices.findOne({price: myPrice}, function(err, pResult){
+  //             if(err){
+  //               console.log(err);
+  //               res.status(500).send(err)
+  //             }
+  //               // console.log(pResult, "result in finding prices");
+  //               let pricesid = pResult.id
+  //
+  //               // console.log(number1, "FIRST NUMBER");
+  //               // console.log(number2, "SECOND VALUE");
+  //               // console.log(order.id, "HERE IS ORDER.ID");
+  //               db.orderline.insert({
+  //                 orderid: order.id,
+  //                 productid: myProductId,
+  //                 quantsold: myProductQ,
+  //                 sizeid: sizesid,
+  //                 priceid: pricesid,
+  //                 color: myProductColor
+  //               }, function(err, orderline){
+  //                 if(err){
+  //                   console.log(err);
+  //                   res.status(500).send(err);
+  //                 }
+  //                 // console.log(orderline, "orderline");
+  //               }) //end db.orderline.insert
+  //
+  //           }) //end db.prices.findOne
+  //
+  //       }) //end db.sizes.findOne
+  //
+  //     }) // end forEach
+  //
+  //     // console.log(req.session.cart, "req.session.cart");
+  //     // console.log(charge, "LOGGING CHARGE");
+  //     req.session.cart = [];
+  //     res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
+  //     // console.log(charge, "charge sent");
+  //   }
+  // }) //end db.orders.insert
 } //end insertOrder function
 
 
