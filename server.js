@@ -150,31 +150,33 @@ passport.use(new FacebookStrategy({
       profile: profile,
       token: accessToken
     }
+    console.log('firing facebook login');
 
-    db.get_user_by_fbid([profile.id], function(err, user) {
-      if (err) {
-        return done(err);
-      }
+    try {
+      db.get_user_by_fbid([profile.id]).then(user => {
+        console.log('get_user_by_fbid');
+        let firstName = profile.name.givenName;
+        let lastName = profile.name.familyName;
+        let email = profile.emails[0].value;
+        let id = profile.id;
 
-      let firstName = profile.name.givenName;
-      let lastName = profile.name.familyName;
-      let email = profile.emails[0].value;
-      let id = profile.id;
+        if (!user[0]) {
+          db.add_user([firstName, lastName, email, id]).then(user => {
+            console.log("add_user");
+            done(null, user);
+          })
+        } else {
+          console.log("not a new users");
+          done(null, user)
+        }
+      });
 
-      // console.log(firstName, lastName, email, id);
+    }
+    catch(err){
+      console.log('get facebook user error', err);
+      return done(err)
+    }
 
-      if (!user[0]) {
-        db.add_user([firstName, lastName, email, id], function(err, user){
-          if(err){
-            console.log(err);
-            return done(err);
-          }
-          done(null, user);
-        })
-      } else {
-        done(null, user)
-      }
-    });
   }
 ));
 
@@ -184,15 +186,14 @@ passport.use('local-login', new LocalStrategy({
   passReqToCallback : true
 },
   function(req, email, password, done) {
-    db.users.findOne({ email: email }, function(err, user) {
-      if (err) { return done(err); }
+    console.log('hello world');
+    db.users.findOne({ email: email }).then(user => {
       if (!user) {
         return done(null, false, { message: 'Incorrect email or password' });
       }
 
       if(user.facebookid){
         return done(null, false, { message: 'This email has already been signed up through Facebook. Please login with Facebook to continue' });
-
       }
       bcrypt.compare(password, user.pass_hash, (err, comparedValue) => {
         if(comparedValue === false || comparedValue === undefined || comparedValue === null){
@@ -215,8 +216,8 @@ passport.use('local-signup', new LocalStrategy({
   function(req, email, password, done) {
 
     let r = req.body;
-    db.users.findOne({ email: email }, function(err, user) {
-      if (err) { return done(err); }
+    db.users.findOne({ email: email }).then(user => {
+      // if (err) { return done(err); }
       if (user) {
         if (user.facebookid){
           return done(null, false, {message: 'This email has already been signed up through Facebook. Please login with Facebook to continue'})
@@ -224,9 +225,8 @@ passport.use('local-signup', new LocalStrategy({
         return done(null, false, {message: 'Email is already being used'});
       } else {
         bcrypt.hash(password, 10, function(err, hash) {
-          db.users.insert({firstname: r.firstname, lastname: r.lastname, email: req.body.email, pass_hash: hash, registered: moment().format()}, (err, newUser) => {
-            if(err){
-            }
+          db.users.insert({firstname: r.firstname, lastname: r.lastname, email: req.body.email, pass_hash: hash, registered: moment().format()}).then(newUser => {
+            // if(err){}
             return done(null, newUser)
           })
         });
@@ -254,13 +254,9 @@ app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRe
 
 app.post('/auth/login', function(req, res, next){
   passport.authenticate('local-login', function(err, user, info){
-    console.log('haha');
     if (err){
-      console.log(err, "getting herrrr");
       return next(err);
     }
-
-    console.log(info, "info");
     // Generate a JSON response reflecting authentication status
     if (!user) {
       return res.send({ success : false, message : info.message });
@@ -272,7 +268,6 @@ app.post('/auth/login', function(req, res, next){
       }
       return res.send({ success : true, message : 'authentication succeeded' });
     });
-
   })(req, res, next)
 
 });
@@ -282,11 +277,6 @@ app.post('/auth/signup', function(req, res, next) {
     if (err) {
       return next(err); // will generate a 500 error
     }
-    console.log(err, "logging err");
-    console.log(user, "logging user");
-    console.log(info, "logging info");
-
-
     // Generate a JSON response reflecting authentication status
     if (! user) {
       return res.send({ success : false, message : info.message });
@@ -574,7 +564,7 @@ app.post("/api/charge", function(req, res, next){
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
       // console.log(charge, "CHARGE in SERVER");
-      // res.status(200).send(charge);
+      res.status(200).send(charge);
 
     }
   });
