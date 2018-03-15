@@ -1,5 +1,4 @@
 const app = require("../server.js");
-const db = app.get('db');
 const bcrypt = require('bcrypt')
 
 module.exports = {
@@ -31,20 +30,18 @@ module.exports = {
   },
 
   updateBasicAccount: function(req, res){
-    db.users.findOne({email: req.body.email}, (err, findEmail) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
+    const db = app.get('db');
+    db.users.findOne({email: req.body.email}).then(findEmail => {
       if(findEmail){
-        if(findEmail.email != req.user.email){
+        if(findEmail.email !== req.user.email){
           res.send({success: false})
         } else {
-          db.users.update({id: req.user.id, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname}, function(err, user){
-            if(err){
-              console.log(err);
-              res.status(500).send(err)
-            }
+          db.users.update({
+            id: req.user.id,
+            email: req.body.email,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname})
+          .then(user => {
             req.user.email = user.email;
             req.user.firstname = user.firstname;
             req.user.lastname = user.lastname;
@@ -52,11 +49,12 @@ module.exports = {
           })
         }
       } else {
-        db.users.update({id: req.user.id, email: req.body.email, firstname: req.body.firstname, lastname: req.body.lastname}, function(err, user){
-          if(err){
-            console.log(err);
-            res.status(500).send(err)
-          }
+        db.users.update({
+          id: req.user.id,
+          email: req.body.email,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname})
+        .then(user => {
           req.user.email = user.email;
           req.user.firstname = user.firstname;
           req.user.lastname = user.lastname;
@@ -64,67 +62,36 @@ module.exports = {
         })
       }
     })
-
   },
 
   updatePass: function(req, res){
-    console.log(req.body, "logging body of password hahaah");
-
+    const db = app.get('db');
     bcrypt.compare(req.body.currentPass, req.user.pass_hash, (err, comparedValue) => {
-      console.log(comparedValue, "do passwords match");
       if(comparedValue === false || comparedValue === undefined || comparedValue === null){
-        console.log("passwords DONT match!!!");
         res.send({passwordUpdated: false, passwordMatch: false})
       } else {
-        console.log("passwords DO match, update new password!");
-
         bcrypt.hash(req.body.newPass, 10, (err, hash) => {
-          console.log(hash, "logging hash");
-          console.log(req.user.pass_hash, "lloggin pass_hash");
-
-          db.users.update({id: req.user.id, pass_hash: hash}, (err, updatedUser) => {
-            console.log(updatedUser, "logging updated userrr");
+          db.users.update({id: req.user.id, pass_hash: hash}).then(updatedUser => {
             req.user.pass_hash = hash;
             res.send({passwordUpdated: true})
           })
-
         })
       }
     })
   },
 
   updateFavorite: function(req, res){
-    db.favorites.findOne({user_id: req.user.id, product_id: req.body.productId}, (err, found) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-
+    const db = app.get('db');
+    db.favorites.findOne({user_id: req.user.id, product_id: req.body.productId}).then(found => {
       if(found){
-        db.run("DELETE FROM favorites WHERE user_id = $1 and product_id = $2", [req.user.id, req.body.productId], (err, deleted) =>{
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
-          db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId], (err, totalFavs) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
+        db.query("DELETE FROM favorites WHERE user_id = $1 and product_id = $2", [req.user.id, req.body.productId]).then(deleted =>{
+          db.query("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId]).then(totalFavs => {
             res.send(totalFavs)
           })
         })
       } else {
-        db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}, (err, fav) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err)
-          }
-          db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId], (err, totalFavs) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
+        db.favorites.insert({user_id: req.user.id, product_id: req.body.productId}).then(fav => {
+          db.query("SELECT count(*) FROM favorites WHERE product_id = $1", [req.body.productId]).then(totalFavs => {
             res.send(totalFavs)
           })
         })
@@ -133,48 +100,34 @@ module.exports = {
   },
 
   getFavorites: function(req, res){
-    db.get_favorites_by_user_id([req.user.id], (err, userFavs) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-      console.log(userFavs, "logging userFavs");
+    const db = app.get('db');
+    db.get_favorites_by_user_id([req.user.id]).then(userFavs => {
       res.send(userFavs);
     })
   },
 
   getOrderHistory: function(req, res){
-    db.orderhistory([req.user.id], function(err, history){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
-      return res.status(200).send(history)
+    const db = app.get('db');
+    db.orderhistory([req.user.id]).then(orderHistory => {
+      return res.status(200).send(orderHistory)
     })
   },
 
   getOrderHistoryById: function(req, res){
-    db.get_order_details_by_id([req.params.id, req.user.id], function(err, order){
-      if(err){
-        console.log(err);
-        res.status(500).send(err)
-      }
+    const db = app.get('db');
+    db.get_order_details_by_id([req.params.id, req.user.id]).then(order => {
       // if order id is not associated with user id, results = false, else send order
       if(order.length <= 0){
-        console.log("NO RESULTS SHOW");
         res.send({results: false})
       } else {
-        console.log(order, "history being sent");
         res.status(200).send(order)
       }
     })
   },
 
   logout: function(req, res){
-    console.log(req.user, "user in serverjs");
     req.logout();
     res.redirect('/');
-    console.log(req.user, "user in serverjs after logged out");
   }
 
 
