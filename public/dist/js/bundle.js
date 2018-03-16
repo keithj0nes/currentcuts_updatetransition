@@ -33,12 +33,15 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
   }).state("login", {
     url: "/login",
     templateUrl: "views/login.html"
+    // controller: "adminController"
   }).state("loginsuccess", {
     url: "/login-success",
     templateUrl: "views/login-success.html"
+    // controller: "adminController"
   }).state("adventure", {
     url: "/adventure",
     templateUrl: "views/categories/adventure.html"
+    // controller: "adminController"
   }).state("admin", {
     url: "/admin",
     templateUrl: "views/admin.html",
@@ -5100,124 +5103,118 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     if ($scope.cartEmailR === true || $scope.cartNameFirstR === true || $scope.cartNameLastR === true || $scope.cartAddressR === true || $scope.cartCityR === true || $scope.cartStateR === true || $scope.cartZipR === true || $scope.billNameFirstR === true || $scope.billNameLastR === true || $scope.billAddressR === true || $scope.billCityR === true || $scope.billStateR === true || $scope.billZipR === true) {
       //errors will pop up
     } else {
-      var handler;
-      var stripeTotal;
 
-      (function () {
+      var orderData = {
+        order: {},
+        user: {},
+        isguestuser: $scope.guestistrue
+      };
 
-        var orderData = {
-          order: {},
-          user: {},
-          isguestuser: $scope.guestistrue
-        };
+      var billingInfo = {
+        billNameFirst: billNameFirst,
+        billNameLast: billNameLast,
+        billAddress: billAddress,
+        billAddress2: billAddress2,
+        billCity: billCity,
+        billState: billState,
+        billZip: billZip
+      };
 
-        var billingInfo = {
-          billNameFirst: billNameFirst,
-          billNameLast: billNameLast,
-          billAddress: billAddress,
-          billAddress2: billAddress2,
-          billCity: billCity,
-          billState: billState,
-          billZip: billZip
-        };
+      $rootScope.details = {
+        recNameFirst: shipNameFirst,
+        recNameLast: shipNameLast,
+        address1: shipAddress,
+        address2: shipAddress2,
+        city: shipCity,
+        state: shipState,
+        zip: shipZip
+      };
 
-        $rootScope.details = {
-          recNameFirst: shipNameFirst,
-          recNameLast: shipNameLast,
-          address1: shipAddress,
-          address2: shipAddress2,
-          city: shipCity,
-          state: shipState,
-          zip: shipZip
-        };
-
-        $rootScope.note = {
-          note: shipNote
-        };
+      $rootScope.note = {
+        note: shipNote
 
         //using document.getElementById('userEmail').value to get the value of email instead of passing it through the stripeBtn function
-        $rootScope.email = {
-          email: email
-          // email: document.getElementById('userEmail').value
-
-        };
+      };$rootScope.email = {
+        email: email
+        // email: document.getElementById('userEmail').value
 
         // console.log($rootScope.details, "scopedetailsbeinglogged");
 
-        $scope.value = $rootScope.details;
+      };$scope.value = $rootScope.details;
 
-        if ($rootScope.note.note) {
-          // console.log($rootScope.note.note, "rootScope.no.note");
-          orderData.order.note = $rootScope.note.note;
+      if ($rootScope.note.note) {
+        // console.log($rootScope.note.note, "rootScope.no.note");
+        orderData.order.note = $rootScope.note.note;
+      }
+
+      if ($rootScope.email.email) {
+        // console.log($rootScope.email.email, "rootScope.email");
+        orderData.email = $rootScope.email.email;
+      }
+
+      orderData.user = $scope.value;
+      orderData.product = [];
+      orderData.shipping = $rootScope.shippingCost2;
+      console.log(orderData.shipping, "orderData.shipping");
+
+      mainService.getProductsInCart().then(function (response) {
+        if (response) {
+          console.log(response);
+
+          response.forEach(function (item, i) {
+            console.log(item, "item being logged");
+            orderData.product.push(item);
+          });
         }
+      });
 
-        if ($rootScope.email.email) {
-          // console.log($rootScope.email.email, "rootScope.email");
-          orderData.email = $rootScope.email.email;
-        }
+      console.log(orderData, "orderdata logged");
+      // Open Checkout with further options:
+      // console.log(e.data, "USER DATA STRIPE CLICK");
+      if (!$scope.value) {
+        alert("please enter shipping info");
+      } else {
+        var handler = StripeCheckout.configure({
+          key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+          image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+          locale: 'auto',
+          email: $rootScope.email.email,
+          allowRememberMe: false,
+          token: function token(_token) {
+            // You can access the token ID with `token.id`.
+            // Get the token ID to your server-side code for use.
+            var newCard = _token.card;
+            newCard.metadata = { guestUser: orderData.isguestuser };
 
-        orderData.user = $scope.value;
-        orderData.product = [];
-        orderData.shipping = $rootScope.shippingCost2;
-        console.log(orderData.shipping, "orderData.shipping");
-
-        mainService.getProductsInCart().then(function (response) {
-          if (response) {
-            console.log(response);
-
-            response.forEach(function (item, i) {
-              console.log(item, "item being logged");
-              orderData.product.push(item);
+            $http.post('/api/charge', {
+              stripeToken: _token.id,
+              price: stripeTotal,
+              // email: token.email,
+              // email: "hello@hahaomg.com",
+              stripeTokenCard: newCard
+            }).then(function (response) {
+              console.log(response, "response in cartController charge lololololol");
+              $rootScope.cart = [];
+              //set timeout so thankyou page loads after orderData is saved to backend
+              setTimeout(function () {
+                $state.go('thankyou', { "orderid": response.data });
+              }, 150);
+              return $http.post('/api/email', orderData);
             });
           }
         });
+        var stripeTotal = $scope.orderTotal * 100;
 
-        console.log(orderData, "orderdata logged");
-        // Open Checkout with further options:
-        // console.log(e.data, "USER DATA STRIPE CLICK");
-        if (!$scope.value) {
-          alert("please enter shipping info");
-        } else {
-          handler = StripeCheckout.configure({
-            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-            locale: 'auto',
-            email: $rootScope.email.email,
-            allowRememberMe: false,
-            token: function token(_token) {
-              // You can access the token ID with `token.id`.
-              // Get the token ID to your server-side code for use.
-              var newCard = _token.card;
-              newCard.metadata = { guestUser: orderData.isguestuser };
-
-              $http.post('/api/charge', {
-                stripeToken: _token.id,
-                price: stripeTotal,
-                // email: token.email,
-                // email: "hello@hahaomg.com",
-                stripeTokenCard: newCard
-              }).then(function (response) {
-                console.log(response, "response in cartController charge lololololol");
-                $rootScope.cart = [];
-                //set timeout so thankyou page loads after orderData is saved to backend
-                setTimeout(function () {
-                  $state.go('thankyou', { "orderid": response.data });
-                }, 150);
-                return $http.post('/api/email', orderData);
-              });
-            }
-          });
-          stripeTotal = $scope.orderTotal * 100;
-
-
-          handler.open({
-            name: 'Current Cuts Vinyl',
-            description: 'Decal purchase',
-            amount: stripeTotal
-          });
-          // e.preventDefault();
-        }
-      })();
+        handler.open({
+          name: 'Current Cuts Vinyl',
+          description: 'Decal purchase',
+          amount: stripeTotal
+          // shippingAddress: true,
+          // billingAddress: true,
+          // zipCode: true
+        });
+        // e.preventDefault();
+      }
     };
   };
 });
@@ -6004,6 +6001,7 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
       var orderData = {
         order: {
           number: 5624
+          // note: "here is a note from the buyer"
         },
         email: "currentcutstest@gmail.com",
         user: {
@@ -6020,21 +6018,21 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
         //   pPrice: 15,
         //   pQuantity: 2
         // }
-      };
-
-      // setTimeout(function () {
-      //   var hello = mainService.addShippingInfo()
-      //   console.log(hello);
-      //
-      // }, 2000);
-
-      // setTimeout(function () {
-      // scope.value = $rootScope.$on.details
-      // console.log(scope.value, "scopedotvalue");
-      // }, 2000);
 
 
-      $('.btn-stripe').on('click', orderData, function (e) {
+        // setTimeout(function () {
+        //   var hello = mainService.addShippingInfo()
+        //   console.log(hello);
+        //
+        // }, 2000);
+
+        // setTimeout(function () {
+        // scope.value = $rootScope.$on.details
+        // console.log(scope.value, "scopedotvalue");
+        // }, 2000);
+
+
+      };$('.btn-stripe').on('click', orderData, function (e) {
 
         // $rootScope.fun()
         // console.log($rootScope.fun());
@@ -6087,6 +6085,9 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
             name: 'Current Cuts Vinyl',
             description: 'Decal purchase',
             amount: stripeTotal
+            // shippingAddress: true,
+            // billingAddress: true,
+            // zipCode: true
           });
           e.preventDefault();
         }

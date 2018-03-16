@@ -144,9 +144,11 @@ module.exports = {
 
 
   addOrder: function(req, res, charge){
+    console.log('000000000000000000000000');
     console.log(charge, "CHARGE MEEEEE");
     console.log(charge.metadata.guestUser)
     console.log(charge.source.name)
+    const db = app.get('db');
 
     // if guestUser is present, save to guest_users table
     if(charge.metadata.guestUser === 'true'){
@@ -187,6 +189,8 @@ module.exports = {
 
 
   mail: (req, res, next) => {
+    const db = app.get('db');
+
 
     console.log(req.body, "logging body");
     let b = req.body;
@@ -237,33 +241,19 @@ module.exports = {
     });
 
     //find shipping.id based off price
-    db.shipping.findOne({price: b.shipping}, function(err, ship){
-      if(err){
-        console.log(err);
-        res.send(err);
-      }
+    db.shipping.findOne({price: b.shipping}).then(ship => {
 
       //find last order inserted
-      db.run("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[], function(err, order){
-        if(err){
-          console.log(err);
-          res.send(err);
-        }
+      db.query("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[]).then(order => {
 
-        db.order_addresses.findOne({address_one: b.user.address1, address_one: b.user.address1, city: b.user.city, state: b.user.state, zipcode: b.user.zip}, (err, foundAddress) => {
-          if(err){
-            console.log(err);
-            res.send(err)
-          }
+        //
+        db.order_addresses.findOne({address_one: b.user.address1, address_one: b.user.address1, city: b.user.city, state: b.user.state, zipcode: b.user.zip}).then(foundAddress => {
           if(foundAddress){
-            console.log(foundAddress, "address was found!");
-
+            // console.log(foundAddress, "address was found!");
             updateOrderSendConfirmationEmail(order, ship, foundAddress, b, text, transporter, req, res);
-
           } else {
-            console.log("address wasn't found, adding now");
-            let addAddress = {};
-            addAddress = {
+            // console.log("address wasn't found, adding now");
+            const addAddress = {
               firstname: b.user.recNameFirst,
               lastname: b.user.recNameLast,
               address_one: b.user.address1,
@@ -273,13 +263,8 @@ module.exports = {
               zipcode: b.user.zip
             }
             console.log(addAddress);
-            db.order_addresses.insert(addAddress, (err, newAddress)=>{
-              if(err){
-                console.log(err);
-                res.send(err)
-              }
+            db.order_addresses.insert(addAddress).then(newAddress => {
               console.log(newAddress, "newAddress added");
-
               updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, transporter, req, res);
             })
           }
@@ -299,6 +284,7 @@ module.exports = {
 
     let text = "<strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
 
+    const db = app.get('db');
     //email styling example
     // let text = '<table align="center" border="1" cellpadding="0" cellspacing="0" width="600"><tr><td bgcolor="#70bbd9"><strong>Name:</strong> ' + b.fname + b.lname + '</td></tr><tr><td bgcolor="#ee4c50"><strong>Inquiry: </strong> '+ b.message +'</td></tr></table>';
     text += "<br> email should send to: " + b.email;
@@ -346,6 +332,8 @@ module.exports = {
 
 
 function insertOrder(reqUserId, guestUserResult, req, res){
+  const db = app.get('db');
+
 
   var timeNow = new Date();
   let cartTotal = 0;
@@ -504,15 +492,16 @@ function insertOrder(reqUserId, guestUserResult, req, res){
 
 function updateOrderSendConfirmationEmail(order, ship, address, b, text, transporter, req, res){
   console.log("updating orders table now");
-  db.orders.update({id: order[0].id, shippingid: ship.id, orderaddresses_id: address.id, msg_to_seller: b.order.note}, function(err, orderUpdate){
-    if(err){
-      console.log(err);
-      res.send(err)
-    }
+  const db = app.get('db');
+
+  db.orders.update({
+    id: order[0].id,
+    shippingid: ship.id,
+    orderaddresses_id: address.id,
+    msg_to_seller: b.order.note
+  }).then(orderUpdate => {
     console.log(orderUpdate);
     console.log("LOGGING ORDERUPDATE *********");
-
-
   })
 
   //create email

@@ -12,7 +12,7 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const jwt = require('jsonwebtoken');
-var stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
+const stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
 
 
 const app = module.exports = express();
@@ -55,89 +55,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-  // {
-  //   "firstname": "adam",
-  //   "lastname": "common",
-  //   "email": "ac@ac.com",
-  //   "password": "heyman"
-  // }
-
-// app.post('/api/haha', (req, res) => {
-//   let newUser = {
-//     firstname: 'adam',
-//     lastname: 'common',
-//     // email: 'ac@ac.com',
-//     email: 'jr@email.com',
-//     password: 'heyman'
-//   }
-//
-//   console.log(newUser);
-//   let newUserwoPass = {
-//     firstname: 'adam',
-//     lastname: 'common',
-//     // email: 'ac@ac.com',
-//     email: 'jr@email.com',
-//   }
-//   db.users.findOne({email: newUser.email}, function(err, foundUser) {
-//     console.log(foundUser, "foundUser");
-//
-//     if(!foundUser){
-//       db.users.insert(newUserwoPass, function(err, insertedUser){
-//         console.log(insertedUser, "insertedUser");
-//       })
-//     }
-//   })
-//
-//   // bcrypt.hash('myPassword', 10, function(err, hash) {
-//   // // Store hash in database
-//   // console.log(hash, "logging hash");
-//   // res.send('successful')
-// });
-
-// app.get('/api/haha', (req, res) => {
-//
-//   // bcrypt.compare('myPasswodd', '$2a$10$MvP22pQfFLVF8nA7KKeCv.r6tuQ5ADgFpP7X7W/DlvVMHnk3/dF7u', function(err, result) {
-//   //   console.log(result, "logging res");
-//   // if(res) {
-//   //  // Passwords match
-//   // } else {
-//   //  // Passwords don't match
-//   // }
-//   //
-//   // res.send('successful')
-//   //
-//   // });
-// })
-
-
-isAuthenticated = (req, res, next) => {
-  if(req.user){
-    if(req.user.admin){
-      req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
-      return next()
-    }
-    req.reqUser = {reqUser: true};
-    return next();
-  } else {
-    res.send({reqUser: false})
-  }
-}
-
-// isAdmin = (req, res, next) => {
-//   console.log("running isAdmin");
-//   if(req.user){
-//     if(req.user.admin){
-//       console.log("req.user.admin is true");
-//       return next();
-//     } else {
-//       console.log("sending not an admin");
-//       res.send({reqUserAdmin: false})
-//     }
-//   } else {
-//     console.log("sending no logged in user");
-//     res.send({reqUser: false})
-//   }
-// }
 
 passport.use(new FacebookStrategy({
     clientID: config.facebookAuth.clientID,
@@ -292,13 +209,13 @@ app.post('/auth/signup', function(req, res, next) {
 });
 
 //USERS
-app.put("/api/user/account", isAuthenticated, usersCtrl.updateBasicAccount);
-app.put("/api/user/account/pass", isAuthenticated, usersCtrl.updatePass);
-app.post("/api/user/favorites", isAuthenticated, usersCtrl.updateFavorite);
-app.get("/api/user/favorites", isAuthenticated, usersCtrl.getFavorites);
-app.get("/api/user/orders", isAuthenticated, usersCtrl.getOrderHistory);
-app.get("/api/user/orders/:id", isAuthenticated, usersCtrl.getOrderHistoryById);
-app.get('/api/user/logout', isAuthenticated, usersCtrl.logout);
+app.put("/api/user/account", usersCtrl.isAuthenticated, usersCtrl.updateBasicAccount);
+app.put("/api/user/account/pass", usersCtrl.isAuthenticated, usersCtrl.updatePass);
+app.post("/api/user/favorites", usersCtrl.isAuthenticated, usersCtrl.updateFavorite);
+app.get("/api/user/favorites", usersCtrl.isAuthenticated, usersCtrl.getFavorites);
+app.get("/api/user/orders", usersCtrl.isAuthenticated, usersCtrl.getOrderHistory);
+app.get("/api/user/orders/:id", usersCtrl.isAuthenticated, usersCtrl.getOrderHistoryById);
+app.get('/api/user/logout', usersCtrl.isAuthenticated, usersCtrl.logout);
 
 
 let transporter = nodemailer.createTransport({
@@ -430,7 +347,7 @@ app.put("/api/user/savepassword/:token", function(req, res){
 
 
 // app.get("/api/checkauth", usersCtrl.loggedIn);
-app.get("/api/checkauth", isAuthenticated, function(req, res){
+app.get("/api/checkauth", usersCtrl.isAuthenticated, function(req, res){
   console.log(req.reqUserAdmin, "ypu");
   if(req.reqUserAdmin){
     res.send(req.reqUserAdmin)
@@ -451,14 +368,14 @@ app.get("/api/order/:id/thankyou", function(req, res, next){
   /////// NEED TO SET SOME SORT OF EXPIRATION
  console.log("firing thank you now");
   // setTimeout(function(){
-    db.get_thank_you_by_id([req.params.id], function(err, order){
-      if(err){
-        console.log(err);
-        res.status(500).send(err)
-      }
+    db.get_thank_you_by_id([req.params.id]).then(order => {
+      // if(err){
+      //   console.log(err);
+      //   res.status(500).send(err)
+      // }
       // change tyexpired to true after 5 seconds, returning nothing to the front end
       setTimeout(function(){
-        db.orders.update({id: req.params.id, tyexpired: true}, function(err, newOrder){
+        db.orders.update({id: req.params.id, tyexpired: true}).then(newOrder => {
           console.log(newOrder, "tyexpired has been updated to true");
         })
       }, 5000);
@@ -563,8 +480,8 @@ app.post("/api/charge", function(req, res, next){
       console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
-      // console.log(charge, "CHARGE in SERVER");
-      res.status(200).send(charge);
+      console.log(charge, "CHARGE in SERVER");
+      // res.status(200).send(charge);
 
     }
   });

@@ -3,20 +3,18 @@ const bcrypt = require('bcrypt')
 
 module.exports = {
 
-  // loggedIn: function(req, res, next) {
-  //     if (!req.user) {
-  //       res.send({reqUser: false});
-  //       return;
-  //     } else if (!req.user.admin) {
-  //       res.send({reqUserAdmin: false});
-  //       return;
-  //     } else if (req.user.admin){
-  //       res.send({reqUser: true, reqUserAdmin: true})
-  //       return;
-  //     }
-  //     res.status(200).send({reqUser: true});
-  // },
-
+  isAuthenticated: function(req, res, next){
+    if(req.user && req.user.admin){
+      req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
+      return next()
+    } else if(req.user){
+      req.reqUser = {reqUser: true};
+      return next();
+    } else {
+      res.send({reqUser: false})
+    }
+  },
+  
   getCurrentUser: function(req,res,next){
     let isFBuser = false;
     if(req.user){
