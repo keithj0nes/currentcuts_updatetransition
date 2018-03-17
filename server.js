@@ -31,8 +31,10 @@ massive(connectionInfo).then(instance => {
 
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
+const cartCtrl = require("./controllers/cartCtrl.js");
+
 const adminCtrl = require("./controllers/adminCtrl.js");
-const usersLoginCtrl = require("./controllers/usersLoginCtrl");
+const authCtrl = require("./controllers/authCtrl.js");
 
 //middleware
 app.use(bodyParser.json());
@@ -49,22 +51,23 @@ app.use(passport.session());
 app.use(flash());
 
 /////// AUTH ///////
-app.post("/auth/login", usersLoginCtrl.localLogin);
-app.post("/auth/signup", usersLoginCtrl.localSignup);
-app.get("/auth/facebook", usersLoginCtrl.fbLogin);
-app.get("/auth/facebook/callback", usersLoginCtrl.fbCallback);
-app.get("/auth/checkauth", usersLoginCtrl.isAuthenticated, usersLoginCtrl.isAdmin)
-app.get("/auth/currentuser", usersCtrl.getCurrentUser)
+app.post("/auth/login", authCtrl.localLogin);
+app.post("/auth/signup", authCtrl.localSignup);
+app.get("/auth/facebook", authCtrl.fbLogin);
+app.get("/auth/facebook/callback", authCtrl.fbCallback);
+app.get("/auth/checkauth", authCtrl.isAuthenticated, authCtrl.isAdmin);
+app.get("/auth/currentuser", authCtrl.getCurrentUser);
+app.get("/auth/logout", authCtrl.isAuthenticated, authCtrl.logout);
+
 /////// AUTH ///////
 
 /////// USERS ///////
-app.put("/api/user/account", usersLoginCtrl.isAuthenticated, usersCtrl.updateBasicAccount);
-app.put("/api/user/account/pass", usersLoginCtrl.isAuthenticated, usersCtrl.updatePass);
-app.post("/api/user/favorites", usersLoginCtrl.isAuthenticated, usersCtrl.updateFavorite);
-app.get("/api/user/favorites", usersLoginCtrl.isAuthenticated, usersCtrl.getFavorites);
-app.get("/api/user/orders", usersLoginCtrl.isAuthenticated, usersCtrl.getOrderHistory);
-app.get("/api/user/orders/:id", usersLoginCtrl.isAuthenticated, usersCtrl.getOrderHistoryById);
-app.get("/api/user/logout", usersLoginCtrl.isAuthenticated, usersLoginCtrl.logout);
+app.put("/api/user/account", authCtrl.isAuthenticated, usersCtrl.updateBasicAccount);
+app.put("/api/user/account/pass", authCtrl.isAuthenticated, usersCtrl.updatePass);
+app.post("/api/user/favorites", authCtrl.isAuthenticated, usersCtrl.updateFavorite);
+app.get("/api/user/favorites", authCtrl.isAuthenticated, usersCtrl.getFavorites);
+app.get("/api/user/orders", authCtrl.isAuthenticated, usersCtrl.getOrderHistory);
+app.get("/api/user/orders/:id", authCtrl.isAuthenticated, usersCtrl.getOrderHistoryById);
 
 app.put("/api/user/resetpassword", usersCtrl.resetPasswordEmail);
 app.get("/api/user/resetpassword/:token", usersCtrl.resetPasswordToken);
@@ -103,15 +106,12 @@ app.get("/api/order/:id/thankyou", function(req, res, next){
 
 })
 
-//CART
-app.post("/api/cart", mainCtrl.addProductsToCart);
-app.get("/api/cart", mainCtrl.getProductsInCart);
-app.delete("/api/cart/:id", mainCtrl.deleteProductsInCart);
-app.put("/api/cart", (req, res, next) => {
-  console.log(req.body, "UPDATE CART");
-  req.session.cart = req.body;
-  res.send(req.session.cart);
-})
+/////// CART ///////
+app.post("/api/cart", cartCtrl.addToCart);
+app.get("/api/cart", cartCtrl.getCart);
+app.delete("/api/cart/:id", cartCtrl.deleteInCart);
+app.put("/api/cart", cartCtrl.updateCart);
+/////// CART ///////
 
 /////// CONTACT ///////
 app.post("/api/contact", mainCtrl.sendContactEmail)

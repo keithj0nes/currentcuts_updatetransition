@@ -6,18 +6,6 @@ const nodemailer = require("nodemailer");
 
 module.exports = {
 
-  getCurrentUser: function(req,res,next){
-    let isFBuser = false;
-    if(req.user){
-      if(req.user.facebookid){
-        isFBuser = true;
-      }
-      res.status(200).send({firstname:req.user.firstname, lastname:req.user.lastname, email:req.user.email, isFBuser: isFBuser});
-    } else {
-      res.send({reqUser: false})
-    }
-  },
-
   updateBasicAccount: function(req, res){
     const db = app.get('db');
     db.users.findOne({email: req.body.email}).then(findEmail => {

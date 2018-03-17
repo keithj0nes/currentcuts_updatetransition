@@ -122,22 +122,22 @@ module.exports = {
 
 
 
-  addProductsToCart: function(req, res, next){
-    if(!req.session.cart){
-      req.session.cart = [];
-    }
-    req.session.cart.push(req.body);
-    return res.send("addProductsInCart");
-  },
-
-  getProductsInCart: function(req, res, next){
-    return res.send(req.session.cart);
-  },
-
-  deleteProductsInCart: function(req, res, next){
-    req.session.cart.splice(req.params.id, 1);
-    return res.send(req.session.cart);
-  },
+  // addProductsToCart: function(req, res, next){
+  //   if(!req.session.cart){
+  //     req.session.cart = [];
+  //   }
+  //   req.session.cart.push(req.body);
+  //   return res.send("addProductsInCart");
+  // },
+  //
+  // getProductsInCart: function(req, res, next){
+  //   return res.send(req.session.cart);
+  // },
+  //
+  // deleteProductsInCart: function(req, res, next){
+  //   req.session.cart.splice(req.params.id, 1);
+  //   return res.send(req.session.cart);
+  // },
 
 
 

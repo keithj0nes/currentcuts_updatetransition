@@ -5,21 +5,10 @@ const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 
-
-// exports.fbLogin = function(req, res){
-//   console.log('fbLogin saying now haha idk');
-//   passport.authenticate('facebook', { scope: 'email'})(req, res);
-// }
-//
-// exports.fbCallback = function(req, res){
-//    passport.authenticate("facebook", { failureRedirect: '/#/', successRedirect:'/#/login-success'})(req, res);
-// }
-
 module.exports = {
   isAuthenticated: function(req, res, next){
     if(req.user && req.user.admin){
       req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
-      // res.send(req.reqUserAdmin)
       return next()
     } else if(req.user){
       req.reqUser = {reqUser: true};
@@ -34,6 +23,18 @@ module.exports = {
       res.send(req.reqUserAdmin)
     } else {
       res.send({reqUserAdmin: false})
+    }
+  },
+
+  getCurrentUser: function(req,res,next){
+    let isFBuser = false;
+    if(req.user){
+      if(req.user.facebookid){
+        isFBuser = true;
+      }
+      res.status(200).send({firstname:req.user.firstname, lastname:req.user.lastname, email:req.user.email, isFBuser: isFBuser});
+    } else {
+      res.send({reqUser: false})
     }
   },
 
@@ -88,6 +89,12 @@ module.exports = {
     res.redirect('/');
   }
 }
+
+
+
+
+
+///// PASSPORT /////
 
 
 passport.serializeUser(function(user, done) {
