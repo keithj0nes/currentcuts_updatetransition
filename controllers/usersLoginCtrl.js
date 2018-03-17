@@ -16,6 +16,26 @@ const bcrypt = require('bcrypt');
 // }
 
 module.exports = {
+  isAuthenticated: function(req, res, next){
+    if(req.user && req.user.admin){
+      req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
+      // res.send(req.reqUserAdmin)
+      return next()
+    } else if(req.user){
+      req.reqUser = {reqUser: true};
+      return next();
+    } else {
+      res.send({reqUser: false})
+    }
+  },
+
+  isAdmin: function(req, res){
+    if(req.reqUserAdmin){
+      res.send(req.reqUserAdmin)
+    } else {
+      res.send({reqUserAdmin: false})
+    }
+  },
 
   fbLogin: function(req, res){
     passport.authenticate('facebook', { scope: 'email'})(req, res);
@@ -61,6 +81,11 @@ module.exports = {
         return res.send({ success : true, message : 'authentication succeeded' });
       });
     })(req, res, next);
+  },
+
+  logout: function(req, res){
+    req.logout();
+    res.redirect('/');
   }
 }
 

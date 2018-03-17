@@ -48,7 +48,7 @@ angular.module("ccvApp").service("mainService", function($http){
     console.log("getAuth running");
     return $http({
       method: "GET",
-      url: "/api/checkauth"
+      url: "/auth/checkauth"
     }).then((response) => {
       return response.data;
     })
@@ -57,7 +57,7 @@ angular.module("ccvApp").service("mainService", function($http){
   this.getUsername = ()=> {
     return $http({
       method: "GET",
-      url: "/api/currentuser"
+      url: "/auth/currentuser"
     }).then((response) => {
       return response.data;
     })

@@ -1,20 +1,11 @@
 const app = require("../server.js");
-const bcrypt = require('bcrypt')
+const config = require("../config.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 module.exports = {
 
-  isAuthenticated: function(req, res, next){
-    if(req.user && req.user.admin){
-      req.reqUserAdmin = {reqUserAdmin: true} //use this method to pass a variable through next()
-      return next()
-    } else if(req.user){
-      req.reqUser = {reqUser: true};
-      return next();
-    } else {
-      res.send({reqUser: false})
-    }
-  },
-  
   getCurrentUser: function(req,res,next){
     let isFBuser = false;
     if(req.user){
@@ -123,10 +114,127 @@ module.exports = {
     })
   },
 
-  logout: function(req, res){
-    req.logout();
-    res.redirect('/');
+  resetPasswordEmail: function(req, res){
+    const db = app.get('db');
+
+    console.log(req.body, "loggin req.body");
+    db.users.findOne({email: req.body.email}).then(user => {
+      // if(err){console.log(err); res.status(500).send(err)}
+
+      console.log(user, "logging user");
+      if(!user){
+        res.send({success: false, message: "Email was not found"})
+      } else if(user.facebookid){
+        res.send({success: false, message: "Facebook users cannot reset password, please log in with Facebook"})
+      } else {
+        let rtoken = jwt.sign({email: user.email}, 'secret', {expiresIn: "1h"});
+        console.log(rtoken, "logging rtoken");
+
+        db.users.update({id: user.id, resettoken: rtoken}).then(newUser => {
+          console.log(newUser, "new user");
+
+          let text = "Hello " + user.firstname + ', <br><br> Please reset your password by clicking the link below: <br><br><a href="http://localhost:3010/#/passwordreset/' + newUser.resettoken +'">RESET PASSWORD</a>'
+
+          const mailOptions = {
+            from: 'currentcutstest@gmail.com',                  // sender address
+            // to: b.email,                                        // list of receivers
+            bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+            subject: 'Reset your password',     // Subject line
+            // text: text //,                                   // plaintext body
+            html: text                                          // html body
+          };
+
+          //send email
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+                console.log(error);
+                res.json({yo: 'error'});
+            }else{
+                console.log('Message sent: ' + info.response);
+                res.json({yo: info.response});
+            };
+          });
+          res.send({success: true, message: "An email has been sent"})
+
+        })
+
+      }
+    })
+  },
+
+  resetPasswordToken: function(req, res){
+    const db = app.get('db');
+
+    console.log(req.params.token, "req.params.token");
+    let token = req.params.token;
+
+    db.users.findOne({resettoken: token}).then(user => {
+      console.log(user);
+      if(user){
+        jwt.verify(token, 'secret', (err, decoded) => {
+          if(err){
+            console.log("falure");
+            res.send({success: false, message: 'Invalid token'})
+          } else {
+            console.log("SUCCESSSSSSSS");
+            res.send({success: true, user: user})
+          }
+        })
+      } else {
+        res.send({success: false, message: 'Token not found'})
+      }
+
+
+    })
+  },
+
+  savePassword: function(req, res){
+    const db = app.get('db');
+    console.log(req.body, "reqbody");
+    db.users.findOne({resettoken: req.params.token}).then(user => {
+
+      if(req.body.pass == null || req.body.pass == "") {
+        res.send({success: false, message: "Password not provied"});
+      } else {
+        bcrypt.hash(req.body.pass, 10, (err, hash) => {
+          db.users.update({id: user.id, resettoken: null, pass_hash: hash}).then(updatedUser => {
+
+
+            const mailOptions = {
+              from: 'Current Cuts Admin, currentcutstest@gmail.com',                  // sender address
+              // to: b.email,                                        // list of receivers
+              bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+              subject: 'Your password has been reset',     // Subject line
+              // text: text //,                                   // plaintext body
+              html: "Hello " + user.firstname + ', <br><br> Your password has been successfully reset! <br><br>'
+            };
+
+            //send email
+            transporter.sendMail(mailOptions, function(error, info){
+              if(error){
+                  console.log(error);
+                  res.json({yo: 'error'});
+              }else{
+                  console.log('Message sent: ' + info.response);
+                  res.json({yo: info.response});
+              };
+            });
+
+
+            res.send({success: true, message: "Your password has been updated"})
+          })
+        })
+      }
+    })
   }
-
-
 }
+
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  secure: true,
+  auth: {
+      user: config.nodemailerAuth.username, // Your email id
+      pass: config.nodemailerAuth.pass // Your password
+  }
+});
