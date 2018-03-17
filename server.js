@@ -17,8 +17,6 @@ const stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
 
 const app = module.exports = express();
 
-// var userSchema
-
 //sync to database
 // var conn = massive.connectSync({
 //   connectionString : "postgres://postgres:@localhost/ccv"
@@ -40,6 +38,7 @@ massive(connectionInfo).then(instance => {
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
 const adminCtrl = require("./controllers/adminCtrl.js");
+const usersLoginCtrl = require("./controllers/usersLoginCtrl");
 
 //middleware
 app.use(bodyParser.json());
@@ -55,158 +54,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-
-passport.use(new FacebookStrategy({
-    clientID: config.facebookAuth.clientID,
-    clientSecret: config.facebookAuth.clientSecret,
-    callbackURL: config.facebookAuth.callbackURL,
-    profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
-  },
-  function(accessToken, refreshToken, profile, done) {
-    var user = {
-      profile: profile,
-      token: accessToken
-    }
-    console.log('firing facebook login');
-
-    try {
-      db.get_user_by_fbid([profile.id]).then(user => {
-        console.log('get_user_by_fbid');
-        let firstName = profile.name.givenName;
-        let lastName = profile.name.familyName;
-        let email = profile.emails[0].value;
-        let id = profile.id;
-
-        if (!user[0]) {
-          db.add_user([firstName, lastName, email, id]).then(user => {
-            console.log("add_user");
-            done(null, user);
-          })
-        } else {
-          console.log("not a new users");
-          done(null, user)
-        }
-      });
-
-    }
-    catch(err){
-      console.log('get facebook user error', err);
-      return done(err)
-    }
-
-  }
-));
-
-passport.use('local-login', new LocalStrategy({
-  usernameField : 'email',
-  passwordField : 'password',
-  passReqToCallback : true
-},
-  function(req, email, password, done) {
-    console.log('hello world');
-    db.users.findOne({ email: email }).then(user => {
-      if (!user) {
-        return done(null, false, { message: 'Incorrect email or password' });
-      }
-
-      if(user.facebookid){
-        return done(null, false, { message: 'This email has already been signed up through Facebook. Please login with Facebook to continue' });
-      }
-      bcrypt.compare(password, user.pass_hash, (err, comparedValue) => {
-        if(comparedValue === false || comparedValue === undefined || comparedValue === null){
-
-          return done(null, false, { message: 'Incorrect email or password' });
-        } else {
-          return done(null, user);
-        }
-      })
-    });
-  }
-));
-
-
-passport.use('local-signup', new LocalStrategy({
-  usernameField : 'email',
-  passwordField : 'password',
-  passReqToCallback : true
-},
-  function(req, email, password, done) {
-
-    let r = req.body;
-    db.users.findOne({ email: email }).then(user => {
-      // if (err) { return done(err); }
-      if (user) {
-        if (user.facebookid){
-          return done(null, false, {message: 'This email has already been signed up through Facebook. Please login with Facebook to continue'})
-        }
-        return done(null, false, {message: 'Email is already being used'});
-      } else {
-        bcrypt.hash(password, 10, function(err, hash) {
-          db.users.insert({firstname: r.firstname, lastname: r.lastname, email: req.body.email, pass_hash: hash, registered: moment().format()}).then(newUser => {
-            // if(err){}
-            return done(null, newUser)
-          })
-        });
-      }
-    });
-  }
-));
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-    if(user[0]) {
-      user = user[0];
-    }
-    done(null, user);
-});
-
 //FACEBOOK OAUTH
-app.get("/auth/facebook", passport.authenticate('facebook', { scope: 'email'}));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: '/#/', successRedirect:'/#/login-success'}))
+app.get("/auth/facebook", usersLoginCtrl.fbLogin);
+app.get("/auth/facebook/callback", usersLoginCtrl.fbCallback);
 
-
-
-app.post('/auth/login', function(req, res, next){
-  passport.authenticate('local-login', function(err, user, info){
-    if (err){
-      return next(err);
-    }
-    // Generate a JSON response reflecting authentication status
-    if (!user) {
-      return res.send({ success : false, message : info.message });
-    }
-
-    req.login(user, loginErr => {
-      if (loginErr) {
-        return next(loginErr);
-      }
-      return res.send({ success : true, message : 'authentication succeeded' });
-    });
-  })(req, res, next)
-
-});
-
-app.post('/auth/signup', function(req, res, next) {
-  passport.authenticate('local-signup', function(err, user, info) {
-    if (err) {
-      return next(err); // will generate a 500 error
-    }
-    // Generate a JSON response reflecting authentication status
-    if (! user) {
-      return res.send({ success : false, message : info.message });
-    }
-
-    req.login(user, loginErr => {
-      if (loginErr) {
-        return next(loginErr);
-      }
-      return res.send({ success : true, message : 'authentication succeeded' });
-    });
-  })(req, res, next);
-});
+//LOCAL AUTH
+app.post('/auth/login', usersLoginCtrl.localLogin);
+app.post('/auth/signup', usersLoginCtrl.localSignup);
 
 //USERS
 app.put("/api/user/account", usersCtrl.isAuthenticated, usersCtrl.updateBasicAccount);
@@ -480,9 +334,8 @@ app.post("/api/charge", function(req, res, next){
       console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
-      console.log(charge, "CHARGE in SERVER");
+      // console.log(charge, "CHARGE in SERVER");
       // res.status(200).send(charge);
-
     }
   });
 
