@@ -7,11 +7,9 @@ module.exports = {
 
 
   getAllAdminProducts: function(req, res){
-    db.admin_get_all_products([], function(err, products){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
+    const db = app.get('db');
+
+    db.admin_get_all_products([]).then(products => {
       console.log("admin products shown");
       return res.send(products)
     })
@@ -20,13 +18,14 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getProductDetails: function(req, res){
+    const db = app.get('db');
     let wholeProduct = {};
   // db.run("select id, name from categories where parent_id is null", [], function(err, topLevelCategories){
-    db.run("select * from categories order by id", [], function(err, allCategories){
+    db.query("select * from categories order by id", []).then(allCategories => {
     // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
       // console.log(allCategories, "top level cats");
       wholeProduct.allCategories = allCategories
-      db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+      db.query("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id]).then(cats => {
       // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
         // console.log(cats, "categories in .get");
         if(cats.length >= 1){
@@ -35,28 +34,28 @@ module.exports = {
       })
     })
 
-    db.run("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
+    db.query("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id]).then(product => {
+      // if(err){
+      //   console.log(err);
+      //   return res.status(500).send(err)
+      // }
       console.log("getProductById2");
       wholeProduct.product = product;
 
-      db.run("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id], (err, totalFavs) => {
-        if(err){
-          console.log(err);
-          res.status(500).send(err);
-        }
+      db.query("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id]).then(totalFavs => {
+        // if(err){
+        //   console.log(err);
+        //   res.status(500).send(err);
+        // }
 
         wholeProduct.totalFavs = totalFavs;
 
         if(req.user){
-          db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}, (err, found) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
+          db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}).then(found => {
+            // if(err){
+            //   console.log(err);
+            //   res.status(500).send(err);
+            // }
             if(found){
               wholeProduct.favFound = true;
               // console.log(wholeProduct, "holdprodcut");
@@ -76,24 +75,28 @@ module.exports = {
 
   //post
   addProductToDB: function(req, res, next){
-    const newProduct = {name: req.body.name,
-                        description: req.body.description,
-                        img1: req.body.img1,
-                        imgmainvector: req.body.imgmainvector,
-                        imgoutlinevector: req.body.imgoutlinevector,
-                        active: req.body.active}
+    const db = app.get('db');
 
-    db.products.findOne({name: req.body.name, or: [{"archived =": false}, {"archived =": null}]}, (err, result) => {
+    const newProduct = {
+      name: req.body.name,
+      description: req.body.description,
+      img1: req.body.img1,
+      imgmainvector: req.body.imgmainvector,
+      imgoutlinevector: req.body.imgoutlinevector,
+      active: req.body.active
+    }
+
+    db.products.findOne({name: req.body.name, or: [{"archived =": false}, {"archived =": null}]}).then(result => {
       if(result){
         console.log(result, "found oneeeeeee that's active!!");
         res.send({productExists: true})
       } else {
         console.log(result, "couldnt find one active");
-        db.products.insert(newProduct, (err, addedProduct) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
+        db.products.insert(newProduct).then(addedProduct => {
+          // if(err){
+          //   console.log(err);
+          //   res.status(500).send(err);
+          // }
           res.send(addedProduct)
         })
       }
@@ -103,32 +106,37 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   updateProductById: function(req, res, next){
-    const updateProduct = {id: req.params.id,
-                           name: req.body.name,
-                           description: req.body.description,
-                           img1: req.body.img1,
-                           imgmainvector: req.body.imgmainvector,
-                           imgoutlinevector: req.body.imgoutlinevector,
-                           active: req.body.active}
+    const db = app.get('db');
 
-    db.products.update(updateProduct, (err, updatedProduct) => {
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
-      res.send(updatedProduct)
+    const updateProduct = {
+      id: req.params.id,
+      name: req.body.name,
+      description: req.body.description,
+      img1: req.body.img1,
+      imgmainvector: req.body.imgmainvector,
+      imgoutlinevector: req.body.imgoutlinevector,
+      active: req.body.active
+    }
+
+    db.products.update(updateProduct).then(updatedProduct => {
+      // if(err){
+      //   console.log(err);
+      //   res.status(500).send(err);
+      // }
+      return res.send(updatedProduct)
     })
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   deleteProductById: function(req, res, next){
+    const db = app.get('db');
     console.log("deleted function fired");
-    db.products.update({id: req.params.id, archived: true}, (err, archivedProduct) => {
-      if(err){
-        console.log(err);
-        return res.status(500).send(err)
-      }
+    db.products.update({id: req.params.id, archived: true}).then(archivedProduct => {
+      // if(err){
+      //   console.log(err);
+      //   return res.status(500).send(err)
+      // }
       return res.status(200).send(archivedProduct)
     })
   },
@@ -407,26 +415,28 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   deleteSizePrice: function(req, res){
+    const db = app.get('db');
+
     console.log("delete triggered");
     console.log(req.params.id);
     console.log(req.body);
     let index = req.body.index
-    db.run("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id], function(err, result){
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
+    db.query("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id]).then(result => {
+      // if(err){
+      //   console.log(err);
+      //   res.status(500).send(err);
+      // }
 
       console.log(result, "loggig result");
       result.forEach(function(r, i){
         if(index === i){
           console.log(r.id, "r.id");
           console.log(r, "index === i in forEach loop");
-          db.product_price_size.destroy({id: r.id}, (err, destroyedPps) => {
-            if(err){
-              console.log(err);
-              res.status(500).send(err);
-            }
+          db.product_price_size.destroy({id: r.id}).then(destroyedPps => {
+            // if(err){
+            //   console.log(err);
+            //   res.status(500).send(err);
+            // }
             console.log(destroyedPps, "destroyedPps data");
             res.send(destroyedPps)
           })
@@ -438,25 +448,27 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   updateCategories: function(req, res){
+    const db = app.get('db');
+
     let index = req.body.index;
     let cat_id = req.body.id
     let catMatch = 0;
     let updatedCategory = {};
 
-    db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
+    db.query("select * from product_category where product_id = $1 order by category_id, id", [req.params.id]).then(product => {
+      // if(err){
+      //   console.log(err);
+      //   res.status(500).send(err);
+      // }
       // console.log(product, "here's the categories");
-      product.forEach(function(prod, ind){
-        if(index === ind){
+      product.forEach((prod, i) => {
+        if(index === i){
           catMatch++
           console.log("found a match at index: ", index, prod);
           db.product_category.save({id: prod.id, product_id: req.params.id, category_id: cat_id}, function(err, updatedCat){
             // console.log(updatedCat, "this has been updated");
 
-            db.run("select * from categories order by id", [], function(err, allCategories){
+            db.query("select * from categories order by id", []).then(allCategories => {
 
             // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
 
@@ -464,7 +476,7 @@ module.exports = {
               // console.log(allCategories, "top level cats");
               updatedCategory.allCategories = allCategories
 
-              db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+              db.query("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id]).then(cats => {
               // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
 
                 // console.log(cats, "categories in .get");
@@ -485,14 +497,14 @@ module.exports = {
 
       if(!catMatch){
         console.log("new Line added!!");
-        db.product_category.insert({product_id: req.params.id, category_id: cat_id}, (err, insertedCat) => {
-          if(err){
-            console.log(err);
-            res.status(500).send(err);
-          }
+        db.product_category.insert({product_id: req.params.id, category_id: cat_id}).then(insertedCat => {
+          // if(err){
+          //   console.log(err);
+          //   res.status(500).send(err);
+          // }
           console.log(insertedCat, "inserted category");
 
-          db.run("select * from categories order by id", [], function(err, allCategories){
+          db.query("select * from categories order by id", []).then(allCategories => {
 
           // db.run("select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id order by product_category.id", [], function(err, allCategories){
 
@@ -500,7 +512,7 @@ module.exports = {
             // console.log(allCategories, "top level cats");
             updatedCategory.allCategories = allCategories
 
-            db.run("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id], function(err, cats){
+            db.query("with recursive cte as (select p.id as product_id, c.name, c.parent_id from products p join product_category pc on p.id = pc.product_id join categories c on c.id = pc.category_id union all select p.id, c.name, c.parent_id from cte r join products p on p.id = r.product_id join categories c on c.id = r.parent_id) select * from cte where product_id=$1", [req.params.id]).then(cats => {
             // db.run(" select categories.name, categories.id, product_category.id from product_category inner join categories on categories.id = category_id where product_category.product_id = $1 order by product_category.id ", [req.params.id], function(err, cats){
 
               // console.log(cats, "categories in .get");
@@ -520,10 +532,13 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   deleteCategories: function(req, res){
-    db.run("select * from product_category where product_id = $1 order by category_id, id", [req.params.id], function(err, product){
-      product.forEach(function(item, ind){
-        if(req.body.index === ind){
-          db.product_category.destroy({id: item.id}, function(err, deletedCat){
+    const db = app.get('db');
+
+    db.query("select * from product_category where product_id = $1 order by category_id, id", [req.params.id]).then(product => {
+      product.forEach(function(item, i){
+        if(req.body.index === i){
+          db.product_category.destroy({id: item.id}).then(deletedCat => {
+            res.send(deletedCat);
           })
         }
       })
@@ -533,16 +548,17 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getOpenOrders: function(req, res){
+    const db = app.get('db');
     let openOrders = {};
 
-    db.run("select orders.id, orders.userid, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = false order by datesold;", [], function(err, mainOrders){
+    db.query("select orders.id, orders.userid, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = false order by datesold;", []).then(mainOrders => {
       openOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
-        db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
+        db.query("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id]).then(subOrder => {
           openOrders.mainOrder[index].subOrder = subOrder;
         })
       })
-      //res.send sends before db.run is completed - must use setTimeout to allow db.run data to be stored
+      //res.send sends before db.query is completed - must use setTimeout to allow db.run data to be stored
       setTimeout(()=>{
         res.send(openOrders)
       }, 100);
@@ -552,17 +568,16 @@ module.exports = {
 
 
   getClosedOrders: function(req, res){
+    const db = app.get('db');
 
     let closedOrders = {};
 
-    db.run("select orders.id, orders.userid, orders.tracking, orders.datecompleted, orders.msg_to_buyer, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = true order by datecompleted desc;", [], (err, mainOrders) => {
+    db.query("select orders.id, orders.userid, orders.tracking, orders.datecompleted, orders.msg_to_buyer, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = true order by datecompleted desc;", []).then(mainOrders => {
       closedOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
-        db.run("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id], function(err, subOrder){
+        db.query("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id]).then(subOrder => {
           closedOrders.mainOrder[index].subOrder = subOrder;
-
         })
-
       })
       setTimeout(()=>{
         res.send(closedOrders)
@@ -573,6 +588,8 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   completeOrder: function(req, res){
+    const db = app.get('db');
+
     console.log(req.params.index, "logging req.pareams.didd");
     console.log(req.body[0], "logging boddddyyyy");
 
@@ -580,11 +597,11 @@ module.exports = {
     let timeNow = new Date();
 
 
-    db.run("select * from orders where completed = false order by datesold", [], function(err, openOrders){
-      if(err){
-        console.log(err);
-        res.status(500).send(err);
-      }
+    db.query("select * from orders where completed = false order by datesold", []).then(openOrders => {
+      // if(err){
+      //   console.log(err);
+      //   res.status(500).send(err);
+      // }
       // console.log(openOrders, "logging open orders in completeOrder");
 
       if(openOrders){
@@ -592,18 +609,18 @@ module.exports = {
           console.log(idx, req.params.index);
           if(b.index === idx){
             console.log(item, "MATCH");
-            db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}, (err, updatedOrder)=>{
+            db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}).then(updatedOrder => {
               // console.log(updatedOrder, "result");
-              db.order_addresses.findOne({id: updatedOrder.orderaddresses_id}, (err, foundAddress)=>{
+              db.order_addresses.findOne({id: updatedOrder.orderaddresses_id}).then(foundAddress => {
                 // console.log(foundAddress, "found address");
                 if(updatedOrder.userid){
                   // console.log("signed in user");
-                  db.users.findOne({id: updatedOrder.userid}, (err, foundUser)=>{
+                  db.users.findOne({id: updatedOrder.userid}).then(foundUser => {
                     sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res);
                   })
                 } else if(updatedOrder.guestuserid){
                   // console.log("guest user");
-                  db.guest_users.findOne({id: updatedOrder.guestuserid}, (err, foundGuestUser)=>{
+                  db.guest_users.findOne({id: updatedOrder.guestuserid}).then(foundGuestUser => {
                     // console.log(foundGuestUser.email);
                     sendTrackingEmail(b, foundAddress, updatedOrder, foundGuestUser, nodemailer, config, req, res);
                   })
@@ -616,13 +633,12 @@ module.exports = {
         console.log(openOrders, openOrders.length, "openOrders length");
       }//end else openOrders
     })
-
-
     res.send({orderCompleted: true})
   },
 
   getOrderCount: function(req, res){
-    db.run("select (select COUNT(*) from orders where completed = false) AS opencount, (select COUNT(*) from orders where completed = true) AS closedcount", (err, orderCount) => {
+    const db = app.get('db');
+    db.query("select (select COUNT(*) from orders where completed = false) AS opencount, (select COUNT(*) from orders where completed = true) AS closedcount").then(orderCount => {
       res.send(orderCount)
     })
   }
