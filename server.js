@@ -50,6 +50,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+
 /////// AUTH ///////
 app.post("/auth/login", authCtrl.localLogin);
 app.post("/auth/signup", authCtrl.localSignup);
@@ -114,12 +115,12 @@ app.post("/api/admin/products", adminCtrl.addProductToDB);
 app.put("/api/admin/products/:id", adminCtrl.updateProductById);
 app.put("/api/admin/products/:id/sizeprice", adminCtrl.addSizePrice);
 app.put("/api/admin/products/:id/categories", adminCtrl.updateCategories);
+app.put("/api/admin/orders/open/:index", adminCtrl.completeOrder);
 
 app.delete("/api/admin/products/:id", adminCtrl.deleteProductById);
 app.delete("/api/admin/products/:id/sizeprice", adminCtrl.deleteSizePrice);
 app.delete("/api/admin/products/:id/categories", adminCtrl.deleteCategories);
 
-app.put("/api/admin/orders/open/:index", adminCtrl.completeOrder);
 /////// ADMIN ///////
 
 app.post("/api/charge", function(req, res, next){

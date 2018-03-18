@@ -43,7 +43,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 //     // doc.text(guestemail, 10, 10)
 //
 //     // doc.autoPrint()
-// 
+//
 //     doc.save('Packlist Order ID: ' + id + ".pdf")
 //     console.log('firing');
 //     console.log(obj);
@@ -204,6 +204,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
                                 "width": $scope.width,
                                 "price": $scope.price})
                                 console.log($scope.productDetails, "hahah lol momg");
+    // $scope.editing = true;
+    console.log($scope.productDetails.product[$scope.productDetails.product.length-1]);
   }
 
   $scope.clearForm = function(){
@@ -255,7 +257,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
           swal("this product is already in the database")
         } else {
           setTimeout(function () {
-            getAllProducts();
+            $scope.getAllProducts();
             console.log(res.id, "calling for details");
             getProductDetails(res.id)
           }, 100);
@@ -308,25 +310,17 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
 
   $scope.deleteDetails = function(index, productDetails){
-
-    // console.log(productDetails);
     productDetails.index = index;
-    // console.log(productDetails);
-    for (var i = $scope.productDetails.length-1; i >= 0; i--) {
-
-      if( i === index){
-        console.log("these values are equal")
-        $scope.productDetails.splice(i, 1);
+    for (var i = $scope.productDetails.product.length-1; i >= 0; i--) {
+      if(i === index){
+        $scope.productDetails.product.splice(i, 1);
       }
     }
 
-    adminService.adminDeleteDetails($scope.productId, productDetails)//.then((res) => {
-
-    // })
+    adminService.adminDeleteDetails($scope.productId, productDetails);
   }
 
   $scope.update = function(id, name, description, img1, imgmainvector, imgoutlinevector, active){
-
     const productUpdate = {
       name: name,
       description: description,
@@ -340,7 +334,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     //
     adminService.adminUpdateProduct(id, productUpdate);
     setTimeout(function () {
-      getAllProducts();
+      $scope.getAllProducts();
     }, 100);
 
   }
