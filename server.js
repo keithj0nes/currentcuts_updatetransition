@@ -32,7 +32,7 @@ massive(connectionInfo).then(instance => {
 const mainCtrl = require("./controllers/mainCtrl.js");
 const usersCtrl = require("./controllers/usersCtrl.js");
 const cartCtrl = require("./controllers/cartCtrl.js");
-
+const productsCtrl = require("./controllers/productsCtrl.js");
 const adminCtrl = require("./controllers/adminCtrl.js");
 const authCtrl = require("./controllers/authCtrl.js");
 
@@ -94,11 +94,11 @@ app.post("/api/contact", mainCtrl.sendContactEmail)
 
 
 /////// PRODUCTS ///////
-app.get("/api/products", mainCtrl.getAllProducts);
-app.get("/api/products/:id", mainCtrl.getProductById);
-app.get("/api/products/:id/details", mainCtrl.getProductById2);
-app.get("/api/search/:name", mainCtrl.getProductByName);
-app.get("/api/products/category/:id", mainCtrl.getProductByCategory);
+app.get("/api/products", productsCtrl.getAllProducts);
+app.get("/api/products/:id", productsCtrl.getProductById);
+app.get("/api/products/:id/details", productsCtrl.getProductById2);
+app.get("/api/products/search/:name", productsCtrl.getProductByName);
+app.get("/api/products/category/:id", productsCtrl.getProductByCategory);
 /////// PRODUCTS ///////
 
 

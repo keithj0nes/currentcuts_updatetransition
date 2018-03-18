@@ -6320,7 +6320,7 @@ angular.module("ccvApp").service("mainService", function ($http) {
     console.log(name, "searched letters in service");
     return $http({
       method: "GET",
-      url: "/api/search/" + name
+      url: "/api/products/search/" + name
     }).then(function (response) {
       console.log(response.data, "search by name in service");
       return response.data;
