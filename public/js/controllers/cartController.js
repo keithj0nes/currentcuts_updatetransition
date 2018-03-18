@@ -336,7 +336,7 @@ getProductsInCart();
             setTimeout(function(){
               $state.go('thankyou', {"orderid": response.data});
             }, 150)
-            return $http.post('/api/email', orderData);
+            return $http.post('/api/orders/confirmationemail', orderData);
           })
         }
       })

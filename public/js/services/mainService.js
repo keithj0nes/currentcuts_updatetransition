@@ -161,7 +161,7 @@ angular.module("ccvApp").service("mainService", function($http){
   this.getThankYouById = (id) => {
     return $http({
       method: "GET",
-      url: "/api/order/" + id + "/thankyou"
+      url: "/api/orders/" + id + "/thankyou"
     }).then((response) => {
       console.log(response);
       return response.data;

@@ -58,8 +58,8 @@ app.get("/auth/facebook/callback", authCtrl.fbCallback);
 app.get("/auth/checkauth", authCtrl.isAuthenticated, authCtrl.isAdmin);
 app.get("/auth/currentuser", authCtrl.getCurrentUser);
 app.get("/auth/logout", authCtrl.isAuthenticated, authCtrl.logout);
-
 /////// AUTH ///////
+
 
 /////// USERS ///////
 app.put("/api/user/account", authCtrl.isAuthenticated, usersCtrl.updateBasicAccount);
@@ -68,50 +68,25 @@ app.post("/api/user/favorites", authCtrl.isAuthenticated, usersCtrl.updateFavori
 app.get("/api/user/favorites", authCtrl.isAuthenticated, usersCtrl.getFavorites);
 app.get("/api/user/orders", authCtrl.isAuthenticated, usersCtrl.getOrderHistory);
 app.get("/api/user/orders/:id", authCtrl.isAuthenticated, usersCtrl.getOrderHistoryById);
-
 app.put("/api/user/resetpassword", usersCtrl.resetPasswordEmail);
 app.get("/api/user/resetpassword/:token", usersCtrl.resetPasswordToken);
 app.put("/api/user/savepassword/:token", usersCtrl.savePassword);
 /////// USERS ///////
 
 
+/////// ORDERS ///////
+app.post("/api/orders/confirmationemail", mainCtrl.confirmationEmail);
+app.get("/api/orders/:id/thankyou", mainCtrl.sendThankyou);
+/////// ORDERS ///////
 
-
-
-//ORDERS
-app.post("/api/email", mainCtrl.mail);
-
-
-
-app.get("/api/order/:id/thankyou", function(req, res, next){
-  /////// NEED TO SET SOME SORT OF EXPIRATION
- console.log("firing thank you now");
-  // setTimeout(function(){
-    db.get_thank_you_by_id([req.params.id]).then(order => {
-      // if(err){
-      //   console.log(err);
-      //   res.status(500).send(err)
-      // }
-      // change tyexpired to true after 5 seconds, returning nothing to the front end
-      setTimeout(function(){
-        db.orders.update({id: req.params.id, tyexpired: true}).then(newOrder => {
-          console.log(newOrder, "tyexpired has been updated to true");
-        })
-      }, 5000);
-
-      console.log(order, "logging order in thankyou");
-      res.send(order)
-    })
-  // }, 1000)
-
-})
 
 /////// CART ///////
 app.post("/api/cart", cartCtrl.addToCart);
 app.get("/api/cart", cartCtrl.getCart);
-app.delete("/api/cart/:id", cartCtrl.deleteInCart);
 app.put("/api/cart", cartCtrl.updateCart);
+app.delete("/api/cart/:id", cartCtrl.deleteInCart);
 /////// CART ///////
+
 
 /////// CONTACT ///////
 app.post("/api/contact", mainCtrl.sendContactEmail)
@@ -150,19 +125,18 @@ app.put("/api/admin/orders/open/:index", adminCtrl.completeOrder);
 app.post("/api/charge", function(req, res, next){
 
   // Get the credit card details submitted by the form
-  var token = req.body.stripeToken; // Using Express
-  var guestUser = req.body.stripeTokenCard.metadata;
+  const token = req.body.stripeToken; // Using Express
+  const guestUser = req.body.stripeTokenCard.metadata;
   console.log(req.body, "LOgging Body");
   console.log(guestUser, "logging guestUser");
   // Create a charge: this will charge the user's card
-  var charge = stripe.charges.create({
+  const charge = stripe.charges.create({
     amount: req.body.price, // Amount in cents
     currency: "usd",
     source: token,
     description: "Decal Purchase",
     // metadata: {"guestUser": req.body.stripeTokenCard.metadata}
     metadata: {'guestUser': guestUser.guestUser}
-
 
   }, function(err, charge) {
     console.log(req.body.price, "req.body.price 2");

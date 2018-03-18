@@ -121,28 +121,6 @@ module.exports = {
   },
 
 
-
-  // addProductsToCart: function(req, res, next){
-  //   if(!req.session.cart){
-  //     req.session.cart = [];
-  //   }
-  //   req.session.cart.push(req.body);
-  //   return res.send("addProductsInCart");
-  // },
-  //
-  // getProductsInCart: function(req, res, next){
-  //   return res.send(req.session.cart);
-  // },
-  //
-  // deleteProductsInCart: function(req, res, next){
-  //   req.session.cart.splice(req.params.id, 1);
-  //   return res.send(req.session.cart);
-  // },
-
-
-
-
-
   addOrder: function(req, res, charge){
     console.log('000000000000000000000000');
     console.log(charge, "CHARGE MEEEEE");
@@ -183,12 +161,25 @@ module.exports = {
   },
 
 
+  sendThankyou: function(req, res){
+    const db = app.get('db');
+    db.get_thank_you_by_id([req.params.id]).then(order => {
+      // change tyexpired to true after 5 seconds,
+      // so you cant see the order at a later date
+      setTimeout(function(){
+        db.orders.update({id: req.params.id, tyexpired: true}).then(o => {
+        })
+      }, 5000);
+      console.log(order, "logging order in thankyou");
+      res.send(order)
+    })
+  },
 
 
 
 
 
-  mail: (req, res, next) => {
+  confirmationEmail: (req, res, next) => {
     const db = app.get('db');
 
 
@@ -325,17 +316,13 @@ module.exports = {
     // res.send({success: true})
   }
 
-
-
 } //end module exports
 
 
 
 function insertOrder(reqUserId, guestUserResult, req, res){
   const db = app.get('db');
-
-
-  var timeNow = new Date();
+  const timeNow = new Date();
   let cartTotal = 0;
   req.session.cart.forEach(function(i){
     cartTotal += i.productQuantity * i.productPrice;
@@ -380,7 +367,7 @@ function insertOrder(reqUserId, guestUserResult, req, res){
                 sizeid: sizesid,
                 priceid: pricesid,
                 color: myProductColor
-              }).then(orderline=>{
+              }).then(orderline => {
                 console.log(orderline, "orderline");
               }) //end db.orderline.insert
 
@@ -401,94 +388,7 @@ function insertOrder(reqUserId, guestUserResult, req, res){
   catch(err){
     return res.status(500).send(err);
   }
-  // db.orders.insert({
-  //   userid: reqUserId,
-  //   datesold: timeNow,
-  //   ordertotal: cartTotal,
-  //   guestuserid: guestUserResult,
-  //   completed: false
-  // }, function(err, order){
-  //   if(err){
-  //     console.log(err);
-  //     res.status(500).send(err)
-  //   } else {
-  //     // console.log("this should be good");
-  //     req.session.cart.forEach(function(product, index){
-  //       console.log(product, "result in forEach");
-  //       // console.log(index, "index in forEach");
-  //
-  //       // let matches = product.productSize.match(/(\d+)H x (\d+)/);
-  //       let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
-  //
-  //       let number1 = Number(matches[1]);
-  //       let number2 = Number(matches[2]);
-  //       let heightwidth = {
-  //         height: number1,
-  //         width: number2
-  //       }
-  //
-  //
-  //       let myPrice = product.productPrice;
-  //       let myProductId = product.productId;
-  //       let myProductQ = product.productQuantity;
-  //       let myProductColor = product.productColor;
-  //
-  //       db.sizes.findOne(heightwidth, function(err, sResult){
-  //         if(err){
-  //           console.log(err);
-  //           res.status(500).send(err)
-  //         }
-  //           // console.log(sResult, "result in finding sizes");
-  //           let sizesid = sResult.id;
-  //
-  //           db.prices.findOne({price: myPrice}, function(err, pResult){
-  //             if(err){
-  //               console.log(err);
-  //               res.status(500).send(err)
-  //             }
-  //               // console.log(pResult, "result in finding prices");
-  //               let pricesid = pResult.id
-  //
-  //               // console.log(number1, "FIRST NUMBER");
-  //               // console.log(number2, "SECOND VALUE");
-  //               // console.log(order.id, "HERE IS ORDER.ID");
-  //               db.orderline.insert({
-  //                 orderid: order.id,
-  //                 productid: myProductId,
-  //                 quantsold: myProductQ,
-  //                 sizeid: sizesid,
-  //                 priceid: pricesid,
-  //                 color: myProductColor
-  //               }, function(err, orderline){
-  //                 if(err){
-  //                   console.log(err);
-  //                   res.status(500).send(err);
-  //                 }
-  //                 // console.log(orderline, "orderline");
-  //               }) //end db.orderline.insert
-  //
-  //           }) //end db.prices.findOne
-  //
-  //       }) //end db.sizes.findOne
-  //
-  //     }) // end forEach
-  //
-  //     // console.log(req.session.cart, "req.session.cart");
-  //     // console.log(charge, "LOGGING CHARGE");
-  //     req.session.cart = [];
-  //     res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
-  //     // console.log(charge, "charge sent");
-  //   }
-  // }) //end db.orders.insert
 } //end insertOrder function
-
-
-
-
-
-
-
-
 
 function updateOrderSendConfirmationEmail(order, ship, address, b, text, transporter, req, res){
   console.log("updating orders table now");
