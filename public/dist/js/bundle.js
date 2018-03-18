@@ -4514,7 +4514,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
     //set timeout to update db before calling getOpenOrders function
     setTimeout(function () {
-      $scope.getOpenOrders();
+      getOrderCount();
     }, 100);
   };
 
@@ -4629,7 +4629,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       "price": $scope.price });
     console.log($scope.productDetails, "hahah lol momg");
     // $scope.editing = true;
-    console.log($scope.productDetails.product[$scope.productDetails.product.length - 1]);
+    // console.log($scope.productDetails.product);
   };
 
   $scope.clearForm = function () {

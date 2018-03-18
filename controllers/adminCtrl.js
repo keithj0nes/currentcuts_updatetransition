@@ -470,7 +470,7 @@ module.exports = {
     const db = app.get('db');
     let openOrders = {};
 
-    db.query("select orders.id, orders.userid, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = false order by datesold;", []).then(mainOrders => {
+    db.query("select orders.id, orders.userid, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddressesid = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = false order by datesold;", []).then(mainOrders => {
       openOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
         db.query("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id]).then(subOrder => {
@@ -491,7 +491,7 @@ module.exports = {
 
     let closedOrders = {};
 
-    db.query("select orders.id, orders.userid, orders.tracking, orders.datecompleted, orders.msg_to_buyer, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddresses_id = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = true order by datecompleted desc;", []).then(mainOrders => {
+    db.query("select orders.id, orders.userid, orders.tracking, orders.datecompleted, orders.msg_to_buyer, orders.datesold, orders.ordertotal, orders.msg_to_seller, shipping.price AS shipping, users.firstName AS ufn, users.lastName AS uln, users.email as useremail, guest_users.email as guestemail, order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode from orders left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid left join order_addresses on orders.orderaddressesid = order_addresses.id join shipping on orders.shippingid = shipping.id where orders.completed = true order by datecompleted desc;", []).then(mainOrders => {
       closedOrders.mainOrder = mainOrders;
       mainOrders.forEach((main, index) => {
         db.query("select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color from orderline join orders on orderline.orderid = orders.id left join users on users.id = orders.userid left join guest_users on guest_users.id = orders.guestuserid join products on orderline.productid = products.id join sizes on orderline.sizeid = sizes.id join prices on orderline.priceid = prices.id join shipping on orders.shippingid = shipping.id where orders.id = $1",[main.id]).then(subOrder => {
@@ -530,7 +530,7 @@ module.exports = {
             console.log(item, "MATCH");
             db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}).then(updatedOrder => {
               // console.log(updatedOrder, "result");
-              db.order_addresses.findOne({id: updatedOrder.orderaddresses_id}).then(foundAddress => {
+              db.order_addresses.findOne({id: updatedOrder.orderaddressesid}).then(foundAddress => {
                 // console.log(foundAddress, "found address");
                 if(updatedOrder.userid){
                   // console.log("signed in user");

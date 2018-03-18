@@ -2,33 +2,27 @@
 
 
 -- DROP existing TABLES, to clean out the database	=	=	=	=	=
-
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS sizes CASCADE;
-DROP TABLE IF EXISTS prices CASCADE;
-DROP TABLE IF EXISTS product_price_size CASCADE;
-DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS favorites CASCADE;
+DROP TABLE IF EXISTS guest_users CASCADE;
+DROP TABLE IF EXISTS order_addresses CASCADE;
 DROP TABLE IF EXISTS orderline CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS product_category CASCADE;
+DROP TABLE IF EXISTS product_price_size CASCADE;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS prices CASCADE;
 DROP TABLE IF EXISTS shipping CASCADE;
+DROP TABLE IF EXISTS sizes CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 
 -- CREATE TABLES	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = =
 
-CREATE TABLE users (
+CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
-  firstName TEXT,
-  lastName TEXT,
-  email TEXT,
-  password TEXT,
-  password_salt TEXT,
-  facebookId TEXT,
-  registered TIMESTAMP,
-  admin BOOLEAN
-);
-
-CREATE TABLE guest_users (
-  id SERIAL PRIMARY KEY,
-  email TEXT
+  name TEXT,
+  parent_id INTEGER REFERENCES categories(id)
 );
 
 CREATE TABLE favorites (
@@ -37,67 +31,9 @@ CREATE TABLE favorites (
   product_id INTEGER REFERENCES products(id)
 );
 
-CREATE TABLE categories (
+CREATE TABLE guest_users (
   id SERIAL PRIMARY KEY,
-  name TEXT,
-  parent_id INTEGER REFERENCES categories(id)
-);
-
-CREATE TABLE product_category (
-  id SERIAL PRIMARY KEY,
-  product_id INTEGER REFERENCES products(id)
-  category_id INTEGER REFERENCES categories(id)
-);
-
-CREATE TABLE products (
-  id SERIAL PRIMARY KEY,
-  name TEXT,
-  description TEXT,
-  img1 TEXT,
-  imgmainvector TEXT,
-  imgoutlinevector TEXT,
-  active BOOLEAN,
-  archived BOOLEAN
-);
-
-CREATE TABLE sizes (
-  id SERIAL PRIMARY KEY,
-  height DECIMAL(6,1),
-  width DECIMAL(6,1),
-  garmentSize TEXT
-);
-
-CREATE TABLE prices (
-  id SERIAL PRIMARY KEY,
-  price DECIMAL(6,2)
-);
-
-CREATE TABLE product_price_size (
-  id SERIAL PRIMARY KEY,
-  productId INTEGER REFERENCES products(id),
-  priceId INTEGER REFERENCES prices(id),
-  sizeId INTEGER REFERENCES sizes(id)
-);
-
-CREATE TABLE orders (
-  id SERIAL PRIMARY KEY,
-  userId INTEGER REFERENCES users(id),
-  guestuserid INTEGER REFERENCES guest_users(id),
-  dateSold TIMESTAMP,
-  ordertotal DECIMAL(8,2),
-  shippingid INTEGER REFERENCES shipping(id)
-  tyexpired BOOLEAN,
-  orderaddresses_id INTEGER REFERENCES order_addresses(id)
-);
-
-CREATE TABLE orderline (
-  id SERIAL PRIMARY KEY,
-  orderId INTEGER REFERENCES orders(id),
-  productId INTEGER REFERENCES products(id),
-  quantSold INT,
-  sizeId INTEGER REFERENCES sizes(id),
-  pricesId INTEGER REFERENCES prices(id),
-  color TEXT
+  email TEXT
 );
 
 CREATE TABLE order_addresses (
@@ -111,9 +47,84 @@ CREATE TABLE order_addresses (
   zipcode TEXT
 );
 
+CREATE TABLE orderline (
+  id SERIAL PRIMARY KEY,
+  orderid INTEGER REFERENCES orders(id),
+  productid INTEGER REFERENCES products(id),
+  quantsold INT,
+  sizeid INTEGER REFERENCES sizes(id),
+  priceid INTEGER REFERENCES prices(id),
+  color TEXT
+);
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  userid INTEGER REFERENCES users(id),
+  datesold TIMESTAMP,
+  ordertotal DECIMAL(8,2),
+  shippingid INTEGER REFERENCES shipping(id)
+  guestuserid INTEGER REFERENCES guest_users(id),
+  tyexpired BOOLEAN,
+  completed BOOLEAN,
+  tracking TEXT,
+  datecompleted TIMESTAMP,
+  msg_to_buyer TEXT,
+  msg_to_seller TEXT
+  orderaddressesid INTEGER REFERENCES order_addresses(id)
+);
+
+CREATE TABLE prices (
+  id SERIAL PRIMARY KEY,
+  price DECIMAL(6,2)
+);
+
+CREATE TABLE product_category (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES products(id)
+  category_id INTEGER REFERENCES categories(id)
+);
+
+CREATE TABLE product_price_size (
+  id SERIAL PRIMARY KEY,
+  productid INTEGER REFERENCES products(id),
+  priceid INTEGER REFERENCES prices(id),
+  sizeid INTEGER REFERENCES sizes(id)
+);
+
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  name TEXT,
+  description TEXT,
+  img1 TEXT,
+  imgmainvector TEXT,
+  imgoutlinevector TEXT,
+  active BOOLEAN,
+  archived BOOLEAN
+);
+
 CREATE TABLE shipping (
   id SERIAL PRIMARY KEY,
-  price NUMERIC --allows decimals
+  price DECIMAL(6,2)
+);
+
+CREATE TABLE sizes (
+  id SERIAL PRIMARY KEY,
+  height DECIMAL(6,1),
+  width DECIMAL(6,1),
+  garmentSize TEXT
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  firstname TEXT,
+  lastname TEXT,
+  email TEXT,
+  pass_hash TEXT,
+  pass_salt TEXT,
+  facebookid TEXT,
+  registered TIMESTAMP,
+  admin BOOLEAN
+  resettoken TEXT
 );
 
 
