@@ -288,11 +288,12 @@ function insertOrder(reqUserId, guestUserResult, req, res){
 function updateOrderSendConfirmationEmail(order, ship, address, b, text, transporter, req, res){
   console.log("updating orders table now");
   const db = app.get('db');
-
+  // console.log(address, 'addresssss ______-');
+  // console.log(db.orders, 'db.orders');
   db.orders.update({
     id: order[0].id,
     shippingid: ship.id,
-    orderaddresses_id: address.id,
+    orderaddressesid: address.id,
     msg_to_seller: b.order.note
   }).then(orderUpdate => {
     console.log(orderUpdate);

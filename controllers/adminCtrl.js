@@ -525,13 +525,13 @@ module.exports = {
 
       if(openOrders){
         openOrders.forEach((item, idx) => {
-          console.log(idx, req.params.index);
+          // console.log(idx, req.params.index);
           if(b.index === idx){
             console.log(item, "MATCH");
             db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}).then(updatedOrder => {
-              // console.log(updatedOrder, "result");
+              console.log(updatedOrder, "result");
               db.order_addresses.findOne({id: updatedOrder.orderaddressesid}).then(foundAddress => {
-                // console.log(foundAddress, "found address");
+                console.log( foundAddress, "found address");
                 if(updatedOrder.userid){
                   // console.log("signed in user");
                   db.users.findOne({id: updatedOrder.userid}).then(foundUser => {
@@ -572,12 +572,13 @@ module.exports = {
 
 
 function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res){
+  console.log(foundAddress, 'FOUND ADDRESS');
   if(!foundAddress.address_two){
     foundAddress.address_two_alt = "<br>";
   } else {
     foundAddress.address_two_alt = foundAddress.address_two + " <br>";
   }
-
+  console.log('getting here');
   let text = "Your order has been shipped! <br><br> USPS Tracking # " + b.trackingNo + "<br> <br> Ship To: <br>" + foundAddress.firstname + " " + foundAddress.lastname + "<br>" + foundAddress.address_one + " " + foundAddress.address_two_alt + foundAddress.city + ", " + foundAddress.state + ", " + foundAddress.zipcode + "<br><br> Your Note: '" + updatedOrder.msg_to_seller + "' <br> Our Note: '" + updatedOrder.msg_to_buyer + "' <br><br> Thanks! ";
 
 

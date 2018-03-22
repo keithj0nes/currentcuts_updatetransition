@@ -21,12 +21,16 @@ const app = module.exports = express();
 // var db = app.get('db'); // declare a db object for requests
 let db = null;
 const connectionInfo = "postgres://postgres:@localhost/ccv"
-massive(connectionInfo).then(instance => {
+// const connectionInfo = config.psqlConnString;
+
+
+massive(connectionInfo, {excludeMatViews: true}).then(instance => {
   app.set('db', instance); // add your connection to express
   db = app.get('db'); // declare a db object for requests
-
   // console.log(db, 'db');
   // console.log(db, 'app newwww');
+}).catch(err => {
+  console.log(err, 'err');
 });
 
 const mainCtrl = require("./controllers/mainCtrl.js");

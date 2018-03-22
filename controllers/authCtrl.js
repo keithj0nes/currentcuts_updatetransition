@@ -4,6 +4,7 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
+const moment = require('moment');
 
 module.exports = {
   isAuthenticated: function(req, res, next){
@@ -144,6 +145,7 @@ passport.use('local-signup', new LocalStrategy({
   passReqToCallback : true
 },
   function(req, email, password, done) {
+    const db = app.get('db');
 
     let r = req.body;
     db.users.findOne({ email: email }).then(user => {
