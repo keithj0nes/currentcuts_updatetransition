@@ -20,8 +20,8 @@ const app = module.exports = express();
 // app.set('db', conn); // add your connection to express
 // var db = app.get('db'); // declare a db object for requests
 let db = null;
-const connectionInfo = "postgres://postgres:@localhost/ccv"
-// const connectionInfo = config.psqlConnString;
+// const connectionInfo = "postgres://postgres:@localhost/ccv"
+const connectionInfo = config.psqlConnString;
 
 
 massive(connectionInfo, {excludeMatViews: true}).then(instance => {
