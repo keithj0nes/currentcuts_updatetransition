@@ -6,7 +6,7 @@ const massive = require("massive");
 const config = require("./config.js");
 const passport = require("passport");
 const flash = require('connect-flash');
-const stripe = require("stripe")("sk_test_O4Zh9ql3gliRLlGILelnZ4rz");
+const stripe = require("stripe")(config.stripeKeyTest);
 
 
 const app = module.exports = express();
@@ -20,8 +20,8 @@ const app = module.exports = express();
 // app.set('db', conn); // add your connection to express
 // var db = app.get('db'); // declare a db object for requests
 let db = null;
-// const connectionInfo = "postgres://postgres:@localhost/ccv"
-const connectionInfo = config.psqlConnString;
+const connectionInfo = "postgres://postgres:@localhost/ccv"
+// const connectionInfo = config.psqlConnString;
 
 
 massive(connectionInfo, {excludeMatViews: true}).then(instance => {
@@ -30,7 +30,7 @@ massive(connectionInfo, {excludeMatViews: true}).then(instance => {
   // console.log(db, 'db');
   // console.log(db, 'app newwww');
 }).catch(err => {
-  console.log(err, 'err');
+  console.log(err, 'massive err');
 });
 
 const mainCtrl = require("./controllers/mainCtrl.js");

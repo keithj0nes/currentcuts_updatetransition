@@ -161,8 +161,9 @@ module.exports = {
 
 
   sendContactEmail: function(req, res){
-    console.log(req.body);
+    const db = app.get('db');
     let b = req.body;
+    console.log(req.body, 'mybody');
 
     if(b.lname){
       b.lname = " " + b.lname;
@@ -170,30 +171,29 @@ module.exports = {
 
     let text = "<strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
 
-    const db = app.get('db');
     //email styling example
     // let text = '<table align="center" border="1" cellpadding="0" cellspacing="0" width="600"><tr><td bgcolor="#70bbd9"><strong>Name:</strong> ' + b.fname + b.lname + '</td></tr><tr><td bgcolor="#ee4c50"><strong>Inquiry: </strong> '+ b.message +'</td></tr></table>';
     text += "<br> email should send to: " + b.email;
 
 
     let mailOptions = {
-      from: 'currentcutstest@gmail.com',                  // sender address
-      // to: b.email,                                        // list of receivers
+      from: config.nodemailer.auth.user,                  // sender address
+      // to: b.email,                                     // list of receivers
       bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-      subject: 'INQUIRY: ' + b.subject,     // Subject line
-      // text: text //,                                   // plaintext body
+      // bcc: config.nodemailer.auth.user,
+      subject: 'INQUIRY: ' + b.subject,                   // Subject line
       html: text                                          // html body
     };
 
-    let transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      secure: true,
-      auth: {
-          user: config.nodemailerAuth.username, // Your email id
-          pass: config.nodemailerAuth.pass // Your password
-      }
-    });
-
+    // let transporter = nodemailer.createTransport({
+    //   service: 'Gmail',
+    //   secure: true,
+    //   auth: {
+    //       user: config.nodemailerAuth.username, // Your email id
+    //       pass: config.nodemailerAuth.pass // Your password
+    //   }
+    // });
+    let transporter = nodemailer.createTransport(config.nodemailer);
     //send email
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
