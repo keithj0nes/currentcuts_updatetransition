@@ -1,6 +1,9 @@
 # To Do list
 
 ### Universal
+- [ ] Need to send actual data to orderdetails Page
+- [ ] Look into stripe refunds
+
 - [ ] Style nodemailer emails
 - [ ] Style order details and order confirmation
 - [ ] Replace db.run functions with sql files in server.js

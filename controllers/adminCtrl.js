@@ -573,6 +573,7 @@ module.exports = {
 
 function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res){
   console.log(foundAddress, 'FOUND ADDRESS');
+  console.log(b, 'logging b in sendTrackingEmail');
   if(!foundAddress.address_two){
     foundAddress.address_two_alt = "<br>";
   } else {
@@ -584,22 +585,21 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
 
   text += "<br><br><br>mail should be: " + foundUser.email;
 
-  let transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    secure: true,
-    auth: {
-        user: config.nodemailerAuth.username, // Your email id
-        pass: config.nodemailerAuth.pass // Your password
-    }
-  });
+  // let transporter = nodemailer.createTransport({
+  //   service: 'Gmail',
+  //   secure: true,
+  //   auth: {
+  //       user: config.nodemailerAuth.username, // Your email id
+  //       pass: config.nodemailerAuth.pass // Your password
+  //   }
+  // });
 
   //create email
   var mailOptions = {
-    from: 'currentcutstest@gmail.com',                  // sender address
+    from: config.nodemailer.auth.user,                  // sender address
     // to: b.email,                                        // list of receivers
     bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
     subject: 'Your Order is on its way! USPS Tacking - ' + b.trackingNo,     // Subject line
-    // text: text //,                                   // plaintext body
     html: text                                          // html body
   };
 
@@ -614,3 +614,5 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
     };
   });
 }
+
+const transporter = nodemailer.createTransport(config.nodemailer);

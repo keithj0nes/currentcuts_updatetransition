@@ -18,8 +18,8 @@ module.exports = {
 
   addOrder: function(req, res, charge){
     console.log('000000000000000000000000');
-    console.log(charge, "CHARGE MEEEEE");
-    console.log(charge.metadata.guestUser)
+    // console.log(charge, "CHARGE MEEEEE");
+    // console.log(charge.metadata.guestUser)
     console.log(charge.source.name)
     const db = app.get('db');
 
@@ -117,14 +117,14 @@ module.exports = {
 
     text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note + "<br><br><br> email should be " + b.email;
 
-    let transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      secure: true,
-      auth: {
-          user: config.nodemailerAuth.username, // Your email id
-          pass: config.nodemailerAuth.pass // Your password
-      }
-    });
+    // let transporter = nodemailer.createTransport({
+    //   service: 'Gmail',
+    //   secure: true,
+    //   auth: {
+    //       user: config.nodemailerAuth.username, // Your email id
+    //       pass: config.nodemailerAuth.pass // Your password
+    //   }
+    // });
 
     //find shipping.id based off price
     db.shipping.findOne({price: b.shipping}).then(ship => {
@@ -132,11 +132,10 @@ module.exports = {
       //find last order inserted
       db.query("SELECT * FROM orders ORDER BY id DESC LIMIT 1",[]).then(order => {
 
-        //
         db.order_addresses.findOne({address_one: b.user.address1, address_one: b.user.address1, city: b.user.city, state: b.user.state, zipcode: b.user.zip}).then(foundAddress => {
           if(foundAddress){
-            // console.log(foundAddress, "address was found!");
-            updateOrderSendConfirmationEmail(order, ship, foundAddress, b, text, transporter, req, res);
+            console.log("address was found!");
+            updateOrderSendConfirmationEmail(order, ship, foundAddress, b, text, req, res);
           } else {
             // console.log("address wasn't found, adding now");
             const addAddress = {
@@ -148,10 +147,10 @@ module.exports = {
               state: b.user.state,
               zipcode: b.user.zip
             }
-            console.log(addAddress);
+            console.log(addAddress, 'adddress wasnt found, adding now');
             db.order_addresses.insert(addAddress).then(newAddress => {
               console.log(newAddress, "newAddress added");
-              updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, transporter, req, res);
+              updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, req, res);
             })
           }
         })
@@ -193,7 +192,7 @@ module.exports = {
     //       pass: config.nodemailerAuth.pass // Your password
     //   }
     // });
-    let transporter = nodemailer.createTransport(config.nodemailer);
+    // let transporter = nodemailer.createTransport(config.nodemailer);
     //send email
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
@@ -264,13 +263,14 @@ function insertOrder(reqUserId, guestUserResult, req, res){
                 color: myProductColor
               }).then(orderline => {
                 console.log(orderline, "orderline");
+                console.log('******* CHANGING TO AFTER ORDERLIN INSERT ****');
+                req.session.cart = [];
+                res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
               }) //end db.orderline.insert
 
             }) //end db.prices.findOne
 
           }) //end db.sizes.findOne
-          req.session.cart = [];
-          res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
         }
         catch(err){
           return res.status(500).send(err)
@@ -285,7 +285,7 @@ function insertOrder(reqUserId, guestUserResult, req, res){
   }
 } //end insertOrder function
 
-function updateOrderSendConfirmationEmail(order, ship, address, b, text, transporter, req, res){
+function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, res){
   console.log("updating orders table now");
   const db = app.get('db');
   // console.log(address, 'addresssss ______-');
@@ -302,7 +302,7 @@ function updateOrderSendConfirmationEmail(order, ship, address, b, text, transpo
 
   //create email
   var mailOptions = {
-    from: 'currentcutstest@gmail.com',                  // sender address
+    from: config.nodemailer.auth.user,                  // sender address
     // to: b.email,                                        // list of receivers
     bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
     subject: 'Order Confirmation - ' + order[0].id,     // Subject line
@@ -321,3 +321,6 @@ function updateOrderSendConfirmationEmail(order, ship, address, b, text, transpo
     };
   });
 } //end updateOrders function
+
+
+const transporter = nodemailer.createTransport(config.nodemailer);

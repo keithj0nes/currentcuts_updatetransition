@@ -132,15 +132,12 @@ app.post("/api/charge", function(req, res, next){
   // Get the credit card details submitted by the form
   const token = req.body.stripeToken; // Using Express
   const guestUser = req.body.stripeTokenCard.metadata;
-  console.log(req.body, "LOgging Body");
-  console.log(guestUser, "logging guestUser");
   // Create a charge: this will charge the user's card
   const charge = stripe.charges.create({
     amount: req.body.price, // Amount in cents
     currency: "usd",
     source: token,
     description: "Decal Purchase",
-    // metadata: {"guestUser": req.body.stripeTokenCard.metadata}
     metadata: {'guestUser': guestUser.guestUser}
 
   }, function(err, charge) {
@@ -152,7 +149,6 @@ app.post("/api/charge", function(req, res, next){
       console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
       console.log("sending charge");
-      // console.log(charge, "CHARGE in SERVER");
       // res.status(200).send(charge);
     }
   });
