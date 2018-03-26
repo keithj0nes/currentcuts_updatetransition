@@ -528,7 +528,7 @@ module.exports = {
           // console.log(idx, req.params.index);
           if(b.index === idx){
             console.log(item, "MATCH");
-            db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer, tracking: b.trackingNo, completed: true}).then(updatedOrder => {
+            db.orders.update({id: item.id, datecompleted: timeNow, msg_to_buyer: b.noteToBuyer || "No note", tracking: b.trackingNo, completed: true}).then(updatedOrder => {
               console.log(updatedOrder, "result");
               db.order_addresses.findOne({id: updatedOrder.orderaddressesid}).then(foundAddress => {
                 console.log( foundAddress, "found address");
@@ -597,7 +597,7 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
   //create email
   var mailOptions = {
     from: config.nodemailer.auth.user,                  // sender address
-    // to: b.email,                                        // list of receivers
+    // to: foundUser.email,                                        // list of receivers
     bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
     subject: 'Your Order is on its way! USPS Tacking - ' + b.trackingNo,     // Subject line
     html: text                                          // html body

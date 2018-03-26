@@ -10,25 +10,13 @@ const stripe = require("stripe")(config.stripeKeyTest);
 
 
 const app = module.exports = express();
-
 //sync to database
-// var conn = massive.connectSync({
-//   connectionString : "postgres://postgres:@localhost/ccv"
-//   // connectionString: config.psqlConnString
-// });
-
-// app.set('db', conn); // add your connection to express
-// var db = app.get('db'); // declare a db object for requests
 let db = null;
 const connectionInfo = "postgres://postgres:@localhost/ccv"
 // const connectionInfo = config.psqlConnString;
-
-
 massive(connectionInfo, {excludeMatViews: true}).then(instance => {
   app.set('db', instance); // add your connection to express
   db = app.get('db'); // declare a db object for requests
-  // console.log(db, 'db');
-  // console.log(db, 'app newwww');
 }).catch(err => {
   console.log(err, 'massive err');
 });

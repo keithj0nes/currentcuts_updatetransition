@@ -69,7 +69,7 @@ CREATE TABLE orders (
   tracking TEXT,
   datecompleted TIMESTAMP,
   msg_to_buyer TEXT,
-  msg_to_seller TEXT
+  msg_to_seller TEXT,
   orderaddressesid INTEGER REFERENCES order_addresses(id)
 );
 
@@ -80,7 +80,7 @@ CREATE TABLE prices (
 
 CREATE TABLE product_category (
   id SERIAL PRIMARY KEY,
-  product_id INTEGER REFERENCES products(id)
+  product_id INTEGER REFERENCES products(id),
   category_id INTEGER REFERENCES categories(id)
 );
 
@@ -123,7 +123,7 @@ CREATE TABLE users (
   pass_salt TEXT,
   facebookid TEXT,
   registered TIMESTAMP,
-  admin BOOLEAN
+  admin BOOLEAN,
   resettoken TEXT
 );
 

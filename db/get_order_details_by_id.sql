@@ -35,10 +35,29 @@
 -- where orders.id = 69
 
 -- THIS ONE SHOULD WORK!
-select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping from orderline
+-- select products.name, products.img1, sizes.height, sizes.width, prices.price, orderline.quantsold, orderline.color, orders.userid, orders.datesold, orders.ordertotal, shipping.price AS shipping from orderline
+-- join orders on orderline.orderid = orders.id
+-- join products on orderline.productid = products.id
+-- join sizes on orderline.sizeid = sizes.id
+-- join prices on orderline.priceid = prices.id
+-- join shipping on orders.shippingid = shipping.id
+-- where orders.id = $1 and orders.userid = $2;
+
+select products.name, products.img1,
+sizes.height, sizes.width,
+prices.price,
+orderline.quantsold, orderline.color,
+orders.userid, orders.msg_to_buyer, orders.msg_to_seller, orders.datesold, orders.ordertotal, orders.tracking,
+shipping.price AS shipping,
+order_addresses.firstname, order_addresses.lastname, order_addresses.address_one, order_addresses.address_two, order_addresses.city, order_addresses.state, order_addresses.zipcode,
+users.email
+
+from orderline
 join orders on orderline.orderid = orders.id
 join products on orderline.productid = products.id
 join sizes on orderline.sizeid = sizes.id
 join prices on orderline.priceid = prices.id
 join shipping on orders.shippingid = shipping.id
+join order_addresses on orders.orderaddressesid = order_addresses.id
+join users on orders.userid = users.id
 where orders.id = $1 and orders.userid = $2;

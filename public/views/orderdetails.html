@@ -3,114 +3,73 @@
 <main class="orderdetails-main main-margin">
 
   <div class="orderdetails-container">
-
-    <!-- <h1 class="center">Order #{{orderNumber}}</h1>
-
-    <hr class="margin">
-
-    <p><strong>Order Date: </strong>{{orderProducts[0].datesold | date: 'longDate'}}</p>
-    <div class="table-overflow">
-      <table>
-        <th>Product Name</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>SubTotal</th>
-        <tr ng-repeat="o in orderProducts track by $index">
-          <td>{{o.name}}</td>
-          <td>{{o.color}}</td>
-          <td>{{o.height}}H x {{o.width}}W inches</td>
-          <td>{{o.price | currency}}</td>
-          <td>{{o.quantsold}}</td>
-          <td>{{o.price * o.quantsold | currency}}</td>
-        </tr>
-        <tr>
-          <td colspan="5">Shipping</td>
-          <td>{{shipping | currency}}</td>
-        </tr>
-        <tr>
-          <td colspan="5">Total</td>
-          <td>{{orderTotal + shipping | currency}}</td>
-        </tr>
-      </table>
-    </div> -->
-
-
-
-
     <div class="orderdetails-container">
-  <div class="order-info-shipping">
-<!--  ORDER INFO  -->
-    <div class="order-box">
-      <h2>Order #{{orderNumber}}</h2>
-      <ul>
-        <li>Email: email@email.com</li>
-        <li>Placed: {{orderProducts[0].datesold | date: 'longDate'}}</li>
-        <li>Tracking: <a href="#">813476913469138</a></li>
-      </ul>
-    </div>
-
-    <hr class="margin">
-    <!--  SHIPPING INFO  -->
-    <div class="order-box">
-      <h2>Shipping Information</h2>
-      <ul>
-        <li>Name: John Smith</li>
-        <li>Address: 1234 s 56th st</li>
-      </ul>
-    </div>
-  </div>
-
-  <hr class="margin">
-
-  <div class="orderdetails-items">
-    <h2 class="center">Order Items</h2>
-
-
-
-    <div class="item-table">
-      <div class="item-table-headers">
-        <h3>Product</h3>
-        <h3 class="w20">Price</h3>
-        <h3 class="w10 ta-right">Qty</h3>
-        <h3 class="w20 ta-right">Total</h3>
-      </div>
-      <hr>
-      <div class="" ng-repeat="o in orderProducts track by $index">
-
-        <div class="item-table-row" >
-          <p>{{o.name}} - {{o.color}}<br>{{o.height}}H x {{o.width}}W</p>
-          <p class="w20">{{o.price | currency}}</p>
-          <p class="w10 ta-right">{{o.quantsold}}</p>
-          <p class="w20 ta-right">{{o.price * o.quantsold | currency}}</p>
+      <div class="order-info-shipping">
+    <!--  ORDER INFO  -->
+        <div class="order-box">
+          <h2>Order #{{orderNumber}}</h2>
+          <ul>
+            <li>Email: {{orderProducts[0].email}}</li>
+            <li>Ordered: {{orderProducts[0].datesold | date: 'longDate'}}</li>
+            <li ng-if="!orderProducts[0].tracking">Tracking not yet sent</li>
+            <li ng-if="orderProducts[0].tracking">Tracking: <a href="#">{{orderProducts[0].tracking}}</a></li>
+            <li>Your Note: {{orderProducts[0].msg_to_seller}}</li>
+            <li>Our Note: {{orderProducts[0].msg_to_buyer}}</li>
+          </ul>
         </div>
-        <hr>
 
+        <hr class="margin">
+        <!--  SHIPPING INFO  -->
+        <div class="order-box">
+          <h2>Shipping Information</h2>
+          <ul>
+            <li>Name: {{orderProducts[0].firstname}} {{orderProducts[0].lastname}}</li>
+            <li>Address: {{orderProducts[0].address_one}}, <span ng-if="orderProducts[0].address_two">{{orderProducts[0].address_two}}</span></li>
+            <li>{{orderProducts[0].city}}, {{orderProducts[0].state}}, {{orderProducts[0].zipcode}}</li>
+          </ul>
+        </div>
       </div>
 
+      <hr class="margin">
 
-      <!-- <div class="item-table-row">
-        <p>Take A Hike - Sunflower Yellow <br>9.6H x 2.0W -  </p>
-        <p class="w20 ">$6.00</p>
-        <p class="w10 ta-right">1</p>
-        <p class="w20 ta-right">$6.00</p>
-      </div> -->
+      <div class="orderdetails-items">
+        <h2 class="center">Order Items</h2>
 
-      <div class="totals">
-        <p class="ta-right">Subtotal: <span class="w20">{{orderTotal | currency}}</span></p>
-        <p class="ta-right">Shipping: <span class="w20">{{shipping | currency}}</span></p>
 
-        <hr>
-        <p class="ta-right">Total: <span class="w20">{{orderTotal + shipping | currency}}</span></p>
 
+        <div class="item-table">
+          <div class="item-table-headers">
+            <h3>Product</h3>
+            <h3 class="w20">Price</h3>
+            <h3 class="w10 ta-right">Qty</h3>
+            <h3 class="w20 ta-right">Total</h3>
+          </div>
+          <hr>
+          <div class="" ng-repeat="o in orderProducts track by $index">
+
+            <div class="item-table-row" >
+              <p>{{o.name}} - {{o.color}}<br>{{o.height}}H x {{o.width}}W</p>
+              <p class="w20">{{o.price | currency}}</p>
+              <p class="w10 ta-right">{{o.quantsold}}</p>
+              <p class="w20 ta-right">{{o.price * o.quantsold | currency}}</p>
+            </div>
+            <hr>
+
+          </div>
+
+          <div class="totals">
+            <p class="ta-right">Subtotal: <span class="w20">{{orderTotal | currency}}</span></p>
+            <p class="ta-right">Shipping: <span class="w20">{{shipping | currency}}</span></p>
+
+            <hr>
+            <p class="ta-right">Total: <span class="w20">{{orderTotal + shipping | currency}}</span></p>
+
+          </div>
+
+        </div>
       </div>
-
     </div>
   </div>
-
-
-</div>
-
-
-
-  </div>
-
 </main>
 
 

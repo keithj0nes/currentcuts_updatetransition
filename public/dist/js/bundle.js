@@ -5691,7 +5691,7 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
     //   console.log(response, "userController");
     //   if(response.reqUser){
     mainService.getOrderById($state.params.orderid).then(function (response) {
-      // console.log(response, "HERE IS THE RESPONSE");
+      console.log(response, "HERE IS THE RESPONSE");
       if (response.reqUser === false) {
         console.log("no reqUser");
         $state.go("login");
