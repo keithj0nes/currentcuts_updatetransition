@@ -44,7 +44,9 @@
             <h3 class="w10 ta-right">Qty</h3>
             <h3 class="w20 ta-right">Total</h3>
           </div>
+
           <hr>
+
           <div class="" ng-repeat="o in orderProducts track by $index">
 
             <div class="item-table-row" >
@@ -65,22 +67,8 @@
             <p class="ta-right">Total: <span class="w20">{{orderTotal + shipping | currency}}</span></p>
 
           </div>
-
         </div>
       </div>
     </div>
   </div>
 </main>
-
-
-
-
-<!-- <div class="" ng-repeat="orders in orderProducts">
-  {{orders.img1}}<br>
-  {{orders.name}} <br>
-  {{orders.height}}H x {{orders.width}}W inches <br>
-  {{orders.quantsold}} <br>
-  {{orders.datesold | date: 'MM / dd / yyyy'}}
-  {{orders.ordertotal}}
-
-</div> -->

@@ -52,6 +52,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.openModal = function(id, track, note, index){
     $scope.openOrderIndex = index;
     $scope.confirmOrder = [];
+    $scope.deletingIndex = index;
     if(id === "review-tracking-modal"){
       console.log("reviewing!!!");
       if(track && note){
@@ -68,6 +69,9 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       }
     } else if(id === "resend-tracking-modal"){
       console.log(id, "resend-tracking-modal");
+    } else if(id === "delete-product-modal"){
+      console.log('opening', id);
+      modalService.Open(id);
     }
 
 
@@ -135,6 +139,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
 //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function(product, index){
+    console.log(index, 'index');
     $scope.selected = index;
     $scope.productId = product.id;
     $scope.productName = product.name;
@@ -339,26 +344,20 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   }
 
-  $scope.delete = function(productId){
-    console.log(productId);
-    swal({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then(function () {
-      console.log($scope.products, "logging products");
+  $scope.delete = function(productId, modalId){
+    // console.log(productId);
+    // console.log('deteling!');
+      // console.log($scope.products, "logging products");
         for (var i = $scope.products.length-1; i >= 0; i--) {
+          // console.log(productId, $scope.products[i].id);
           if($scope.products[i].id === productId){
+            // console.log('splicing ', i);
             $scope.products.splice(i, 1);
           }
         }
       adminService.adminDeleteProduct(productId);
       $scope.clearForm();
-    })
+      $scope.closeMyModal(modalId)
   }
 
   // var getUsername = function() {

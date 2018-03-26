@@ -383,7 +383,7 @@
         <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, productName, productDescription, productImgOne, productImgTwo, productImgThree, productActive)" ng-disabled="editDisable">Update</button>
         <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)" ng-disabled="editDisable">Add New</button>
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
-        <button ng-show="showExtraDetails"class="btn" ng-click="delete(productId)" name="button" ng-disabled="editDisable">Delete</button>
+        <button ng-show="showExtraDetails"class="btn" ng-click="openModal('delete-product-modal', null, null, productId)" name="button" ng-disabled="editDisable">Delete</button>
       </div>
     </div>
   </div>
@@ -411,5 +411,21 @@
       </div>
       <div class="modal-background"></div>
   </modal> -->
+
+  <modal id="delete-product-modal">
+      <div class="mymodal">
+          <div class="modal-body">
+              <h1>Delete modal</h1>
+
+              <p>Are you sure you want to delete this product?</p>
+              <p>This cannot be undone!</p>
+              <br>
+
+              <button class="btn" ng-click="delete(deletingIndex, 'delete-product-modal');">Delete</button>
+              <button class="btn" ng-click="closeMyModal('delete-product-modal');">Cancel</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
 
 </main>
