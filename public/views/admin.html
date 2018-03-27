@@ -116,28 +116,6 @@
 
         </div>
 
-        <modal id="review-tracking-modal">
-            <div class="mymodal">
-                <div class="modal-body">
-                    <h1>Review Tracking</h1>
-                    <p>
-                      <div ng-repeat="o in confirmOrder">
-                        {{o.trackingNo}} <br>
-                        {{o.noteToBuyer}} <br>
-                      </div>
-                      <br>
-                      <br>
-                    </p>
-                    <button class="btn" ng-click="completeOrder(open.id, 'review-tracking-modal');">completeOrder</button>
-
-                    <button class="btn" ng-click="closeMyModal('review-tracking-modal');">Cancel</button>
-                </div>
-            </div>
-            <div class="modal-background"></div>
-        </modal>
-
-
-
         <br />
         <br />
       </div> <!-- end ng-repeat -->
@@ -150,7 +128,8 @@
       <div ng-if="closedOrdersEmpty">
         <p>There are no completed orders currently</p>
       </div>
-      <div ng-repeat="closed in closedOrders track by $index" ng-init="parentIndex = $index" class="open-order">
+      <input type="text" name="" ng-model="searchCompleted">
+      <div ng-repeat="closed in closedOrders | filter: searchCompleted track by $index " ng-init="parentIndex = $index" class="open-order">
         <div class="open-order-left">
           <div class="open-order-top">
             <div class="">
@@ -242,38 +221,11 @@
 
 <!-- SAVING TO TEST LATER -->
               <!-- <button ng-click="testPDF(closed.ufn, closed.uln, closed.useremail, closed.guestemail, closed.datesold, closed.ordertotal, closed.shipping, closed.subOrder, closed.shipping, closed.id, closed.tracking, closed.datecompleted, closed.firstname, closed.lastname, closed.address_one, closed.address_two, closed.city, closed.state, closed.zipcode, closed.msg_to_buyer, closed.msg_to_seller)">CLICK ME</button> -->
-
 <br>
-
               <!-- <button class="btn" ng-click="openModal('resend-tracking-modal')" disabled="true">Resend Confirmation Email</button> -->
             </div>
           </div>
-
-
         </div>
-
-        <modal id="resend-tracking-modal">
-            <div class="mymodal">
-                <div class="modal-body">
-                    <h1>Resend Confirmation Email</h1>
-                    <p>
-                      <!-- <div ng-repeat="o in confirmOrder">
-                        {{o.trackingNo}} <br>
-                        {{o.noteToBuyer}} <br>
-                      </div> -->
-                      <br>
-                      <br>
-                    </p>
-                    <button class="btn" ng-click="completeOrder(open.id, 'resend-tracking-modal');">completeOrder</button>
-
-                    <button class="btn" ng-click="closeMyModal('resend-tracking-modal');">Cancel</button>
-                </div>
-            </div>
-            <div class="modal-background"></div>
-        </modal>
-
-
-
         <br />
         <br />
       </div> <!-- end ng-repeat -->
@@ -389,10 +341,34 @@
   </div>
 
 
+<!--- - - - - - - - - -
+- - - - - - - - - - - -
+        MODALS
+- - - - - - - - - - - -
+- - - - - - - - - - -->
 
 
+  <modal id="resend-tracking-modal">
+      <div class="mymodal">
+          <div class="modal-body">
+              <h1>Resend Confirmation Email</h1>
+              <p>
+                <!-- <div ng-repeat="o in confirmOrder">
+                  {{o.trackingNo}} <br>
+                  {{o.noteToBuyer}} <br>
+                </div> -->
+                <br>
+                <br>
+              </p>
+              <button class="btn" ng-click="completeOrder(open.id, 'resend-tracking-modal');">completeOrder</button>
 
-  <!-- <modal id="review-tracking-modal">
+              <button class="btn" ng-click="closeMyModal('resend-tracking-modal');">Cancel</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
+
+  <modal id="review-tracking-modal">
       <div class="mymodal">
           <div class="modal-body">
               <h1>Review Tracking</h1>
@@ -404,13 +380,13 @@
                 <br>
                 <br>
               </p>
-              <button class="btn" ng-click="completeOrder('review-tracking-modal');">completeOrder</button>
+              <button class="btn" ng-click="completeOrder(open.id, 'review-tracking-modal');">completeOrder</button>
 
               <button class="btn" ng-click="closeMyModal('review-tracking-modal');">Cancel</button>
           </div>
       </div>
       <div class="modal-background"></div>
-  </modal> -->
+  </modal>
 
   <modal id="delete-product-modal">
       <div class="mymodal">

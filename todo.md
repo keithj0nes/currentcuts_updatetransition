@@ -3,6 +3,9 @@
 ### Universal
 - [ ] Need to send actual data to orderdetails Page
 - [ ] Look into stripe refunds
+- [ ] Wall installation button on product view
+- [ ] Searchable product tags
+
 
 - [ ] Style nodemailer emails
 - [ ] Style order details and order confirmation
@@ -85,6 +88,11 @@
   - [ ] Join to Orders table
 
 - [ ] Add new order id column to Orders table to display unique order id.
+
+- [ ] Start orderid at xxxx instead of 1.
+  - [ ] alter sequence people_id_seq restart 1000
+
+
 
 - [x] Create Categories table and Product_Category joiner table 8/9/17
 

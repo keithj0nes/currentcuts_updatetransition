@@ -10,7 +10,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
-
 //   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
 //     var doc = new jsPDF({
 //  orientation: 'p',
@@ -214,6 +213,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.clearForm = function(){
+    console.log('firing');
+    console.log($scope.productName, 'productName');
     $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
@@ -336,7 +337,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     }
 
     console.log($scope.productActive, name);
-    //
     adminService.adminUpdateProduct(id, productUpdate);
     setTimeout(function () {
       $scope.getAllProducts();
