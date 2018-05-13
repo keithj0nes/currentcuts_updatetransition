@@ -184,11 +184,11 @@
 
   </nav>
   <div class="search-box-container">
-    <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
-      <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
-      <button class="btn search-btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
+    <form search ng-submit="searchProduct(searchT)">
+      <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchT" >
+      <button class="btn search-btn" type="button" name="button" >Search</button>
 
-    <!-- </form> -->
+    </form>
   </div>
     <ul class="main-nav">
       <li><a ui-sref="category({catname:'adventure'})">Adventure</a></li>
