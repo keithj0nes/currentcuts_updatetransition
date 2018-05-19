@@ -8,7 +8,6 @@ module.exports = {
 
   getAllAdminProducts: function(req, res){
     const db = app.get('db');
-
     db.admin_get_all_products([]).then(products => {
       console.log("admin products shown");
       return res.send(products)
@@ -35,27 +34,15 @@ module.exports = {
     })
 
     db.query("SELECT prices.price, sizes.height, sizes.width FROM products INNER JOIN product_price_size ON products.id = product_price_size.productId INNER JOIN prices ON prices.id = product_price_size.priceId INNER JOIN sizes ON sizes.id = product_price_size.sizeId WHERE products.id = $1 order by product_price_size.id", [req.params.id]).then(product => {
-      // if(err){
-      //   console.log(err);
-      //   return res.status(500).send(err)
-      // }
       console.log("getProductById2");
       wholeProduct.product = product;
 
       db.query("SELECT count(*) FROM favorites WHERE product_id = $1", [req.params.id]).then(totalFavs => {
-        // if(err){
-        //   console.log(err);
-        //   res.status(500).send(err);
-        // }
 
         wholeProduct.totalFavs = totalFavs;
 
         if(req.user){
           db.favorites.findOne({user_id: req.user.id, product_id: req.params.id}).then(found => {
-            // if(err){
-            //   console.log(err);
-            //   res.status(500).send(err);
-            // }
             if(found){
               wholeProduct.favFound = true;
               // console.log(wholeProduct, "holdprodcut");
@@ -72,6 +59,7 @@ module.exports = {
     })
   },
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //post
   addProductToDB: function(req, res, next){
@@ -93,10 +81,6 @@ module.exports = {
       } else {
         console.log(result, "couldnt find one active");
         db.products.insert(newProduct).then(addedProduct => {
-          // if(err){
-          //   console.log(err);
-          //   res.status(500).send(err);
-          // }
           res.send(addedProduct)
         })
       }
@@ -107,7 +91,6 @@ module.exports = {
 
   updateProductById: function(req, res, next){
     const db = app.get('db');
-
     const updateProduct = {
       id: req.params.id,
       name: req.body.name,
@@ -119,10 +102,6 @@ module.exports = {
     }
 
     db.products.update(updateProduct).then(updatedProduct => {
-      // if(err){
-      //   console.log(err);
-      //   res.status(500).send(err);
-      // }
       return res.send(updatedProduct)
     })
   },
@@ -133,10 +112,6 @@ module.exports = {
     const db = app.get('db');
     console.log("deleted function fired");
     db.products.update({id: req.params.id, archived: true}).then(archivedProduct => {
-      // if(err){
-      //   console.log(err);
-      //   return res.status(500).send(err)
-      // }
       return res.status(200).send(archivedProduct)
     })
   },
@@ -311,23 +286,9 @@ module.exports = {
                 })
               }
             })
-
-            // db.product_price_size.insert({productid: req.params.id, sizeid: addedSize.id}, (err, pps) => {
-            //   if(err){
-            //     console.log(err);
-            //     res.status(500).send(err);
-            //   }
-            //   console.log(pps, "product_price_size");
-            // })
-          } else {
-            console.log("addedSize not inserted");
-
           }
         })
       }
-
-
-
     }) //end db.sizes.findOne
   },
 
@@ -341,21 +302,12 @@ module.exports = {
     console.log(req.body);
     let index = req.body.index
     db.query("SELECT * FROM product_price_size WHERE productid = $1 order by id", [req.params.id]).then(result => {
-      // if(err){
-      //   console.log(err);
-      //   res.status(500).send(err);
-      // }
-
       console.log(result, "loggig result");
       result.forEach(function(r, i){
         if(index === i){
           console.log(r.id, "r.id");
           console.log(r, "index === i in forEach loop");
           db.product_price_size.destroy({id: r.id}).then(destroyedPps => {
-            // if(err){
-            //   console.log(err);
-            //   res.status(500).send(err);
-            // }
             console.log(destroyedPps, "destroyedPps data");
             res.send(destroyedPps)
           })
@@ -375,11 +327,6 @@ module.exports = {
     let updatedCategory = {};
 
     db.query("select * from product_category where product_id = $1 order by category_id, id", [req.params.id]).then(product => {
-      // if(err){
-      //   console.log(err);
-      //   res.status(500).send(err);
-      // }
-      // console.log(product, "here's the categories");
       product.forEach((prod, i) => {
         if(index === i){
           catMatch++
@@ -417,10 +364,6 @@ module.exports = {
       if(!catMatch){
         console.log("new Line added!!");
         db.product_category.insert({product_id: req.params.id, category_id: cat_id}).then(insertedCat => {
-          // if(err){
-          //   console.log(err);
-          //   res.status(500).send(err);
-          // }
           console.log(insertedCat, "inserted category");
 
           db.query("select * from categories order by id", []).then(allCategories => {
@@ -484,7 +427,7 @@ module.exports = {
     })
   },
 
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getClosedOrders: function(req, res){
     const db = app.get('db');
@@ -517,12 +460,6 @@ module.exports = {
 
 
     db.query("select * from orders where completed = false order by datesold", []).then(openOrders => {
-      // if(err){
-      //   console.log(err);
-      //   res.status(500).send(err);
-      // }
-      // console.log(openOrders, "logging open orders in completeOrder");
-
       if(openOrders){
         openOrders.forEach((item, idx) => {
           // console.log(idx, req.params.index);
@@ -565,11 +502,9 @@ module.exports = {
 
 } //end module.exports
 
-
-
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// NOT EXPORTED FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res){
   console.log(foundAddress, 'FOUND ADDRESS');
@@ -584,15 +519,6 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
 
 
   text += "<br><br><br>mail should be: " + foundUser.email;
-
-  // let transporter = nodemailer.createTransport({
-  //   service: 'Gmail',
-  //   secure: true,
-  //   auth: {
-  //       user: config.nodemailerAuth.username, // Your email id
-  //       pass: config.nodemailerAuth.pass // Your password
-  //   }
-  // });
 
   //create email
   var mailOptions = {
@@ -614,5 +540,7 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
     };
   });
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const transporter = nodemailer.createTransport(config.nodemailer);

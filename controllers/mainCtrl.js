@@ -6,16 +6,6 @@ const userCtrl = require("./usersCtrl.js")
 
 module.exports = {
 
-//get
-
-
-
-
-
-
-
-
-
   addOrder: function(req, res, charge){
     console.log('000000000000000000000000');
     // console.log(charge, "CHARGE MEEEEE");
@@ -55,6 +45,7 @@ module.exports = {
 
   },
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   sendThankyou: function(req, res){
     const db = app.get('db');
@@ -70,9 +61,7 @@ module.exports = {
     })
   },
 
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   confirmationEmail: (req, res, next) => {
     const db = app.get('db');
@@ -117,15 +106,6 @@ module.exports = {
 
     text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note + "<br><br><br> email should be " + b.email;
 
-    // let transporter = nodemailer.createTransport({
-    //   service: 'Gmail',
-    //   secure: true,
-    //   auth: {
-    //       user: config.nodemailerAuth.username, // Your email id
-    //       pass: config.nodemailerAuth.pass // Your password
-    //   }
-    // });
-
     //find shipping.id based off price
     db.shipping.findOne({price: b.shipping}).then(ship => {
 
@@ -158,6 +138,7 @@ module.exports = {
     })
   }, //end mail function
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   sendContactEmail: function(req, res){
     const db = app.get('db');
@@ -166,6 +147,8 @@ module.exports = {
 
     if(b.lname){
       b.lname = " " + b.lname;
+    } else {
+      b.lname = "";
     }
 
     let text = "<strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
@@ -184,15 +167,6 @@ module.exports = {
       html: text                                          // html body
     };
 
-    // let transporter = nodemailer.createTransport({
-    //   service: 'Gmail',
-    //   secure: true,
-    //   auth: {
-    //       user: config.nodemailerAuth.username, // Your email id
-    //       pass: config.nodemailerAuth.pass // Your password
-    //   }
-    // });
-    // let transporter = nodemailer.createTransport(config.nodemailer);
     //send email
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
@@ -205,14 +179,13 @@ module.exports = {
           res.send({yo: info.response});
       };
     });
-
-
     // res.send({success: true})
   }
-
 } //end module exports
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function insertOrder(reqUserId, guestUserResult, req, res){
   const db = app.get('db');
@@ -279,11 +252,12 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     })
   }
 
-
   catch(err){
     return res.status(500).send(err);
   }
 } //end insertOrder function
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, res){
   console.log("updating orders table now");
@@ -322,5 +296,6 @@ function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, re
   });
 } //end updateOrders function
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const transporter = nodemailer.createTransport(config.nodemailer);

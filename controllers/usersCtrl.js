@@ -41,6 +41,8 @@ module.exports = {
     })
   },
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   updatePass: function(req, res){
     const db = app.get('db');
     bcrypt.compare(req.body.currentPass, req.user.pass_hash, (err, comparedValue) => {
@@ -56,6 +58,8 @@ module.exports = {
       }
     })
   },
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   updateFavorite: function(req, res){
     const db = app.get('db');
@@ -76,6 +80,8 @@ module.exports = {
     })
   },
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   getFavorites: function(req, res){
     const db = app.get('db');
     db.get_favorites_by_user_id([req.user.id]).then(userFavs => {
@@ -83,12 +89,16 @@ module.exports = {
     })
   },
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   getOrderHistory: function(req, res){
     const db = app.get('db');
     db.orderhistory([req.user.id]).then(orderHistory => {
       return res.status(200).send(orderHistory)
     })
   },
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getOrderHistoryById: function(req, res){
     const db = app.get('db');
@@ -101,6 +111,8 @@ module.exports = {
       }
     })
   },
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   resetPasswordEmail: function(req, res){
     const db = app.get('db');
@@ -124,7 +136,7 @@ module.exports = {
           let text = "Hello " + user.firstname + ', <br><br> Please reset your password by clicking the link below: <br><br><a href="http://localhost:3010/#/passwordreset/' + newUser.resettoken +'">RESET PASSWORD</a>'
 
           const mailOptions = {
-            from: 'currentcutstest@gmail.com',                  // sender address
+            from: config.nodemailer.auth.user,                  // sender address
             // to: b.email,                                        // list of receivers
             bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
             subject: 'Reset your password',     // Subject line
@@ -176,6 +188,8 @@ module.exports = {
     })
   },
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   savePassword: function(req, res){
     const db = app.get('db');
     console.log(req.body, "reqbody");
@@ -189,7 +203,7 @@ module.exports = {
 
 
             const mailOptions = {
-              from: 'Current Cuts Admin, currentcutstest@gmail.com',                  // sender address
+              from: config.nodemailer.auth.user,                  // sender address
               // to: b.email,                                        // list of receivers
               bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
               subject: 'Your password has been reset',     // Subject line
@@ -217,12 +231,6 @@ module.exports = {
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  secure: true,
-  auth: {
-      user: config.nodemailerAuth.username, // Your email id
-      pass: config.nodemailerAuth.pass // Your password
-  }
-});
+const transporter = nodemailer.createTransport(config.nodemailer);
