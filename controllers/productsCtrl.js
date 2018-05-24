@@ -1,11 +1,19 @@
 const app = require("../server.js");
 
+
+var itemz = [];
+let offsetCount = 0;
 module.exports = {
   getAllProducts: function(req, res, next){
     const db = app.get('db');
     try {
       db.get_all_products([]).then(products => {
         console.log("products shown");
+        offsetCount = 3;
+        itemz = [...itemz, ...products];
+        // console.log(products, 'logging products');
+        // const n = products.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value)
+        // console.log(n, 'n');
         return res.send(products)
       })
     }
@@ -13,6 +21,24 @@ module.exports = {
       console.log(err);
       return res.status(500).send(err)
     }
+  },
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  getMoreProducts: function(req, res){
+    const db = app.get('db');
+
+    console.log('lcick');
+    console.log(itemz.length, 'itemz');
+    // db.get_all_products([]).then(moreProducts => {
+    // db.query('select * from products where not in $1', [itemz]).then((moreProducts) => {
+    db.get_more_products([offsetCount]).then(moreProducts => {
+      // console.log('moreProducts', moreProducts);
+      itemz = [...itemz, ...moreProducts]
+      offsetCount += 3;
+      return res.send(moreProducts)
+    })
+    // return res.send(true)
   },
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

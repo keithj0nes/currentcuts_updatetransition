@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.css">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="./dist/styles.f285acfa.css" media="screen" title="no title">
+    <link rel="stylesheet" href="./dist/styles.73bbb586.css" media="screen" title="no title">
 
 </head>
 
@@ -184,11 +184,11 @@
 
   </nav>
   <div class="search-box-container">
-    <!-- <form ng-submit="searchProduct(searchTerm)" ui-sref="search({search:searchTerm})"> -->
-      <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchTerm" >
-      <button class="btn search-btn" type="button" name="button" ui-sref="search({search:searchTerm})" >Search</button>
+    <form search ng-submit="searchProduct(searchT)">
+      <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchT" >
+      <button class="btn search-btn" name="button" >Search</button>
 
-    <!-- </form> -->
+    </form>
   </div>
     <ul class="main-nav">
       <li><a ui-sref="category({catname:'adventure'})">Adventure</a></li>
@@ -248,7 +248,7 @@
         })
       //closes search box on searchbutton click
         $(".search-btn").click(function(){
-          $(".search-box-container").toggleClass("open");
+          // $(".search-box-container").toggleClass("open");
         })
       })
 

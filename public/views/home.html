@@ -1,19 +1,25 @@
-<main class="home-main main-margin">
+<div>
 
-  <div class="product-main" ng-repeat="product in products | orderBy: 'id'">
-    <div class="product-img">
-      <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">
-    </div>
-    <div class="product-info">
-      <div class="product-info-left">
-        <h2 class="desc">{{product.name}}</h2>
-        <p class="price">From <span class="red">${{product.price}}</span></p>
+  <main class="home-main main-margin">
+
+    <div class="product-main" ng-repeat="product in products">
+      <div class="product-img">
+        <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">
       </div>
-      <div class="product-info-right;">
-        <button class="btn" name="button" ui-sref="products({id:product.id})">View Product</button>
+      <div class="product-info">
+        <div class="product-info-left">
+          <h2 class="desc">{{product.name}}</h2>
+          <p class="price">From <span class="red">${{product.price}}</span></p>
+        </div>
+        <div class="product-info-right;">
+          <button class="btn" name="button" ui-sref="products({id:product.id})">View Product</button>
+        </div>
       </div>
     </div>
-  </div>
 
 
-</main>
+
+  </main>
+  <button style="background: red; margin: 20px auto; padding: 20px; display: block;" ng-click="loadMore()">load more</button>
+
+</div>

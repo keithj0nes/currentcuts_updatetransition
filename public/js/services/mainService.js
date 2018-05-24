@@ -10,6 +10,15 @@ angular.module("ccvApp").service("mainService", function($http){
     })
   }
 
+  this.loadMore = function(){
+    return $http({
+      method: "GET",
+      url: "/api/products/more"
+    }).then((res) => {
+      return res.data;
+    })
+  }
+  
   this.getProductById = function(id){
     return $http({
       method: "GET",

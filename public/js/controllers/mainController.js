@@ -8,5 +8,13 @@ angular.module("ccvApp").controller("mainController", function($scope, mainServi
     })
   }
 
+  $scope.loadMore = function(){
+    console.log('ah');
+    mainService.loadMore().then((res) => {
+      console.log(res, 'resssssssssss conttroller');
+      $scope.products = [...$scope.products, ...res]
+      console.log($scope.products);
+    })
+  }
   getAllProducts();
 })

@@ -128,7 +128,7 @@
       <div ng-if="closedOrdersEmpty">
         <p>There are no completed orders currently</p>
       </div>
-      <input type="text" name="" ng-model="searchCompleted">
+      <input type="text" name="" ng-model="searchCompleted" placeholder="Search Completed Orders">
       <div ng-repeat="closed in closedOrders | filter: searchCompleted track by $index " ng-init="parentIndex = $index" class="open-order">
         <div class="open-order-left">
           <div class="open-order-top">

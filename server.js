@@ -36,7 +36,17 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-app.use(cors());
+////////////////
+////////////////
+////////////////
+////////////////
+app.use(cors({origin: true, credentials: true}));
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
 app.use(express.static(__dirname + "/public"));    //current file directory + /public folder
 app.use(passport.initialize());
 app.use(passport.session());
@@ -88,6 +98,8 @@ app.post("/api/contact", mainCtrl.sendContactEmail)
 
 /////// PRODUCTS ///////
 app.get("/api/products", productsCtrl.getAllProducts);
+app.get("/api/products/more", productsCtrl.getMoreProducts);
+
 app.get("/api/products/:id", productsCtrl.getProductById);
 app.get("/api/products/:id/details", productsCtrl.getProductById2);
 app.get("/api/products/search/:name", productsCtrl.getProductByName);

@@ -186,7 +186,7 @@
   <div class="search-box-container">
     <form search ng-submit="searchProduct(searchT)">
       <input class="search-box" type="search" name="" placeholder="Search Decals" ng-model="searchT" >
-      <button class="btn search-btn" type="button" name="button" >Search</button>
+      <button class="btn search-btn" name="button" >Search</button>
 
     </form>
   </div>
@@ -248,7 +248,7 @@
         })
       //closes search box on searchbutton click
         $(".search-btn").click(function(){
-          $(".search-box-container").toggleClass("open");
+          // $(".search-box-container").toggleClass("open");
         })
       })
 

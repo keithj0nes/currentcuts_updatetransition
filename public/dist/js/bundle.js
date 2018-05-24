@@ -4638,6 +4638,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.clearForm = function () {
+    console.log('firing');
+    console.log($scope.productName, 'productName');
     $scope.productId = "";
     $scope.productName = "";
     $scope.productDescription = "";
@@ -4751,7 +4753,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     };
 
     console.log($scope.productActive, name);
-    //
     adminService.adminUpdateProduct(id, productUpdate);
     setTimeout(function () {
       $scope.getAllProducts();
@@ -5406,6 +5407,8 @@ angular.module("ccvApp").controller("favoriteController", function ($scope, $sta
 });
 "use strict";
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 angular.module("ccvApp").controller("mainController", function ($scope, mainService) {
 
   // $scope.userLoggedIn = false;
@@ -5416,6 +5419,14 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
     });
   };
 
+  $scope.loadMore = function () {
+    console.log('ah');
+    mainService.loadMore().then(function (res) {
+      console.log(res, 'resssssssssss conttroller');
+      $scope.products = [].concat(_toConsumableArray($scope.products), _toConsumableArray(res));
+      console.log($scope.products);
+    });
+  };
   getAllProducts();
 });
 "use strict";
@@ -5622,10 +5633,9 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
 angular.module("ccvApp").controller("searchController", function ($scope, $stateParams, mainService) {
 
-  var searchTerm = $stateParams.search;
-  console.log($stateParams);
+  $scope.searchTerm = $stateParams.search;
 
-  mainService.getProductByName(searchTerm).then(function (response) {
+  mainService.getProductByName($scope.searchTerm).then(function (response) {
     $scope.searchProducts = response;
     console.log(response, "response in controller");
     console.log($scope.searchProducts, "scope search prodcutz");
@@ -5830,6 +5840,23 @@ angular.module("ccvApp").directive('modal', function (modalService) {
         element.hide();
         $('body').removeClass('modal-open');
       }
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("search", function ($state) {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService, $rootScope) {
+
+      $scope.searchProduct = function (search) {
+        //hide and clear search form
+        document.getElementsByClassName('search-box-container')[0].classList.remove('open');
+        document.getElementsByClassName('search-box')[0].value = "";
+        $state.go('search', { search: search });
+      };
     }
   };
 });
@@ -6277,6 +6304,15 @@ angular.module("ccvApp").service("mainService", function ($http) {
     }).then(function (response) {
       console.log(response.data, "getAllProducts");
       return response.data;
+    });
+  };
+
+  this.loadMore = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products/more"
+    }).then(function (res) {
+      return res.data;
     });
   };
 

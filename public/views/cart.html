@@ -104,7 +104,7 @@
         </div>
 
         <div class="cart-product-qty-d w25">
-            <input type="text" id="itemincartid_{{$index}}" value="{{item.productQuantity}}">
+            <input type="number" id="itemincartid_{{$index}}" value="{{item.productQuantity}}">
             <!-- <button type="button" ng-click="updateCart($index)">UD</button> -->
             <i class="material-icons update-cart-btn" ng-class="{'update-cart-btn-spin': spinIndex === $index}" ng-click="updateCart($index);">cached</i>
             <!-- <button type="button"><i class="material-icons update-cart-btn" ng-class="{'update-cart-btn-spin': spinIndex === $index}" ng-click="updateCart($index);">cached</i></button> -->
