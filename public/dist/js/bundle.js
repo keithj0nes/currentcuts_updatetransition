@@ -4910,9 +4910,15 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
   };
 
   $scope.updateCart = function (index) {
-    var value = document.getElementById("itemincartid_" + index).value;
-    if (value === "0" || value === 0 || value === "") {
-      swal("enter a price");
+    var value = Number(document.getElementById("itemincartid_" + index).value);
+    // if(value === "0" || value === 0 || value === "") {
+    if (value <= 0) {
+      $scope.cart[index].productQuantity = 1;
+      document.getElementById("itemincartid_" + index).value = 1;
+      mainService.updateProductsInCart($scope.cart).then(function (response) {
+        getProductsInCart();
+        $rootScope.$broadcast('cartCount');
+      });
     } else {
       $scope.cart[index].productQuantity = value;
       mainService.updateProductsInCart($scope.cart).then(function (response) {
