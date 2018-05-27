@@ -17,7 +17,8 @@
       </div>
     </button>
 
-    <p class="productPrice" ng-model="pppprice">&nbsp;{{productPrice.price | currency}}</p>
+    <p ng-if="productPrice.price"class="productPrice" ng-model="pppprice">&nbsp;${{productPrice.price}}</p>
+    <p ng-if="!productPrice.price" class="productPrice" ng-model="pppprice">&nbsp;<span class="red">From</span> ${{product2[0].price}}</p>
 
   <form ng-submit="addToCart(productColor, productQuantity, productPrice)">
 

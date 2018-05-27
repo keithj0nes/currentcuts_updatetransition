@@ -5545,6 +5545,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       //response gives us all heights, widths and prices
       $scope.product2 = response.product;
       //response gives us the total number of favorites
+      console.log($scope.product2, 'p2');
       $scope.favCount = response.totalFavs[0].count;
       console.log(response);
       if (response.favFound) {

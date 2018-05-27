@@ -945,16 +945,21 @@ footer {
     justify-content: center;
     align-items: center; }
   .product-single .details {
-    padding: 20px; }
+    padding: 20px 0 20px 20px; }
     .product-single .details .fav-button {
       background: none;
-      border: 0;
+      color: #777;
+      font-size: 14px;
+      border: 1px solid #777;
+      border-radius: 4px;
       cursor: pointer; }
       .product-single .details .fav-button div {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 4px 20px; }
+        padding: 4px 10px; }
+        .product-single .details .fav-button div i {
+          font-size: 18px; }
       .product-single .details .fav-button i:first-child {
         margin-right: 10px; }
     .product-single .details h2.desc {
