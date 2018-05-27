@@ -8,11 +8,11 @@
   <div class="details">
     <h2 class="desc">{{product.name}}</h2>
 
-    <button type="button" class="flright" style="width: 70px; height: 30px; padding: 0px 5px;" ng-click="addFavorite()">
-      <div ng-if="!favorited" style="padding: 0px 5px; display: flex; align-items: center; justify-content: space-between;">
+    <button type="button" class="flright fav-button"  ng-click="addFavorite()">
+      <div ng-if="!favorited">
         <i class="material-icons" style="">favorite_border</i> {{favCount}}
       </div>
-      <div ng-if="favorited" style=" padding: 0px 5px; display: flex; align-items: center; justify-content: space-between;">
+      <div ng-if="favorited" >
         <i class="material-icons" style="color: #FFD200;">favorite</i> {{favCount}}
       </div>
     </button>
@@ -22,11 +22,11 @@
   <form ng-submit="addToCart(productColor, productQuantity, productPrice)">
 
     <select ng-model="productPrice"  required ng-options='details as (details.height + "H x " + details.width + "W" + " inches - [$" + details.price + "]") for details in product2'>
-      <option value="">Size</option>
+      <option value="">Select Your Size</option>
     </select>
 
     <select options="" required ng-model="productColor" ng-change="updateImgColor(productColor)">
-      <option value="">Color </option>
+      <option value="">Select Your Color </option>
       <option value='{"prime":"Black", "secon":"#000"}'>Black</option>
       <option value='{"prime":"White", "secon":"#fff"}'>White</option>
       <option value='{"prime":"Dark Gray", "secon":"darkgray"}'>Dark Gray</option>
@@ -52,7 +52,8 @@
 
 
 
-    <h3>Choose your background</h3>
+    <h3>Background Demo</h3>
+    <p class="muted">Here you can preview the surface color of where your decal will go.</p>
 
     <div class="radio-group">
       <input type="radio" id="r1" name="bkgdclr" value="#1e1e1e" ng-model="bkgnd">

@@ -946,6 +946,17 @@ footer {
     align-items: center; }
   .product-single .details {
     padding: 20px; }
+    .product-single .details .fav-button {
+      background: none;
+      border: 0;
+      cursor: pointer; }
+      .product-single .details .fav-button div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 20px; }
+      .product-single .details .fav-button i:first-child {
+        margin-right: 10px; }
     .product-single .details h2.desc {
       font-size: 20px;
       color: #000;
@@ -979,8 +990,13 @@ footer {
       border: 1px solid gray; }
     .product-single .details h3 {
       text-align: center;
-      padding-bottom: 10px;
+      padding: 10px 0;
       font-weight: bold; }
+    .product-single .details p.muted {
+      font-size: 13px;
+      color: #999;
+      text-align: center;
+      padding-bottom: 10px; }
     .product-single .details .radio-group {
       border: 1px solid gray;
       display: flex;
@@ -1647,7 +1663,6 @@ form.login-modal p {
   nav .search-box-container .search-box {
     width: 90%; }
   .home-main {
-    background: red;
     max-width: 1176px;
     margin: 0 auto; }
     .home-main .product-main {
@@ -1680,7 +1695,8 @@ form.login-modal p {
       float: left; }
     .product-single .details {
       width: 40%;
-      float: right; }
+      float: right;
+      padding-top: 0; }
       .product-single .details h2.desc {
         font-size: 30px;
         color: #000;

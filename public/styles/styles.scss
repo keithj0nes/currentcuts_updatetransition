@@ -765,6 +765,26 @@ footer {
   .details {
     padding: 20px;
 
+    .fav-button {
+      background: none;
+      // padding: 5px;
+      border: 0;
+      cursor: pointer;
+
+      div {
+        // padding: 0px 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        // background: red;
+        padding: 4px 20px;
+      }
+
+      i:first-child {
+        margin-right: 10px;
+      }
+    }
+
     h2.desc {
       font-size: 20px;
       color: #000;
@@ -809,8 +829,15 @@ footer {
 
     h3 {
       text-align: center;
-      padding-bottom: 10px;
+      padding: 10px 0;
       font-weight: bold;
+    }
+
+    p.muted {
+      font-size: 13px;
+      color: #999;
+      text-align: center;
+      padding-bottom: 10px;
     }
 
     .radio-group {
@@ -2045,7 +2072,6 @@ form.login-modal {
 
 
   .home-main {
-    background: red;
     max-width: 1176px;
     margin: 0 auto;
     .product-main {
@@ -2101,6 +2127,7 @@ form.login-modal {
     .details {
       width: 40%;
       float: right;
+      padding-top: 0;
 
       h2.desc {
         font-size: 30px;
