@@ -1647,7 +1647,8 @@ form.login-modal p {
   nav .search-box-container .search-box {
     width: 90%; }
   .home-main {
-    max-width: 1100px;
+    background: red;
+    max-width: 1176px;
     margin: 0 auto; }
     .home-main .product-main {
       width: 30%;
