@@ -1,19 +1,19 @@
 angular.module("ccvApp").controller("mainController", function($scope, mainService){
 
-  // $scope.userLoggedIn = false;
+  //how many products per limit
+  const row = 3;
 
-  var getAllProducts = function(){
+  const getAllProducts = function(){
     mainService.getAllProducts().then(function(response){
-      $scope.products = response;
+      $scope.products = response.products;
+      $scope.count = response.count[0].count - row;
     })
   }
 
   $scope.loadMore = function(){
-    console.log('ah');
+    $scope.count -= row;
     mainService.loadMore().then((res) => {
-      console.log(res, 'resssssssssss conttroller');
       $scope.products = [...$scope.products, ...res]
-      console.log($scope.products);
     })
   }
   getAllProducts();
