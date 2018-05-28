@@ -127,6 +127,19 @@ CREATE TABLE users (
   resettoken TEXT
 );
 
+-- NEW -> ADD TO ELEPHANTSQL
+
+CREATE TABLE tags (
+  id SERIAL PRIMARY KEY,
+  name TEXT
+);
+
+CREATE TABLE product_tag (
+  id SERIAL PRIMARY KEY,
+  productid INTEGER REFERENCES products(id),
+  tagid INTEGER REFERENCES tags(id)
+);
+
 
 -- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
 
