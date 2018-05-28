@@ -1,23 +1,38 @@
-.show-extra-details .fav-active {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center; }
-  .show-extra-details .fav-active p {
-    margin-right: 20px; }
-  .show-extra-details .fav-active label {
-    cursor: pointer; }
+.active-btn {
+  display: inline-block;
+  padding: 10px 20px !important;
+  cursor: pointer; }
 
-.category-container {
+.active-btn-small {
+  display: inline-block;
+  padding: 6px 14px !important;
+  cursor: pointer;
+  font-size: 14px; }
+
+.fav-contain {
+  display: flex;
+  justify-content: space-between;
+  position: relative; }
+  .fav-contain .fav-active {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0px;
+    bottom: 10px; }
+    .fav-contain .fav-active p {
+      margin-right: 20px; }
+
+.show-extra-details .category-container {
   display: flex;
   align-items: center; }
-  .category-container .category-select-container {
+  .show-extra-details .category-container .category-select-container {
     margin-right: 10px; }
-  .category-container p {
+  .show-extra-details .category-container p {
     padding: 5px 10px;
     border: 1px solid #777;
     border-radius: 5px;
     cursor: pointer; }
-  .category-container p:hover {
+  .show-extra-details .category-container p:hover {
     background: #aaa; }
 
 

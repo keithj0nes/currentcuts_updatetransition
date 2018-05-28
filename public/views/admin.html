@@ -248,11 +248,14 @@
         <input type="text" placeholder="Search" ng-model="searchDB.name">
       </div>
       <div class="admin-products" ng-repeat="product in products | orderBy: 'id' | filter: searchDB" ng-click="editProducts(product, $index)" ng-class="{highlighted: $index == selected}">
+
         <img ng-src="{{product.img1}}" height="50px" alt="" style="padding-right: 5px;">
         {{product.name}}
         <hr style="display: inline-block;border-top: 1px solid red;"/>
 
         <div class="edit-buttons">
+          <h3 class="active-btn-small" ng-style="{background: product.active ? '#26d026' : '#d02626', color: product.active? '#000' : '#fff'}">{{product.active ? "Active": "Inactive"}}</h3>
+
           <!-- <button class="btn" ng-click="editProducts(product)" name="button">Edit</button> -->
           <!-- <button class="btn" ng-click="delete(product)" name="button">Delete</button> -->
         </div>
@@ -262,7 +265,20 @@
     <hr>
 
     <div class="admin-edit">
-      <h3>Name</h3>
+
+      <div class="fav-contain">
+
+        <h3>Name</h3>
+        <div class="fav-active"  ng-show="showExtraDetails">
+          <p><span class="bold">{{productDetails.totalFavs[0].count}}</span> Favorites</p>
+
+          <input id="c22" ng-change="infoChanged.infoChanged = true" type="checkbox" hidden ng-model="prodObj.productActive">
+          <label for="c22">
+            <h3 class="active-btn" ng-style="{background: prodObj.productActive ? '#26d026' : '#d02626', color: prodObj.productActive ? '#000' : '#fff'}">{{prodObj.productActive ? "Active": "Inactive"}}</h3>
+          </label>
+        </div>
+      </div>
+
       <input ng-change="infoChanged.infoChanged = true" type="text" name="" placeholder="Name" ng-model="prodObj.productName">
 
       <h3>Description</h3>
@@ -282,14 +298,14 @@
         <br><br>
 
       <div class="show-extra-details" ng-show="showExtraDetails">
-        <div class="fav-active">
+        <!-- <div class="fav-active">
           <p><span class="bold">{{productDetails.totalFavs[0].count}}</span> Favorites</p>
 
           <input id="c22" ng-change="infoChanged.infoChanged = true" type="checkbox" hidden ng-model="prodObj.productActive">
           <label for="c22">
             <h3 ng-style="{display: 'inline-block', padding: '10px 20px', background: prodObj.productActive ? '#26d026' : '#d02626', color: prodObj.productActive ? '#000' : '#fff'}">{{prodObj.productActive ? "Active": "Inactive"}}</h3>
           </label>
-        </div>
+        </div> -->
 
       <div class="category-container">
 

@@ -4637,6 +4637,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.clearForm = function () {
+    $scope.infoChanged.infoChanged = false;
     $scope.prodObj.productId = "";
     $scope.prodObj.productName = "";
     $scope.prodObj.productDescription = "";
@@ -4697,7 +4698,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.updateDetails = function (index, productDetails, psheight, pswidth, psprice) {
-    $scope.infoChanged.infoChanged = false;
 
     console.log($scope.productId, "productId from the original requests");
     console.log(psheight, "psheight");
@@ -4742,6 +4742,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.update = function (id, name, description, img1, imgmainvector, imgoutlinevector, active) {
+    $scope.infoChanged.infoChanged = false;
     var productUpdate = {
       name: name,
       description: description,
