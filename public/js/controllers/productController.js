@@ -3,6 +3,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   $scope.addToCartModal = false;
   $scope.productQuantity = 1;
   $scope.favorited = false;
+  var outlineCheckbox = false;
 
 // console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
@@ -30,7 +31,6 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     // console.log($scope.open.trackingNumber, "sam is kool");
   }
 
-  var outlineCheckbox = false;
   var getProductById = function() {
     mainService.getProductById($stateParams.id).then(function(response) {
       //response[0] gives us description, id, images, and name
@@ -94,6 +94,15 @@ console.log($scope.favorited);
     })
   }
 
+//checkQuantity checks to make sure the quantity entered is greater than 0
+//if not, set the productQuantity to 1
+$scope.checkQuantity = function(){
+  console.log($scope.productQuantity, 'pq');
+  if($scope.productQuantity <= 0){
+    $scope.productQuantity = 1;
+    console.log('getting here', $scope.productQuantity);
+  }
+}
 
   $scope.addToCart = function(productColor,productQuantity, productObject){
     //create object to send to service to push to cart
@@ -107,20 +116,9 @@ console.log($scope.favorited);
       productId: $scope.product.id,
       productOutline: outlineCheckbox
     }
-    console.log(productQuantity, "TONY IS THE MAN");
-// Quick fix - if quantity is zero, do not add to cart
-    // if(productQuantity !== "0" || productQuantity !== 0){
-    //   //send object to service to push to cart
-    //   mainService.addProductsToCart(cartData);
-    //
-    //   $scope.addToCartModal = true;
-    //
-    //   $rootScope.$broadcast('cartCount')
-    // } else {
-    //   swal("Please update quantity number")
-    // }
 
-    if(productQuantity === 0){
+
+    if(productQuantity <= 0){
       swal("Please update quantity number")
     } else {
         //send object to service to push to cart

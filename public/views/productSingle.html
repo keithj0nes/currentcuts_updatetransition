@@ -47,7 +47,7 @@
       <option value='{"prime":"Chocolate Brown", "secon":"#4E2E28"}'>Chocolate Brown</option>
     </select>
 
-    <input type="number" name="" ng-model="productQuantity" >
+    <input type="number" ng-blur="checkQuantity()" ng-model="productQuantity" >
 
     <button type="submit" class="btn flright" name="button" value="Add to Cart">Add to Cart</button>
 
@@ -64,11 +64,11 @@
     </div>
 
     <div ng-if="outlineImage">
-      <h3>Inverting Demo</h3>
+      <h3>Outline Demo</h3>
       <p class="muted">Some decals just don't look right in some colors. Use the toggle button to choose which style you like best.</p>
 
       <input type="checkbox" id="c1" ng-init="inverted = false" ng-model="inverted" ng-change="changeInverted(inverted)">
-      <label for="c1">Inverted: {{inverted}}</label>
+      <label for="c1">Outline: {{inverted}}</label>
     </div>
 
 
