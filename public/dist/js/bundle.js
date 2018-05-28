@@ -4438,8 +4438,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   $scope.showExtraDetails = false;
   $scope.selected = null; //highlights selected product
   $scope.readyToSendTracking = false;
-  $scope.modalShown = false;
-  $scope.modalShown1 = false;
 
   //create objects so scope change will be reflected in HTML
   $scope.infoChanged = {};
@@ -4504,7 +4502,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     } else if (id === "resend-tracking-modal") {
       console.log(id, "resend-tracking-modal");
     } else if (id === "delete-product-modal") {
-      console.log('opening', id);
+      console.log('opening', id, index);
+      modalService.Open(id);
+    } else if (id === 'add-new-minimum-modal') {
       modalService.Open(id);
     }
   };
@@ -4661,9 +4661,23 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.add = function (name, description, img1, imgmainvector, imgoutlinevector) {
+    $scope.missingItems = [];
+    if (!name) {
+      $scope.missingItems.push('Name');
+    }
+    if (!description) {
+      $scope.missingItems.push('Description');
+    }
+    if (!img1) {
+      $scope.missingItems.push('Main Image');
+    }
+    if (!imgmainvector) {
+      $scope.missingItems.push('Main Vector');
+    }
 
-    if (name == null || description == null || img1 == null || imgmainvector == null || name == "" || description == "" || img1 == "" || imgmainvector == "") {
-      console.log("it's null");
+    if ($scope.missingItems.length > 0) {
+      //modal popup to tell admin which items MUST have a value;
+      $scope.openModal('add-new-minimum-modal');
     } else {
 
       var productAdd = {

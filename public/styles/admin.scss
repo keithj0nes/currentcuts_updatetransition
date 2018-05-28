@@ -54,6 +54,7 @@
 }
 
 .show-extra-details {
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   .category-container {
@@ -68,6 +69,7 @@
     width: 78%;
     padding-left: 20px;
     border-left: 1px solid black;
+
     h3 {
       display: inline-block;
       width: 49.5%;
@@ -81,6 +83,9 @@
       justify-content: space-between;
       position: relative;
 
+      :hover {
+        background: #d9d9d9;
+      }
       span, input {
         display: inline-block;
         width: 24%;
@@ -89,6 +94,7 @@
 
       .size-price-btn-container {
         position: absolute;
+        top: 2px;
         right: 0px;
       }
     }

@@ -279,19 +279,19 @@
         </div>
       </div>
 
-      <input ng-change="infoChanged.infoChanged = true" type="text" name="" placeholder="Name" ng-model="prodObj.productName">
+      <input required ng-change="infoChanged.infoChanged = true" type="text" name="" placeholder="Name" ng-model="prodObj.productName">
 
       <h3>Description</h3>
-      <textarea name="name" ng-change="infoChanged.infoChanged = true" rows="5" placeholder="Description" ng-model="prodObj.productDescription"></textarea>
+      <textarea required name="name" ng-change="infoChanged.infoChanged = true" rows="5" placeholder="Description" ng-model="prodObj.productDescription"></textarea>
 
   <!-- <div class="" style="clear: both">
 
   </div> -->
       <h3>Main Image</h3>
-      <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 1 URL" ng-model="prodObj.productImgOne">
+      <input required type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 1 URL" ng-model="prodObj.productImgOne">
 
       <h3>Main Vector</h3>
-      <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 2 URL" ng-model="prodObj.productImgTwo">
+      <input required type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 2 URL" ng-model="prodObj.productImgTwo">
 
       <h3>Outline Vector</h3>
       <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 3 URL" ng-model="prodObj.productImgThree">
@@ -353,7 +353,7 @@
             </div>
             <div class="size-price-btn-container">
               <button class="add-btn"type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
-              <button class="add-btn-xsmall"type="button" name="button" ng-click="editing = false; clearDisabled()">Cancel</button>
+              <button class="add-btn"type="button" name="button" ng-click="editing = false; clearDisabled()">Cancel</button>
             </div>
           </form>
         </div>
@@ -370,11 +370,11 @@
 
       <div class="" style="text-align: center;margin-top: 30px;">
         <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree, prodObj.productActive)" ng-disabled="editDisable">Update</button>
-        <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)" ng-disabled="editDisable">Add New</button>
+        <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree)" ng-disabled="editDisable">Add New</button>
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
         <button ng-show="showExtraDetails"class="btn" ng-click="openModal('delete-product-modal', null, null, productId)" name="button" ng-disabled="editDisable">Delete</button>
       </div>
-      <h1 ng-show="infoChanged.infoChanged">Click Update to save changes</h1>
+      <h1 ng-show="prodObj.productId && infoChanged.infoChanged">Click Update to save changes</h1>
 
     </div>
   </div>
@@ -438,6 +438,18 @@
 
               <button class="btn" ng-click="delete(deletingIndex, 'delete-product-modal');">Delete</button>
               <button class="btn" ng-click="closeMyModal('delete-product-modal');">Cancel</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
+
+  <modal id="add-new-minimum-modal">
+      <div class="mymodal">
+          <div class="modal-body">
+            <h1>Please add the following:</h1>
+            <p ng-repeat="missing in missingItems">{{missing}}</p>
+            <button class="btn" ng-click="closeMyModal('add-new-minimum-modal');">Got it!</button>
+
           </div>
       </div>
       <div class="modal-background"></div>

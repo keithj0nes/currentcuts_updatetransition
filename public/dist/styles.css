@@ -34,6 +34,7 @@
       margin-right: 20px; }
 
 .show-extra-details {
+  margin-top: 20px;
   display: flex;
   justify-content: space-between; }
   .show-extra-details .category-container {
@@ -52,12 +53,15 @@
       display: flex;
       justify-content: space-between;
       position: relative; }
+      .show-extra-details .size-price-container .size-price-repeater :hover {
+        background: #d9d9d9; }
       .show-extra-details .size-price-container .size-price-repeater span, .show-extra-details .size-price-container .size-price-repeater input {
         display: inline-block;
         width: 24%;
         padding: 8px; }
       .show-extra-details .size-price-container .size-price-repeater .size-price-btn-container {
         position: absolute;
+        top: 2px;
         right: 0px; }
 
 
