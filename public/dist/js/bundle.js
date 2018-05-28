@@ -5646,10 +5646,10 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 
   var getOrderHistory = function getOrderHistory() {
     mainService.getOrderHistory().then(function (response) {
-      $scope.history = response;
       if (response.reqUser === false) {
         $state.go("login");
       } else if (response.length > 0) {
+        $scope.history = response.reverse();
         $scope.previousOrders = true;
       }
     });

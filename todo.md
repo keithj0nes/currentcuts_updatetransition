@@ -1,9 +1,9 @@
 # To Do list
-
 ### Universal
 - [ ] Look into stripe refunds
 - [ ] Wall installation button on product view
 - [ ] Searchable product tags
+- [ ] Quickview on home products
 
 
 - [ ] Style nodemailer emails
