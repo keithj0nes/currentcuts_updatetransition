@@ -1,34 +1,18 @@
 angular.module("ccvApp").controller("productController", function($scope, $rootScope, $stateParams, mainService, modalService, $sce){
 
-  $scope.addToCartModal = false;
   $scope.productQuantity = 1;
   $scope.favorited = false;
   var outlineCheckbox = false;
 
-// console.log($stateParams);
   // $sceDelegateProvider.resourceUrlWhitelist(['self', 'http://svgshare.com/i/**'])
 
-
-  $scope.openModal =function(id, track, note){
-    console.log(track, "loggig");
-    console.log("openModal in controller");
-    console.log(id, track, note);
-        modalService.Open(id, track);
-    }
+  $scope.openModal =function(id){
+    modalService.Open(id);
+  }
 
   $scope.closeMyModal = function(id){
     console.log("clicked button in controllers");
     modalService.Close(id);
-  }
-
-  $scope.completeOrder = function(id, track, note){
-    console.log(track, note);
-    modalService.Close(id);
-    console.log($scope.parentIndex, "logging parent");
-    $scope.getOpenOrders()
-    // console.log($scope.open);
-    // $scope.open.trackingNumber = "";
-    // console.log($scope.open.trackingNumber, "sam is kool");
   }
 
   var getProductById = function() {
@@ -72,15 +56,9 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
 
   $scope.addFavorite = function(){
-    // $scope.favorited = !$scope.favorited;
-    // console.log($scope.favorited);
-
     mainService.addFavorite($stateParams.id).then((res) => {
-// console.log(res);
-// $scope.favorited = !$scope.favorited;
-console.log($scope.favorited);
       if(res.reqUser === false){
-        swal("you must be logged in")
+        $scope.openModal('user-login-modal');
       } else if(res.favFound === true){
         swal("this is already a favorite");
         $scope.favorited = true;
@@ -89,20 +67,20 @@ console.log($scope.favorited);
         // $scope.favorited = true;
         $scope.favorited = !$scope.favorited;
 
-        console.log("added to favorite!");
+        console.log($scope.favorited ? "added to favorite!" : "delted from favorites!");
       }
     })
   }
 
-//checkQuantity checks to make sure the quantity entered is greater than 0
-//if not, set the productQuantity to 1
-$scope.checkQuantity = function(){
-  console.log($scope.productQuantity, 'pq');
-  if($scope.productQuantity <= 0){
-    $scope.productQuantity = 1;
-    console.log('getting here', $scope.productQuantity);
+  //checkQuantity checks to make sure the quantity entered is greater than 0
+  //if not, set the productQuantity to 1
+  $scope.checkQuantity = function(){
+    console.log($scope.productQuantity, 'pq');
+    if($scope.productQuantity <= 0){
+      $scope.productQuantity = 1;
+      console.log('getting here', $scope.productQuantity);
+    }
   }
-}
 
   $scope.addToCart = function(productColor,productQuantity, productObject){
     //create object to send to service to push to cart
@@ -117,41 +95,15 @@ $scope.checkQuantity = function(){
       productOutline: outlineCheckbox
     }
 
-
     if(productQuantity <= 0){
       swal("Please update quantity number")
     } else {
         //send object to service to push to cart
         mainService.addProductsToCart(cartData);
-
-        $scope.addToCartModal = true;
-
         $scope.openModal('product-added-modal');
-
         $rootScope.$broadcast('cartCount')
     }
   }
-
-  //modal to confirm item has been added to cart
-
-  var modal = document.getElementById('modalz');
-
-  $scope.closeModal = function(){
-    $scope.addToCartModal = false;
-    console.log($scope.addToCartModal, "close");
-  }
-
-  window.onclick = function(e) {
-    if (e.target == modal) {
-      $scope.addToCartModal = false;
-      $scope.$apply(); //resets digest cycle so angular knows scope.userModal updated
-      console.log($scope.addToCartModal, "close window");
-    }
-  }
-
-
-
-
 
     getProductById();
 })

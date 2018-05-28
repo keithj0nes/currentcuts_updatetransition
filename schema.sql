@@ -128,18 +128,10 @@ CREATE TABLE users (
 );
 
 -- NEW -> ADD TO ELEPHANTSQL
-
-CREATE TABLE tags (
-  id SERIAL PRIMARY KEY,
-  name TEXT
-);
-
-CREATE TABLE product_tag (
-  id SERIAL PRIMARY KEY,
-  productid INTEGER REFERENCES products(id),
-  tagid INTEGER REFERENCES tags(id)
-);
-
+-- denormalization tags
+-- ADDED 'tags' COLUMN TO PRODUCTS TABLE
+-- update products set tags = 'hiking, mountain' where id = 1;
+ALTER TABLE products ADD tags TEXT
 
 -- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
 
