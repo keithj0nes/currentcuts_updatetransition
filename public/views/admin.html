@@ -266,7 +266,7 @@
 
     <div class="admin-edit">
 
-      <div class="fav-contain">
+      <div class="favorite-container">
 
         <h3>Name</h3>
         <div class="fav-active"  ng-show="showExtraDetails">
@@ -315,7 +315,9 @@
           </select>
         </div>
 
-        <p ng-click="addNewCategory()">Add Category</p>
+
+          <button class="add-btn" ng-click="addNewCategory()">Add Category</button>
+
         <!-- <button class="btn" ng-click="addNewCategory()">Add Category</button> -->
 
       </div>
@@ -324,34 +326,49 @@
       <br>
       <br>
 
-        <h3 style="display: inline-block; width: 60%;">Size</h3>
-        <h3 style="display: inline-block; width: 30%;">Price</h3>
+      <div class="size-price-container">
+        <h3>Size</h3>
+        <h3>Price</h3>
 
         <div ng-repeat="ps in productDetails.product track by $index">
-          <div ng-hide="editing">
-            <span style="display: inline-block; width: 30%;">H - {{ps.height}}</span>
-            <span style="display: inline-block; width: 30%;">W - {{ps.width}}</span>
-            <span style="display: inline-block; width: 30%;">${{ps.price}}</span>
-            <button ng-click="editing = true; editDisableBtn($index)" ng-hide="editing" name="button" >edit</button>
-            <button  type="submit" ng-click="deleteDetails($index, ps)">X</button>
-          </div>
-          <form ng-show="editing" ng-submit="editing = false">
-            <input type="text" step="any" style="width: 30%;" placeholder="height" ng-model="ps.height" />
-            <input type="text" step="any" style="width: 30%;" placeholder="width" ng-model="ps.width" />
-            <input type="text" step="any" style="width: 30%;" placeholder="price" ng-model="ps.price" />
+          <div ng-hide="editing" class="size-price-repeater">
+            <div style="width: 100%;">
+              <span>H - {{ps.height}}</span>
+              <span>W - {{ps.width}}</span>
+              <span>${{ps.price}}</span>
+            </div>
+            <div class="size-price-btn-container">
+              <button class="add-btn" ng-click="editing = true; editDisableBtn($index)" ng-hide="editing">Edit</button>
+              <button class="add-btn-xsmall" type="submit" ng-click="deleteDetails($index, ps)">x</button>
+            </div>
 
-            <button type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
-            <button type="button" name="button" ng-click="editing = false; clearDisabled()">X</button>
+          </div>
+          <form ng-show="editing" ng-submit="editing = false" class="size-price-repeater">
+            <div style="width: 100%;">
+
+              <input type="text" step="any" placeholder="height" ng-model="ps.height" />
+              <input type="text" step="any" placeholder="width" ng-model="ps.width" />
+              <input type="text" step="any" placeholder="price" ng-model="ps.price" />
+
+            </div>
+            <div class="size-price-btn-container">
+              <button class="add-btn"type="submit" ng-click="updateDetails($index, ps, ps.height, ps.width, ps.price)">Save</button>
+              <button class="add-btn-xsmall"type="button" name="button" ng-click="editing = false; clearDisabled()">Cancel</button>
+            </div>
           </form>
         </div>
+        <div style="text-align: center;margin: 20px">
 
-        <button type="button" ng-click="addNewRow()">Add New Size</button>
+          <button class="add-btn" ng-click="addNewRow()">Add New Size</button>
+        </div>
+      </div>
+
 
       </div>
 
       <span class="flright" ng-model="productId" ng-show="showExtraDetails">Product ID: {{productId}}</span>
 
-      <div class="" style="text-align: center;">
+      <div class="" style="text-align: center;margin-top: 30px;">
         <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree, prodObj.productActive)" ng-disabled="editDisable">Update</button>
         <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)" ng-disabled="editDisable">Add New</button>
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>

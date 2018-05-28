@@ -1,5 +1,4 @@
-
-
+//global admin
 .active-btn {
   display: inline-block;
   padding: 10px 20px !important;
@@ -8,13 +7,30 @@
 }
 
 .active-btn-small {
-  display: inline-block;
+  @extend .active-btn;
   padding: 6px 14px !important;
-  cursor: pointer;
   font-size: 14px;
   //background determined by active in ng-style
 }
-.fav-contain {
+
+.add-btn {
+  padding: 5px 10px;
+  border: 1px solid #777;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.add-btn:hover {
+  background: #aaa;
+}
+
+.add-btn-xsmall{
+  @extend .add-btn;
+  padding: 0 2px;
+}
+
+.favorite-container {
   // background: blue;
   display: flex;
   justify-content: space-between;
@@ -38,27 +54,45 @@
 }
 
 .show-extra-details {
-
-
-
+  display: flex;
+  justify-content: space-between;
   .category-container {
-    display: flex;
-    align-items: center;
-
+    width: 22%;
+    text-align: center;
     .category-select-container {
-      margin-right: 10px;
+      margin: 14px 0;
+    }
+  }
+
+  .size-price-container {
+    width: 78%;
+    padding-left: 20px;
+    border-left: 1px solid black;
+    h3 {
+      display: inline-block;
+      width: 49.5%;
     }
 
-    p {
-      padding: 5px 10px;
-      border: 1px solid #777;
-      border-radius: 5px;
-      cursor: pointer;
+    // h3:first-child {
+    //   width: 40%;
+    // }
+    .size-price-repeater {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+
+      span, input {
+        display: inline-block;
+        width: 24%;
+        padding: 8px;
+      }
+
+      .size-price-btn-container {
+        position: absolute;
+        right: 0px;
+      }
     }
 
-    p:hover {
-      background: #aaa;
-    }
   }
 
 }
