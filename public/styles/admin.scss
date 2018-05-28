@@ -1,0 +1,36 @@
+.show-extra-details {
+
+  .fav-active {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    p {
+      margin-right: 20px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+  }
+}
+
+.category-container {
+  display: flex;
+  align-items: center;
+
+  .category-select-container {
+    margin-right: 10px;
+  }
+
+  p {
+    padding: 5px 10px;
+    border: 1px solid #777;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  p:hover {
+    background: #aaa;
+  }
+}

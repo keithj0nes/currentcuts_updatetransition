@@ -1,3 +1,25 @@
+.show-extra-details .fav-active {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+  .show-extra-details .fav-active p {
+    margin-right: 20px; }
+  .show-extra-details .fav-active label {
+    cursor: pointer; }
+
+.category-container {
+  display: flex;
+  align-items: center; }
+  .category-container .category-select-container {
+    margin-right: 10px; }
+  .category-container p {
+    padding: 5px 10px;
+    border: 1px solid #777;
+    border-radius: 5px;
+    cursor: pointer; }
+  .category-container p:hover {
+    background: #aaa; }
+
 
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 /* My Additions
@@ -415,6 +437,9 @@ template {
  */
 [hidden] {
   display: none; }
+
+.bold {
+  font-weight: bolder; }
 
 @keyframes spinner-cc {
   from {

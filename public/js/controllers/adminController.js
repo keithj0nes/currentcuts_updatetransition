@@ -10,6 +10,10 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   $scope.modalShown = false;
   $scope.modalShown1 = false;
 
+  //create objects so scope change will be reflected in HTML
+  $scope.infoChanged = {};
+  $scope.prodObj = {};
+
 //   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
 //     var doc = new jsPDF({
 //  orientation: 'p',
@@ -138,23 +142,24 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
 //editProducts function displays information about specific product when called with the Edit Button
   $scope.editProducts = function(product, index){
-    console.log(index, 'index');
+    $scope.infoChanged.infoChanged = false;
+
     $scope.selected = index;
-    $scope.productId = product.id;
-    $scope.productName = product.name;
-    $scope.productDescription = product.description;
-    $scope.productPrice = product.price;
-    $scope.productImgOne = product.img1;
-    $scope.productImgTwo = product.imgmainvector;
-    $scope.productImgThree = product.imgoutlinevector;
-    $scope.productActive = product.active;
-    getProductDetails($scope.productId);
+    $scope.prodObj.productId = product.id;
+    $scope.prodObj.productName = product.name;
+    // $scope.productName = product.name;
+    $scope.prodObj.productDescription = product.description;
+    $scope.prodObj.productPrice = product.price;
+    $scope.prodObj.productImgOne = product.img1;
+    $scope.prodObj.productImgTwo = product.imgmainvector;
+    $scope.prodObj.productImgThree = product.imgoutlinevector;
+    $scope.prodObj.productActive = product.active;
+    getProductDetails($scope.prodObj.productId);
+
   }
 
   $scope.saveCategory = function(index,updateCat){
-
-    if(updateCat){
-      if(updateCat.name){
+      if(updateCat && updateCat.name){
         updateCat.index = index;
         adminService.adminSaveCategory(updateCat, $scope.productId).then((res)=>{
           $scope.allCategories = res.allCategories;
@@ -172,20 +177,16 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
           }
         })
       } else {
-        swal("Please select a category");
+        // swal("Please select a category");
+        //delete category when selecting '--category--'
+        $scope.deleteCategory(index, updateCat)
       }
-    } else {
-      swal("Please select a category");
-    }
+
   }
 
-  $scope.deleteCategory = function(index, category){
-    console.log(index, category);
-
-    category.index = index;
-
+  $scope.deleteCategory = function(index){
+    const category = {index};
     adminService.adminDeleteCategory(category, $scope.productId);
-
     for(var i = $scope.defaultSelected.length-1; i >= 0; i--){
       console.log($scope.defaultSelected[i], index);
       if(index === i){
@@ -213,17 +214,15 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.clearForm = function(){
-    console.log('firing');
-    console.log($scope.productName, 'productName');
-    $scope.productId = "";
-    $scope.productName = "";
-    $scope.productDescription = "";
-    $scope.productPrice = "";
-    $scope.productImgOne = "";
-    $scope.productImgTwo = "";
-    $scope.productImgThree = "";
-    $scope.productDetails = "";
-    $scope.productActive = false;
+    $scope.prodObj.productId = "";
+    $scope.prodObj.productName = "";
+    $scope.prodObj.productDescription = "";
+    $scope.prodObj.productPrice = "";
+    $scope.prodObj.productImgOne = "";
+    $scope.prodObj.productImgTwo = "";
+    $scope.prodObj.productImgThree = "";
+    $scope.prodObj.productDetails = "";
+    $scope.prodObj.productActive = false;
     $scope.showExtraDetails = false;
     $scope.selected = null;
   }
@@ -277,6 +276,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.updateDetails = function(index, productDetails, psheight, pswidth, psprice){
+    $scope.infoChanged.infoChanged = false;
+
     console.log($scope.productId, "productId from the original requests");
     console.log(psheight, "psheight");
     console.log(pswidth, "pswidth");

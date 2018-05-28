@@ -17,7 +17,9 @@ $main-accent-color: #605675;  //athletic gold
 // $sub-accent-color: #4F6D7A;   //light blue charcoal
 $sub-accent-color: #028090;   //light blue charcoal
 
-
+.bold {
+  font-weight: bolder;
+}
 // spinner function
 @keyframes spinner-cc {
   from {

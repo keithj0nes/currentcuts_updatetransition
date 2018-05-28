@@ -263,43 +263,47 @@
 
     <div class="admin-edit">
       <h3>Name</h3>
-      <input type="text" name="" placeholder="Name" ng-model="productName">
+      <input ng-change="infoChanged.infoChanged = true" type="text" name="" placeholder="Name" ng-model="prodObj.productName">
 
       <h3>Description</h3>
-      <textarea name="name" rows="5" placeholder="Description" ng-model="productDescription"></textarea>
+      <textarea name="name" ng-change="infoChanged.infoChanged = true" rows="5" placeholder="Description" ng-model="prodObj.productDescription"></textarea>
 
   <!-- <div class="" style="clear: both">
 
   </div> -->
       <h3>Main Image</h3>
-      <input type="text" name="" placeholder="Image 1 URL" ng-model="productImgOne">
+      <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 1 URL" ng-model="prodObj.productImgOne">
 
       <h3>Main Vector</h3>
-      <input type="text" name="" placeholder="Image 2 URL" ng-model="productImgTwo">
+      <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 2 URL" ng-model="prodObj.productImgTwo">
 
       <h3>Outline Vector</h3>
-      <input type="text" name="" placeholder="Image 3 URL" ng-model="productImgThree">
+      <input type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 3 URL" ng-model="prodObj.productImgThree">
         <br><br>
 
-      <div ng-show="showExtraDetails">
-        <h3>Total Favorites</h3>
-        <p>{{productDetails.totalFavs[0].count}}</p>
+      <div class="show-extra-details" ng-show="showExtraDetails">
+        <div class="fav-active">
+          <p><span class="bold">{{productDetails.totalFavs[0].count}}</span> Favorites</p>
 
-        <h3>Active - {{productActive}}</h3>
-        <input type="checkbox" name="" ng-model="productActive">
-
-
-        <div ng-repeat="selected in defaultSelected track by $index">
-          <select ng-options="all as all.name for all in allCategories"  ng-model="selected">
-            <option value="">-- Category --</option>
-          </select>
-
-         <button type="button" name="button" ng-click="saveCategory($index, selected)">save</button>
-         <button  type="submit" ng-click="deleteCategory($index, selected)">X</button>
-
+          <input id="c22" ng-change="infoChanged.infoChanged = true" type="checkbox" hidden ng-model="prodObj.productActive">
+          <label for="c22">
+            <h3 ng-style="{display: 'inline-block', padding: '10px 20px', background: prodObj.productActive ? '#26d026' : '#d02626', color: prodObj.productActive ? '#000' : '#fff'}">{{prodObj.productActive ? "Active": "Inactive"}}</h3>
+          </label>
         </div>
 
-        <button type="button" name="button" ng-click="addNewCategory()">Add Cat</button>
+      <div class="category-container">
+
+        <div class="category-select-container" ng-repeat="selected in defaultSelected track by $index">
+          <select ng-options="all as all.name for all in allCategories" ng-change="saveCategory($index, selected)" ng-model="selected">
+            <option value="">-- Category --</option>
+          </select>
+        </div>
+
+        <p ng-click="addNewCategory()">Add Category</p>
+        <!-- <button class="btn" ng-click="addNewCategory()">Add Category</button> -->
+
+      </div>
+
 
       <br>
       <br>
@@ -332,11 +336,13 @@
       <span class="flright" ng-model="productId" ng-show="showExtraDetails">Product ID: {{productId}}</span>
 
       <div class="" style="text-align: center;">
-        <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, productName, productDescription, productImgOne, productImgTwo, productImgThree, productActive)" ng-disabled="editDisable">Update</button>
+        <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree, prodObj.productActive)" ng-disabled="editDisable">Update</button>
         <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(productName, productDescription, productImgOne, productImgTwo, productImgThree)" ng-disabled="editDisable">Add New</button>
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
         <button ng-show="showExtraDetails"class="btn" ng-click="openModal('delete-product-modal', null, null, productId)" name="button" ng-disabled="editDisable">Delete</button>
       </div>
+      <h1 ng-show="infoChanged.infoChanged">Click Update to save changes</h1>
+
     </div>
   </div>
 
