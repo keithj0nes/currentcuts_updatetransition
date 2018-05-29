@@ -1,11 +1,9 @@
 angular.module("ccvApp").controller("categoryController", function($scope, $state, mainService){
 
   $scope.bottomLevel = false;
-  $scope.title;
 
 
   var currentWord = $state.params.catname;
-  console.log(currentWord, "currentWord");
   if(currentWord.indexOf("_") >= 1 ){
     console.log(true);
     currentWord = currentWord.split("_")
@@ -34,37 +32,37 @@ angular.module("ccvApp").controller("categoryController", function($scope, $stat
     console.log(res, "logging res in categories controller");
     $scope.subCategories = res;
 
-
-    for(var i = 0; i <$scope.subCategories.length;i++){
-      var currentWord = $scope.subCategories[i].name;
-      if(currentWord.indexOf("_") >= 1 ){
-        currentWord = currentWord.split("_")
-        for(var j = 0; j < currentWord.length; j++){
-          currentWord[j] = currentWord[j].charAt(0).toUpperCase() + currentWord[j].substring(1)
-        }
-
-        $scope.subCategories[i].titleName = currentWord.join(" ")
-
-        var updatedCurrentWord = $scope.subCategories[i].titleName
-        for(var k = 0; k < updatedCurrentWord.length; k++){
-          if(updatedCurrentWord[k] === updatedCurrentWord[k].toUpperCase()){
-            if(updatedCurrentWord[k+1] === " "){
-              updatedCurrentWord = updatedCurrentWord.replace(" ", "")
-            }
-          }
-        }
-        $scope.subCategories[i].titleName = updatedCurrentWord;
-      } else {
-        $scope.subCategories[i].titleName = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
-        }
-      // console.log($scope.subCategories[i].titleName)
-    }
+    // for(var i = 0; i <$scope.subCategories.length;i++){
+    //   var currentWord = $scope.subCategories[i].name;
+    //   console.log('lakjsdglkas;d');
+    //
+    //   if(currentWord.indexOf("_") >= 1 ){
+    //     currentWord = currentWord.split("_")
+    //     for(var j = 0; j < currentWord.length; j++){
+    //       currentWord[j] = currentWord[j].charAt(0).toUpperCase() + currentWord[j].substring(1)
+    //     }
+    //     console.log('here');
+    //     $scope.subCategories[i].titleName = currentWord.join(" ")
+    //
+    //     var updatedCurrentWord = $scope.subCategories[i].titleName
+    //     for(var k = 0; k < updatedCurrentWord.length; k++){
+    //       if(updatedCurrentWord[k] === updatedCurrentWord[k].toUpperCase()){
+    //         if(updatedCurrentWord[k+1] === " "){
+    //           updatedCurrentWord = updatedCurrentWord.replace(" ", "")
+    //         }
+    //       }
+    //     }
+    //     $scope.subCategories[i].titleName = updatedCurrentWord;
+    //   } else {
+    //     console.log('hereeeeeee');
+    //     $scope.subCategories[i].titleName = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
+    //     }
+    //   // console.log($scope.subCategories[i].titleName)
+    // }
 
     if(res.bottomlevel === true){
       $scope.bottomLevel = true;
       $scope.categoryProducts = res.categoryProductsDetails;
-
-
 
 
     }

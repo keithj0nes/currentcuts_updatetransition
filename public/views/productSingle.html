@@ -86,7 +86,7 @@
     <hr>
 
     <h3>Product Description</h3>
-    <p style="white-space:pre-wrap">This is a {{product.description}}.</p>
+    <p style="white-space:pre-wrap">{{product.description}}.</p>
 <br>
       <p>Pictures shown are not to scale. Please contact for custom sizes.</p>
 <br>
@@ -95,7 +95,7 @@
 <br>
   <p>Please select appropriate size and color before adding item to cart. If color is not selected, black will be shipped to you.</p>
 <br>
-  <p>Shipping -<br>
+  <p>Shipping -</p>
   <p>Please allow 2-3 Business Days to complete your order. </p>
   </div>
 
@@ -103,19 +103,20 @@
 
 
   <modal id="product-added-modal">
-      <div class="mymodal">
-        <span class="close" ng-click="closeMyModal('product-added-modal')">&times;</span>
-        <div class="modal-body center">
-          <i class="material-icons">check_circle</i>
-          <h3>ITEM ADDED!</h3>
-          <br><br>
-          <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');" ui-sref="cart">Checkout</button>
-          <br><br>
-          <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');">Continue Shopping</button>
+    <div class="mymodal">
+      <span class="close" ng-click="closeMyModal('product-added-modal')">&times;</span>
+      <div class="modal-body center">
+        
+        <i class="material-icons">check_circle</i>
+        <h3>ITEM ADDED!</h3>
+        <br><br>
+        <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');" ui-sref="cart">Checkout</button>
+        <br><br>
+        <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');">Continue Shopping</button>
 
-        </div>
       </div>
-      <div class="modal-background"></div>
+    </div>
+    <div class="modal-background"></div>
   </modal>
 
 </main>

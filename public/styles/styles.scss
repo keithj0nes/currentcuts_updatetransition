@@ -690,7 +690,11 @@ footer {
   }
 }
 
-
+main {
+  // max-width: 1260px;
+  margin:  20px auto 0 !important;
+  background: green;
+}
 /* ============================================
                   HOME PAGE
 ============================================ */
@@ -784,7 +788,7 @@ footer {
   }
 
   .details {
-    padding: 20px 0 20px 20px;
+    padding: 20px;
   // background: red;
     .fav-button {
       background: none;
@@ -1726,11 +1730,13 @@ form.login-modal {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    padding-top: 2.8%;
+    // padding-bottom: 20px;
 
     .product-main {
       width: 46%;
       background: #fff;
-      margin: 2.8% auto 0;
+      margin: 0 auto  2.8%;
     }
   }
 
@@ -2095,10 +2101,12 @@ form.login-modal {
     }
   }
 
+  main {
+    max-width: 1260px;
+    // margin:  auto !important;
+  }
 
   .home-main {
-    max-width: 1176px;
-    margin: 0 auto;
     .product-main {
       width: 30%;
       background: #fff;
@@ -2150,6 +2158,8 @@ form.login-modal {
     }
 
     .details {
+      padding-right: 0;
+
       width: 40%;
       float: right;
       padding-top: 0;
