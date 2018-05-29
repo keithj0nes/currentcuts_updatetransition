@@ -38,20 +38,18 @@
 
   <modal id="account-settings-modal">
       <div class="mymodal">
-          <div class="modal-body">
+        <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
+        <div class="modal-body">
 
-            <span class="close" ng-click="closeMyModal('account-settings-modal')">&times;</span>
-            <i class="material-icons center" style="display: block;">{{messageIcon}}</i>
-<br><br>
-              <p class="center">
-                {{accountMessage}}
-
-              </p>
-              <br>
-              <br>
-              <br>
-              <button class="big-btn btn" ng-click="closeMyModal('account-settings-modal');">Close</button>
+          <i class="material-icons center" style="display: block;">{{messageIcon}}</i>
+          <p class="center">
+            {{accountMessage}}
+          </p>
+          <div class="modal-btn-container">
+            <button class="big-btn btn" ng-click="closeMyModal('account-settings-modal');">Close</button>
           </div>
+          
+        </div>
       </div>
       <div class="modal-background"></div>
   </modal>

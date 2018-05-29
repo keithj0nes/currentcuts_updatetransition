@@ -104,21 +104,16 @@
 
   <modal id="product-added-modal">
       <div class="mymodal">
-          <div class="modal-body center">
-            <span class="close" ng-click="closeMyModal('product-added-modal')">&times;</span>
+        <span class="close" ng-click="closeMyModal('product-added-modal')">&times;</span>
+        <div class="modal-body center">
+          <i class="material-icons">check_circle</i>
+          <h3>ITEM ADDED!</h3>
+          <br><br>
+          <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');" ui-sref="cart">Checkout</button>
+          <br><br>
+          <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');">Continue Shopping</button>
 
-            <i class="material-icons">check_circle</i>
-            <h3>ITEM ADDED!</h3>
-
-            <br><br>
-
-              <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');" ui-sref="cart">Checkout</button>
-              <br><br>
-
-              <button class="btn big-btn" ng-click="closeMyModal('product-added-modal');">Continue Shopping</button>
-              <br><br>
-
-          </div>
+        </div>
       </div>
       <div class="modal-background"></div>
   </modal>

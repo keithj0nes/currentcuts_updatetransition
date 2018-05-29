@@ -55,7 +55,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     $scope.confirmOrder = [];
     $scope.deletingIndex = index;
     if(id === "review-tracking-modal"){
-      console.log("reviewing!!!");
       if(track && note){
         let confirmOrder = {
           trackingNo: track,
@@ -63,10 +62,12 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
           index: index
         }
         $scope.confirmOrder.push(confirmOrder)
-        console.log(id, $scope.confirmOrder);
-            modalService.Open(id);
+        modalService.Open(id);
       } else {
-        alert("one not selected")
+        $scope.missingItems = [];
+        if(!track){$scope.missingItems.push('Tracking Number')}
+        if(!note){$scope.missingItems.push('Note To Buyer')}
+        modalService.Open('add-new-minimum-modal')
       }
     } else if(id === "resend-tracking-modal"){
       console.log(id, "resend-tracking-modal");
