@@ -1939,7 +1939,6 @@ form.login-modal {
   ============================================ */
 
   .admin-main {
-
     .admin-tabs {
       label {
         padding: 15px 25px;
@@ -2214,7 +2213,8 @@ form.login-modal {
 
   .admin-main {
     padding: 20px;
-
+    width: 1350px;
+    margin: 0 auto;
     .admin-edit {
       // position: fixed;
       // right: 0;

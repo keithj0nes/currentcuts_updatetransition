@@ -298,6 +298,11 @@
         <br><br>
 
       <div class="show-extra-details" ng-show="showExtraDetails">
+
+        <div>
+          <h3>Tags</h3>
+          <input type="text" ng-change="infoChanged.infoChanged = true" ng-model="prodObj.tags">
+        </div>
         <!-- <div class="fav-active">
           <p><span class="bold">{{productDetails.totalFavs[0].count}}</span> Favorites</p>
 
@@ -307,6 +312,7 @@
           </label>
         </div> -->
 
+  <div class="flex-cat-size">
       <div class="category-container">
 
         <div class="category-select-container" ng-repeat="selected in defaultSelected track by $index">
@@ -321,10 +327,6 @@
         <!-- <button class="btn" ng-click="addNewCategory()">Add Category</button> -->
 
       </div>
-
-
-      <br>
-      <br>
 
       <div class="size-price-container">
         <h3>Size</h3>
@@ -363,13 +365,13 @@
         </div>
       </div>
 
-
+    </div>
       </div>
 
       <span class="flright" ng-model="productId" ng-show="showExtraDetails">Product ID: {{productId}}</span>
 
       <div class="" style="text-align: center;margin-top: 30px;">
-        <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree, prodObj.productActive)" ng-disabled="editDisable">Update</button>
+        <button ng-show="showExtraDetails" class="btn" name="button" ng-click="update(productId, prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree, prodObj.productActive, prodObj.tags)" ng-disabled="editDisable">Update</button>
         <button ng-hide="showExtraDetails" class="btn" name="button" ng-click="add(prodObj.productName, prodObj.productDescription, prodObj.productImgOne, prodObj.productImgTwo, prodObj.productImgThree)" ng-disabled="editDisable">Add New</button>
         <button class="btn" name="button" ng-click="clearForm()" ng-disabled="editDisable">Clear</button>
         <button ng-show="showExtraDetails"class="btn" ng-click="openModal('delete-product-modal', null, null, productId)" name="button" ng-disabled="editDisable">Delete</button>

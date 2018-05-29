@@ -85,22 +85,18 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     modalService.Close(id);
   }
 
-  $scope.completeOrder = function(orderid, id){
-    console.log($scope.openOrderIndex, "modalIndex");
-    console.log(orderid, "order id");
-    adminService.adminSendConfirmation($scope.openOrderIndex,$scope.confirmOrder)
-    modalService.Close(id);
 
-    //set timeout to update db before calling getOpenOrders function
-    setTimeout(function(){
-        getOrderCount();
-    },100)
 
-  }
+
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+                           // PRODUCTS SECTION //
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
 
   $scope.getAllProducts = function(){
     adminService.adminGetAllProducts().then(function(response){
-      // console.log(response);
+      console.log(response);
       $scope.showProducts = true;
       $scope.showClosedOrders = false;
       $scope.showOpenOrders = false;
@@ -154,6 +150,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     $scope.prodObj.productImgTwo = product.imgmainvector;
     $scope.prodObj.productImgThree = product.imgoutlinevector;
     $scope.prodObj.productActive = product.active;
+    $scope.prodObj.tags = product.tags;
     getProductDetails($scope.prodObj.productId);
 
   }
@@ -333,22 +330,34 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     adminService.adminDeleteDetails($scope.productId, productDetails);
   }
 
-  $scope.update = function(id, name, description, img1, imgmainvector, imgoutlinevector, active){
+  $scope.update = function(id, name, description, img1, imgmainvector, imgoutlinevector, active, tags){
     $scope.infoChanged.infoChanged = false;
-    const productUpdate = {
-      name: name,
-      description: description,
-      img1: img1,
-      imgmainvector: imgmainvector,
-      imgoutlinevector: imgoutlinevector,
-      active: active
-    }
 
-    console.log($scope.productActive, name);
-    adminService.adminUpdateProduct(id, productUpdate);
-    setTimeout(function () {
-      $scope.getAllProducts();
-    }, 100);
+    $scope.missingItems = [];
+    if(!name){$scope.missingItems.push('Name')}
+    if(!description){$scope.missingItems.push('Description')}
+    if(!img1){$scope.missingItems.push('Main Image')}
+    if(!imgmainvector){$scope.missingItems.push('Main Vector')}
+
+    if($scope.missingItems.length > 0){
+      $scope.openModal('add-new-minimum-modal');
+    } else {
+      const productUpdate = {
+        name: name,
+        description: description,
+        img1: img1,
+        imgmainvector: imgmainvector,
+        imgoutlinevector: imgoutlinevector,
+        active: active,
+        tags: tags
+      }
+
+      console.log($scope.productActive, name);
+      adminService.adminUpdateProduct(id, productUpdate);
+      setTimeout(function () {
+        $scope.getAllProducts();
+      }, 100);
+    }
 
   }
 
@@ -367,17 +376,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.clearForm();
       $scope.closeMyModal(modalId)
   }
-
-  // var getUsername = function() {
-  //   adminService.getUsername().then(function(response){
-  //     $scope.username = response;
-  //   })
-  // }
-  //
-  // getUsername();
-
-
-
 
 
 
@@ -448,6 +446,19 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.closedOrders = res.mainOrder;
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     })
+  }
+
+  $scope.completeOrder = function(orderid, id){
+    console.log($scope.openOrderIndex, "modalIndex");
+    console.log(orderid, "order id");
+    adminService.adminSendConfirmation($scope.openOrderIndex,$scope.confirmOrder)
+    modalService.Close(id);
+
+    //set timeout to update db before calling getOpenOrders function
+    setTimeout(function(){
+        getOrderCount();
+    },100)
+
   }
 
   getOrderCount();

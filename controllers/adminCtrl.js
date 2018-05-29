@@ -98,7 +98,8 @@ module.exports = {
       img1: req.body.img1,
       imgmainvector: req.body.imgmainvector,
       imgoutlinevector: req.body.imgoutlinevector,
-      active: req.body.active
+      active: req.body.active,
+      tags: req.body.tags
     }
 
     db.products.update(updateProduct).then(updatedProduct => {

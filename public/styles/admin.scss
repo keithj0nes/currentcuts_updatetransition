@@ -54,9 +54,13 @@
 }
 
 .show-extra-details {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
+
+  .flex-cat-size {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+
+  }
   .category-container {
     width: 22%;
     text-align: center;

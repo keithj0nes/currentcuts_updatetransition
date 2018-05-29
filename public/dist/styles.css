@@ -33,36 +33,38 @@
     .favorite-container .fav-active p {
       margin-right: 20px; }
 
-.show-extra-details {
+.show-extra-details .flex-cat-size {
   margin-top: 20px;
   display: flex;
   justify-content: space-between; }
-  .show-extra-details .category-container {
-    width: 22%;
-    text-align: center; }
-    .show-extra-details .category-container .category-select-container {
-      margin: 14px 0; }
-  .show-extra-details .size-price-container {
-    width: 78%;
-    padding-left: 20px;
-    border-left: 1px solid black; }
-    .show-extra-details .size-price-container h3 {
+
+.show-extra-details .category-container {
+  width: 22%;
+  text-align: center; }
+  .show-extra-details .category-container .category-select-container {
+    margin: 14px 0; }
+
+.show-extra-details .size-price-container {
+  width: 78%;
+  padding-left: 20px;
+  border-left: 1px solid black; }
+  .show-extra-details .size-price-container h3 {
+    display: inline-block;
+    width: 49.5%; }
+  .show-extra-details .size-price-container .size-price-repeater {
+    display: flex;
+    justify-content: space-between;
+    position: relative; }
+    .show-extra-details .size-price-container .size-price-repeater :hover {
+      background: #d9d9d9; }
+    .show-extra-details .size-price-container .size-price-repeater span, .show-extra-details .size-price-container .size-price-repeater input {
       display: inline-block;
-      width: 49.5%; }
-    .show-extra-details .size-price-container .size-price-repeater {
-      display: flex;
-      justify-content: space-between;
-      position: relative; }
-      .show-extra-details .size-price-container .size-price-repeater :hover {
-        background: #d9d9d9; }
-      .show-extra-details .size-price-container .size-price-repeater span, .show-extra-details .size-price-container .size-price-repeater input {
-        display: inline-block;
-        width: 24%;
-        padding: 8px; }
-      .show-extra-details .size-price-container .size-price-repeater .size-price-btn-container {
-        position: absolute;
-        top: 2px;
-        right: 0px; }
+      width: 24%;
+      padding: 8px; }
+    .show-extra-details .size-price-container .size-price-repeater .size-price-btn-container {
+      position: absolute;
+      top: 2px;
+      right: 0px; }
 
 
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
@@ -1820,7 +1822,9 @@ form.login-modal p {
                     ADMIN PAGE
   ============================================ */
   .admin-main {
-    padding: 20px; }
+    padding: 20px;
+    width: 1350px;
+    margin: 0 auto; }
     .admin-main .admin-edit {
       padding-bottom: 100px; } }
 

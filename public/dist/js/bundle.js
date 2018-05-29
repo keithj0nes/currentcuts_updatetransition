@@ -4514,21 +4514,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     modalService.Close(id);
   };
 
-  $scope.completeOrder = function (orderid, id) {
-    console.log($scope.openOrderIndex, "modalIndex");
-    console.log(orderid, "order id");
-    adminService.adminSendConfirmation($scope.openOrderIndex, $scope.confirmOrder);
-    modalService.Close(id);
-
-    //set timeout to update db before calling getOpenOrders function
-    setTimeout(function () {
-      getOrderCount();
-    }, 100);
-  };
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+  // PRODUCTS SECTION //
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
 
   $scope.getAllProducts = function () {
     adminService.adminGetAllProducts().then(function (response) {
-      // console.log(response);
+      console.log(response);
       $scope.showProducts = true;
       $scope.showClosedOrders = false;
       $scope.showOpenOrders = false;
@@ -4580,6 +4574,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     $scope.prodObj.productImgTwo = product.imgmainvector;
     $scope.prodObj.productImgThree = product.imgoutlinevector;
     $scope.prodObj.productActive = product.active;
+    $scope.prodObj.tags = product.tags;
     getProductDetails($scope.prodObj.productId);
   };
 
@@ -4755,22 +4750,42 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     adminService.adminDeleteDetails($scope.productId, productDetails);
   };
 
-  $scope.update = function (id, name, description, img1, imgmainvector, imgoutlinevector, active) {
+  $scope.update = function (id, name, description, img1, imgmainvector, imgoutlinevector, active, tags) {
     $scope.infoChanged.infoChanged = false;
-    var productUpdate = {
-      name: name,
-      description: description,
-      img1: img1,
-      imgmainvector: imgmainvector,
-      imgoutlinevector: imgoutlinevector,
-      active: active
-    };
 
-    console.log($scope.productActive, name);
-    adminService.adminUpdateProduct(id, productUpdate);
-    setTimeout(function () {
-      $scope.getAllProducts();
-    }, 100);
+    $scope.missingItems = [];
+    if (!name) {
+      $scope.missingItems.push('Name');
+    }
+    if (!description) {
+      $scope.missingItems.push('Description');
+    }
+    if (!img1) {
+      $scope.missingItems.push('Main Image');
+    }
+    if (!imgmainvector) {
+      $scope.missingItems.push('Main Vector');
+    }
+
+    if ($scope.missingItems.length > 0) {
+      $scope.openModal('add-new-minimum-modal');
+    } else {
+      var productUpdate = {
+        name: name,
+        description: description,
+        img1: img1,
+        imgmainvector: imgmainvector,
+        imgoutlinevector: imgoutlinevector,
+        active: active,
+        tags: tags
+      };
+
+      console.log($scope.productActive, name);
+      adminService.adminUpdateProduct(id, productUpdate);
+      setTimeout(function () {
+        $scope.getAllProducts();
+      }, 100);
+    }
   };
 
   $scope.delete = function (productId, modalId) {
@@ -4788,15 +4803,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     $scope.clearForm();
     $scope.closeMyModal(modalId);
   };
-
-  // var getUsername = function() {
-  //   adminService.getUsername().then(function(response){
-  //     $scope.username = response;
-  //   })
-  // }
-  //
-  // getUsername();
-
 
   ///////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////
@@ -4861,6 +4867,18 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.closedOrders = res.mainOrder;
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     });
+  };
+
+  $scope.completeOrder = function (orderid, id) {
+    console.log($scope.openOrderIndex, "modalIndex");
+    console.log(orderid, "order id");
+    adminService.adminSendConfirmation($scope.openOrderIndex, $scope.confirmOrder);
+    modalService.Close(id);
+
+    //set timeout to update db before calling getOpenOrders function
+    setTimeout(function () {
+      getOrderCount();
+    }, 100);
   };
 
   getOrderCount();
@@ -5694,451 +5712,6 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
 });
 "use strict";
 
-angular.module("ccvApp").directive("adminAuth", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService) {
-
-      mainService.getAuth().then(function (response) {
-        console.log(response);
-        if (response.reqUserAdmin === true) {
-          $scope.auth = true;
-        }
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkitemsincart", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService, $rootScope) {
-
-      var getNumber = function getNumber() {
-        mainService.getProductsInCart().then(function (response) {
-          var cartTotalItems = 0;
-          for (var i = 0; i < response.length; i++) {
-            cartTotalItems += Number(response[i].productQuantity);
-          }
-          $scope.itemsInCart = cartTotalItems;
-        });
-      };
-
-      getNumber();
-
-      $scope.$on('cartCount', function () {
-        getNumber();
-      });
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modalService) {
-
-  return {
-    restrict: "AE",
-    link: function link(scope, elem, attr) {
-      var getUsername = function getUsername() {
-        mainService.getUsername().then(function (response) {
-          scope.username = response.firstname;
-          scope.useremail = response.email;
-        });
-      };
-
-      // modal functionality when clicking username in desktop view
-      scope.openModal = function (id) {
-        modalService.Open(id);
-      };
-
-      scope.closeMyModal = function (id) {
-        modalService.Close(id);
-      };
-
-      getUsername();
-
-      scope.$on('signupSuccess', function () {
-        getUsername();
-      });
-    }
-  };
-});
-'use strict';
-
-angular.module("ccvApp").directive('modal', function (modalService) {
-
-  return {
-    restrict: 'E',
-    transclude: true,
-    scope: false,
-    template: '<ng-transclude></ng-transclude>',
-    link: function link(scope, element, attrs) {
-
-      if (!attrs.id) {
-        console.error('modal must have an id');
-        return;
-      }
-      // move element to bottom of page (just before </body>) so it can be displayed above everything else
-      element.appendTo('body');
-      // close modal on background click
-      element.on('click', function (e) {
-        var target = $(e.target);
-        if (!target.closest('.modal-body').length) {
-          scope.$evalAsync(Close);
-        }
-      });
-
-      // add self (this modal instance) to the modal service so it's accessible from controllers
-      var modal = {
-        id: attrs.id,
-        open: Open,
-        close: Close
-      };
-      modalService.Add(modal);
-
-      // remove self from modal service when directive is destroyed
-      scope.$on('$destroy', function () {
-        modalService.Remove(attrs.id);
-        element.remove();
-      });
-
-      // open modal
-      function Open() {
-        element.show();
-        $('body').addClass('modal-open');
-      }
-
-      // close modal
-      function Close() {
-        element.hide();
-        $('body').removeClass('modal-open');
-      }
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("search", function ($state) {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, mainService, $rootScope) {
-
-      $scope.searchProduct = function (search) {
-        //hide and clear search form
-        document.getElementsByClassName('search-box-container')[0].classList.remove('open');
-        document.getElementsByClassName('search-box')[0].value = "";
-        $state.go('search', { search: search });
-      };
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("shipDate", function () {
-
-  return {
-    restrict: "AE",
-    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
-    link: function link(scope, elem, attr) {
-      scope.daystoship = moment().add(3, "days").format('MMMM Do');
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("signupLogin", function () {
-
-  return {
-    restrict: "AE",
-    controller: function controller($scope, $rootScope, $state, mainService, modalService, $timeout) {
-      var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-      $scope.openModal = function (id) {
-        modalService.Open(id);
-      };
-
-      $scope.closeMyModal = function (id) {
-        modalService.Close(id);
-      };
-
-      $scope.existingUserLogin = true;
-
-      $scope.signUp = function (firstname, lastname, email, password, confirmPassword) {
-        var newUser = { firstname: firstname, lastname: lastname, email: email, password: password };
-        $scope.signupFirstnameR = false;
-        $scope.signupLastnameR = false;
-        $scope.signupEmailR = false;
-        $scope.signupPasswordR = false;
-        $scope.signupConfirmPassR = false;
-        $scope.passwordMatchMessage = "";
-
-        if (!firstname) {
-          $scope.signupFirstnameR = true;
-        }
-        if (!lastname) {
-          $scope.signupLastnameR = true;
-        }
-        if (!email) {
-          $scope.signupEmailR = true;
-        }
-        if (!password) {
-          $scope.signupPasswordR = true;
-        }
-        if (!confirmPassword) {
-          $scope.signupConfirmPassR = true;
-        }
-
-        if (password !== confirmPassword) {
-          $scope.signupMessage = "Passwords do not match";
-        } else if (email) {
-          if (emailRegex.test(email) && firstname && lastname) {
-            mainService.newUserSignUp(newUser).then(function (res) {
-              if (res.success === false) {
-                $scope.signupMessage = res.message;
-              } else if (res.success === true) {
-                // $scope.signupMessage = "Your account has been created!"
-                $scope.closeMyModal('user-login-modal');
-                $rootScope.$broadcast('signupSuccess');
-              }
-            });
-          } else if (!firstname || !lastname) {
-            $scope.signupMessage = "";
-          } else {
-            $scope.signupMessage = "Please enter a valid email";
-          }
-        }
-      };
-
-      $scope.logIn = function (email, password, mobile) {
-        $scope.loginEmailR = false;
-        $scope.loginPasswordR = false;
-
-        if (!password) {
-          $scope.loginPasswordR = true;
-        }
-
-        if (!email) {
-          $scope.loginEmailR = true;
-        } else if (emailRegex.test(email)) {
-          if (email && password) {
-            var existingUser = { email: email, password: password };
-
-            mainService.existingLogIn(existingUser).then(function (res) {
-              if (res.success === false) {
-                $scope.loginMessage = res.message;
-              } else if (res.success === true) {
-                // $scope.signupMessage = "Your account has been created!"
-                if (mobile) {
-                  $state.go('loginsuccess');
-                } else {
-                  $scope.closeMyModal('user-login-modal');
-                }
-                $rootScope.$broadcast('signupSuccess');
-              }
-            });
-          }
-        } else {
-          $scope.loginMessage = "Please enter a valid email";
-        }
-      };
-
-      $scope.resetPassword = function (email) {
-        $scope.resetMessage = "";
-        $scope.resetEmailR = false;
-        if (!email) {
-          $scope.resetEmailR = true;
-        } else if (emailRegex.test(email)) {
-          var emailobj = {
-            email: email
-          };
-          mainService.resetPasswordEmail(emailobj).then(function (res) {
-            $scope.resetMessage = res.message;
-          });
-        } else {
-          $scope.resetMessage = "Please enter a valid email";
-        }
-      };
-    }
-  };
-});
-"use strict";
-
-angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
-
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
-  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
-  //////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////
-
-
-  return {
-    restrict: "AE",
-    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
-    scope: {
-      totalPrice: '='
-    },
-    link: function link(scope, elem, attr) {
-
-      var orderData = {
-        order: {
-          number: 5624
-          // note: "here is a note from the buyer"
-        },
-        email: "currentcutstest@gmail.com",
-        user: {
-          //   name: "Martin",
-          //   address: "1234 s 10th st.",
-          //   zip: "91482",
-          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
-        },
-        product: [] //{
-        //   pName: "Wanderlust",
-        //   pColor: "Red",
-        //   pHeight: 6,
-        //   pWidth: 12,
-        //   pPrice: 15,
-        //   pQuantity: 2
-        // }
-
-
-        // setTimeout(function () {
-        //   var hello = mainService.addShippingInfo()
-        //   console.log(hello);
-        //
-        // }, 2000);
-
-        // setTimeout(function () {
-        // scope.value = $rootScope.$on.details
-        // console.log(scope.value, "scopedotvalue");
-        // }, 2000);
-
-
-      };$('.btn-stripe').on('click', orderData, function (e) {
-
-        // $rootScope.fun()
-        // console.log($rootScope.fun());
-
-        scope.value = $rootScope.details;
-        console.log(scope.value, "scopedotvalue");
-        if ($rootScope.note) {
-          console.log($rootScope.note.note, "rootScope.no.note");
-          orderData.order.note = $rootScope.note.note;
-        }
-        orderData.user = scope.value;
-        orderData.product = [];
-
-        mainService.getProductsInCart().then(function (response) {
-          console.log(response);
-          response.forEach(function (item, i) {
-            console.log(item, "item being logged");
-            orderData.product.push(item);
-          });
-        });
-        console.log(orderData, "orderdata logged");
-        // Open Checkout with further options:
-        // console.log(e.data, "USER DATA STRIPE CLICK");
-        if (!scope.value) {
-          alert("please enter shipping info");
-        } else {
-          var handler = StripeCheckout.configure({
-            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
-            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-            locale: 'auto',
-            token: function token(_token) {
-              // You can access the token ID with `token.id`.
-              // Get the token ID to your server-side code for use.
-
-              $http.post('/api/charge', {
-                stripeToken: _token.id,
-                price: stripeTotal,
-                email: _token.email,
-                stripeTokenCard: _token.card
-              }).then(function (response) {
-                $rootScope.cart = [];
-                $state.go('home');
-                return $http.post('/api/email', orderData);
-              });
-            }
-          });
-          var stripeTotal = scope.totalPrice * 100;
-
-          handler.open({
-            name: 'Current Cuts Vinyl',
-            description: 'Decal purchase',
-            amount: stripeTotal
-            // shippingAddress: true,
-            // billingAddress: true,
-            // zipCode: true
-          });
-          e.preventDefault();
-        }
-      });
-
-      // Close Checkout on page navigation:
-      //       // $(window).on('popstate', function() {
-      //       //   handler.close();
-      //       //   $state.go('mainProducts');
-      //       // });
-    }
-  };
-});
-
-// angular.module('capriccio')
-//   .directive('stripeButton', function ($http, $state, $rootScope) {
-//     return {
-//       restrict: 'E',
-//       template: '<button id="stripePayButton">Pay Now</button>',
-//       scope: {
-//         totalPrice: '='
-//       },
-//       link: function (scope, element, attrs) {
-//         var totalOrderPrice = scope.totalPrice;
-//         var handler = StripeCheckout.configure({
-//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
-//           image: 'assetts/img/thumb-100.png',
-//           locale: 'auto',
-//           token: function(token) {
-//           // You can access the token ID with `token.id`.
-//           // Get the token ID to your server-side code for use.
-//             $http.post('/api/charge', {
-//               stripeToken: token.id,
-//               price: totalOrderPrice,
-//               email: token.email,
-//               stripeTokenCard: token.card
-//             }).then(function (response) {
-//               $rootScope.userCart = [];
-//               $state.go('mainProducts');
-//             })
-//           }
-//         })
-//         $('#stripePayButton').on('click', function(e) {
-//           // Open Checkout with further options:
-//           var stripeTotal = scope.totalPrice * 100;
-//
-//           handler.open({
-//             name: 'Capriccio',
-//             description: 'Music purchase',
-//             amount: stripeTotal
-//           });
-//           e.preventDefault();
-//         });
-//
-//       // Close Checkout on page navigation:
-//       // $(window).on('popstate', function() {
-//       //   handler.close();
-//       //   $state.go('mainProducts');
-//       // });
-//       }
-//     }
-//   });
-"use strict";
-
 angular.module("ccvApp").service("adminService", function ($http) {
 
   this.adminGetAllProducts = function () {
@@ -6617,4 +6190,449 @@ angular.module('ccvApp').factory('modalService', function () {
 "use strict";
 
 angular.module("ccvApp").service("productService", function ($http) {});
+"use strict";
+
+angular.module("ccvApp").directive("adminAuth", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService) {
+
+      mainService.getAuth().then(function (response) {
+        console.log(response);
+        if (response.reqUserAdmin === true) {
+          $scope.auth = true;
+        }
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkitemsincart", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService, $rootScope) {
+
+      var getNumber = function getNumber() {
+        mainService.getProductsInCart().then(function (response) {
+          var cartTotalItems = 0;
+          for (var i = 0; i < response.length; i++) {
+            cartTotalItems += Number(response[i].productQuantity);
+          }
+          $scope.itemsInCart = cartTotalItems;
+        });
+      };
+
+      getNumber();
+
+      $scope.$on('cartCount', function () {
+        getNumber();
+      });
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("checkLoggedIn", function (mainService, modalService) {
+
+  return {
+    restrict: "AE",
+    link: function link(scope, elem, attr) {
+      var getUsername = function getUsername() {
+        mainService.getUsername().then(function (response) {
+          scope.username = response.firstname;
+          scope.useremail = response.email;
+        });
+      };
+
+      // modal functionality when clicking username in desktop view
+      scope.openModal = function (id) {
+        modalService.Open(id);
+      };
+
+      scope.closeMyModal = function (id) {
+        modalService.Close(id);
+      };
+
+      getUsername();
+
+      scope.$on('signupSuccess', function () {
+        getUsername();
+      });
+    }
+  };
+});
+'use strict';
+
+angular.module("ccvApp").directive('modal', function (modalService) {
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    scope: false,
+    template: '<ng-transclude></ng-transclude>',
+    link: function link(scope, element, attrs) {
+
+      if (!attrs.id) {
+        console.error('modal must have an id');
+        return;
+      }
+      // move element to bottom of page (just before </body>) so it can be displayed above everything else
+      element.appendTo('body');
+      // close modal on background click
+      element.on('click', function (e) {
+        var target = $(e.target);
+        if (!target.closest('.modal-body').length) {
+          scope.$evalAsync(Close);
+        }
+      });
+
+      // add self (this modal instance) to the modal service so it's accessible from controllers
+      var modal = {
+        id: attrs.id,
+        open: Open,
+        close: Close
+      };
+      modalService.Add(modal);
+
+      // remove self from modal service when directive is destroyed
+      scope.$on('$destroy', function () {
+        modalService.Remove(attrs.id);
+        element.remove();
+      });
+
+      // open modal
+      function Open() {
+        element.show();
+        $('body').addClass('modal-open');
+      }
+
+      // close modal
+      function Close() {
+        element.hide();
+        $('body').removeClass('modal-open');
+      }
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("search", function ($state) {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, mainService, $rootScope) {
+
+      $scope.searchProduct = function (search) {
+        //hide and clear search form
+        document.getElementsByClassName('search-box-container')[0].classList.remove('open');
+        document.getElementsByClassName('search-box')[0].value = "";
+        $state.go('search', { search: search });
+      };
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("shipDate", function () {
+
+  return {
+    restrict: "AE",
+    template: "<div class='shipping-date'><i class='material-icons ship-truck'>local_shipping</i> Your order will ship by {{daystoship}}.</div>",
+    link: function link(scope, elem, attr) {
+      scope.daystoship = moment().add(3, "days").format('MMMM Do');
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("signupLogin", function () {
+
+  return {
+    restrict: "AE",
+    controller: function controller($scope, $rootScope, $state, mainService, modalService, $timeout) {
+      var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      $scope.openModal = function (id) {
+        modalService.Open(id);
+      };
+
+      $scope.closeMyModal = function (id) {
+        modalService.Close(id);
+      };
+
+      $scope.existingUserLogin = true;
+
+      $scope.signUp = function (firstname, lastname, email, password, confirmPassword) {
+        var newUser = { firstname: firstname, lastname: lastname, email: email, password: password };
+        $scope.signupFirstnameR = false;
+        $scope.signupLastnameR = false;
+        $scope.signupEmailR = false;
+        $scope.signupPasswordR = false;
+        $scope.signupConfirmPassR = false;
+        $scope.passwordMatchMessage = "";
+
+        if (!firstname) {
+          $scope.signupFirstnameR = true;
+        }
+        if (!lastname) {
+          $scope.signupLastnameR = true;
+        }
+        if (!email) {
+          $scope.signupEmailR = true;
+        }
+        if (!password) {
+          $scope.signupPasswordR = true;
+        }
+        if (!confirmPassword) {
+          $scope.signupConfirmPassR = true;
+        }
+
+        if (password !== confirmPassword) {
+          $scope.signupMessage = "Passwords do not match";
+        } else if (email) {
+          if (emailRegex.test(email) && firstname && lastname) {
+            mainService.newUserSignUp(newUser).then(function (res) {
+              if (res.success === false) {
+                $scope.signupMessage = res.message;
+              } else if (res.success === true) {
+                // $scope.signupMessage = "Your account has been created!"
+                $scope.closeMyModal('user-login-modal');
+                $rootScope.$broadcast('signupSuccess');
+              }
+            });
+          } else if (!firstname || !lastname) {
+            $scope.signupMessage = "";
+          } else {
+            $scope.signupMessage = "Please enter a valid email";
+          }
+        }
+      };
+
+      $scope.logIn = function (email, password, mobile) {
+        $scope.loginEmailR = false;
+        $scope.loginPasswordR = false;
+
+        if (!password) {
+          $scope.loginPasswordR = true;
+        }
+
+        if (!email) {
+          $scope.loginEmailR = true;
+        } else if (emailRegex.test(email)) {
+          if (email && password) {
+            var existingUser = { email: email, password: password };
+
+            mainService.existingLogIn(existingUser).then(function (res) {
+              if (res.success === false) {
+                $scope.loginMessage = res.message;
+              } else if (res.success === true) {
+                // $scope.signupMessage = "Your account has been created!"
+                if (mobile) {
+                  $state.go('loginsuccess');
+                } else {
+                  $scope.closeMyModal('user-login-modal');
+                }
+                $rootScope.$broadcast('signupSuccess');
+              }
+            });
+          }
+        } else {
+          $scope.loginMessage = "Please enter a valid email";
+        }
+      };
+
+      $scope.resetPassword = function (email) {
+        $scope.resetMessage = "";
+        $scope.resetEmailR = false;
+        if (!email) {
+          $scope.resetEmailR = true;
+        } else if (emailRegex.test(email)) {
+          var emailobj = {
+            email: email
+          };
+          mainService.resetPasswordEmail(emailobj).then(function (res) {
+            $scope.resetMessage = res.message;
+          });
+        } else {
+          $scope.resetMessage = "Please enter a valid email";
+        }
+      };
+    }
+  };
+});
+"use strict";
+
+angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $rootScope, mainService) {
+
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////// STRIPE DIRECTIVE IS NOT CURRENTLY BEING USED ////////////
+  //////////// STRIPE INFO IS NOW BEING LOGGED IN CART CTRL ////////////
+  //////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+
+
+  return {
+    restrict: "AE",
+    template: "<button class='btn-stripe'>Purchase with Stripe</button>",
+    scope: {
+      totalPrice: '='
+    },
+    link: function link(scope, elem, attr) {
+
+      var orderData = {
+        order: {
+          number: 5624
+          // note: "here is a note from the buyer"
+        },
+        email: "currentcutstest@gmail.com",
+        user: {
+          //   name: "Martin",
+          //   address: "1234 s 10th st.",
+          //   zip: "91482",
+          //   note: "Check it, this email is being sent from my server. This is where the 'note from buyer' would go when you checkout."
+        },
+        product: [] //{
+        //   pName: "Wanderlust",
+        //   pColor: "Red",
+        //   pHeight: 6,
+        //   pWidth: 12,
+        //   pPrice: 15,
+        //   pQuantity: 2
+        // }
+
+
+        // setTimeout(function () {
+        //   var hello = mainService.addShippingInfo()
+        //   console.log(hello);
+        //
+        // }, 2000);
+
+        // setTimeout(function () {
+        // scope.value = $rootScope.$on.details
+        // console.log(scope.value, "scopedotvalue");
+        // }, 2000);
+
+
+      };$('.btn-stripe').on('click', orderData, function (e) {
+
+        // $rootScope.fun()
+        // console.log($rootScope.fun());
+
+        scope.value = $rootScope.details;
+        console.log(scope.value, "scopedotvalue");
+        if ($rootScope.note) {
+          console.log($rootScope.note.note, "rootScope.no.note");
+          orderData.order.note = $rootScope.note.note;
+        }
+        orderData.user = scope.value;
+        orderData.product = [];
+
+        mainService.getProductsInCart().then(function (response) {
+          console.log(response);
+          response.forEach(function (item, i) {
+            console.log(item, "item being logged");
+            orderData.product.push(item);
+          });
+        });
+        console.log(orderData, "orderdata logged");
+        // Open Checkout with further options:
+        // console.log(e.data, "USER DATA STRIPE CLICK");
+        if (!scope.value) {
+          alert("please enter shipping info");
+        } else {
+          var handler = StripeCheckout.configure({
+            key: 'pk_test_o4WwpsoNcyJHEKTa6nJYQSUU',
+            image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+            locale: 'auto',
+            token: function token(_token) {
+              // You can access the token ID with `token.id`.
+              // Get the token ID to your server-side code for use.
+
+              $http.post('/api/charge', {
+                stripeToken: _token.id,
+                price: stripeTotal,
+                email: _token.email,
+                stripeTokenCard: _token.card
+              }).then(function (response) {
+                $rootScope.cart = [];
+                $state.go('home');
+                return $http.post('/api/email', orderData);
+              });
+            }
+          });
+          var stripeTotal = scope.totalPrice * 100;
+
+          handler.open({
+            name: 'Current Cuts Vinyl',
+            description: 'Decal purchase',
+            amount: stripeTotal
+            // shippingAddress: true,
+            // billingAddress: true,
+            // zipCode: true
+          });
+          e.preventDefault();
+        }
+      });
+
+      // Close Checkout on page navigation:
+      //       // $(window).on('popstate', function() {
+      //       //   handler.close();
+      //       //   $state.go('mainProducts');
+      //       // });
+    }
+  };
+});
+
+// angular.module('capriccio')
+//   .directive('stripeButton', function ($http, $state, $rootScope) {
+//     return {
+//       restrict: 'E',
+//       template: '<button id="stripePayButton">Pay Now</button>',
+//       scope: {
+//         totalPrice: '='
+//       },
+//       link: function (scope, element, attrs) {
+//         var totalOrderPrice = scope.totalPrice;
+//         var handler = StripeCheckout.configure({
+//           key: 'pk_test_q7PtsCCbjWU88u3W834D5hSQ',
+//           image: 'assetts/img/thumb-100.png',
+//           locale: 'auto',
+//           token: function(token) {
+//           // You can access the token ID with `token.id`.
+//           // Get the token ID to your server-side code for use.
+//             $http.post('/api/charge', {
+//               stripeToken: token.id,
+//               price: totalOrderPrice,
+//               email: token.email,
+//               stripeTokenCard: token.card
+//             }).then(function (response) {
+//               $rootScope.userCart = [];
+//               $state.go('mainProducts');
+//             })
+//           }
+//         })
+//         $('#stripePayButton').on('click', function(e) {
+//           // Open Checkout with further options:
+//           var stripeTotal = scope.totalPrice * 100;
+//
+//           handler.open({
+//             name: 'Capriccio',
+//             description: 'Music purchase',
+//             amount: stripeTotal
+//           });
+//           e.preventDefault();
+//         });
+//
+//       // Close Checkout on page navigation:
+//       // $(window).on('popstate', function() {
+//       //   handler.close();
+//       //   $state.go('mainProducts');
+//       // });
+//       }
+//     }
+//   });
 //# sourceMappingURL=bundle.js.map
