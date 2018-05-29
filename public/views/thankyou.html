@@ -8,39 +8,57 @@
     <div ng-if="thankyouResponse">
 
       <h1 class="center">Thank you for your order!</h1>
-      <h3 class="center">An email has been sent confirming your order</h3>
+      <h3 class="center">An email has been sent to <span class="bold">{{thankyouOrder[0].email}}</span> confirming your order</h3>
       <h3 class="center">Please allow 2-3 business days to receive a tracking number</h3>
       <br>
+      <h3 class="center">Ordered: {{thankyouOrder[0].datesold | date: 'longDate'}}</h3>
+
+      <br><br>
 
       <hr class="margin">
 
-      <p><strong>Order Date: </strong>{{thankyouOrder[0].datesold | date: 'longDate'}}</p>
-      <div class="table-overflow">
-        <table>
-          <th>Product Name</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>SubTotal</th>
-          <tr ng-repeat="o in thankyouOrder track by $index">
-            <td>{{o.name}}</td>
-            <td>{{o.color}}</td>
-            <td>{{o.height}}H x {{o.width}}W inches</td>
-            <td>{{o.price | currency}}</td>
-            <td>{{o.quantsold}}</td>
-            <td>{{o.price * o.quantsold | currency}}</td>
-          </tr>
-          <tr>
-            <td colspan="5">Shipping</td>
-            <td>{{shipping | currency}}</td>
-          </tr>
-          <tr>
-            <td colspan="5">Total</td>
-            <td>{{thankyouOrder[0].ordertotal + shipping | currency}}</td>
-          </tr>
-        </table>
+      <div class="orderdetails-items">
+        <h2 class="center">Order Items</h2>
+
+        <div class="item-table">
+          <div class="item-table-headers">
+            <h3>Product</h3>
+            <h3 class="w20">Price</h3>
+            <h3 class="w10 ta-right">Qty</h3>
+            <h3 class="w20 ta-right">Total</h3>
+          </div>
+
+          <hr>
+
+          <div class="" ng-repeat="o in thankyouOrder track by $index">
+
+            <div class="item-table-row" >
+              <p>{{o.name}} - {{o.color}}<br>{{o.height}}H x {{o.width}}W</p>
+              <p class="w20">{{o.price | currency}}</p>
+              <p class="w10 ta-right">{{o.quantsold}}</p>
+              <p class="w20 ta-right">{{o.price * o.quantsold | currency}}</p>
+            </div>
+            <hr>
+
+          </div>
+
+          <div class="totals">
+            <p class="ta-right">Subtotal: <span class="w20">{{orderTotal | currency}}</span></p>
+            <p class="ta-right">Shipping: <span class="w20">{{shipping | currency}}</span></p>
+
+            <hr>
+            <p class="ta-right">Total: <span class="w20">{{orderTotal + shipping | currency}}</span></p>
+
+          </div>
+        </div>
       </div>
     </div>
 
 
     <div ng-if="!thankyouResponse">
       <h1 class="center">Sorry, the page you are you looking for has expired</h1>
+
+
     </div>
 
   </div>
