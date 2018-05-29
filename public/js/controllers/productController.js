@@ -78,7 +78,8 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     console.log($scope.productQuantity, 'pq');
     if($scope.productQuantity <= 0){
       $scope.productQuantity = 1;
-      console.log('getting here', $scope.productQuantity);
+    } else if($scope.productQuantity > 20){
+      $scope.productQuantity = 20;
     }
   }
 

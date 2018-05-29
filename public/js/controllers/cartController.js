@@ -65,7 +65,14 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
         getProductsInCart();
         $rootScope.$broadcast('cartCount');
       })
-    } else {
+    } else if (value > 20){
+      $scope.cart[index].productQuantity = 20;
+      document.getElementById("itemincartid_"+index).value = 20;
+      mainService.updateProductsInCart($scope.cart).then((response) => {
+        getProductsInCart();
+        $rootScope.$broadcast('cartCount');
+      })
+    }else {
       $scope.cart[index].productQuantity = value;
       mainService.updateProductsInCart($scope.cart).then((response) => {
         getProductsInCart();

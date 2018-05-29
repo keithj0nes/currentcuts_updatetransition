@@ -1,13 +1,14 @@
 # To Do list
+
 ### Universal
 - [ ] Look into stripe refunds
 - [ ] Wall installation button on product view
 - [ ] Quickview on home products
-
-
 - [ ] Style nodemailer emails
 - [ ] Style order details and order confirmation
 - [ ] Replace db.run functions with sql files in server.js
+- [ ] Add 'contact us' link with product from product page
+
 - [x] Need to send actual data to orderdetails Page - 3/25/18
 - [x] Streamline modals using directive - 8/20/17
 - [x] Create Contact page with full form validation - 9/3/17

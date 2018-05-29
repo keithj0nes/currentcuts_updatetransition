@@ -7,32 +7,26 @@ module.exports = {
   getAllProducts: function(req, res, next){
     const db = app.get('db');
     let productsAndCounts = {}
-    try {
-      db.get_all_products([]).then(products => {
-        console.log("products shown");
-        offsetCount = 3;
-        productsAndCounts.products = products
-        itemz = [...itemz, ...products];
-        // console.log(products, 'logging products');
-        // const n = products.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value)
-        // console.log(n, 'n');
+    db.get_all_products([]).then(products => {
+      console.log("products shown");
+      offsetCount = 3;
+      productsAndCounts.products = products
+      itemz = [...itemz, ...products];
+      // console.log(products, 'logging products');
+      // const n = products.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value)
+      // console.log(n, 'n');
 
-        db.query(`select count(*) from (SELECT DISTINCT on (products.id) products.*, prices.price FROM products
-          INNER JOIN product_price_size ON products.id = product_price_size.productId
-          INNER JOIN prices ON prices.id = product_price_size.priceId
-          WHERE active = true AND (archived IS NULL OR archived = false)
-          ORDER BY products.id, prices.price) as x`).then(count => {
-            productsAndCounts.count = count;
+      db.query(`select count(*) from (SELECT DISTINCT on (products.id) products.*, prices.price FROM products
+        INNER JOIN product_price_size ON products.id = product_price_size.productId
+        INNER JOIN prices ON prices.id = product_price_size.priceId
+        WHERE active = true AND (archived IS NULL OR archived = false)
+        ORDER BY products.id, prices.price) as x`).then(count => {
+          productsAndCounts.count = count;
 
-            return res.send(productsAndCounts)
-          })
-        // return res.send(products)
-      })
-    }
-    catch(err){
-      console.log(err);
-      return res.status(500).send(err)
-    }
+          return res.send(productsAndCounts)
+        })
+      // return res.send(products)
+    })
   },
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -132,7 +132,8 @@ CREATE TABLE users (
 -- ADDED 'tags' COLUMN TO PRODUCTS TABLE
 -- update products set tags = 'hiking, mountain' where id = 1;
 ALTER TABLE products ADD tags TEXT
-
+insert into categories (name) values ('characters');
+insert into categories (name) values ('super_heroes');
 -- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
 
 INSERT INTO products (name, description, img1, imgmainvector, isActive, imgoutlinevector)
