@@ -99,7 +99,8 @@ CREATE TABLE products (
   imgmainvector TEXT,
   imgoutlinevector TEXT,
   active BOOLEAN,
-  archived BOOLEAN
+  archived BOOLEAN,
+  tags TEXT
 );
 
 CREATE TABLE shipping (
@@ -127,14 +128,15 @@ CREATE TABLE users (
   resettoken TEXT
 );
 
--- NEW -> ADD TO ELEPHANTSQL
--- denormalization tags
--- ADDED 'tags' COLUMN TO PRODUCTS TABLE
--- update products set tags = 'hiking, mountain' where id = 1;
-ALTER TABLE products ADD tags TEXT
+-- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
+
+
 insert into categories (name) values ('characters');
 insert into categories (name) values ('super_heroes');
--- INSERT DATA	=	=	=	=	=	=	=	=	=	=	=	=	= = = = = = = = = =
+insert into categories (name) values ('adventure');
+insert into categories (name) values ('animals');
+insert into categories (name) values ('schools');
+insert into categories (name) values ('sports');
 
 INSERT INTO products (name, description, img1, imgmainvector, isActive, imgoutlinevector)
 VALUES ('Take A Hike', 'Take A Hike vinyl decal', 'https://img0.etsystatic.com/108/0/9461344/il_570xN.895019534_43ya.jpg', 'https://img0.etsystatic.com/132/0/9461344/il_570xN.895019502_41yc.jpg', true);

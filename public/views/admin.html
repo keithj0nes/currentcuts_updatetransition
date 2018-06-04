@@ -288,7 +288,34 @@
 
   </div> -->
       <h3>Main Image</h3>
-      <input required type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 1 URL" ng-model="prodObj.productImgOne">
+      <!-- <input required type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 1 URL" ng-model="prodObj.productImgOne"> -->
+
+
+
+
+
+      <!-- <div class="" style="background: pink; display: inline-block">
+        <input ng-hide="prodObj.productImgOne" ng-model="productImgOne" type="file" name="productImgOne" style="background: red; cursor: pointer;">
+        <p ng-show="prodObj.productImgOne" ng-click="prodObj.productImgOne = !prodObj.productImgOne">CLICK TO CHANGE - <img style="height: 40px; width: 40px;"ng-src="{{prodObj.productImgOne}}"/></p>
+      </div> -->
+
+
+
+      <div class="" ng-hide="productImgOne1" style=" display: flex;" >
+        <input  ng-model="productImgOne1234" type="file" name="productImgOne" style=" cursor: pointer">
+        <!-- <div ng-show="prodObj" style="width: 20%; background: skyblue;" ng-click="productImgOne1 = !productImgOne1">Cancel</div> -->
+        <button ng-show="prodObj.productImgOne" class="add-btn" style="margin-left: 8px;" ng-click="productImgOne1 = !productImgOne1">Cancel</button>
+
+      </div>
+
+      <div class="" ng-show="productImgOne1" style="background: #FFFACD; display: flex; overflow: hidden;">
+        <!-- <p ng-show="productImgOne1" ng-click="productImgOne1 = !productImgOne1"> {{prodObj.productImgOne}}</p> -->
+        <p style="overflow: scroll; padding: 9px; padding-top: 10px;">{{prodObj.productImgOne}}</p>
+        <button class="add-btn" style="margin-left: 8px;" ng-click="productImgOne1 = !productImgOne1">Change</button>
+
+      </div>
+
+
 
       <h3>Main Vector</h3>
       <input required type="text" ng-change="infoChanged.infoChanged = true" name="" placeholder="Image 2 URL" ng-model="prodObj.productImgTwo">

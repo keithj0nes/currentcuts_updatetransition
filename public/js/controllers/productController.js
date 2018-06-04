@@ -20,7 +20,8 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       //response[0] gives us description, id, images, and name
       $scope.product = response[0];
       //set image on load
-      $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      // $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets.svg");
       $scope.vec = response[0].imgmainvector
       console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle

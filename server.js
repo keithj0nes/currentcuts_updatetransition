@@ -8,6 +8,14 @@ const passport = require("passport");
 const flash = require('connect-flash');
 const stripe = require("stripe")(config.stripeKeyTest);
 
+////////////////////////
+////////////////////////
+const aws = require("aws-sdk");
+const multer = require('multer');
+const multerS3 = require("multer-s3");
+////////////////////////
+////////////////////////
+
 
 const app = module.exports = express();
 //sync to database
@@ -52,6 +60,97 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+
+const bname = "currentcuts";
+const ukey = "";
+const usec = "";
+
+// app.post("/api/upload", upload.any(), function(req, res){
+app.post("/api/upload",  function(req, res){
+
+  console.log(req.body, 'body');
+  console.log(req.file, 'file');
+
+
+  let s3 = new aws.S3({
+    accessKeyId: ukey,
+    secretAccessKey: usec//,
+    // Bucket: bname
+  })
+  var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'currentcuts',
+        acl: 'public-read',
+        metadata: function ( req, file, cb){
+          cb( null, {fieldname: file.fieldname});
+        },
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, file.originalname); //use Date.now() for unique file keys
+        }
+    }),
+    fileFilter: function(req, file, callback) {
+      console.log(file, 'file');
+
+      //get extension by getting file type after last dot
+      const ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
+      if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.svg') {
+        // return callback(res.end('Only images are allowed'), null)
+        console.log('only images!');
+        return callback(res.send({accepted: false, message: 'Please submit only image files'}), false)
+
+        // res.send('only images!')
+      }
+
+      callback(null, true)
+    }
+  }).fields([
+      {name: 'productImgOne', maxCount: 1},
+      {name: 'productImgTwo', maxCount: 1},
+      {name: 'productImgThree', maxCount: 1},
+      {name: 'productShowcase', maxCount: 5},
+  ]);
+
+  upload(req, res, function(err){
+    if(err){
+      console.log(err, 'err22');
+
+      // return res.send(err)
+    }
+    // res.send('file uploaded!')
+  })
+
+
+
+
+  //   res.send('sent')
+    // function uploadToS3(file){
+    //   let s3bucket = new aws.S3({
+    //     accessKeyId: ukey,
+    //     secretAccessKey: usec//,
+    //     // Bucket: bname
+    //   })
+    //
+    //   s3bucket.createBucket(() => {
+    //     var params = {
+    //       Bucket: bname,
+    //       Key: file.name,
+    //       Body: file.data
+    //     }
+    //
+    //     s3bucket.upload({params, (err, data) => {
+    //       if (err) {
+    //         console.log(err, 'error');
+    //         return err
+    //       }
+    //
+    //       console.log(data, 'SUCCESSSSS!');
+    //       return data
+    //     }})
+    //   })
+    // }
+})
 
 /////// AUTH ///////
 app.post("/auth/login", authCtrl.localLogin);

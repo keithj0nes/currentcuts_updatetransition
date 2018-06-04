@@ -11,6 +11,14 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   //create objects so scope change will be reflected in HTML
   $scope.infoChanged = {};
   $scope.prodObj = {};
+  // 
+  // $scope.cl = function(p){
+  //   console.log(p, 'productImgOne');
+  //   // $scope.productImgOne = !$scope.productImgOne;
+  //   // pro
+  //
+  //   p = !p
+  // }
 
 //   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
 //     var doc = new jsPDF({
@@ -152,6 +160,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     $scope.prodObj.productImgThree = product.imgoutlinevector;
     $scope.prodObj.productActive = product.active;
     $scope.prodObj.tags = product.tags;
+
+    $scope.productImgOne1 = !!$scope.prodObj.productImgOne
     getProductDetails($scope.prodObj.productId);
 
   }
@@ -224,6 +234,10 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     $scope.prodObj.productActive = false;
     $scope.showExtraDetails = false;
     $scope.selected = null;
+
+
+    $scope.productImgOne1 = false;
+
   }
 
   $scope.editDisableBtn = function(index){
@@ -462,6 +476,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   }
 
-  getOrderCount();
+  // getOrderCount();
 
 })
