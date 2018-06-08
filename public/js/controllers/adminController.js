@@ -11,15 +11,6 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   //create objects so scope change will be reflected in HTML
   $scope.infoChanged = {};
   $scope.prodObj = {};
-  // 
-  // $scope.cl = function(p){
-  //   console.log(p, 'productImgOne');
-  //   // $scope.productImgOne = !$scope.productImgOne;
-  //   // pro
-  //
-  //   p = !p
-  // }
-
 //   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
 //     var doc = new jsPDF({
 //  orientation: 'p',
@@ -344,6 +335,16 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
     adminService.adminDeleteDetails($scope.productId, productDetails);
   }
+
+
+// FILE UPLOAD TESTING
+// $scope.update = function(){
+//     const img3file = document.getElementById('img1').files[0].name;
+//     adminService.adminUpdateTest(img3file).then(res => {
+//       console.log(res, 'loggin responseeee!');
+//     })
+// }
+
 
   $scope.update = function(id, name, description, img1, imgmainvector, imgoutlinevector, active, tags){
     $scope.infoChanged.infoChanged = false;

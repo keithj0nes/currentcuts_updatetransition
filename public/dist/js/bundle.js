@@ -4442,15 +4442,6 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   //create objects so scope change will be reflected in HTML
   $scope.infoChanged = {};
   $scope.prodObj = {};
-  // 
-  // $scope.cl = function(p){
-  //   console.log(p, 'productImgOne');
-  //   // $scope.productImgOne = !$scope.productImgOne;
-  //   // pro
-  //
-  //   p = !p
-  // }
-
   //   $scope.testPDF = function(ufn, uln,useremail, guestemail, datesold, ordertotal, shipCost, subOrder, shipping, id, tracking, datecompleted, firstname, lastname, address_one, address_two, city, state, zipcode, msg_to_buyer, msg_to_seller){
   //     var doc = new jsPDF({
   //  orientation: 'p',
@@ -4766,6 +4757,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
     adminService.adminDeleteDetails($scope.productId, productDetails);
   };
+
+  // FILE UPLOAD TESTING
+  // $scope.update = function(){
+  //     const img3file = document.getElementById('img1').files[0].name;
+  //     adminService.adminUpdateTest(img3file).then(res => {
+  //       console.log(res, 'loggin responseeee!');
+  //     })
+  // }
+
 
   $scope.update = function (id, name, description, img1, imgmainvector, imgoutlinevector, active, tags) {
     $scope.infoChanged.infoChanged = false;
@@ -5562,8 +5562,15 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       //response[0] gives us description, id, images, and name
       $scope.product = response[0];
       //set image on load
-      // $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
-      $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets.svg");
+      $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
+      // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets.svg");
+
+      // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/takeahike.svg");
+      // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/palmtrees.svg");
+
+      // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets2.svg");
+
+
       $scope.vec = response[0].imgmainvector;
       console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle
@@ -6219,6 +6226,18 @@ angular.module("ccvApp").service("adminService", function ($http) {
     return $http({
       method: "GET",
       url: "/api/admin/products"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateTest = function (file) {
+    console.log(file, 'file');
+    var files = { file: file };
+    return $http({
+      method: 'POST',
+      url: '/api/upload',
+      data: file
     }).then(function (res) {
       return res.data;
     });

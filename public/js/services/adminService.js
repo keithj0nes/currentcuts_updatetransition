@@ -7,6 +7,16 @@ angular.module("ccvApp").service("adminService", function($http){
     }).then(res => res.data);
   }
 
+  this.adminUpdateTest = function(file){
+    console.log(file, 'file');
+    const files = { file }
+    return $http({
+      method: 'POST',
+      url: '/api/upload',
+      data: file
+    }).then(res => res.data)
+  }
+
   this.adminAddProduct = function(productAdd){
     return $http({
       method: "POST",
