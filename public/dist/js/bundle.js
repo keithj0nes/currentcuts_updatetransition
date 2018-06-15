@@ -4735,11 +4735,14 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       };
       $scope.editDisable = false;
 
-      adminService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails);
-
-      setTimeout(function () {
+      adminService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails).then(function () {
+        console.log('returning');
         getProductDetails($scope.productId);
-      }, 100);
+      });
+
+      // setTimeout(function(){
+      //   getProductDetails($scope.productId);
+      // }, 100)
     } else {
       alert("you must fill in everything");
     }
