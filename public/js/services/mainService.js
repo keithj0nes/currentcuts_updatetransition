@@ -18,7 +18,7 @@ angular.module("ccvApp").service("mainService", function($http){
       return res.data;
     })
   }
-  
+
   this.getProductById = function(id){
     return $http({
       method: "GET",
@@ -59,6 +59,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/auth/checkauth"
     }).then((response) => {
+      console.log(response.data, 'res.data getAuth');
       return response.data;
     })
   }
@@ -71,6 +72,8 @@ angular.module("ccvApp").service("mainService", function($http){
       return response.data;
     })
   }
+
+
 
 
 
@@ -288,6 +291,14 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/user/savepassword/" + token,
       data: pass
     }).then(res => res.data);
+  }
+
+
+  this.loginWithFacebook = function(){
+    return $http({
+      method: "GET",
+      url: "/auth/facebook"
+    }).then(res => res.data)
   }
 
 

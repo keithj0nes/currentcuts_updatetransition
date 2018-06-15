@@ -61,6 +61,10 @@
                       <button type="submit" class="btn-facebook">Log In with Facebook</button>
                     </form>
 
+                    <!-- <form ng-submit="loginWithFacebook()">
+                      <button type="submit" class="btn-facebook">Log In with Facebook</button>
+                    </form> -->
+
                     <div class="or-box">
                       <div class="or-dash"></div>OR<div class="or-dash"></div>
                     </div>
@@ -242,6 +246,8 @@
 
     <script>
       $(document).ready(function(){
+        var count = 0;
+
         $(".hamburger-icon").click( function(){
           $(this).toggleClass("change");
           // $(".main-nav").slideToggle("slow", function(){
@@ -252,6 +258,7 @@
         $(".search-icon").click( function(){
           $(".search-box-container").toggleClass("open");
         })
+
       //closes search box on searchbutton click
         $(".search-btn").click(function(){
           // $(".search-box-container").toggleClass("open");

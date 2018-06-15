@@ -55,7 +55,7 @@ angular.module("ccvApp").directive("signupLogin", function(){
       $scope.logIn = function(email, password, mobile){
         $scope.loginEmailR = false;
         $scope.loginPasswordR = false;
-        
+
         if(!password){$scope.loginPasswordR = true;}
 
         if(!email){
@@ -100,6 +100,14 @@ angular.module("ccvApp").directive("signupLogin", function(){
           $scope.resetMessage = "Please enter a valid email";
         }
       }
+
+      $scope.loginWithFacebook = function(){
+        console.log('clicked facebook button');
+        mainService.loginWithFacebook().then((res)=>{
+          console.log(res, 'logged in! loginWithFacebook');
+        })
+      }
+
     }
   }
 })
