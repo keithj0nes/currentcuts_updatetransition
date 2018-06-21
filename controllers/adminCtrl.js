@@ -510,7 +510,7 @@ module.exports = {
 function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer, config, req, res){
   //console.log(foundAddress, 'FOUND ADDRESS');
   //console.log(b, 'logging b in sendTrackingEmail');
-  if(!foundAddress.address_two){
+  if(foundAddress && !foundAddress.address_two){
     foundAddress.address_two_alt = "<br>";
   } else {
     foundAddress.address_two_alt = foundAddress.address_two + " <br>";

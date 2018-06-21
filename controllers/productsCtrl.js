@@ -2,14 +2,14 @@ const app = require("../server.js");
 
 
 var itemz = [];
-let offsetCount = 0;
+let offsetCount = 12;
 module.exports = {
   getAllProducts: function(req, res, next){
     const db = app.get('db');
     let productsAndCounts = {}
-    db.get_all_products([]).then(products => {
+    db.get_all_products([offsetCount]).then(products => {
       //console.log("products shown");
-      offsetCount = 3;
+      // offsetCount = 12;
       productsAndCounts.products = products
       itemz = [...itemz, ...products];
       // //console.log(products, 'logging products');
@@ -41,7 +41,7 @@ module.exports = {
     db.get_more_products([offsetCount]).then(moreProducts => {
       // //console.log('moreProducts', moreProducts);
       itemz = [...itemz, ...moreProducts]
-      offsetCount += 3;
+      offsetCount += 12;
       return res.send(moreProducts)
     })
     // return res.send(true)
