@@ -2308,7 +2308,7 @@ angular.module("ccvApp", ["ui.router"]).config(function ($stateProvider, $urlRou
 //         for (i = 0; i < tokens.length; i++) {
 //             token = tokens[i];
 //             parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
-//             // console.log('token', token, 'parsedInput', parsedInput,
+//             // //console.log('token', token, 'parsedInput', parsedInput,
 //             //         'regex', getParseRegexForToken(token, config));
 //             if (parsedInput) {
 //                 skipped = string.substr(0, string.indexOf(parsedInput));
@@ -5475,20 +5475,24 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 angular.module("ccvApp").controller("mainController", function ($scope, mainService) {
 
-  //how many products per limit
-  var row = 3;
+  $scope.showLoadMoreBtn = true;
 
   var getAllProducts = function getAllProducts() {
     mainService.getAllProducts().then(function (response) {
       $scope.products = response.products;
-      $scope.count = response.count[0].count - row;
+      $scope.count = response.count[0].count;
+      if ($scope.count <= $scope.products.length) {
+        $scope.showLoadMoreBtn = false;
+      }
     });
   };
 
   $scope.loadMore = function () {
-    $scope.count -= row;
     mainService.loadMore().then(function (res) {
       $scope.products = [].concat(_toConsumableArray($scope.products), _toConsumableArray(res));
+      if ($scope.count <= $scope.products.length) {
+        $scope.showLoadMoreBtn = false;
+      }
     });
   };
   getAllProducts();
