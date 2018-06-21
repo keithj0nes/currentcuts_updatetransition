@@ -246,6 +246,8 @@
 
     <script>
       $(document).ready(function(){
+        var count = 0;
+
         $(".hamburger-icon").click( function(){
           $(this).toggleClass("change");
           // $(".main-nav").slideToggle("slow", function(){
@@ -254,38 +256,9 @@
         })
       //opens search box on searchicon click
         $(".search-icon").click( function(){
-          // console.log(this);
-          // $(".search-icon").checkClass()
-
           $(".search-box-container").toggleClass("open");
-          // checkClass()
         })
 
-        $.fn.checkClass = function(){
-          console.log($(".search-icon").hasClass("open"));
-          console.log('my function fired!');
-        }
-
-        $("body").click((e)=>{
-          // console.log($(".search-box-container").hasClass("open"));
-          if($(".search-box-container").hasClass("open")){
-            // console.log($(".search-box-container"));
-            // console.log(e.target);
-            // console.log($(e.target).parent(".search-box-container").length);
-            var target = $(e.target);
-            console.log(e.target);
-            if(e.target !== $('.search-box-container')[0]){
-              console.log("SAME!");
-              // $(".search-box-container").toggleClass("open");
-
-            }
-            // console.log(target.parent());
-            // if(target.parent(".search-box-container").length){
-            //   console.log('CLICKED CHILD');
-            // }
-            // console.log($.contains(".search-box-container", e.target));
-          }
-        })
       //closes search box on searchbutton click
         $(".search-btn").click(function(){
           // $(".search-box-container").toggleClass("open");

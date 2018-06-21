@@ -19,10 +19,10 @@ angular.module("ccvApp").controller("accountController", function($scope, $rootS
       lastname: userNameLast,
       email: userEmail
     }
-    console.log(newEmail);
+    //console.log(newEmail);
     mainService.updateAccount(newEmail).then(function(response){
 
-      console.log(response, "logging response");
+      //console.log(response, "logging response");
       if(response.success === true){
         $scope.messageIcon = sucIcon;
         $scope.accountMessage = "Your account has been updated!"
@@ -49,9 +49,9 @@ angular.module("ccvApp").controller("accountController", function($scope, $rootS
         // modalService.Open(id);
 
       } else {
-        // console.log(updatePass, "newPass");
+        // //console.log(updatePass, "newPass");
         mainService.updatePass(updatePass).then((res) => {
-          console.log(res, "new pass");
+          //console.log(res, "new pass");
           if(res.passwordUpdated === true){
             $scope.messageIcon = sucIcon;
             $scope.accountMessage = "Your password has been updated!";
@@ -77,7 +77,7 @@ angular.module("ccvApp").controller("accountController", function($scope, $rootS
 
 
   mainService.getUsername().then(function(res){
-    console.log(res);
+    //console.log(res);
 
     if(res.reqUser === false){
       $state.go('login');

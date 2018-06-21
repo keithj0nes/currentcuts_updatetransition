@@ -5,8 +5,8 @@ angular.module("ccvApp").controller("searchController", function($scope, $stateP
 
   mainService.getProductByName($scope.searchTerm).then(function(response){
     $scope.searchProducts = response;
-    console.log(response, "response in controller");
-    console.log($scope.searchProducts, "scope search prodcutz");
+    //console.log(response, "response in controller");
+    //console.log($scope.searchProducts, "scope search prodcutz");
 
     if(response.length >= 1){
       $scope.search = true;

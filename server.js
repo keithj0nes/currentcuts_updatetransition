@@ -26,7 +26,7 @@ massive(connectionInfo, {excludeMatViews: true}).then(instance => {
   app.set('db', instance); // add your connection to express
   db = app.get('db'); // declare a db object for requests
 }).catch(err => {
-  console.log(err, 'massive err');
+  //console.log(err, 'massive err');
 });
 
 const mainCtrl = require("./controllers/mainCtrl.js");
@@ -68,8 +68,8 @@ const usec = "";
 // app.post("/api/upload", upload.any(), function(req, res){
 // app.post("/api/upload",  function(req, res){
 //
-//   console.log(req.body, 'body');
-//   console.log(req.file, 'file');
+//   //console.log(req.body, 'body');
+//   //console.log(req.file, 'file');
 //
 //
 //   let s3 = new aws.S3({
@@ -86,18 +86,18 @@ const usec = "";
 //           cb( null, {fieldname: file.fieldname});
 //         },
 //         key: function (req, file, cb) {
-//             console.log(file);
+//             //console.log(file);
 //             cb(null, file.originalname); //use Date.now() for unique file keys
 //         }
 //     }),
 //     fileFilter: function(req, file, callback) {
-//       console.log(file, 'file');
+//       //console.log(file, 'file');
 //
 //       //get extension by getting file type after last dot
 //       const ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
 //       if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.svg') {
 //         // return callback(res.end('Only images are allowed'), null)
-//         console.log('only images!');
+//         //console.log('only images!');
 //         return callback(res.send({accepted: false, message: 'Please submit only image files'}), false)
 //
 //         // res.send('only images!')
@@ -114,7 +114,7 @@ const usec = "";
 //
 //   upload(req, res, function(err){
 //     if(err){
-//       console.log(err, 'err22');
+//       //console.log(err, 'err22');
 //
 //       // return res.send(err)
 //     }
@@ -141,11 +141,11 @@ const usec = "";
 //     //
 //     //     s3bucket.upload({params, (err, data) => {
 //     //       if (err) {
-//     //         console.log(err, 'error');
+//     //         //console.log(err, 'error');
 //     //         return err
 //     //       }
 //     //
-//     //       console.log(data, 'SUCCESSSSS!');
+//     //       //console.log(data, 'SUCCESSSSS!');
 //     //       return data
 //     //     }})
 //     //   })
@@ -240,14 +240,14 @@ app.post("/api/charge", function(req, res, next){
     metadata: {'guestUser': guestUser.guestUser}
 
   }, function(err, charge) {
-    console.log(req.body.price, "req.body.price 2");
+    //console.log(req.body.price, "req.body.price 2");
     if (err && err.type === 'StripeCardError') {
       // The card has been declined
-      console.log("Your card was declined");
+      //console.log("Your card was declined");
     } else {
-      console.log("Your payment was successful");
+      //console.log("Your payment was successful");
       mainCtrl.addOrder(req,res,charge);
-      console.log("sending charge");
+      //console.log("sending charge");
       // res.status(200).send(charge);
     }
   });
@@ -257,5 +257,5 @@ app.post("/api/charge", function(req, res, next){
 
 //listening
 app.listen(config.port, function(){
-  console.log("listening on port", config.port);
+  //console.log("listening on port", config.port);
 })

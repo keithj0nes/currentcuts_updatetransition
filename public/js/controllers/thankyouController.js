@@ -6,7 +6,7 @@ angular.module("ccvApp").controller("thankyouController", function($scope, $root
         $scope.thankyouResponse = true;
         $scope.orderNumber = $state.params.orderid;
         $scope.thankyouOrder = response;
-        console.log(response, 'RESPONSE IN THANKYOUUUUUUU');
+        //console.log(response, 'RESPONSE IN THANKYOUUUUUUU');
         $scope.shipping = parseInt($scope.thankyouOrder[0].shipping);
         $scope.orderTotal = parseInt($scope.thankyouOrder[0].ordertotal)
       } else {

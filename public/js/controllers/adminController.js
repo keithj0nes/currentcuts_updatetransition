@@ -23,7 +23,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 //     }
 //
 // var newarr = JSON.stringify(subOrder)
-// console.log(newarr, "new are");
+// //console.log(newarr, "new are");
 //     doc.text(105, 20, 'Thank you!', null, null, 'center');
 //     doc.text(105, 30, 'Order Id - ' + id, null, null, 'center');
 //
@@ -45,8 +45,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 //     // doc.autoPrint()
 //
 //     doc.save('Packlist Order ID: ' + id + ".pdf")
-//     console.log('firing');
-//     console.log(obj);
+//     //console.log('firing');
+//     //console.log(obj);
 //   }
 
   $scope.openModal = function(id, track, note, index){
@@ -69,9 +69,9 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
         modalService.Open('add-new-minimum-modal')
       }
     } else if(id === "resend-tracking-modal"){
-      console.log(id, "resend-tracking-modal");
+      //console.log(id, "resend-tracking-modal");
     } else if(id === "delete-product-modal"){
-      console.log('opening', id, index);
+      //console.log('opening', id, index);
       modalService.Open(id);
     } else if(id === 'add-new-minimum-modal'){
       modalService.Open(id);
@@ -81,7 +81,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.closeMyModal = function(id){
-    console.log("clicked button in controllers");
+    //console.log("clicked button in controllers");
     modalService.Close(id);
   }
 
@@ -96,14 +96,14 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   $scope.getAllProducts = function(){
     adminService.adminGetAllProducts().then(function(response){
-      console.log(response);
+      //console.log(response);
       $scope.showProducts = true;
       $scope.showClosedOrders = false;
       $scope.showOpenOrders = false;
 
       $scope.products = response;
 
-      console.log("getting all products");
+      //console.log("getting all products");
     })
   }
 
@@ -124,9 +124,9 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
           for(var i = 0; i < res.selectedCategories.length; i++){
             let allCat = res.selectedCategories[i]
             if(selectedCat.name ===  allCat.name){
-              // console.log("we have a match!");
+              // //console.log("we have a match!");
               $scope.defaultSelected.push(selectedCat)
-              // console.log($scope.defaultSelected, "loggin");
+              // //console.log($scope.defaultSelected, "loggin");
             }
           }
         }
@@ -187,29 +187,29 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     const category = {index};
     adminService.adminDeleteCategory(category, $scope.productId);
     for(var i = $scope.defaultSelected.length-1; i >= 0; i--){
-      console.log($scope.defaultSelected[i], index);
+      //console.log($scope.defaultSelected[i], index);
       if(index === i){
-        console.log("UPPPPSSS");
+        //console.log("UPPPPSSS");
         $scope.defaultSelected.splice(i, 1);
       }
     }
   }
 
   $scope.addNewCategory = function(){
-    console.log($scope.allCategories, "clicked");
+    //console.log($scope.allCategories, "clicked");
     $scope.defaultSelected.push({"name": $scope.catName});
-    console.log($scope.defaultSelected, "after clicked");
+    //console.log($scope.defaultSelected, "after clicked");
 
   }
 
   $scope.addNewRow = function(){
-    console.log($scope.productDetails.product, "running");
+    //console.log($scope.productDetails.product, "running");
     $scope.productDetails.product.push({"height": $scope.height,
                                 "width": $scope.width,
                                 "price": $scope.price})
-                                console.log($scope.productDetails, "hahah lol momg");
+                                //console.log($scope.productDetails, "hahah lol momg");
     // $scope.editing = true;
-    // console.log($scope.productDetails.product);
+    // //console.log($scope.productDetails.product);
   }
 
   $scope.clearForm = function(){
@@ -232,7 +232,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.editDisableBtn = function(index){
-    console.log(index, "logging index");
+    //console.log(index, "logging index");
     $scope.editDisable = true;
   }
 
@@ -262,18 +262,18 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
         imgoutlinevector: imgoutlinevector
       }
 
-      console.log(productAdd);
-      console.log(productAdd.name);
+      //console.log(productAdd);
+      //console.log(productAdd.name);
 
-      console.log("GOT HERE");
+      //console.log("GOT HERE");
       adminService.adminAddProduct(productAdd).then((res) => {
-        console.log(res, "logging response in admin apge");
+        //console.log(res, "logging response in admin apge");
         if(res.productExists === true){
           swal("this product is already in the database")
         } else {
           setTimeout(function () {
             $scope.getAllProducts();
-            console.log(res.id, "calling for details");
+            //console.log(res.id, "calling for details");
             getProductDetails(res.id)
           }, 100);
         }
@@ -287,17 +287,17 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   $scope.updateDetails = function(index, productDetails, psheight, pswidth, psprice){
 
-    console.log($scope.productId, "productId from the original requests");
-    console.log(psheight, "psheight");
-    console.log(pswidth, "pswidth");
-    console.log(psprice, "psprice");
-    console.log(index, "index");
+    //console.log($scope.productId, "productId from the original requests");
+    //console.log(psheight, "psheight");
+    //console.log(pswidth, "pswidth");
+    //console.log(psprice, "psprice");
+    //console.log(index, "index");
 
     // send index to backend if index has value in pps then change it else add new
 
 
     if(psheight && pswidth && psprice){
-      console.log("all defined!");
+      //console.log("all defined!");
       let sizePriceDetails = {
         index: index,
         height: psheight,
@@ -308,7 +308,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
 
       adminService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails).then(()=>{
-        console.log('returning');
+        //console.log('returning');
         getProductDetails($scope.productId);
       })
 
@@ -319,8 +319,8 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
     } else {
       alert("you must fill in everything")
     }
-    console.log($scope.productDetails, "SCOPEDOTPRODUCTDETAILS");
-    console.log($scope.productDetails[index], "SCOPEDOTPRODUCTDETAILSINDEX");
+    //console.log($scope.productDetails, "SCOPEDOTPRODUCTDETAILS");
+    //console.log($scope.productDetails[index], "SCOPEDOTPRODUCTDETAILSINDEX");
 
   }
 
@@ -344,7 +344,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 // $scope.update = function(){
 //     const img3file = document.getElementById('img1').files[0].name;
 //     adminService.adminUpdateTest(img3file).then(res => {
-//       console.log(res, 'loggin responseeee!');
+//       //console.log(res, 'loggin responseeee!');
 //     })
 // }
 
@@ -371,7 +371,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
         tags: tags
       }
 
-      console.log($scope.productActive, name);
+      //console.log($scope.productActive, name);
       adminService.adminUpdateProduct(id, productUpdate);
       setTimeout(function () {
         $scope.getAllProducts();
@@ -381,13 +381,13 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
   }
 
   $scope.delete = function(productId, modalId){
-    // console.log(productId);
-    // console.log('deteling!');
-      // console.log($scope.products, "logging products");
+    // //console.log(productId);
+    // //console.log('deteling!');
+      // //console.log($scope.products, "logging products");
         for (var i = $scope.products.length-1; i >= 0; i--) {
-          // console.log(productId, $scope.products[i].id);
+          // //console.log(productId, $scope.products[i].id);
           if($scope.products[i].id === productId){
-            // console.log('splicing ', i);
+            // //console.log('splicing ', i);
             $scope.products.splice(i, 1);
           }
         }
@@ -407,15 +407,15 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
   let getOrderCount = function(){
     adminService.adminGetOrderCount().then((res) => {
-      console.log(res, "logging res in controller haha");
+      //console.log(res, "logging res in controller haha");
       $scope.openCount = res[0].opencount;
       $scope.closedCount = res[0].closedcount;
 
       if($scope.openCount === "0"){
-        console.log("setting to closed orders");
+        //console.log("setting to closed orders");
         $scope.getClosedOrders();
       } else {
-        console.log("open orders!");
+        //console.log("open orders!");
         $scope.getOpenOrders();
       }
     })
@@ -429,12 +429,12 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       $scope.tabopen = true;
       $scope.tabclosed = false;
 
-      console.log(res, "logging res");
+      //console.log(res, "logging res");
 
       if(res.mainOrder.length <= 0){
         $scope.openOrdersEmpty = true;
         $scope.openOrders = res.mainOrder;
-        console.log($scope.openOrders, "logging with KEITH");
+        //console.log($scope.openOrders, "logging with KEITH");
         // $scope.openCount--;
         // $scope.closedCount++;
 
@@ -442,7 +442,7 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
       } else {
         $scope.openOrders = res.mainOrder;
         $scope.openOrdersDetails = res.mainOrder.subOrder;
-        console.log($scope.openOrders, "logging with sam");
+        //console.log($scope.openOrders, "logging with sam");
       }
 
     })
@@ -458,18 +458,18 @@ angular.module("ccvApp").controller("adminController", function($scope, adminSer
 
 
       if(res.mainOrder.length <= 0){
-        console.log("no length");
+        //console.log("no length");
         $scope.closedOrdersEmpty = true;
       }
-      console.log(res, "res in adminGetClosedOrders");
+      //console.log(res, "res in adminGetClosedOrders");
       $scope.closedOrders = res.mainOrder;
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     })
   }
 
   $scope.completeOrder = function(orderid, id){
-    console.log($scope.openOrderIndex, "modalIndex");
-    console.log(orderid, "order id");
+    //console.log($scope.openOrderIndex, "modalIndex");
+    //console.log(orderid, "order id");
     adminService.adminSendConfirmation($scope.openOrderIndex,$scope.confirmOrder)
     modalService.Close(id);
 

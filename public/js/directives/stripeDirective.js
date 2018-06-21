@@ -42,41 +42,41 @@ angular.module("ccvApp").directive("stripeDirective", function($http, $state, $r
 
       // setTimeout(function () {
       //   var hello = mainService.addShippingInfo()
-      //   console.log(hello);
+      //   //console.log(hello);
       //
       // }, 2000);
 
       // setTimeout(function () {
         // scope.value = $rootScope.$on.details
-        // console.log(scope.value, "scopedotvalue");
+        // //console.log(scope.value, "scopedotvalue");
       // }, 2000);
 
 
       $('.btn-stripe').on('click', orderData, function(e) {
 
         // $rootScope.fun()
-        // console.log($rootScope.fun());
+        // //console.log($rootScope.fun());
 
         scope.value = $rootScope.details
-        console.log(scope.value, "scopedotvalue");
+        //console.log(scope.value, "scopedotvalue");
         if($rootScope.note){
-          console.log($rootScope.note.note, "rootScope.no.note");
+          //console.log($rootScope.note.note, "rootScope.no.note");
           orderData.order.note = $rootScope.note.note;
         }
         orderData.user = scope.value;
         orderData.product = [];
 
         mainService.getProductsInCart().then(function(response){
-          console.log(response);
+          //console.log(response);
           response.forEach(function(item, i){
-            console.log(item, "item being logged");
+            //console.log(item, "item being logged");
             orderData.product.push(item)
           })
 
         });
-        console.log(orderData, "orderdata logged");
+        //console.log(orderData, "orderdata logged");
     // Open Checkout with further options:
-    // console.log(e.data, "USER DATA STRIPE CLICK");
+    // //console.log(e.data, "USER DATA STRIPE CLICK");
     if (!scope.value){
       alert("please enter shipping info")
     } else {

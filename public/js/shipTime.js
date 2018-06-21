@@ -14,7 +14,7 @@ angular.module("ccvApp").directive("shiptime", function($interval){
 
           clockFn();
           $interval(clockFn, 1000)
-          console.log(clockFn())
+          //console.log(clockFn())
 
           }
 

@@ -5,7 +5,7 @@ angular.module("ccvApp").controller("categoryController", function($scope, $stat
 
   var currentWord = $state.params.catname;
   if(currentWord.indexOf("_") >= 1 ){
-    console.log(true);
+    ////console.log(true);
     currentWord = currentWord.split("_")
 
     for(var j = 0; j < currentWord.length; j++){
@@ -23,25 +23,25 @@ angular.module("ccvApp").controller("categoryController", function($scope, $stat
     }
     $scope.title = newCurrentWord;
   } else {
-    console.log(false);
+    ////console.log(false);
     $scope.title = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
   }
-  console.log($scope.title)
+  ////console.log($scope.title)
 
   mainService.getProductByCategory($state.params.catname).then((res) => {
-    console.log(res, "logging res in categories controller");
+    ////console.log(res, "logging res in categories controller");
     $scope.subCategories = res;
 
     // for(var i = 0; i <$scope.subCategories.length;i++){
     //   var currentWord = $scope.subCategories[i].name;
-    //   console.log('lakjsdglkas;d');
+    //   ////console.log('lakjsdglkas;d');
     //
     //   if(currentWord.indexOf("_") >= 1 ){
     //     currentWord = currentWord.split("_")
     //     for(var j = 0; j < currentWord.length; j++){
     //       currentWord[j] = currentWord[j].charAt(0).toUpperCase() + currentWord[j].substring(1)
     //     }
-    //     console.log('here');
+    //     ////console.log('here');
     //     $scope.subCategories[i].titleName = currentWord.join(" ")
     //
     //     var updatedCurrentWord = $scope.subCategories[i].titleName
@@ -54,10 +54,10 @@ angular.module("ccvApp").controller("categoryController", function($scope, $stat
     //     }
     //     $scope.subCategories[i].titleName = updatedCurrentWord;
     //   } else {
-    //     console.log('hereeeeeee');
+    //     ////console.log('hereeeeeee');
     //     $scope.subCategories[i].titleName = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
     //     }
-    //   // console.log($scope.subCategories[i].titleName)
+    //   // ////console.log($scope.subCategories[i].titleName)
     // }
 
     if(res.bottomlevel === true){
@@ -98,5 +98,5 @@ angular.module("ccvApp").controller("categoryController", function($scope, $stat
 //   } else {
 //     currentWord = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
 //     }
-//   console.log(currentWord)
+//   ////console.log(currentWord)
 // }

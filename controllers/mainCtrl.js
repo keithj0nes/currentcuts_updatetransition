@@ -7,21 +7,21 @@ const userCtrl = require("./usersCtrl.js")
 module.exports = {
 
   addOrder: function(req, res, charge){
-    console.log('000000000000000000000000');
-    // console.log(charge, "CHARGE MEEEEE");
-    // console.log(charge.metadata.guestUser)
-    console.log(charge.source.name)
+    //console.log('000000000000000000000000');
+    // //console.log(charge, "CHARGE MEEEEE");
+    // //console.log(charge.metadata.guestUser)
+    //console.log(charge.source.name)
     const db = app.get('db');
 
     // if guestUser is present, save to guest_users table
     if(charge.metadata.guestUser === 'true'){
-      console.log('LOGGING METADATA.GUESTUSER');
+      //console.log('LOGGING METADATA.GUESTUSER');
       try {
         db.guest_users.findOne({email: charge.source.name}).then(findGuser => {
           if(findGuser){
             insertOrder(null, findGuser.id, req, res)
           } else {
-            console.log('adding guessttt');
+            //console.log('adding guessttt');
             try {
               db.guest_users.insert({email: charge.source.name}).then(guser => {
                 insertOrder(null, guser.id, req, res)
@@ -56,7 +56,7 @@ module.exports = {
         db.orders.update({id: req.params.id, tyexpired: true}).then(o => {
         })
       }, 5000);
-      console.log(order, "logging order in thankyou");
+      //console.log(order, "logging order in thankyou");
       res.send(order)
     })
   },
@@ -67,7 +67,7 @@ module.exports = {
     const db = app.get('db');
 
 
-    console.log(req.body, "logging body");
+    //console.log(req.body, "logging body");
     let b = req.body;
     let productTextInEmail = [];
     let orderTotal = 0;
@@ -114,10 +114,10 @@ module.exports = {
 
         db.order_addresses.findOne({address_one: b.user.address1, address_one: b.user.address1, city: b.user.city, state: b.user.state, zipcode: b.user.zip}).then(foundAddress => {
           if(foundAddress){
-            console.log("address was found!");
+            //console.log("address was found!");
             updateOrderSendConfirmationEmail(order, ship, foundAddress, b, text, req, res);
           } else {
-            // console.log("address wasn't found, adding now");
+            // //console.log("address wasn't found, adding now");
             const addAddress = {
               firstname: b.user.recNameFirst,
               lastname: b.user.recNameLast,
@@ -127,9 +127,9 @@ module.exports = {
               state: b.user.state,
               zipcode: b.user.zip
             }
-            console.log(addAddress, 'adddress wasnt found, adding now');
+            //console.log(addAddress, 'adddress wasnt found, adding now');
             db.order_addresses.insert(addAddress).then(newAddress => {
-              console.log(newAddress, "newAddress added");
+              //console.log(newAddress, "newAddress added");
               updateOrderSendConfirmationEmail(order, ship, newAddress, b, text, req, res);
             })
           }
@@ -143,7 +143,7 @@ module.exports = {
   sendContactEmail: function(req, res){
     const db = app.get('db');
     let b = req.body;
-    console.log(req.body, 'mybody');
+    //console.log(req.body, 'mybody');
 
     if(b.lname){
       b.lname = " " + b.lname;
@@ -170,11 +170,11 @@ module.exports = {
     //send email
     transporter.sendMail(mailOptions, function(error, info){
       if(error){
-          console.log(error);
+          //console.log(error);
           res.json({yo: 'error'});
           res.send({yo: 'error'});
       }else{
-          console.log('Message sent: ' + info.response);
+          //console.log('Message sent: ' + info.response);
           res.json({yo: info.response});
           res.send({yo: info.response});
       };
@@ -205,7 +205,7 @@ function insertOrder(reqUserId, guestUserResult, req, res){
     }).then(order => {
 
       req.session.cart.forEach(function(product, index){
-        console.log(product, "result in forEach");
+        //console.log(product, "result in forEach");
         let matches = product.productSize.match(/(\d+.\d*)H[x\s]*(\d+.\d*)W/);
         let number1 = Number(matches[1]);
         let number2 = Number(matches[2]);
@@ -224,9 +224,9 @@ function insertOrder(reqUserId, guestUserResult, req, res){
             db.prices.findOne({price: myPrice}).then(pResult => {
               let pricesid = pResult.id
 
-              // console.log(number1, "FIRST NUMBER");
-              // console.log(number2, "SECOND VALUE");
-              // console.log(order.id, "HERE IS ORDER.ID");
+              // //console.log(number1, "FIRST NUMBER");
+              // //console.log(number2, "SECOND VALUE");
+              // //console.log(order.id, "HERE IS ORDER.ID");
               db.orderline.insert({
                 orderid: order.id,
                 productid: myProductId,
@@ -235,8 +235,8 @@ function insertOrder(reqUserId, guestUserResult, req, res){
                 priceid: pricesid,
                 color: myProductColor
               }).then(orderline => {
-                console.log(orderline, "orderline");
-                console.log('******* CHANGING TO AFTER ORDERLIN INSERT ****');
+                //console.log(orderline, "orderline");
+                //console.log('******* CHANGING TO AFTER ORDERLIN INSERT ****');
                 req.session.cart = [];
                 res.status(200).send((order.id).toString()) ; //res.send cannot be a number - convert to string before sending
               }) //end db.orderline.insert
@@ -260,18 +260,18 @@ function insertOrder(reqUserId, guestUserResult, req, res){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, res){
-  console.log("updating orders table now");
+  //console.log("updating orders table now");
   const db = app.get('db');
-  // console.log(address, 'addresssss ______-');
-  // console.log(db.orders, 'db.orders');
+  // //console.log(address, 'addresssss ______-');
+  // //console.log(db.orders, 'db.orders');
   db.orders.update({
     id: order[0].id,
     shippingid: ship.id,
     orderaddressesid: address.id,
     msg_to_seller: b.order.note
   }).then(orderUpdate => {
-    console.log(orderUpdate);
-    console.log("LOGGING ORDERUPDATE *********");
+    //console.log(orderUpdate);
+    //console.log("LOGGING ORDERUPDATE *********");
   })
 
   //create email
@@ -287,10 +287,10 @@ function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, re
   //send email
   transporter.sendMail(mailOptions, function(error, info){
     if(error){
-        console.log(error);
+        //console.log(error);
         res.json({yo: 'error'});
     }else{
-        console.log('Message sent: ' + info.response);
+        //console.log('Message sent: ' + info.response);
         res.json({yo: info.response});
     };
   });

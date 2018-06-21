@@ -5,7 +5,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/products"
     }).then(function(response){
-      console.log(response.data, "getAllProducts");
+      ////console.log(response.data, "getAllProducts");
       return response.data
     })
   }
@@ -24,7 +24,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/products/" + id
     }).then(function(response){
-      // console.log(response.data, "in service");
+      // ////console.log(response.data, "in service");
       return response.data;
     })
   }
@@ -34,18 +34,18 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/products/" + id + "/details"
     }).then(function(response){
-      // console.log(response.data, "in service");
+      // ////console.log(response.data, "in service");
       return response.data;
     })
   }
 
   this.getProductByName = function(name){
-    console.log(name, "searched letters in service");
+    ////console.log(name, "searched letters in service");
     return $http({
       method: "GET",
       url: "/api/products/search/" + name
     }).then(function(response){
-      console.log(response.data, "search by name in service");
+      ////console.log(response.data, "search by name in service");
       return response.data;
     })
   }
@@ -54,12 +54,12 @@ angular.module("ccvApp").service("mainService", function($http){
 
 
   this.getAuth = ()=> {
-    console.log("getAuth running");
+    ////console.log("getAuth running");
     return $http({
       method: "GET",
       url: "/auth/checkauth"
     }).then((response) => {
-      console.log(response.data, 'res.data getAuth');
+      ////console.log(response.data, 'res.data getAuth');
       return response.data;
     })
   }
@@ -89,13 +89,13 @@ angular.module("ccvApp").service("mainService", function($http){
   //     productId: productId,
   //     productOutline: productOutline
   //   }
-  //   // console.log(cartData);
+  //   // ////console.log(cartData);
   //   return $http({
   //     method: "POST",
   //     url: "/api/cart",
   //     data: cartData
   //   }).success(function(){
-  //     console.log("Item Added!");
+  //     ////console.log("Item Added!");
   //   })
   // }
 
@@ -105,7 +105,7 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/cart",
       data: cartData
     }).success(function(){
-      console.log("Item Added!");
+      ////console.log("Item Added!");
     })
   }
 
@@ -115,7 +115,7 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/cart",
       data: cartData
     }).then(function(res){
-      console.log(res, "in service");
+      ////console.log(res, "in service");
       return res.data;
     })
   }
@@ -125,14 +125,14 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/cart"
     }).then(function(response){
-      // console.log(response.data, "in service");
+      // ////console.log(response.data, "in service");
       return response.data;
     })
   }
 
   this.deleteProductsInCart = function(item){
 
-    console.log(item, "In service");
+    ////console.log(item, "In service");
     return $http({
       method: "DELETE",
       url: "/api/cart/" + item
@@ -154,7 +154,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/user/orders"
     }).then(function(response){
-      console.log(response, "reponse in srvice");
+      ////console.log(response, "reponse in srvice");
       return response.data;
     })
   }
@@ -165,7 +165,7 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/user/orders/" + id
     }).then((response) => {
-      // console.log(response, "getOrderById service");
+      // ////console.log(response, "getOrderById service");
       return response.data;
     })
   }
@@ -175,14 +175,14 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/orders/" + id + "/thankyou"
     }).then((response) => {
-      console.log(response);
+      ////console.log(response);
       return response.data;
     })
   }
 
 
   this.addShippingInfo = function(details){
-    console.log(details, "in service");
+    ////console.log(details, "in service");
     return details;
   }
 
@@ -193,7 +193,7 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/user/account",
       data: newEmail
     }).then((res) => {
-      console.log(res);
+      ////console.log(res);
       return res.data
     })
   }
@@ -207,7 +207,7 @@ angular.module("ccvApp").service("mainService", function($http){
       url: "/api/user/favorites",
       data: product
     }).then((res) => {
-      console.log(res);
+      ////console.log(res);
       return res.data;
     })
   }
@@ -217,14 +217,14 @@ angular.module("ccvApp").service("mainService", function($http){
       method: "GET",
       url: "/api/user/favorites"
     }).then((res) => {
-      console.log(res, "getFavorites in service");
+      ////console.log(res, "getFavorites in service");
       return res.data;
     })
   }
 
 
   this.getProductByCategory = function(catId){
-    // console.log(catId);
+    // ////console.log(catId);
     return $http({
       method: "GET",
       url: "/api/products/category/" + catId
@@ -234,7 +234,7 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.sendContactEmail = function(contactData){
-    console.log(contactData, "contactData in service");
+    ////console.log(contactData, "contactData in service");
     return $http({
       method: "POST",
       url: "/api/contact",
@@ -243,7 +243,7 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.existingLogIn = function(existingUser){
-    console.log(existingUser);
+    ////console.log(existingUser);
     return $http({
       method: "POST",
       url: "/auth/login",
@@ -252,7 +252,7 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.newUserSignUp = function(newUser){
-    console.log(newUser);
+    ////console.log(newUser);
     return $http({
       method: "POST",
       url: "/auth/signup",
@@ -261,7 +261,7 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.updatePass = function(newPass){
-    console.log(newPass, "new pass in mainService");
+    ////console.log(newPass, "new pass in mainService");
     return $http({
       method: "PUT",
       url: "/api/user/account/pass",
@@ -285,7 +285,7 @@ angular.module("ccvApp").service("mainService", function($http){
   }
 
   this.saveNewPassword = function(token, pass){
-    console.log(pass);
+    ////console.log(pass);
     return $http({
       method: "PUT",
       url: "/api/user/savepassword/" + token,

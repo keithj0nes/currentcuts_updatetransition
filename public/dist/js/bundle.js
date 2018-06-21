@@ -4335,7 +4335,7 @@ angular.module("ccvApp").directive("shiptime", function ($interval) {
 
       clockFn();
       $interval(clockFn, 1000);
-      console.log(clockFn());
+      //console.log(clockFn())
     }
 
   };
@@ -4362,11 +4362,10 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
       firstname: userName,
       lastname: userNameLast,
       email: userEmail
-    };
-    console.log(newEmail);
-    mainService.updateAccount(newEmail).then(function (response) {
+      //console.log(newEmail);
+    };mainService.updateAccount(newEmail).then(function (response) {
 
-      console.log(response, "logging response");
+      //console.log(response, "logging response");
       if (response.success === true) {
         $scope.messageIcon = sucIcon;
         $scope.accountMessage = "Your account has been updated!";
@@ -4390,9 +4389,9 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
       $scope.accountMessage = "New passwords don't match";
       // modalService.Open(id);
     } else {
-      // console.log(updatePass, "newPass");
+      // //console.log(updatePass, "newPass");
       mainService.updatePass(updatePass).then(function (res) {
-        console.log(res, "new pass");
+        //console.log(res, "new pass");
         if (res.passwordUpdated === true) {
           $scope.messageIcon = sucIcon;
           $scope.accountMessage = "Your password has been updated!";
@@ -4415,7 +4414,7 @@ angular.module("ccvApp").controller("accountController", function ($scope, $root
   };
 
   mainService.getUsername().then(function (res) {
-    console.log(res);
+    //console.log(res);
 
     if (res.reqUser === false) {
       $state.go('login');
@@ -4454,7 +4453,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   //     }
   //
   // var newarr = JSON.stringify(subOrder)
-  // console.log(newarr, "new are");
+  // //console.log(newarr, "new are");
   //     doc.text(105, 20, 'Thank you!', null, null, 'center');
   //     doc.text(105, 30, 'Order Id - ' + id, null, null, 'center');
   //
@@ -4476,8 +4475,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   //     // doc.autoPrint()
   //
   //     doc.save('Packlist Order ID: ' + id + ".pdf")
-  //     console.log('firing');
-  //     console.log(obj);
+  //     //console.log('firing');
+  //     //console.log(obj);
   //   }
 
   $scope.openModal = function (id, track, note, index) {
@@ -4504,9 +4503,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
         modalService.Open('add-new-minimum-modal');
       }
     } else if (id === "resend-tracking-modal") {
-      console.log(id, "resend-tracking-modal");
+      //console.log(id, "resend-tracking-modal");
     } else if (id === "delete-product-modal") {
-      console.log('opening', id, index);
+      //console.log('opening', id, index);
       modalService.Open(id);
     } else if (id === 'add-new-minimum-modal') {
       modalService.Open(id);
@@ -4514,7 +4513,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.closeMyModal = function (id) {
-    console.log("clicked button in controllers");
+    //console.log("clicked button in controllers");
     modalService.Close(id);
   };
 
@@ -4526,14 +4525,14 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
   $scope.getAllProducts = function () {
     adminService.adminGetAllProducts().then(function (response) {
-      console.log(response);
+      //console.log(response);
       $scope.showProducts = true;
       $scope.showClosedOrders = false;
       $scope.showOpenOrders = false;
 
       $scope.products = response;
 
-      console.log("getting all products");
+      //console.log("getting all products");
     });
   };
 
@@ -4554,9 +4553,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
           for (var i = 0; i < res.selectedCategories.length; i++) {
             var allCat = res.selectedCategories[i];
             if (selectedCat.name === allCat.name) {
-              // console.log("we have a match!");
+              // //console.log("we have a match!");
               $scope.defaultSelected.push(selectedCat);
-              // console.log($scope.defaultSelected, "loggin");
+              // //console.log($scope.defaultSelected, "loggin");
             }
           }
         }
@@ -4613,28 +4612,28 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     var category = { index: index };
     adminService.adminDeleteCategory(category, $scope.productId);
     for (var i = $scope.defaultSelected.length - 1; i >= 0; i--) {
-      console.log($scope.defaultSelected[i], index);
+      //console.log($scope.defaultSelected[i], index);
       if (index === i) {
-        console.log("UPPPPSSS");
+        //console.log("UPPPPSSS");
         $scope.defaultSelected.splice(i, 1);
       }
     }
   };
 
   $scope.addNewCategory = function () {
-    console.log($scope.allCategories, "clicked");
+    //console.log($scope.allCategories, "clicked");
     $scope.defaultSelected.push({ "name": $scope.catName });
-    console.log($scope.defaultSelected, "after clicked");
+    //console.log($scope.defaultSelected, "after clicked");
   };
 
   $scope.addNewRow = function () {
-    console.log($scope.productDetails.product, "running");
+    //console.log($scope.productDetails.product, "running");
     $scope.productDetails.product.push({ "height": $scope.height,
       "width": $scope.width,
       "price": $scope.price });
-    console.log($scope.productDetails, "hahah lol momg");
+    //console.log($scope.productDetails, "hahah lol momg");
     // $scope.editing = true;
-    // console.log($scope.productDetails.product);
+    // //console.log($scope.productDetails.product);
   };
 
   $scope.clearForm = function () {
@@ -4655,7 +4654,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.editDisableBtn = function (index) {
-    console.log(index, "logging index");
+    //console.log(index, "logging index");
     $scope.editDisable = true;
   };
 
@@ -4690,20 +4689,19 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
         imgmainvector: imgmainvector,
         isActive: true,
         imgoutlinevector: imgoutlinevector
-      };
 
-      console.log(productAdd);
-      console.log(productAdd.name);
+        //console.log(productAdd);
+        //console.log(productAdd.name);
 
-      console.log("GOT HERE");
-      adminService.adminAddProduct(productAdd).then(function (res) {
-        console.log(res, "logging response in admin apge");
+        //console.log("GOT HERE");
+      };adminService.adminAddProduct(productAdd).then(function (res) {
+        //console.log(res, "logging response in admin apge");
         if (res.productExists === true) {
           swal("this product is already in the database");
         } else {
           setTimeout(function () {
             $scope.getAllProducts();
-            console.log(res.id, "calling for details");
+            //console.log(res.id, "calling for details");
             getProductDetails(res.id);
           }, 100);
         }
@@ -4716,17 +4714,17 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
   $scope.updateDetails = function (index, productDetails, psheight, pswidth, psprice) {
 
-    console.log($scope.productId, "productId from the original requests");
-    console.log(psheight, "psheight");
-    console.log(pswidth, "pswidth");
-    console.log(psprice, "psprice");
-    console.log(index, "index");
+    //console.log($scope.productId, "productId from the original requests");
+    //console.log(psheight, "psheight");
+    //console.log(pswidth, "pswidth");
+    //console.log(psprice, "psprice");
+    //console.log(index, "index");
 
     // send index to backend if index has value in pps then change it else add new
 
 
     if (psheight && pswidth && psprice) {
-      console.log("all defined!");
+      //console.log("all defined!");
       var sizePriceDetails = {
         index: index,
         height: psheight,
@@ -4736,7 +4734,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.editDisable = false;
 
       adminService.adminUpdateProductSizePrice($scope.productId, sizePriceDetails).then(function () {
-        console.log('returning');
+        //console.log('returning');
         getProductDetails($scope.productId);
       });
 
@@ -4746,8 +4744,8 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
     } else {
       alert("you must fill in everything");
     }
-    console.log($scope.productDetails, "SCOPEDOTPRODUCTDETAILS");
-    console.log($scope.productDetails[index], "SCOPEDOTPRODUCTDETAILSINDEX");
+    //console.log($scope.productDetails, "SCOPEDOTPRODUCTDETAILS");
+    //console.log($scope.productDetails[index], "SCOPEDOTPRODUCTDETAILSINDEX");
   };
 
   $scope.deleteDetails = function (index, productDetails) {
@@ -4765,7 +4763,7 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   // $scope.update = function(){
   //     const img3file = document.getElementById('img1').files[0].name;
   //     adminService.adminUpdateTest(img3file).then(res => {
-  //       console.log(res, 'loggin responseeee!');
+  //       //console.log(res, 'loggin responseeee!');
   //     })
   // }
 
@@ -4798,10 +4796,9 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
         imgoutlinevector: imgoutlinevector,
         active: active,
         tags: tags
-      };
 
-      console.log($scope.productActive, name);
-      adminService.adminUpdateProduct(id, productUpdate);
+        //console.log($scope.productActive, name);
+      };adminService.adminUpdateProduct(id, productUpdate);
       setTimeout(function () {
         $scope.getAllProducts();
       }, 100);
@@ -4809,13 +4806,13 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
   };
 
   $scope.delete = function (productId, modalId) {
-    // console.log(productId);
-    // console.log('deteling!');
-    // console.log($scope.products, "logging products");
+    // //console.log(productId);
+    // //console.log('deteling!');
+    // //console.log($scope.products, "logging products");
     for (var i = $scope.products.length - 1; i >= 0; i--) {
-      // console.log(productId, $scope.products[i].id);
+      // //console.log(productId, $scope.products[i].id);
       if ($scope.products[i].id === productId) {
-        // console.log('splicing ', i);
+        // //console.log('splicing ', i);
         $scope.products.splice(i, 1);
       }
     }
@@ -4832,15 +4829,15 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
 
   var getOrderCount = function getOrderCount() {
     adminService.adminGetOrderCount().then(function (res) {
-      console.log(res, "logging res in controller haha");
+      //console.log(res, "logging res in controller haha");
       $scope.openCount = res[0].opencount;
       $scope.closedCount = res[0].closedcount;
 
       if ($scope.openCount === "0") {
-        console.log("setting to closed orders");
+        //console.log("setting to closed orders");
         $scope.getClosedOrders();
       } else {
-        console.log("open orders!");
+        //console.log("open orders!");
         $scope.getOpenOrders();
       }
     });
@@ -4854,19 +4851,19 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.tabopen = true;
       $scope.tabclosed = false;
 
-      console.log(res, "logging res");
+      //console.log(res, "logging res");
 
       if (res.mainOrder.length <= 0) {
         $scope.openOrdersEmpty = true;
         $scope.openOrders = res.mainOrder;
-        console.log($scope.openOrders, "logging with KEITH");
+        //console.log($scope.openOrders, "logging with KEITH");
         // $scope.openCount--;
         // $scope.closedCount++;
 
       } else {
         $scope.openOrders = res.mainOrder;
         $scope.openOrdersDetails = res.mainOrder.subOrder;
-        console.log($scope.openOrders, "logging with sam");
+        //console.log($scope.openOrders, "logging with sam");
       }
     });
   };
@@ -4880,18 +4877,18 @@ angular.module("ccvApp").controller("adminController", function ($scope, adminSe
       $scope.tabclosed = true;
 
       if (res.mainOrder.length <= 0) {
-        console.log("no length");
+        //console.log("no length");
         $scope.closedOrdersEmpty = true;
       }
-      console.log(res, "res in adminGetClosedOrders");
+      //console.log(res, "res in adminGetClosedOrders");
       $scope.closedOrders = res.mainOrder;
       $scope.closedOrdersDetails = res.mainOrder.subOrder;
     });
   };
 
   $scope.completeOrder = function (orderid, id) {
-    console.log($scope.openOrderIndex, "modalIndex");
-    console.log(orderid, "order id");
+    //console.log($scope.openOrderIndex, "modalIndex");
+    //console.log(orderid, "order id");
     adminService.adminSendConfirmation($scope.openOrderIndex, $scope.confirmOrder);
     modalService.Close(id);
 
@@ -5000,7 +4997,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     for (var i = 0; i < cart.length; i++) {
       total += Number(cart[i].productPrice) * Number(cart[i].productQuantity);
     }
-    console.log(total, "calculate total");
+    ////console.log(total, "calculate total");
 
     //shipping prices marked here - based on order total
     if (total >= 1 && total <= 20) {
@@ -5021,7 +5018,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
     for (var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
     }
-    console.log($scope.cartTotalItems, "total items function here");
+    ////console.log($scope.cartTotalItems, "total items function here");
 
     return $scope.cartTotalItems;
   };
@@ -5030,31 +5027,32 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
 
   function getProductsInCart() {
     mainService.getProductsInCart().then(function (response) {
-      console.log(response, "logging response in getProductsInCart");
+      ////console.log(response, "logging response in getProductsInCart");
       if (response.length === 0) {
+        ////console.log(response.length, 'r.length');
         $scope.somethingInCart = false;
       } else {
         $scope.somethingInCart = true;
+
+        $scope.cart = response;
+        ////console.log($scope.cart, "SCOPE DOT CART");
+
+        var costs = calculate($scope.cart);
+
+        $scope.cartTotal = costs.total;
+        $scope.shippingCost = costs.shipping;
+        $rootScope.shippingCost2 = costs.shipping;
+        $scope.orderTotal = costs.total + costs.shipping;
+
+        ////console.log($scope.cart, "in controller");
+        // $rootScope.cartQuant = 0;
+        // for (var i = 0; i < $scope.cart.length; i++) {
+        //   $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
+        //   ////console.log($rootScope.cartQuant, "cartQuant");
+        // }
+
+        $rootScope.cartQuant = findTotalItems();
       }
-
-      $scope.cart = response;
-      console.log($scope.cart, "SCOPE DOT CART");
-
-      var costs = calculate($scope.cart);
-
-      $scope.cartTotal = costs.total;
-      $scope.shippingCost = costs.shipping;
-      $rootScope.shippingCost2 = costs.shipping;
-      $scope.orderTotal = costs.total + costs.shipping;
-
-      console.log($scope.cart, "in controller");
-      // $rootScope.cartQuant = 0;
-      // for (var i = 0; i < $scope.cart.length; i++) {
-      //   $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
-      //   console.log($rootScope.cartQuant, "cartQuant");
-      // }
-
-      $rootScope.cartQuant = findTotalItems();
     });
   }
 
@@ -5197,39 +5195,39 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
         email: email
         // email: document.getElementById('userEmail').value
 
-        // console.log($rootScope.details, "scopedetailsbeinglogged");
+        // ////console.log($rootScope.details, "scopedetailsbeinglogged");
 
       };$scope.value = $rootScope.details;
 
       if ($rootScope.note.note) {
-        // console.log($rootScope.note.note, "rootScope.no.note");
+        // ////console.log($rootScope.note.note, "rootScope.no.note");
         orderData.order.note = $rootScope.note.note;
       }
 
       if ($rootScope.email.email) {
-        // console.log($rootScope.email.email, "rootScope.email");
+        // ////console.log($rootScope.email.email, "rootScope.email");
         orderData.email = $rootScope.email.email;
       }
 
       orderData.user = $scope.value;
       orderData.product = [];
       orderData.shipping = $rootScope.shippingCost2;
-      console.log(orderData.shipping, "orderData.shipping");
+      ////console.log(orderData.shipping, "orderData.shipping");
 
       mainService.getProductsInCart().then(function (response) {
         if (response) {
-          console.log(response);
+          ////console.log(response);
 
           response.forEach(function (item, i) {
-            console.log(item, "item being logged");
+            ////console.log(item, "item being logged");
             orderData.product.push(item);
           });
         }
       });
 
-      console.log(orderData, "orderdata logged");
+      ////console.log(orderData, "orderdata logged");
       // Open Checkout with further options:
-      // console.log(e.data, "USER DATA STRIPE CLICK");
+      // ////console.log(e.data, "USER DATA STRIPE CLICK");
       if (!$scope.value) {
         alert("please enter shipping info");
       } else {
@@ -5252,7 +5250,7 @@ angular.module("ccvApp").controller("cartController", function ($scope, $http, $
               // email: "hello@hahaomg.com",
               stripeTokenCard: newCard
             }).then(function (response) {
-              console.log(response, "response in cartController charge lololololol");
+              ////console.log(response, "response in cartController charge lololololol");
               $rootScope.cart = [];
               //set timeout so thankyou page loads after orderData is saved to backend
               setTimeout(function () {
@@ -5285,7 +5283,7 @@ angular.module("ccvApp").controller("categoryController", function ($scope, $sta
 
   var currentWord = $state.params.catname;
   if (currentWord.indexOf("_") >= 1) {
-    console.log(true);
+    ////console.log(true);
     currentWord = currentWord.split("_");
 
     for (var j = 0; j < currentWord.length; j++) {
@@ -5303,25 +5301,25 @@ angular.module("ccvApp").controller("categoryController", function ($scope, $sta
     }
     $scope.title = newCurrentWord;
   } else {
-    console.log(false);
+    ////console.log(false);
     $scope.title = currentWord.charAt(0).toUpperCase() + currentWord.substring(1);
   }
-  console.log($scope.title);
+  ////console.log($scope.title)
 
   mainService.getProductByCategory($state.params.catname).then(function (res) {
-    console.log(res, "logging res in categories controller");
+    ////console.log(res, "logging res in categories controller");
     $scope.subCategories = res;
 
     // for(var i = 0; i <$scope.subCategories.length;i++){
     //   var currentWord = $scope.subCategories[i].name;
-    //   console.log('lakjsdglkas;d');
+    //   ////console.log('lakjsdglkas;d');
     //
     //   if(currentWord.indexOf("_") >= 1 ){
     //     currentWord = currentWord.split("_")
     //     for(var j = 0; j < currentWord.length; j++){
     //       currentWord[j] = currentWord[j].charAt(0).toUpperCase() + currentWord[j].substring(1)
     //     }
-    //     console.log('here');
+    //     ////console.log('here');
     //     $scope.subCategories[i].titleName = currentWord.join(" ")
     //
     //     var updatedCurrentWord = $scope.subCategories[i].titleName
@@ -5334,10 +5332,10 @@ angular.module("ccvApp").controller("categoryController", function ($scope, $sta
     //     }
     //     $scope.subCategories[i].titleName = updatedCurrentWord;
     //   } else {
-    //     console.log('hereeeeeee');
+    //     ////console.log('hereeeeeee');
     //     $scope.subCategories[i].titleName = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
     //     }
-    //   // console.log($scope.subCategories[i].titleName)
+    //   // ////console.log($scope.subCategories[i].titleName)
     // }
 
     if (res.bottomlevel === true) {
@@ -5370,7 +5368,7 @@ angular.module("ccvApp").controller("categoryController", function ($scope, $sta
 //   } else {
 //     currentWord = currentWord.charAt(0).toUpperCase() + currentWord.substring(1)
 //     }
-//   console.log(currentWord)
+//   ////console.log(currentWord)
 // }
 "use strict";
 
@@ -5456,8 +5454,8 @@ angular.module("ccvApp").controller("favoriteController", function ($scope, $sta
 
   var getFavorites = function getFavorites() {
     mainService.getFavorites().then(function (res) {
-      console.log(res);
-      console.log(res.length);
+      //console.log(res);
+      //console.log(res.length);
 
       if (res.reqUser === false) {
         $state.go("login");
@@ -5498,7 +5496,7 @@ angular.module("ccvApp").controller("mainController", function ($scope, mainServ
 "use strict";
 
 angular.module("ccvApp").controller("passwordCtrl", function ($scope, $state, $stateParams, $timeout, mainService) {
-  console.log($stateParams, "logging stateParams");
+  //console.log($stateParams, "logging stateParams");
   $scope.invalidToken = false;
 
   $scope.submitReset = function (pass, confirmPass) {
@@ -5518,7 +5516,7 @@ angular.module("ccvApp").controller("passwordCtrl", function ($scope, $state, $s
     } else if (pass && confirmPass) {
       $scope.resetMessage = "HAHA YES!";
       mainService.saveNewPassword($stateParams.token, { pass: pass }).then(function (res) {
-        console.log(res, "loged");
+        //console.log(res, "loged");
         if (res.success === true) {
           $scope.resetMessage = res.message += "! Redirecting...";
 
@@ -5532,7 +5530,7 @@ angular.module("ccvApp").controller("passwordCtrl", function ($scope, $state, $s
 
   if ($stateParams.token) {
     mainService.confirmPassResetToken($stateParams.token).then(function (res) {
-      console.log(res, "logging result in toekn");
+      //console.log(res, "logging result in toekn");
       if (res.success === false) {
         $scope.invalidToken = true;
       }
@@ -5556,7 +5554,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
   };
 
   $scope.closeMyModal = function (id) {
-    console.log("clicked button in controllers");
+    ////console.log("clicked button in controllers");
     modalService.Close(id);
   };
 
@@ -5564,6 +5562,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
     mainService.getProductById($stateParams.id).then(function (response) {
       //response[0] gives us description, id, images, and name
       $scope.product = response[0];
+      $scope.des = $sce.trustAsHtml($scope.product.description);
       //set image on load
       $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
       // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets.svg");
@@ -5575,12 +5574,12 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
 
 
       $scope.vec = response[0].imgmainvector;
-      console.log($scope.vec);
+      ////console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle
       $scope.product.imgoutlinevector ? $scope.outlineImage = true : $scope.outlineImage = false;
       //change inverted image
       $scope.changeInverted = function (inverted) {
-        console.log(inverted);
+        ////console.log(inverted);
         //if inverted = true, set the image to second outline image
         inverted ? ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgoutlinevector), outlineCheckbox = true) : ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgmainvector), outlineCheckbox = false);
       };
@@ -5589,7 +5588,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
         //if productColor = true, set the new color to be selected color
         if (productColor) {
           $scope.newColor = JSON.parse(productColor);
-          console.log($scope.newColor.secon);
+          ////console.log($scope.newColor.secon);
         }
       };
     });
@@ -5597,11 +5596,11 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
       //response gives us all heights, widths and prices
       $scope.product2 = response.product;
       //response gives us the total number of favorites
-      console.log($scope.product2, 'p2');
+      ////console.log($scope.product2, 'p2');
       $scope.favCount = response.totalFavs[0].count;
-      console.log(response);
+      ////console.log(response);
       if (response.favFound) {
-        console.log(true);
+        ////console.log(true);
         $scope.favorited = true;
       }
     });
@@ -5619,7 +5618,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
         // $scope.favorited = true;
         $scope.favorited = !$scope.favorited;
 
-        console.log($scope.favorited ? "added to favorite!" : "delted from favorites!");
+        ////console.log($scope.favorited ? "added to favorite!" : "delted from favorites!");
       }
     });
   };
@@ -5627,7 +5626,7 @@ angular.module("ccvApp").controller("productController", function ($scope, $root
   //checkQuantity checks to make sure the quantity entered is greater than 0
   //if not, set the productQuantity to 1
   $scope.checkQuantity = function () {
-    console.log($scope.productQuantity, 'pq');
+    ////console.log($scope.productQuantity, 'pq');
     if ($scope.productQuantity <= 0) {
       $scope.productQuantity = 1;
     } else if ($scope.productQuantity > 20) {
@@ -5668,8 +5667,8 @@ angular.module("ccvApp").controller("searchController", function ($scope, $state
 
   mainService.getProductByName($scope.searchTerm).then(function (response) {
     $scope.searchProducts = response;
-    console.log(response, "response in controller");
-    console.log($scope.searchProducts, "scope search prodcutz");
+    //console.log(response, "response in controller");
+    //console.log($scope.searchProducts, "scope search prodcutz");
 
     if (response.length >= 1) {
       $scope.search = true;
@@ -5688,7 +5687,7 @@ angular.module("ccvApp").controller("thankyouController", function ($scope, $roo
       $scope.thankyouResponse = true;
       $scope.orderNumber = $state.params.orderid;
       $scope.thankyouOrder = response;
-      console.log(response, 'RESPONSE IN THANKYOUUUUUUU');
+      //console.log(response, 'RESPONSE IN THANKYOUUUUUUU');
       $scope.shipping = parseInt($scope.thankyouOrder[0].shipping);
       $scope.orderTotal = parseInt($scope.thankyouOrder[0].ordertotal);
     } else {
@@ -5733,12 +5732,12 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   $scope.previousOrders = false;
 
   $scope.openModal = function (id) {
-    console.log(id, "openModal in user");
+    //console.log(id, "openModal in user");
     modalService.Open(id);
   };
 
   $scope.closeMyModal = function (id) {
-    console.log(id, "clicked user controllers");
+    //console.log(id,"clicked user controllers");
     modalService.Close(id);
   };
 
@@ -5754,14 +5753,14 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
   };
 
   if ($state.params.orderid) {
-    console.log("order details");
+    //console.log("order details");
     mainService.getOrderById($state.params.orderid).then(function (response) {
-      console.log(response, "HERE IS THE RESPONSE");
+      //console.log(response, "HERE IS THE RESPONSE");
       if (response.reqUser === false) {
-        console.log("no reqUser");
+        //console.log("no reqUser");
         $state.go("login");
       } else if (response.results === false) {
-        console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+        //console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
         $state.go("orderhistory");
       } else if (response) {
         $rootScope.$broadcast('cartCount');
@@ -5772,512 +5771,10 @@ angular.module("ccvApp").controller("userController", function ($scope, $rootSco
       }
     });
   } else {
-    console.log("order history");
+    //console.log("order history");
     getOrderHistory();
   }
 });
-"use strict";
-
-angular.module("ccvApp").service("adminService", function ($http) {
-
-  this.adminGetAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateTest = function (file) {
-    console.log(file, 'file');
-    var files = { file: file };
-    return $http({
-      method: 'POST',
-      url: '/api/upload',
-      data: file
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminAddProduct = function (productAdd) {
-    return $http({
-      method: "POST",
-      url: "/api/admin/products",
-      data: productAdd
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProduct = function (id, productUpdate) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id,
-      data: productUpdate
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteProduct = function (productId) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + productId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminEditProducts = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/admin/products/" + id + "/details"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteDetails = function (id, sizePriceDetails) {
-    return $http({
-      method: "DELETE",
-      url: "api/admin/products/" + id + "/sizeprice",
-      data: sizePriceDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSaveCategory = function (updateCat, productId) {
-    return $http({
-      method: "PUT",
-      url: "/api/admin/products/" + productId + "/categories",
-      data: updateCat
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminDeleteCategory = function (categoryDetails, id) {
-    return $http({
-      method: "DELETE",
-      url: "/api/admin/products/" + id + "/categories",
-      data: categoryDetails,
-      headers: { "Content-Type": "application/json;charset=utf-8" }
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetOpenOrders = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/open"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetClosedOrders = function () {
-    console.log("getting here");
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/closed"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminSendConfirmation = function (index, orderDetails) {
-    console.log(index, orderDetails, "in service");
-    return $http({
-      method: "PUT",
-      url: "/api/admin/orders/open/" + index,
-      data: orderDetails
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.adminGetOrderCount = function () {
-    return $http({
-      method: "GET",
-      url: "/api/admin/orders/count"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-});
-"use strict";
-
-angular.module("ccvApp").service("mainService", function ($http) {
-
-  this.getAllProducts = function () {
-    return $http({
-      method: "GET",
-      url: "/api/products"
-    }).then(function (response) {
-      console.log(response.data, "getAllProducts");
-      return response.data;
-    });
-  };
-
-  this.loadMore = function () {
-    return $http({
-      method: "GET",
-      url: "/api/products/more"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.getProductById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductById2 = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/products/" + id + "/details"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.getProductByName = function (name) {
-    console.log(name, "searched letters in service");
-    return $http({
-      method: "GET",
-      url: "/api/products/search/" + name
-    }).then(function (response) {
-      console.log(response.data, "search by name in service");
-      return response.data;
-    });
-  };
-
-  this.getAuth = function () {
-    console.log("getAuth running");
-    return $http({
-      method: "GET",
-      url: "/auth/checkauth"
-    }).then(function (response) {
-      console.log(response.data, 'res.data getAuth');
-      return response.data;
-    });
-  };
-
-  this.getUsername = function () {
-    return $http({
-      method: "GET",
-      url: "/auth/currentuser"
-    }).then(function (response) {
-      return response.data;
-    });
-  };
-
-  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
-  //
-  //   const cartData = {
-  //     productSize: productSize,
-  //     productColor: productColor,
-  //     productQuantity: productQuantity,
-  //     productName: productName,
-  //     productPrice: productPrice,
-  //     productImage: productImage,
-  //     productId: productId,
-  //     productOutline: productOutline
-  //   }
-  //   // console.log(cartData);
-  //   return $http({
-  //     method: "POST",
-  //     url: "/api/cart",
-  //     data: cartData
-  //   }).success(function(){
-  //     console.log("Item Added!");
-  //   })
-  // }
-
-  this.addProductsToCart = function (cartData) {
-    return $http({
-      method: "POST",
-      url: "/api/cart",
-      data: cartData
-    }).success(function () {
-      console.log("Item Added!");
-    });
-  };
-
-  this.updateProductsInCart = function (cartData) {
-    return $http({
-      method: "PUT",
-      url: "/api/cart",
-      data: cartData
-    }).then(function (res) {
-      console.log(res, "in service");
-      return res.data;
-    });
-  };
-
-  this.getProductsInCart = function () {
-    return $http({
-      method: "GET",
-      url: "/api/cart"
-    }).then(function (response) {
-      // console.log(response.data, "in service");
-      return response.data;
-    });
-  };
-
-  this.deleteProductsInCart = function (item) {
-
-    console.log(item, "In service");
-    return $http({
-      method: "DELETE",
-      url: "/api/cart/" + item
-    }).then(function (response) {
-      return response;
-    });
-  };
-  //not being used anywhere
-  // this.logout = function(){
-  //   return ({
-  //     method: "GET",
-  //     url: "/api/user/logout"
-  //   }).success(function(){
-  //   })
-  // }
-
-  this.getOrderHistory = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders"
-    }).then(function (response) {
-      console.log(response, "reponse in srvice");
-      return response.data;
-    });
-  };
-
-  this.getOrderById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/user/orders/" + id
-    }).then(function (response) {
-      // console.log(response, "getOrderById service");
-      return response.data;
-    });
-  };
-
-  this.getThankYouById = function (id) {
-    return $http({
-      method: "GET",
-      url: "/api/orders/" + id + "/thankyou"
-    }).then(function (response) {
-      console.log(response);
-      return response.data;
-    });
-  };
-
-  this.addShippingInfo = function (details) {
-    console.log(details, "in service");
-    return details;
-  };
-
-  this.updateAccount = function (newEmail) {
-
-    return $http({
-      method: "PUT",
-      url: "/api/user/account",
-      data: newEmail
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.addFavorite = function (productId) {
-    var product = {
-      productId: productId
-    };
-    return $http({
-      method: "POST",
-      url: "/api/user/favorites",
-      data: product
-    }).then(function (res) {
-      console.log(res);
-      return res.data;
-    });
-  };
-
-  this.getFavorites = function () {
-    return $http({
-      method: "GET",
-      url: "/api/user/favorites"
-    }).then(function (res) {
-      console.log(res, "getFavorites in service");
-      return res.data;
-    });
-  };
-
-  this.getProductByCategory = function (catId) {
-    // console.log(catId);
-    return $http({
-      method: "GET",
-      url: "/api/products/category/" + catId
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.sendContactEmail = function (contactData) {
-    console.log(contactData, "contactData in service");
-    return $http({
-      method: "POST",
-      url: "/api/contact",
-      data: contactData
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.existingLogIn = function (existingUser) {
-    console.log(existingUser);
-    return $http({
-      method: "POST",
-      url: "/auth/login",
-      data: existingUser
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.newUserSignUp = function (newUser) {
-    console.log(newUser);
-    return $http({
-      method: "POST",
-      url: "/auth/signup",
-      data: newUser
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.updatePass = function (newPass) {
-    console.log(newPass, "new pass in mainService");
-    return $http({
-      method: "PUT",
-      url: "/api/user/account/pass",
-      data: newPass
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.resetPasswordEmail = function (email) {
-    return $http({
-      method: "PUT",
-      url: "/api/user/resetpassword",
-      data: email
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.confirmPassResetToken = function (token) {
-    return $http({
-      method: "GET",
-      url: "/api/user/resetpassword/" + token
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.saveNewPassword = function (token, pass) {
-    console.log(pass);
-    return $http({
-      method: "PUT",
-      url: "/api/user/savepassword/" + token,
-      data: pass
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-
-  this.loginWithFacebook = function () {
-    return $http({
-      method: "GET",
-      url: "/auth/facebook"
-    }).then(function (res) {
-      return res.data;
-    });
-  };
-});
-'use strict';
-
-angular.module('ccvApp').factory('modalService', function () {
-
-    var modals = []; // array of modals on the page
-    var service = {};
-
-    service.Add = Add;
-    service.Remove = Remove;
-    service.Open = Open;
-    service.Close = Close;
-
-    return service;
-
-    function Add(modal) {
-        // add modal to array of active modals
-        modals.push(modal);
-    }
-
-    function Remove(id) {
-        // remove modal from array of active modals
-        var modalToRemove = _.findWhere(modals, { id: id });
-        modals = _.without(modals, modalToRemove);
-    }
-
-    function Open(id) {
-        // open modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.open();
-    }
-
-    function Close(id) {
-        // close modal specified by id
-        var modal = _.findWhere(modals, { id: id });
-        modal.close();
-    }
-
-    function myFindWhere(array, criteria) {
-        return array.find(function (item) {
-            return Object.keys(criteria).every(function (key) {
-                return item[key] === criteria[key];
-            });
-        });
-    }
-});
-"use strict";
-
-angular.module("ccvApp").service("productService", function ($http) {});
 "use strict";
 
 angular.module("ccvApp").directive("adminAuth", function () {
@@ -6287,7 +5784,7 @@ angular.module("ccvApp").directive("adminAuth", function () {
     controller: function controller($scope, mainService) {
 
       mainService.getAuth().then(function (response) {
-        console.log(response);
+        // //console.log(response);
         if (response.reqUserAdmin === true) {
           $scope.auth = true;
         }
@@ -6550,9 +6047,9 @@ angular.module("ccvApp").directive("signupLogin", function () {
       };
 
       $scope.loginWithFacebook = function () {
-        console.log('clicked facebook button');
+        //console.log('clicked facebook button');
         mainService.loginWithFacebook().then(function (res) {
-          console.log(res, 'logged in! loginWithFacebook');
+          //console.log(res, 'logged in! loginWithFacebook');
         });
       };
     }
@@ -6602,40 +6099,40 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
 
         // setTimeout(function () {
         //   var hello = mainService.addShippingInfo()
-        //   console.log(hello);
+        //   //console.log(hello);
         //
         // }, 2000);
 
         // setTimeout(function () {
         // scope.value = $rootScope.$on.details
-        // console.log(scope.value, "scopedotvalue");
+        // //console.log(scope.value, "scopedotvalue");
         // }, 2000);
 
 
       };$('.btn-stripe').on('click', orderData, function (e) {
 
         // $rootScope.fun()
-        // console.log($rootScope.fun());
+        // //console.log($rootScope.fun());
 
         scope.value = $rootScope.details;
-        console.log(scope.value, "scopedotvalue");
+        //console.log(scope.value, "scopedotvalue");
         if ($rootScope.note) {
-          console.log($rootScope.note.note, "rootScope.no.note");
+          //console.log($rootScope.note.note, "rootScope.no.note");
           orderData.order.note = $rootScope.note.note;
         }
         orderData.user = scope.value;
         orderData.product = [];
 
         mainService.getProductsInCart().then(function (response) {
-          console.log(response);
+          //console.log(response);
           response.forEach(function (item, i) {
-            console.log(item, "item being logged");
+            //console.log(item, "item being logged");
             orderData.product.push(item);
           });
         });
-        console.log(orderData, "orderdata logged");
+        //console.log(orderData, "orderdata logged");
         // Open Checkout with further options:
-        // console.log(e.data, "USER DATA STRIPE CLICK");
+        // //console.log(e.data, "USER DATA STRIPE CLICK");
         if (!scope.value) {
           alert("please enter shipping info");
         } else {
@@ -6730,4 +6227,506 @@ angular.module("ccvApp").directive("stripeDirective", function ($http, $state, $
 //       }
 //     }
 //   });
+"use strict";
+
+angular.module("ccvApp").service("adminService", function ($http) {
+
+  this.adminGetAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateTest = function (file) {
+    //console.log(file, 'file');
+    var files = { file: file };
+    return $http({
+      method: 'POST',
+      url: '/api/upload',
+      data: file
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminAddProduct = function (productAdd) {
+    return $http({
+      method: "POST",
+      url: "/api/admin/products",
+      data: productAdd
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProduct = function (id, productUpdate) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id,
+      data: productUpdate
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteProduct = function (productId) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + productId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminEditProducts = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/admin/products/" + id + "/details"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminUpdateProductSizePrice = function (id, sizePriceDetails) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteDetails = function (id, sizePriceDetails) {
+    return $http({
+      method: "DELETE",
+      url: "api/admin/products/" + id + "/sizeprice",
+      data: sizePriceDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSaveCategory = function (updateCat, productId) {
+    return $http({
+      method: "PUT",
+      url: "/api/admin/products/" + productId + "/categories",
+      data: updateCat
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminDeleteCategory = function (categoryDetails, id) {
+    return $http({
+      method: "DELETE",
+      url: "/api/admin/products/" + id + "/categories",
+      data: categoryDetails,
+      headers: { "Content-Type": "application/json;charset=utf-8" }
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOpenOrders = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/open"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetClosedOrders = function () {
+    //console.log("getting here");
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/closed"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminSendConfirmation = function (index, orderDetails) {
+    //console.log(index, orderDetails, "in service");
+    return $http({
+      method: "PUT",
+      url: "/api/admin/orders/open/" + index,
+      data: orderDetails
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.adminGetOrderCount = function () {
+    return $http({
+      method: "GET",
+      url: "/api/admin/orders/count"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+});
+"use strict";
+
+angular.module("ccvApp").service("mainService", function ($http) {
+
+  this.getAllProducts = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products"
+    }).then(function (response) {
+      ////console.log(response.data, "getAllProducts");
+      return response.data;
+    });
+  };
+
+  this.loadMore = function () {
+    return $http({
+      method: "GET",
+      url: "/api/products/more"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.getProductById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id
+    }).then(function (response) {
+      // ////console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductById2 = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/products/" + id + "/details"
+    }).then(function (response) {
+      // ////console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.getProductByName = function (name) {
+    ////console.log(name, "searched letters in service");
+    return $http({
+      method: "GET",
+      url: "/api/products/search/" + name
+    }).then(function (response) {
+      ////console.log(response.data, "search by name in service");
+      return response.data;
+    });
+  };
+
+  this.getAuth = function () {
+    ////console.log("getAuth running");
+    return $http({
+      method: "GET",
+      url: "/auth/checkauth"
+    }).then(function (response) {
+      ////console.log(response.data, 'res.data getAuth');
+      return response.data;
+    });
+  };
+
+  this.getUsername = function () {
+    return $http({
+      method: "GET",
+      url: "/auth/currentuser"
+    }).then(function (response) {
+      return response.data;
+    });
+  };
+
+  // this.addProductsToCart = function(productSize,productColor,productQuantity,productName,productPrice,productImage,productId,productOutline){
+  //
+  //   const cartData = {
+  //     productSize: productSize,
+  //     productColor: productColor,
+  //     productQuantity: productQuantity,
+  //     productName: productName,
+  //     productPrice: productPrice,
+  //     productImage: productImage,
+  //     productId: productId,
+  //     productOutline: productOutline
+  //   }
+  //   // ////console.log(cartData);
+  //   return $http({
+  //     method: "POST",
+  //     url: "/api/cart",
+  //     data: cartData
+  //   }).success(function(){
+  //     ////console.log("Item Added!");
+  //   })
+  // }
+
+  this.addProductsToCart = function (cartData) {
+    return $http({
+      method: "POST",
+      url: "/api/cart",
+      data: cartData
+    }).success(function () {
+      ////console.log("Item Added!");
+    });
+  };
+
+  this.updateProductsInCart = function (cartData) {
+    return $http({
+      method: "PUT",
+      url: "/api/cart",
+      data: cartData
+    }).then(function (res) {
+      ////console.log(res, "in service");
+      return res.data;
+    });
+  };
+
+  this.getProductsInCart = function () {
+    return $http({
+      method: "GET",
+      url: "/api/cart"
+    }).then(function (response) {
+      // ////console.log(response.data, "in service");
+      return response.data;
+    });
+  };
+
+  this.deleteProductsInCart = function (item) {
+
+    ////console.log(item, "In service");
+    return $http({
+      method: "DELETE",
+      url: "/api/cart/" + item
+    }).then(function (response) {
+      return response;
+    });
+  };
+  //not being used anywhere
+  // this.logout = function(){
+  //   return ({
+  //     method: "GET",
+  //     url: "/api/user/logout"
+  //   }).success(function(){
+  //   })
+  // }
+
+  this.getOrderHistory = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders"
+    }).then(function (response) {
+      ////console.log(response, "reponse in srvice");
+      return response.data;
+    });
+  };
+
+  this.getOrderById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/user/orders/" + id
+    }).then(function (response) {
+      // ////console.log(response, "getOrderById service");
+      return response.data;
+    });
+  };
+
+  this.getThankYouById = function (id) {
+    return $http({
+      method: "GET",
+      url: "/api/orders/" + id + "/thankyou"
+    }).then(function (response) {
+      ////console.log(response);
+      return response.data;
+    });
+  };
+
+  this.addShippingInfo = function (details) {
+    ////console.log(details, "in service");
+    return details;
+  };
+
+  this.updateAccount = function (newEmail) {
+
+    return $http({
+      method: "PUT",
+      url: "/api/user/account",
+      data: newEmail
+    }).then(function (res) {
+      ////console.log(res);
+      return res.data;
+    });
+  };
+
+  this.addFavorite = function (productId) {
+    var product = {
+      productId: productId
+    };
+    return $http({
+      method: "POST",
+      url: "/api/user/favorites",
+      data: product
+    }).then(function (res) {
+      ////console.log(res);
+      return res.data;
+    });
+  };
+
+  this.getFavorites = function () {
+    return $http({
+      method: "GET",
+      url: "/api/user/favorites"
+    }).then(function (res) {
+      ////console.log(res, "getFavorites in service");
+      return res.data;
+    });
+  };
+
+  this.getProductByCategory = function (catId) {
+    // ////console.log(catId);
+    return $http({
+      method: "GET",
+      url: "/api/products/category/" + catId
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.sendContactEmail = function (contactData) {
+    ////console.log(contactData, "contactData in service");
+    return $http({
+      method: "POST",
+      url: "/api/contact",
+      data: contactData
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.existingLogIn = function (existingUser) {
+    ////console.log(existingUser);
+    return $http({
+      method: "POST",
+      url: "/auth/login",
+      data: existingUser
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.newUserSignUp = function (newUser) {
+    ////console.log(newUser);
+    return $http({
+      method: "POST",
+      url: "/auth/signup",
+      data: newUser
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.updatePass = function (newPass) {
+    ////console.log(newPass, "new pass in mainService");
+    return $http({
+      method: "PUT",
+      url: "/api/user/account/pass",
+      data: newPass
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.resetPasswordEmail = function (email) {
+    return $http({
+      method: "PUT",
+      url: "/api/user/resetpassword",
+      data: email
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.confirmPassResetToken = function (token) {
+    return $http({
+      method: "GET",
+      url: "/api/user/resetpassword/" + token
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.saveNewPassword = function (token, pass) {
+    ////console.log(pass);
+    return $http({
+      method: "PUT",
+      url: "/api/user/savepassword/" + token,
+      data: pass
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+
+  this.loginWithFacebook = function () {
+    return $http({
+      method: "GET",
+      url: "/auth/facebook"
+    }).then(function (res) {
+      return res.data;
+    });
+  };
+});
+'use strict';
+
+angular.module('ccvApp').factory('modalService', function () {
+
+    var modals = []; // array of modals on the page
+    var service = {};
+
+    service.Add = Add;
+    service.Remove = Remove;
+    service.Open = Open;
+    service.Close = Close;
+
+    return service;
+
+    function Add(modal) {
+        // add modal to array of active modals
+        modals.push(modal);
+    }
+
+    function Remove(id) {
+        // remove modal from array of active modals
+        var modalToRemove = _.findWhere(modals, { id: id });
+        modals = _.without(modals, modalToRemove);
+    }
+
+    function Open(id) {
+        // open modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.open();
+    }
+
+    function Close(id) {
+        // close modal specified by id
+        var modal = _.findWhere(modals, { id: id });
+        modal.close();
+    }
+
+    function myFindWhere(array, criteria) {
+        return array.find(function (item) {
+            return Object.keys(criteria).every(function (key) {
+                return item[key] === criteria[key];
+            });
+        });
+    }
+});
+"use strict";
+
+angular.module("ccvApp").service("productService", function ($http) {});
 //# sourceMappingURL=bundle.js.map

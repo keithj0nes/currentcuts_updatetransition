@@ -11,7 +11,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   }
 
   $scope.closeMyModal = function(id){
-    console.log("clicked button in controllers");
+    ////console.log("clicked button in controllers");
     modalService.Close(id);
   }
 
@@ -19,6 +19,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
     mainService.getProductById($stateParams.id).then(function(response) {
       //response[0] gives us description, id, images, and name
       $scope.product = response[0];
+      $scope.des = $sce.trustAsHtml($scope.product.description);
       //set image on load
       $scope.vectorFile = $sce.trustAsResourceUrl(response[0].imgmainvector);
       // $scope.vectorFile = $sce.trustAsResourceUrl("https://s3-us-west-2.amazonaws.com/currentcuts/mets.svg");
@@ -30,12 +31,12 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
 
 
       $scope.vec = response[0].imgmainvector
-      console.log($scope.vec);
+      ////console.log($scope.vec);
       //if there's an outline image, set ng if to true to show outline toggle
       $scope.product.imgoutlinevector ? $scope.outlineImage = true : $scope.outlineImage = false;
       //change inverted image
       $scope.changeInverted = function(inverted){
-        console.log(inverted);
+        ////console.log(inverted);
         //if inverted = true, set the image to second outline image
         inverted ? ($scope.vectorFile = $sce.trustAsResourceUrl($scope.product.imgoutlinevector), outlineCheckbox = true) : ($scope.vectorFile= $sce.trustAsResourceUrl($scope.product.imgmainvector), outlineCheckbox = false);
       }
@@ -44,7 +45,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
         //if productColor = true, set the new color to be selected color
         if(productColor){
           $scope.newColor = JSON.parse(productColor)
-          console.log($scope.newColor.secon);
+          ////console.log($scope.newColor.secon);
         }
       }
     })
@@ -52,11 +53,11 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
       //response gives us all heights, widths and prices
       $scope.product2 = response.product;
       //response gives us the total number of favorites
-      console.log($scope.product2, 'p2');
+      ////console.log($scope.product2, 'p2');
       $scope.favCount = response.totalFavs[0].count;
-      console.log(response);
+      ////console.log(response);
       if(response.favFound){
-        console.log(true);
+        ////console.log(true);
         $scope.favorited = true;
       }
     })
@@ -75,7 +76,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
         // $scope.favorited = true;
         $scope.favorited = !$scope.favorited;
 
-        console.log($scope.favorited ? "added to favorite!" : "delted from favorites!");
+        ////console.log($scope.favorited ? "added to favorite!" : "delted from favorites!");
       }
     })
   }
@@ -83,7 +84,7 @@ angular.module("ccvApp").controller("productController", function($scope, $rootS
   //checkQuantity checks to make sure the quantity entered is greater than 0
   //if not, set the productQuantity to 1
   $scope.checkQuantity = function(){
-    console.log($scope.productQuantity, 'pq');
+    ////console.log($scope.productQuantity, 'pq');
     if($scope.productQuantity <= 0){
       $scope.productQuantity = 1;
     } else if($scope.productQuantity > 20){

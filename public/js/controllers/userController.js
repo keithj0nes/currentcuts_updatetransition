@@ -3,12 +3,12 @@ angular.module("ccvApp").controller("userController", function($scope, $rootScop
   $scope.previousOrders = false;
 
   $scope.openModal = function(id){
-    console.log(id, "openModal in user");
+    //console.log(id, "openModal in user");
     modalService.Open(id);
   }
 
   $scope.closeMyModal = function(id){
-    console.log(id,"clicked user controllers");
+    //console.log(id,"clicked user controllers");
     modalService.Close(id);
   }
 
@@ -26,14 +26,14 @@ angular.module("ccvApp").controller("userController", function($scope, $rootScop
 
 
   if($state.params.orderid){
-    console.log("order details");
+    //console.log("order details");
     mainService.getOrderById($state.params.orderid).then(function(response){
-      console.log(response, "HERE IS THE RESPONSE");
+      //console.log(response, "HERE IS THE RESPONSE");
       if(response.reqUser === false){
-        console.log("no reqUser");
+        //console.log("no reqUser");
         $state.go("login");
       } else if(response.results === false){
-        console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
+        //console.log("LOGGING FALSE, SENDING TO ORDERHISTOR YPAGE");
         $state.go("orderhistory");
       } else if (response){
         $rootScope.$broadcast('cartCount')
@@ -46,7 +46,7 @@ angular.module("ccvApp").controller("userController", function($scope, $rootScop
     })
 
   } else {
-    console.log("order history");
+    //console.log("order history");
     getOrderHistory();
   }
 

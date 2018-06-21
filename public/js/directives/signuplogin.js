@@ -102,9 +102,9 @@ angular.module("ccvApp").directive("signupLogin", function(){
       }
 
       $scope.loginWithFacebook = function(){
-        console.log('clicked facebook button');
+        //console.log('clicked facebook button');
         mainService.loginWithFacebook().then((res)=>{
-          console.log(res, 'logged in! loginWithFacebook');
+          //console.log(res, 'logged in! loginWithFacebook');
         })
       }
 

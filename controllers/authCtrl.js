@@ -191,18 +191,18 @@ passport.use(new FacebookStrategy({
 
         if (!user[0]) {
           db.add_user([firstName, lastName, email, id]).then(user => {
-            console.log("add_user");
+            //console.log("add_user");
             done(null, user);
           })
         } else {
-          console.log("not a new users");
+          //console.log("not a new users");
           done(null, user)
         }
       });
 
     }
     catch(err){
-      console.log('get facebook user error', err);
+      //console.log('get facebook user error', err);
       return done(err)
     }
 

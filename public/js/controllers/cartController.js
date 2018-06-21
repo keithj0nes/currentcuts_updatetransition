@@ -99,7 +99,7 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     for (var i = 0; i < cart.length; i++) {
       total += (Number(cart[i].productPrice) * Number(cart[i].productQuantity));
     }
-    console.log(total, "calculate total");
+    ////console.log(total, "calculate total");
 
     //shipping prices marked here - based on order total
          if (total >= 1 && total <= 20 ){
@@ -120,7 +120,7 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
     for(var i = 0; i < $scope.cart.length; i++) {
       $scope.cartTotalItems += Number($scope.cart[i].productQuantity);
     }
-    console.log($scope.cartTotalItems, "total items function here");
+    ////console.log($scope.cartTotalItems, "total items function here");
 
     return $scope.cartTotalItems;
   }
@@ -130,16 +130,16 @@ angular.module("ccvApp").controller("cartController", function($scope, $http, $s
 
 function getProductsInCart(){
   mainService.getProductsInCart().then(function(response){
-    console.log(response, "logging response in getProductsInCart");
+    ////console.log(response, "logging response in getProductsInCart");
     if(response.length === 0){
+      ////console.log(response.length, 'r.length');
       $scope.somethingInCart = false;
     } else {
       $scope.somethingInCart = true;
-    }
 
 
     $scope.cart = response;
-    console.log($scope.cart, "SCOPE DOT CART");
+    ////console.log($scope.cart, "SCOPE DOT CART");
 
     var costs = calculate($scope.cart);
 
@@ -149,14 +149,16 @@ function getProductsInCart(){
     $scope.orderTotal = costs.total + costs.shipping;
 
 
-    console.log($scope.cart, "in controller");
+    ////console.log($scope.cart, "in controller");
     // $rootScope.cartQuant = 0;
     // for (var i = 0; i < $scope.cart.length; i++) {
     //   $rootScope.cartQuant += (parseInt($scope.cart[i].productQuantity));
-    //   console.log($rootScope.cartQuant, "cartQuant");
+    //   ////console.log($rootScope.cartQuant, "cartQuant");
     // }
 
     $rootScope.cartQuant = findTotalItems();
+  }
+
   });
 }
 
@@ -284,31 +286,31 @@ getProductsInCart();
 
       }
 
-      // console.log($rootScope.details, "scopedetailsbeinglogged");
+      // ////console.log($rootScope.details, "scopedetailsbeinglogged");
 
       $scope.value = $rootScope.details
 
       if($rootScope.note.note){
-        // console.log($rootScope.note.note, "rootScope.no.note");
+        // ////console.log($rootScope.note.note, "rootScope.no.note");
         orderData.order.note = $rootScope.note.note;
       }
 
       if($rootScope.email.email){
-        // console.log($rootScope.email.email, "rootScope.email");
+        // ////console.log($rootScope.email.email, "rootScope.email");
         orderData.email = $rootScope.email.email;
       }
 
       orderData.user = $scope.value;
       orderData.product = [];
       orderData.shipping = $rootScope.shippingCost2;
-      console.log(orderData.shipping, "orderData.shipping");
+      ////console.log(orderData.shipping, "orderData.shipping");
 
       mainService.getProductsInCart().then(function(response){
         if(response){
-          console.log(response);
+          ////console.log(response);
 
           response.forEach(function(item, i){
-            console.log(item, "item being logged");
+            ////console.log(item, "item being logged");
             orderData.product.push(item)
           })
         }
@@ -318,9 +320,9 @@ getProductsInCart();
 
 
 
-      console.log(orderData, "orderdata logged");
+      ////console.log(orderData, "orderdata logged");
     // Open Checkout with further options:
-    // console.log(e.data, "USER DATA STRIPE CLICK");
+    // ////console.log(e.data, "USER DATA STRIPE CLICK");
     if (!$scope.value){
     alert("please enter shipping info")
     } else {
@@ -343,7 +345,7 @@ getProductsInCart();
             // email: "hello@hahaomg.com",
             stripeTokenCard: newCard,
           }).then(function (response) {
-            console.log(response, "response in cartController charge lololololol");
+            ////console.log(response, "response in cartController charge lololololol");
             $rootScope.cart = [];
             //set timeout so thankyou page loads after orderData is saved to backend
             setTimeout(function(){

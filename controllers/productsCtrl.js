@@ -8,13 +8,13 @@ module.exports = {
     const db = app.get('db');
     let productsAndCounts = {}
     db.get_all_products([]).then(products => {
-      console.log("products shown");
+      //console.log("products shown");
       offsetCount = 3;
       productsAndCounts.products = products
       itemz = [...itemz, ...products];
-      // console.log(products, 'logging products');
+      // //console.log(products, 'logging products');
       // const n = products.map((a) => ({sort: Math.random(), value: a})).sort((a, b) => a.sort - b.sort).map((a) => a.value)
-      // console.log(n, 'n');
+      // //console.log(n, 'n');
 
       db.query(`select count(*) from (SELECT DISTINCT on (products.id) products.*, prices.price FROM products
         INNER JOIN product_price_size ON products.id = product_price_size.productId
@@ -34,12 +34,12 @@ module.exports = {
   getMoreProducts: function(req, res){
     const db = app.get('db');
 
-    console.log('lcick');
-    console.log(itemz.length, 'itemz');
+    //console.log('lcick');
+    //console.log(itemz.length, 'itemz');
     // db.get_all_products([]).then(moreProducts => {
     // db.query('select * from products where not in $1', [itemz]).then((moreProducts) => {
     db.get_more_products([offsetCount]).then(moreProducts => {
-      // console.log('moreProducts', moreProducts);
+      // //console.log('moreProducts', moreProducts);
       itemz = [...itemz, ...moreProducts]
       offsetCount += 3;
       return res.send(moreProducts)
@@ -57,7 +57,7 @@ module.exports = {
       })
     }
     catch(err){
-      console.log(err);
+      //console.log(err);
       return res.status(500).send(err)
     }
 
@@ -70,7 +70,7 @@ module.exports = {
     try {
       let wholeProduct = {};
       db.get_product_by_id_details([req.params.id]).then(product => {
-        // console.log(product, 'getProductById2');
+        // //console.log(product, 'getProductById2');
         wholeProduct.product = product;
 
         try {
@@ -90,7 +90,7 @@ module.exports = {
                 })
               }
               catch(err){
-                console.log(err);
+                //console.log(err);
                 return res.status(500).send(err)
               }
             } else {
@@ -99,13 +99,13 @@ module.exports = {
           })
         }
         catch(err){
-          console.log(err);
+          //console.log(err);
           return res.status(500).send(err)
         }
       })
     }
     catch(err){
-      console.log(err);
+      //console.log(err);
       return res.status(500).send(err)
     }
   },
@@ -116,7 +116,7 @@ module.exports = {
   getProductByName: function(req, res, next){
     const db = app.get('db');
     const searchTerm = "%" + req.params.name + "%";
-    console.log(searchTerm, "Searched item");
+    //console.log(searchTerm, "Searched item");
     try {
       db.get_product_by_name([searchTerm]).then(product => {
         return res.send(product)
@@ -131,7 +131,7 @@ module.exports = {
 
   getProductByCategory: function(req, res, next){
     const db = app.get('db');
-    console.log(req.params.id, "in cat id haha");
+    //console.log(req.params.id, "in cat id haha");
     try {
       db.query("SELECT * FROM categories WHERE parent_id = (SELECT id FROM categories WHERE name = $1)", [req.params.id]).then(categoryProducts => {
         if(categoryProducts.length <= 0){

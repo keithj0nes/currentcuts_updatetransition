@@ -117,21 +117,21 @@ module.exports = {
   resetPasswordEmail: function(req, res){
     const db = app.get('db');
 
-    console.log(req.body, "loggin req.body");
+    //console.log(req.body, "loggin req.body");
     db.users.findOne({email: req.body.email}).then(user => {
-      // if(err){console.log(err); res.status(500).send(err)}
+      // if(err){//console.log(err); res.status(500).send(err)}
 
-      console.log(user, "logging user");
+      //console.log(user, "logging user");
       if(!user){
         res.send({success: false, message: "Email was not found"})
       } else if(user.facebookid){
         res.send({success: false, message: "Facebook users cannot reset password, please log in with Facebook"})
       } else {
         let rtoken = jwt.sign({email: user.email}, 'secret', {expiresIn: "1h"});
-        console.log(rtoken, "logging rtoken");
+        //console.log(rtoken, "logging rtoken");
 
         db.users.update({id: user.id, resettoken: rtoken}).then(newUser => {
-          console.log(newUser, "new user");
+          //console.log(newUser, "new user");
 
           let text = "Hello " + user.firstname + ', <br><br> Please reset your password by clicking the link below: <br><br><a href="http://localhost:3010/#/passwordreset/' + newUser.resettoken +'">RESET PASSWORD</a>'
 
@@ -147,10 +147,10 @@ module.exports = {
           //send email
           transporter.sendMail(mailOptions, function(error, info){
             if(error){
-                console.log(error);
+                //console.log(error);
                 res.json({yo: 'error'});
             }else{
-                console.log('Message sent: ' + info.response);
+                //console.log('Message sent: ' + info.response);
                 res.json({yo: info.response});
             };
           });
@@ -165,18 +165,18 @@ module.exports = {
   resetPasswordToken: function(req, res){
     const db = app.get('db');
 
-    console.log(req.params.token, "req.params.token");
+    //console.log(req.params.token, "req.params.token");
     let token = req.params.token;
 
     db.users.findOne({resettoken: token}).then(user => {
-      console.log(user);
+      //console.log(user);
       if(user){
         jwt.verify(token, 'secret', (err, decoded) => {
           if(err){
-            console.log("falure");
+            //console.log("falure");
             res.send({success: false, message: 'Invalid token'})
           } else {
-            console.log("SUCCESSSSSSSS");
+            //console.log("SUCCESSSSSSSS");
             res.send({success: true, user: user})
           }
         })
@@ -192,7 +192,7 @@ module.exports = {
 
   savePassword: function(req, res){
     const db = app.get('db');
-    console.log(req.body, "reqbody");
+    //console.log(req.body, "reqbody");
     db.users.findOne({resettoken: req.params.token}).then(user => {
 
       if(req.body.pass == null || req.body.pass == "") {
@@ -214,10 +214,10 @@ module.exports = {
             //send email
             transporter.sendMail(mailOptions, function(error, info){
               if(error){
-                  console.log(error);
+                  //console.log(error);
                   res.json({yo: 'error'});
               }else{
-                  console.log('Message sent: ' + info.response);
+                  //console.log('Message sent: ' + info.response);
                   res.json({yo: info.response});
               };
             });
