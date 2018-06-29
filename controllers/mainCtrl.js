@@ -50,12 +50,12 @@ module.exports = {
   sendThankyou: function(req, res){
     const db = app.get('db');
     db.get_thank_you_by_id([req.params.id]).then(order => {
-      // change tyexpired to true after 5 seconds,
+      // change tyexpired to true after 10 seconds,
       // so you cant see the order at a later date
       setTimeout(function(){
         db.orders.update({id: req.params.id, tyexpired: true}).then(o => {
         })
-      }, 5000);
+      }, 10000);
       //console.log(order, "logging order in thankyou");
       res.send(order)
     })
@@ -66,8 +66,6 @@ module.exports = {
   confirmationEmail: (req, res, next) => {
     const db = app.get('db');
 
-
-    //console.log(req.body, "logging body");
     let b = req.body;
     let productTextInEmail = [];
     let orderTotal = 0;
@@ -104,7 +102,7 @@ module.exports = {
       text += item;
     });
 
-    text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note + "<br><br><br> email should be " + b.email;
+    text += "<br><hr> Order Total: " + formatter.format(orderTotal) + "<br> Shipping Total: " + formatter.format(b.shipping) + "<br><br> Note from Buyer: " + b.order.note;
 
     //find shipping.id based off price
     db.shipping.findOne({price: b.shipping}).then(ship => {
@@ -143,26 +141,23 @@ module.exports = {
   sendContactEmail: function(req, res){
     const db = app.get('db');
     let b = req.body;
-    //console.log(req.body, 'mybody');
-
     if(b.lname){
       b.lname = " " + b.lname;
     } else {
       b.lname = "";
     }
 
-    let text = "<strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
+    let text = "Your message has been sent and we will get to you as soon as possible! <br><br> <strong>Name:</strong> <span style='background-color:#000000, color:#ffffff;'>" + b.fname + b.lname + "</span><br> <strong>Inquiry: </strong>" + b.message;
 
     //email styling example
     // let text = '<table align="center" border="1" cellpadding="0" cellspacing="0" width="600"><tr><td bgcolor="#70bbd9"><strong>Name:</strong> ' + b.fname + b.lname + '</td></tr><tr><td bgcolor="#ee4c50"><strong>Inquiry: </strong> '+ b.message +'</td></tr></table>';
-    text += "<br> email should send to: " + b.email;
+    // text += "<br> email should send to: " + b.email;
 
 
     let mailOptions = {
       from: config.nodemailer.auth.user,                  // sender address
-      // to: b.email,                                     // list of receivers
-      bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
-      // bcc: config.nodemailer.auth.user,
+      to: b.email,                                        // list of receivers
+      bcc: config.nodemailer.auth.user,                   // list of bcc receivers
       subject: 'INQUIRY: ' + b.subject,                   // Subject line
       html: text                                          // html body
     };
@@ -277,8 +272,8 @@ function updateOrderSendConfirmationEmail(order, ship, address, b, text, req, re
   //create email
   var mailOptions = {
     from: config.nodemailer.auth.user,                  // sender address
-    // to: b.email,                                        // list of receivers
-    bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+    to: b.email,                                        // list of receivers
+    bcc: config.nodemailer.auth.user,                   // list of bcc receivers
     subject: 'Order Confirmation - ' + order[0].id,     // Subject line
     // text: text //,                                   // plaintext body
     html: text                                          // html body

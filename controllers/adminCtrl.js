@@ -519,13 +519,13 @@ function sendTrackingEmail(b, foundAddress, updatedOrder, foundUser, nodemailer,
   let text = "Your order has been shipped! <br><br> USPS Tracking # " + b.trackingNo + "<br> <br> Ship To: <br>" + foundAddress.firstname + " " + foundAddress.lastname + "<br>" + foundAddress.address_one + " " + foundAddress.address_two_alt + foundAddress.city + ", " + foundAddress.state + ", " + foundAddress.zipcode + "<br><br> Your Note: '" + updatedOrder.msg_to_seller + "' <br> Our Note: '" + updatedOrder.msg_to_buyer + "' <br><br> Thanks! ";
 
 
-  text += "<br><br><br>mail should be: " + foundUser.email;
+  // text += "<br><br><br>mail should be: " + foundUser.email;
 
   //create email
   var mailOptions = {
     from: config.nodemailer.auth.user,                  // sender address
-    // to: foundUser.email,                                        // list of receivers
-    bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+    to: foundUser.email,                                        // list of receivers
+    bcc: config.nodemailer.auth.user,                   // list of bcc receivers
     subject: 'Your Order is on its way! USPS Tacking - ' + b.trackingNo,     // Subject line
     html: text                                          // html body
   };

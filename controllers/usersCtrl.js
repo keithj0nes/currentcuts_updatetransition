@@ -137,8 +137,8 @@ module.exports = {
 
           const mailOptions = {
             from: config.nodemailer.auth.user,                  // sender address
-            // to: b.email,                                        // list of receivers
-            bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+            to: b.email,                                        // list of receivers
+            bcc: config.nodemailer.auth.user,                   // list of bcc receivers
             subject: 'Reset your password',     // Subject line
             // text: text //,                                   // plaintext body
             html: text                                          // html body
@@ -204,8 +204,8 @@ module.exports = {
 
             const mailOptions = {
               from: config.nodemailer.auth.user,                  // sender address
-              // to: b.email,                                        // list of receivers
-              bcc: 'currentcutstest@gmail.com',                   // list of bcc receivers
+              to: b.email,                                        // list of receivers
+              bcc: config.nodemailer.auth.user,                   // list of bcc receivers
               subject: 'Your password has been reset',     // Subject line
               // text: text //,                                   // plaintext body
               html: "Hello " + user.firstname + ', <br><br> Your password has been successfully reset! <br><br>'
