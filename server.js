@@ -20,8 +20,8 @@ const multerS3 = require("multer-s3");
 const app = module.exports = express();
 //sync to database
 let db = null;
-const connectionInfo = "postgres://postgres:@localhost/ccv"
-// const connectionInfo = config.psqlConnString;
+// const connectionInfo = "postgres://postgres:@localhost/ccv"
+const connectionInfo = config.psqlConnString;
 massive(connectionInfo, {excludeMatViews: true}).then(instance => {
   app.set('db', instance); // add your connection to express
   db = app.get('db'); // declare a db object for requests
