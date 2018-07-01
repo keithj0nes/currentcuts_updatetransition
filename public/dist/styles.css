@@ -507,9 +507,9 @@ template {
   right: 0;
   margin: auto auto;
   opacity: 1;
-  border: 16px solid #f3f3f3;
+  border: 16px solid #ddd;
   border-radius: 50%;
-  border-top: 16px solid #605675;
+  border-top: 16px solid #867096;
   width: 120px;
   height: 120px;
   -webkit-animation: spinner-c 2s linear infinite;
@@ -597,7 +597,7 @@ input[type=number] {
 
 .btn {
   padding: 5px 10px;
-  background-color: #605675;
+  background-color: #867096;
   color: white;
   font-weight: lighter;
   border: 1px solid #000;
@@ -626,7 +626,7 @@ input[type=number] {
   background-color: #454545; }
 
 .btn:hover {
-  background-color: #867a9d;
+  background-color: #ab9cb6;
   cursor: pointer; }
 
 .btn:active {
@@ -717,7 +717,7 @@ modal {
         margin: 0; }
       modal .mymodal .modal-body i {
         font-size: 56px;
-        color: #605675; }
+        color: #867096; }
       modal .mymodal .modal-body .modal-btn-container {
         background: red;
         display: flex;
@@ -1029,6 +1029,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center; }
+    .product-single .svg-img div {
+      transform: scale(0.75); }
   .product-single .details {
     padding: 20px; }
     .product-single .details .fav-button {
@@ -1597,6 +1599,8 @@ form.login-modal p {
       padding: 40px; }
     .product-single .svg-img {
       width: 100%; }
+    .product-single .svg-img > div {
+      transform: scale(1); }
   /* ============================================
                     CART PAGE
   ============================================ */

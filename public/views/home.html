@@ -2,6 +2,11 @@
 
   <main class="home-main main-margin">
 
+    <div class="loader-parent"  ng-class="{'display':loading}">
+      <div class="loader">
+      </div>
+    </div>
+
     <div class="product-main" ng-repeat="product in products">
       <div class="product-img">
         <img class="crop" ui-sref="products({id:product.id})" ng-src="{{product.img1}}" alt="">

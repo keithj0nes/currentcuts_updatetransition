@@ -13,7 +13,9 @@
 $primary-color: #333333;      //dark dark gray
 $secondary-color: #f1f1f1;    //light light gray
 // $main-accent-color: #FFD200;  //athletic gold
-$main-accent-color: #605675;  //athletic gold
+$main-accent-color: #867096;  //dark purple
+// $main-accent-color: #3aab87;  //athletic gold
+
 // $sub-accent-color: #4F6D7A;   //light blue charcoal
 $sub-accent-color: #028090;   //light blue charcoal
 
@@ -49,7 +51,7 @@ $sub-accent-color: #028090;   //light blue charcoal
   right: 0;
   margin: auto auto;
   opacity: 1;
-  border: 16px solid #f3f3f3;
+  border: 16px solid #ddd;
   border-radius: 50%;
   border-top: 16px solid $main-accent-color;
   width: 120px;
@@ -782,6 +784,11 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    div {
+      transform: scale(0.75);
+      
+    }
   //  background color is adjusted in HTML
   }
 
@@ -1786,6 +1793,10 @@ form.login-modal {
 
     .svg-img {
       width: 100%;
+
+    }
+    .svg-img > div {
+      transform: scale(1);
     }
   }
 
